@@ -1,0 +1,116 @@
+#bg{
+  height: 100vh;
+  background: linear-gradient(#004E5B, #3FB5C8 60% );
+
+}
+header{
+
+    background: white;
+    height: 75px;
+    width: 100%;
+    box-shadow: 0px 0px 5px 0px;
+}
+
+
+#head{
+
+    margin-top: 20px;
+    
+}
+#head span{
+    opacity: 50%;
+    padding: 0 10px 0 10px;
+    margin-top: 20px;
+    
+}
+
+#liste{ 
+    
+    opacity: 50%;
+    list-style-type: none;
+}
+li{
+    display: inline;
+}
+#liste li{
+    font-family: Dosis;
+    padding: 0 10px 0 10px;
+    margin-left: 40px;
+}
+label{
+    padding-left: 10px;
+}
+label{
+    padding-left: 10px;
+}
+.align-content-center{
+
+  padding-left: 25%;
+  font-size: 25px;
+  font-family: dosis;
+  margin-top: 50px;
+  color: white;
+}
+
+#select{
+  margin-top: 25px;
+}
+input[type=text], select {
+  font-family: Dosis;
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  padding: 10px;
+
+}
+input[type=date], select {
+  font-family: Dosis;
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+input[type=image], select {
+  font-family: Dosis;
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+textarea{
+  width: 100%;
+}
+
+input[type=submit] {
+  font-family: Dosis;
+  width: 50%;
+  background-color:#3FB5C8;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+  
+input[type=submit]:hover {
+  background-color:#00CD9C;
+}
+
+#formulaire_annonce{
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 50px;
+  background-color:white;
+}

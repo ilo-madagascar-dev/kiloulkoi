@@ -1,0 +1,156 @@
+
+#liste{ 
+    opacity: 50%;
+    list-style-type: none;
+}
+li{
+    display: inline;
+}
+#liste li{
+    font-family: Dosis;
+    padding: 0 50px 0 50px;
+}
+label{
+    padding-left: 10px;
+}
+.head{
+    padding-top: 20px;
+}
+header{
+ 
+    background: white;
+    height: 75px;
+    width: 100%;
+    box-shadow: 0px 0px 5px 0px;
+}
+input[type=text], select {
+    font-family: Dosis;
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  input[type=mail], select {
+    font-family: Dosis;
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  input[type=password], select {
+    font-family: Dosis;
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  input[type=submit] {
+    font-family: Dosis;
+    width: 100%;
+    background-color:#3FB5C8;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  input[type=submit]:hover {
+    background-color:#00CD9C;
+  }
+  
+#inscri {
+    background: white;
+    margin-top: 50px;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0px 0px 5px;
+  }
+#blog{
+   
+    margin-top: 50px;
+    height: 700px;
+
+}
+.logo{
+    
+    margin-top: 40px;
+    width: 190px;
+    height: 128px;
+}
+#slogan{
+    padding-top: 20px;
+    font-size: 20px;
+    font-family: Dosis;
+    opacity: 90%;
+    color:#ffffff;
+}
+#footer{
+    opacity:75%;
+    font-family: Dosis;
+    padding-top: 10px;
+}
+.footer {
+    margin-top: 50px;
+    height: 40px;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #009CB5;
+    color: white;
+    text-align: center;
+  }
+  .bas a{
+    color: black;
+    text-decoration:none;
+    font-family: Dosis;
+}
+h4{
+    padding-left: 10px;
+    padding-top: 10px;
+    font-family: dosis;
+    font-size:20px;
+    color:  #00CD9C;
+}
+#form{
+    margin-top: 40px;
+}
+#select1{
+    width: 100px;
+}
+.prix{
+    padding: 0 10px 0 10px;
+    font-size: 20px;
+    font-family: Dosis;
+}
+#bg{
+    margin-top: 50px;
+    padding-top: 20px;
+    width: 100%;
+    background-color: #F9F9F9;
+}
+#tete{
+ 
+    padding-bottom: 40px;
+    font-size: 24px;
+    color: #009CB5;
+}
+#retrouver{    
+    padding-top: 15px;
+  font-size: 24px;
+  color: #009CB5;
+}
+body{
+    background: linear-gradient(#004E5B, #3FB5C8 60% );
+}
