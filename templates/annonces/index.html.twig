@@ -1,0 +1,110 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+  <meta charset="UTF-8">
+  <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Roboto:100,300,400'>
+<link href="{{ asset('css/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"/>
+<link href="{{ asset('css/styleannonces.css') }}" rel="stylesheet"/>
+
+{% endblock %}
+
+
+{% block body %}
+{# navigation #}
+        <header>
+            {# <center>
+                <div class="head">
+                    <ul id="liste">
+                        <li> <img id="icone" src="icone/search.png"><label>Mes recherches</label></li>
+                        <li><img id="icone" src="icone/star.png"><label>Favoris</label></li>
+                        <li><img id="icone" src="icone/user.png"><label>User</label></li>
+                    </ul>      
+                    </div>
+            </center> #}
+
+            <div class="container-fluid">
+                <div class="row"> 
+                    <div  class="col-md-2">
+                      <span><button id="deposer">Votre annonce</button></span>
+                    {# <div id="deposer"> + Déposer une annonce </div> #}
+                    </div>
+                    <div id="head" class="col-md-4"> 
+
+                    </div>
+                     <div id="mp" class="col-md-2">
+                   <span> <img  src="icone/message.png"><label>Messages</label></span>
+                    </div>
+                </div>
+            </div>
+        </header>
+<div id="bg">
+  <div class="container">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8"><h1 id="categorie">Choisir la catégorie de votre annonce</h1></div>
+        <div class="col-md-2"></div>
+    </div>
+  </div>
+<div class="container">
+        <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+                    <div class="center">
+                                <select name="sources" id="sources" class="custom-select sources" placeholder="Source Type">
+                                    <option value="profile">Profile</option>
+                                    <option value="word">Word</option>
+                                    <option value="hashtag">Hashtag</option>
+                                </select>
+                    </div>
+        </div>
+         <div class="col-md-2"></div>
+     </div>
+</div>
+{% endblock %}
+
+
+
+
+{% block script %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+
+$(".custom-select").each(function() {
+  var classes = $(this).attr("class"),
+      id      = $(this).attr("id"),
+      name    = $(this).attr("name");
+  var template =  '<div class="' + classes + '">';
+      template += '<span class="custom-select-trigger">' + $(this).attr("placeholder") + '</span>';
+      template += '<div class="custom-options">';
+      $(this).find("option").each(function() {
+        template += '<span class="custom-option ' + $(this).attr("class") + '" data-value="' + $(this).attr("value") + '">' + $(this).html() + '</span>';
+      });
+  template += '</div></div>';
+  
+  $(this).wrap('<div class="custom-select-wrapper"></div>');
+  $(this).hide();
+  $(this).after(template);
+});
+$(".custom-option:first-of-type").hover(function() {
+  $(this).parents(".custom-options").addClass("option-hover");
+}, function() {
+  $(this).parents(".custom-options").removeClass("option-hover");
+});
+$(".custom-select-trigger").on("click", function() {
+  $('html').one('click',function() {
+    $(".custom-select").removeClass("opened");
+  });
+  $(this).parents(".custom-select").toggleClass("opened");
+  event.stopPropagation();
+});
+$(".custom-option").on("click", function() {
+  $(this).parents(".custom-select-wrapper").find("select").val($(this).data("value"));
+  $(this).parents(".custom-options").find(".custom-option").removeClass("selection");
+  $(this).addClass("selection");
+  $(this).parents(".custom-select").removeClass("opened");
+  $(this).parents(".custom-select").find(".custom-select-trigger").text($(this).text());
+});
+
+</script>
+
+{% endblock %}

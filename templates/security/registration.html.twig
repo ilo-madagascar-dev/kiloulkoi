@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('css/responsivevoiture.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('css/styleinscription.css') }}" rel="stylesheet"/>
+{% endblock %}
+
+{% block body %}
+<header>
+            <center>
+                <div class="head">
+                    <ul id="liste">
+                        <li> <img id="icone" src="icone/search.png"><label>Mes recherches</label></li>
+                        <li><img id="icone" src="icone/star.png"><label>Favoris</label></li>
+                        <li><img id="icone" src="icone/user.png"><label>Se Connecter</label></li>
+                    </ul>      
+                    </div>
+            </center>
+        </header>
+
+<h1>Inscription sur le site</h1>
+<div id="inscri">
+
+{{ form_start(form) }}
+    {{form_row(form.nom, { 'label':'Nom d\'utilisateur', 'attr': { 'placeholder': 'Nom' } } )}}
+        {{form_row(form.prenom, { 'label':'Prenom', 'attr': { 'placeholder': 'Prenom' } } )}}
+        {{form_row(form.pseudo, {'label':'Pseudo', 'attr': { 'placeholder': 'Pseudo' } } )}}
+            {{form_row(form.ville, {'label':'Ville', 'attr': { 'placeholder': 'Ville' } } )}}
+                {{form_row(form.rue, {'label':'Rue', 'attr': { 'placeholder': 'rue' } } )}}
+                    {{form_row(form.cp, {'label':'Code postale', 'attr': { 'placeholder': 'Code postale' } } )}}
+                        {{form_row(form.telephone, {'label':'Telephone', 'attr': { 'placeholder': 'Telephone' } } )}}
+                        {{form_row(form.role, {'label':'Role', 'attr': { 'placeholder': 'Role' } } )}}
+  {{form_row(form.username, {'label':'Email', 'attr': { 'placeholder': 'email' } } )}}
+   {{form_row(form.password, {'label':'Mot de passe', 'attr': { 'placeholder': 'Mot de passe' } } )}}
+    {{form_row(form.confirm_password, {'label':'Répétez votre mot de passe', 'attr': { 'placeholder': 'Répétez votre mot de passe' } } )}}
+    <button type="submit" class="btn btn-success">Inscription</button>
+    {{ form_end(form) }}
+
+    </div>
+    {% endblock %}
