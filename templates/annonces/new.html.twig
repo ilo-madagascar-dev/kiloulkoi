@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Annonces{% endblock %}
+
+{% block body %}
+    <h1>Create new Annonces</h1>
+    
+
+    {{ include('annonces/_form.html.twig') }}
+    <div id="formAnnonces"></div>
+
+    <a href="{{ path('annonces_index') }}">back to list</a>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+    $(document).ready(function () {
+    var $divAnnonces = $('#form_categorie');
+    
+    // When sport gets selected ...
+    $('body').on('submit', "[name='form']", function(e){
+        console.log("2e")
+      });
+    $(document).on('change', '#form_categorie', function() {
+        var $form = $(this).closest("[name='form']");
+      // ... retrieve the corresponding form.
+      var $form = $(this).closest('form');
+      var $annonces = $('#form_categorie :selected');
+      // Simulate form data, but only include the selected sport value.
+      var data = {};
+      // Submit data via AJAX to the form's action path.
+      $.ajax({
+        url : $form.attr('action'),
+        type: $form.attr('method'),
+        data : {id: $annonces.val()},
+        success: function(html) {
+            
+            //$form.remove();
+          // Replace current position field ...
+          
+          $form.replaceWith(html["formHtml"]);
+         //$divAnnonces.append(html["formHtml"]);
+          // Position field now displays the appropriate positions.
+        }
+      });
+    }
+);
+    })
+</script>
+{% endblock %}
