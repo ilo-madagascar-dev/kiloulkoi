@@ -24,22 +24,6 @@ header{
     
 }
 
-#liste{ 
-    
-    opacity: 50%;
-    list-style-type: none;
-}
-li{
-    display: inline;
-}
-#liste li{
-    font-family: Dosis;
-    padding: 0 10px 0 10px;
-    margin-left: 40px;
-}
-label{
-    padding-left: 10px;
-}
 label{
     padding-left: 10px;
 }
