@@ -17,8 +17,8 @@ security:
             anonymous: lazy
             provider: in_database
             form_login:
-                login_path: security_login
-                check_path: security_login
+                login_path: securitylogin
+                check_path: securitylogin
             # provider: users_in_memory
 
             # activate different ways to authenticate

@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class SecurityController extends AbstractController
@@ -34,4 +35,20 @@ class SecurityController extends AbstractController
       }
       return $this->render('security/registration.html.twig', ['form' =>$form->createView()]);
     }
+
+         	/**
+	* @Route("/login", name="securitylogin", methods="GET|POST")
+	*/
+	public function login(Request $request,AuthenticationUtils $authenticationUtils)
+	{	
+		$error = $authenticationUtils->getLastAuthenticationError();
+		$lastUsername = $authenticationUtils->getLastUsername();
+		
+   		
+		return $this->render('security/login.html.twig',[
+			'error' => $error,
+			'lastUsername' => $lastUsername
+			
+		]);
+	}
 }
