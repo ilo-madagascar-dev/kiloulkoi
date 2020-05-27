@@ -19,6 +19,10 @@ security:
             form_login:
                 login_path: securitylogin
                 check_path: securitylogin
+
+            logout:
+                path: security_logout
+                target: acceuil
             # provider: users_in_memory
 
             # activate different ways to authenticate
