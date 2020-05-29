@@ -1,5 +1,5 @@
 #bg{
-  height: 100vh;
+  height: 100%;
   background: linear-gradient(#004E5B, #3FB5C8 60% );
 
 }
@@ -34,6 +34,9 @@ label{
   font-family: dosis;
   margin-top: 50px;
   color: white;
+}
+.select_energi{
+  width: 100%;
 }
 
 #select{
