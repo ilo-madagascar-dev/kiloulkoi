@@ -100,4 +100,27 @@ class SecurityController extends AbstractController
   public  function choix() {
      return $this->render('security/Choix.html.twig');
   }
+
+      /**
+   * @Route("/menuclient",name="menu")
+   */
+
+  public  function client() {
+    return $this->render('acceuil/index.html.twig');
+ }
+
+       /**
+   * @Route("/menupresta",name="menupresta")
+   */
+  public  function presta() {
+    return $this->render('acceuil/prestataire.html.twig');
+ }
+
+        /**
+   * @Route("/menuAdmin",name="menuadmin")
+   */
+  public  function admin() {
+    return $this->render('admin/index.html.twig');
+ }
+
 }

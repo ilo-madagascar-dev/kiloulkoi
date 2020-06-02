@@ -131,9 +131,14 @@
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Login Screens:</h6>
-            <a class="collapse-item" href="{{path('inscription')}}">Inscription</a>
-            <a class="collapse-item" href="{{path('connexion')}}">Connexion</a>
-            <a class="collapse-item" href="{{path('mdp')}}">Mots de passe oublié</a>
+            {# <a class="collapse-item" href="{{path('inscription')}}">Liste des articles</a>
+            <a class="collapse-item" href="{{path('connexion')}}">Article vendu</a>
+            <a class="collapse-item" href="{{path('mdp')}}">Liste des prestataire</a> #}  
+            <a class="collapse-item">Liste des prestataires</a>
+             <a class="collapse-item">Liste des clients</a>
+                 <a class="collapse-item">Les articles</a>
+                  <a class="collapse-item">Ajouter des categories</a>
+                   <a class="collapse-item" href="{{path('security_logout')}}">Deconnecter</a>
             <div class="collapse-divider"></div>
             <!-- <h6 class="collapse-header">Other Pages:</h6>
             <a class="collapse-item" href="404.html">404 Page</a>
