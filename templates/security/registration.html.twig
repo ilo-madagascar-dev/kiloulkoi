@@ -15,22 +15,142 @@
                     <ul id="liste">
                         <li> <img id="icone" src="icone/search.png"><label>Mes recherches</label></li>
                         <li><img id="icone" src="icone/star.png"><label>Favoris</label></li>
-                        <li><img id="icone" src="icone/user.png"><label>Se Connecter</label></li>
+                        <li><img id="icone" src="icone/user.png"><a href="{{path('securitylogin')}}"><label>Se Connecter</label></a></li>
                     </ul>      
                     </div>
             </center>
         </header>
-
-<h1>Inscription sur le site</h1>
-<div id="inscri">
-
+<div id="contenue" class="container">
+<div class="row">
+                <div class="col-md-2">   </div>
+   <div id="blog" class="col-md-8">
+     <center>
+                        <img class="logo"src="image/logo.png">
+                    </center>
+                    <h2 id="slogan" class="text-center">N'achetez que le nécessaire, pour le reste il y a Kiloukoi!</h2>
+                    <div id="inscri">
 {{ form_start(form) }}
         {{form_row(form.pseudo, {'label':'Pseudo', 'attr': { 'placeholder': 'Pseudo' } } )}}
   {{form_row(form.username, {'label':'Email', 'attr': { 'placeholder': 'email' } } )}}
    {{form_row(form.password, {'label':'Mot de passe', 'attr': { 'placeholder': 'Mot de passe' } } )}}
     {{form_row(form.confirm_password, {'label':'Répétez votre mot de passe', 'attr': { 'placeholder': 'Répétez votre mot de passe' } } )}}
-    <button type="submit" class="btn btn-success">Inscription</button>
+    {# <button style="margin-width:150px" type="submit" class="btn btn-success">Inscription</button> #}
+    <input type="submit" value="Se connecter">
     {{ form_end(form) }}
-
+     
+  </div>
+   </div>
     </div>
+    </div>
+<br><br><br><br><br><br><br>
+
+<div id="bg">
+
+            <div  class="container">
+                <div class="row bas">
+                    <div class="col-md-3">
+                        <div class="box1">
+                           <div id="tete">
+                               A propos
+                           </div>
+                        <div>
+                            <a href="#">Qui sommes-nous ?</a>
+                        </div>
+                        <div>
+                           <a href="#">Nous rejoindre</a>
+                       </div>
+                       <div>
+                           <a href="#">Acteur responsable de l'économie française</a>
+                       </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                       <div id="tete">
+                           information
+                       </div>
+                       <div>
+                        <a href="#"> condition générale d'utilisation</a>
+                       </div>
+                       <div>
+                          <a href="#">Règles de diffusion de référencement et de déréférencement</a>
+                      </div>
+                      <div>
+                          <a href="#">Condition générale de vente</a>
+                      </div>
+                      <div>
+                       <a href="#">Vie privé/cookies</a>
+                   </div>
+                   <div>
+                       <a href="#">Vos droit et obligations</a>
+                   </div>
+                   <div>
+                      <a href="#"> Critère de classement</a>
+                   </div>
+                 
+                   </div>
+                   <div class="col-md-3">
+                       <div id="tete">
+                         Nos solution pros
+                       </div>
+                       <div>
+                           <a href="#">Professionnel de l'immobilier</a>
+                         </div>
+                         <div>
+                            <a href="#">Vos recrutements</a>
+                        </div>
+                        <div>
+                           <a href="#">Professionnel de l'auto</a>
+                        </div>
+                        <div>
+                           <a href="#">Autres solutions professionnelles</a>
+                     </div>
+                     <div>
+                         <a href="#">Annuaires des professionnelles</a>
+                     </div>
+               </div>
+               <div class="col-md-3">
+                   <div id="tete">
+                    Des questions ?
+                   </div>
+                   <div>
+                      <a href="#">Aides</a>
+                     </div>
+                     <div>
+                       <a href="#">Le service de paiement sécurisé et la livraison</a>
+                    </div>
+                    <div>
+                       <a href="#">Demandez conseil à la Communauté</a>
+                    </div>
+                    <div id="retrouver">
+                       Retrouvez-nous sur
+                 </div>
+                <div id="contact">
+                   <div class="row">
+                       <div class="col-md-4">
+    
+                       </div>
+                       <div class="col-md-4">
+                             <img src="icone/facebook.png">
+                     </div>
+                     <div class="col-md-4">
+                         <img src="icone/twiter.png">
+                     </div>
+    
+                   </div>
+                </div>
+                   </div>
+                   </div>
+           </div>
+
+                   <div class="footer">
+                      <div class="container">
+                       <div class="row">
+                           <div class="col-md-2">
+                             <h6 id="footer">Copyrights Kiloukoi 2020</h6>
+                           </div>
+                       </div>
+                      </div>
+                     </div>
+                </div>
+
     {% endblock %}

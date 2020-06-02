@@ -92,4 +92,12 @@ class SecurityController extends AbstractController
    public  function logout() {
      
    }
+
+     /**
+   * @Route("/choix",name="choix_inscrit")
+   */
+
+  public  function choix() {
+     return $this->render('security/Choix.html.twig');
+  }
 }
