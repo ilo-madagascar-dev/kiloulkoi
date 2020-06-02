@@ -5,7 +5,7 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
-// use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -15,7 +15,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *  message = "L' username que vous avez tapé est déjà utilisé !"
  * )
  */
-class User 
+class User implements UserInterface   
 {
     /**
      * @ORM\Id()
@@ -221,5 +221,16 @@ class User
 
         return $this;
     }
+
+    public function getRoles() {
+        return  ['ROLE_USER'];
+    }
+
+    // public function getUsername(): ?string {
+    //     return $this->nom;
+    // }
+
+    public function eraseCredentials() {}
+    public function getSalt() {}
 
 }

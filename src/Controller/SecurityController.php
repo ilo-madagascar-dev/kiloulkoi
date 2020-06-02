@@ -16,7 +16,7 @@ class SecurityController extends AbstractController
      /**
      * @Route("/inscriptionUtilisateur", name="security_registrationlog")
      */
-    public function registration(Request $request, EntityManagerInterface $em,
+    public function registrationPrestataire(Request $request, EntityManagerInterface $em,
     UserPasswordEncoderInterface $encoder)
  
     {
@@ -29,11 +29,37 @@ class SecurityController extends AbstractController
       if($form->isSubmitted() && $form->isValid()) {
         $hash = $encoder->encodePassword($user, $user->getPassword());
         $user->setPassword($hash);
+        $user->setFonction('ROLE_CLIENT');
           // l'objet $em sera affecté automatiquement grâce à l'injection des dépednaces 
           $em->persist($user);
           $em->flush();
       }
       return $this->render('security/registration.html.twig', ['form' =>$form->createView()]);
+    }
+
+
+     /**
+     * @Route("/inscriptionpresta", name="security_registrationpresta")
+     */
+    public function registrationclient(Request $request, EntityManagerInterface $em,
+    UserPasswordEncoderInterface $encoder)
+ 
+    {
+      $user = new User();
+
+      $form = $this->createForm(RegistrationType::class, $user);
+
+      $form->handleRequest($request);
+
+      if($form->isSubmitted() && $form->isValid()) {
+        $hash = $encoder->encodePassword($user, $user->getPassword());
+        $user->setPassword($hash);
+        $user->setFonction('ROLE_PRESTATAIRE');
+          // l'objet $em sera affecté automatiquement grâce à l'injection des dépednaces 
+          $em->persist($user);
+          $em->flush();
+      }
+      return $this->render('security/prestataire.html.twig', ['form' =>$form->createView()]);
     }
 
          	/**
