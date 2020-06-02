@@ -5,7 +5,7 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
+// use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -15,7 +15,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *  message = "L' username que vous avez tapé est déjà utilisé !"
  * )
  */
-class User implements UserInterface
+class User 
 {
     /**
      * @ORM\Id()
@@ -23,11 +23,6 @@ class User implements UserInterface
      * @ORM\Column(type="integer")
      */
     private $id;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $role;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -97,21 +92,14 @@ class User implements UserInterface
      */
     private $pseudo;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $fonction;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getRole(): ?string
-    {
-        return $this->role;
-    }
-
-    public function setRole(string $role): self
-    {
-        $this->role = $role;
-
-        return $this;
     }
 
     public function getUsername(): ?string
@@ -222,14 +210,16 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getRoles() {
-        return  ['ROLE_USER'];
+    public function getFonction(): ?string
+    {
+        return $this->fonction;
     }
 
-    // public function getUsername(): ?string {
-    //     return $this->nom;
-    // }
+    public function setFonction(string $fonction): self
+    {
+        $this->fonction = $fonction;
 
-    public function eraseCredentials() {}
-    public function getSalt() {}
+        return $this;
+    }
+
 }
