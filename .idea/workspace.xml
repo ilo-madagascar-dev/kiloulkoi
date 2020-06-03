@@ -2,16 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e912cdd3-886b-4849-9d4b-969f10f6beae" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entity/Annonces.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Annonces.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entity/Immobilier.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Immobilier.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Vehicule.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Vehicule.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/AnnoncesType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/AnnoncesType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20200512114502.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20200512122417.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20200512150935.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20200512151448.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20200603032927.php" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/public/build/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -25,14 +17,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Controller/VehiculeController.php">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Entity/Immobilier.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="18" column="32" selection-start-line="18" selection-start-column="32" selection-end-line="18" selection-end-column="32" />
-              <folding>
-                <element signature="e#34#58#0#PHP" expanded="true" />
-              </folding>
+            <state relative-caret-position="242">
+              <caret line="25" column="32" selection-start-line="25" selection-start-column="32" selection-end-line="25" selection-end-column="32" />
             </state>
           </provider>
         </entry>
@@ -40,43 +29,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Entity/Annonces.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="26" column="60" selection-start-line="26" selection-start-column="60" selection-end-line="26" selection-end-column="60" />
+            <state relative-caret-position="187">
+              <caret line="35" column="7" selection-start-line="35" selection-start-column="7" selection-end-line="35" selection-end-column="7" />
               <folding>
                 <element signature="e#30#68#0#PHP" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Entity/Categories.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="174">
-              <caret line="35" column="29" selection-start-line="35" selection-start-column="29" selection-end-line="35" selection-end-column="29" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Entity/Vehicule.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="922">
-              <caret line="64" selection-start-line="64" selection-end-line="64" />
-              <folding>
-                <element signature="e#30#68#0#PHP" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/Form/Vehicule1Type.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="123">
-              <caret line="10" column="49" selection-start-line="10" selection-start-column="49" selection-end-line="10" selection-end-column="49" />
-              <folding>
-                <element signature="e#28#51#0#PHP" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -96,12 +52,12 @@
         <option value="$PROJECT_DIR$/src/Entity/Categories.php" />
         <option value="$PROJECT_DIR$/src/Form/CategoriesType.php" />
         <option value="$PROJECT_DIR$/src/Controller/VehiculeController.php" />
-        <option value="$PROJECT_DIR$/src/Entity/Immobilier.php" />
         <option value="$PROJECT_DIR$/src/Form/AnnoncesType.php" />
-        <option value="$PROJECT_DIR$/src/Entity/Annonces.php" />
         <option value="$PROJECT_DIR$/src/Entity/Vehicule.php" />
         <option value="$PROJECT_DIR$/src/Entity/Energie.php" />
         <option value="$PROJECT_DIR$/src/Form/Vehicule1Type.php" />
+        <option value="$PROJECT_DIR$/src/Entity/Annonces.php" />
+        <option value="$PROJECT_DIR$/src/Entity/Immobilier.php" />
       </list>
     </option>
   </component>
@@ -283,12 +239,12 @@
       <workItem from="1591069945109" duration="1894000" />
       <workItem from="1591088490207" duration="761000" />
       <workItem from="1591149182559" duration="6114000" />
-      <workItem from="1591168782933" duration="5548000" />
+      <workItem from="1591168782933" duration="6021000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="19855000" />
+    <option name="totallyTimeSpent" value="20328000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -447,13 +403,6 @@
     <entry file="file://$PROJECT_DIR$/src/Form/ImmobilierType.php">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Entity/Immobilier.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="40" column="5" selection-start-line="40" selection-start-column="5" selection-end-line="40" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Form/AnnoncesType.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
@@ -482,25 +431,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Controller/VehiculeController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="18" column="32" selection-start-line="18" selection-start-column="32" selection-end-line="18" selection-end-column="32" />
-          <folding>
-            <element signature="e#34#58#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Form/EnergieType.php">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Entity/Annonces.php">
+    <entry file="file://$PROJECT_DIR$/src/Entity/Energie.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="26" column="60" selection-start-line="26" selection-start-column="60" selection-end-line="26" selection-end-column="60" />
+        <state relative-caret-position="1513">
+          <caret line="92" selection-start-line="92" selection-end-line="92" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Form/Vehicule1Type.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-234">
+          <caret line="10" column="49" selection-start-line="10" selection-start-column="49" selection-end-line="10" selection-end-column="49" />
           <folding>
-            <element signature="e#30#68#0#PHP" expanded="true" />
+            <element signature="e#28#51#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -512,16 +458,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Entity/Energie.php">
+    <entry file="file://$PROJECT_DIR$/src/Controller/VehiculeController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1513">
-          <caret line="92" selection-start-line="92" selection-end-line="92" />
+        <state relative-caret-position="102">
+          <caret line="18" column="32" selection-start-line="18" selection-start-column="32" selection-end-line="18" selection-end-column="32" />
+          <folding>
+            <element signature="e#34#58#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Entity/Vehicule.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="922">
+        <state relative-caret-position="911">
           <caret line="64" selection-start-line="64" selection-end-line="64" />
           <folding>
             <element signature="e#30#68#0#PHP" expanded="true" />
@@ -529,13 +478,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Form/Vehicule1Type.php">
+    <entry file="file://$PROJECT_DIR$/src/Entity/Annonces.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="123">
-          <caret line="10" column="49" selection-start-line="10" selection-start-column="49" selection-end-line="10" selection-end-column="49" />
+        <state relative-caret-position="187">
+          <caret line="35" column="7" selection-start-line="35" selection-start-column="7" selection-end-line="35" selection-end-column="7" />
           <folding>
-            <element signature="e#28#51#0#PHP" expanded="true" />
+            <element signature="e#30#68#0#PHP" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Entity/Immobilier.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="242">
+          <caret line="25" column="32" selection-start-line="25" selection-start-column="32" selection-end-line="25" selection-end-column="32" />
         </state>
       </provider>
     </entry>

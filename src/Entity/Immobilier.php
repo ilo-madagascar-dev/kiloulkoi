@@ -18,24 +18,41 @@ class Immobilier extends Annonces
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="integer")
      */
-    private $titre;
+    private $surface;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $nbrChambre;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getTitre(): ?string
+
+    public function getSurface()
     {
-        return $this->titre;
+        return $this->surface;
     }
 
-    public function setTitre(?string $titre): self
+    public function setSurface($surface): self
     {
-        $this->titre = $titre;
+        $this->surface = $surface;
+
+        return $this;
+    }
+
+    public function getNbrChambre()
+    {
+        return $this->nbrChambre;
+    }
+
+    public function setNbrChambre($nbrChambre): self
+    {
+        $this->nbrChambre = $nbrChambre;
 
         return $this;
     }
