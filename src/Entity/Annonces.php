@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping\DiscriminatorMap;
  * @ORM\Entity(repositoryClass=AnnoncesRepository::class)
  * @InheritanceType("JOINED")
  * @DiscriminatorColumn(name="discr", type="string")
- * @DiscriminatorMap({"annonces" = "Annonces", "vehicule" = "Vehicule", "immobilier" = "Immobilier"})
+ * @DiscriminatorMap({"annonces" = "Annonces", "vehicule" = "Vehicule", "immobilier" = "Immobilier", "mode" = "Mode"})
  */
 class Annonces
 {
