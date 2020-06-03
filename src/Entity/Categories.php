@@ -25,6 +25,17 @@ class Categories
     private $libelle;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Categories::class, inversedBy="categorieEnfant" ,cascade={"persist"})
+     * @ORM\JoinColumn(name="parent", referencedColumnName="id", nullable=true)
+     */
+    private $categorieParent;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Categories::class, mappedBy="categorieParent")
+     */
+    private $categorieEnfant;
+
+    /**
      * @ORM\OneToMany(targetEntity=Annonces::class, mappedBy="categorie")
      */
     private $annonces;
@@ -32,6 +43,7 @@ class Categories
     public function __construct()
     {
         $this->annonces = new ArrayCollection();
+        $this->categorieEnfant = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -76,6 +88,49 @@ class Categories
             // set the owning side to null (unless already changed)
             if ($annonce->getCategorie() === $this) {
                 $annonce->setCategorie(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCategorieParent(): ?self
+    {
+        return $this->categorieParent;
+    }
+
+    public function setCategorieParent(?self $categorieParent): self
+    {
+        $this->categorieParent = $categorieParent;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Categories[]
+     */
+    public function getCategorieEnfant(): Collection
+    {
+        return $this->categorieEnfant;
+    }
+
+    public function addCategorieEnfant(Categories $categorieEnfant): self
+    {
+        if (!$this->categorieEnfant->contains($categorieEnfant)) {
+            $this->categorieEnfant[] = $categorieEnfant;
+            $categorieEnfant->setCategorieParent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategorieEnfant(Categories $categorieEnfant): self
+    {
+        if ($this->categorieEnfant->contains($categorieEnfant)) {
+            $this->categorieEnfant->removeElement($categorieEnfant);
+            // set the owning side to null (unless already changed)
+            if ($categorieEnfant->getCategorieParent() === $this) {
+                $categorieEnfant->setCategorieParent(null);
             }
         }
 
