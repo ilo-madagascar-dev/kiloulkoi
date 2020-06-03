@@ -4,9 +4,15 @@ namespace App\Entity;
 
 use App\Repository\AnnoncesRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\InheritanceType;
+use Doctrine\ORM\Mapping\DiscriminatorColumn;
+use Doctrine\ORM\Mapping\DiscriminatorMap;
 
 /**
  * @ORM\Entity(repositoryClass=AnnoncesRepository::class)
+ * @InheritanceType("JOINED")
+ * @DiscriminatorColumn(name="discr", type="string")
+ * @DiscriminatorMap({"annonces" = "Annonces", "vehicule" = "Vehicule", "immobilier" = "Immobilier"})
  */
 class Annonces
 {
@@ -27,18 +33,7 @@ class Annonces
      * @ORM\JoinColumn(name="categorie_id", referencedColumnName="id", nullable=false)
      */
     private $categorie;
-            
-    /**
-     * @ORM\OneToOne(targetEntity=Vehicule::class, inversedBy="annonces",cascade={"persist"})
-     * @ORM\JoinColumn(name="vehicule_id", referencedColumnName="id", nullable=true)
-     */
-    private $vehicule;
-    
-    /**
-     * @ORM\OneToOne(targetEntity=Immobilier::class, inversedBy="annonces",cascade={"persist"})
-     * @ORM\JoinColumn(name="immobilier_id", referencedColumnName="id", nullable=true)
-     */
-    private $immobilier;
+
 
     public function getId(): ?int
     {
@@ -65,30 +60,6 @@ class Annonces
     public function setCategorie(?Categories $categorie): self
     {
         $this->categorie = $categorie;
-
-        return $this;
-    }
-
-    public function getVehicule(): ?Vehicule
-    {
-        return $this->vehicule;
-    }
-
-    public function setVehicule(?Vehicule $vehicule): self
-    {
-        $this->vehicule = $vehicule;
-
-        return $this;
-    }
-
-    public function getImmobilier(): ?Immobilier
-    {
-        return $this->immobilier;
-    }
-
-    public function setImmobilier(?Immobilier $immobilier): self
-    {
-        $this->immobilier = $immobilier;
 
         return $this;
     }

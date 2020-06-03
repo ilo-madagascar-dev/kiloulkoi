@@ -3,14 +3,11 @@
 namespace App\Form;
 
 use App\Entity\Annonces;
-use App\Entity\Vehicule;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Entity\Categories;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use App\Form\VehiculeType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class AnnoncesType extends AbstractType
 {
@@ -28,7 +25,7 @@ class AnnoncesType extends AbstractType
                         // 'multiple' => true,
                         // 'expanded' => true,
                         ])
-                ->add('vehicule', VehiculeType::class, array('required' => false))
+                //->add('vehicule', VehiculeType::class, array('required' => false))
             ;
     }
 

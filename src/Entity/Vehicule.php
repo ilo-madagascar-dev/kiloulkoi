@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=VehiculeRepository::class)
  */
-class Vehicule
+class Vehicule extends Annonces
 {
     /**
      * @ORM\Id()
@@ -20,46 +20,60 @@ class Vehicule
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $description;
-    
+    private $marque;
+
     /**
-     * @ORM\OneToOne(targetEntity=Annonces::class, mappedBy="vehicule")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $annonces;
+    private $modele;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Energie::class, inversedBy="vehicules" ,cascade={"persist"})
+     * @ORM\JoinColumn(name="energie_id", referencedColumnName="id", nullable=false)
+     */
+    private $energie;
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getDescription(): ?string
+    public function getMarque(): ?string
     {
-        return $this->description;
+        return $this->marque;
     }
 
-    public function setDescription(string $description): self
+    public function setMarque(?string $marque): self
     {
-        $this->description = $description;
+        $this->marque = $marque;
 
         return $this;
     }
 
-    public function getAnnonces(): ?Annonces
+    public function getModele(): ?string
     {
-        return $this->annonces;
+        return $this->modele;
     }
 
-    public function setAnnonces(?Annonces $annonces): self
+    public function setModele(?string $modele): self
     {
-        $this->annonces = $annonces;
-
-        // set (or unset) the owning side of the relation if necessary
-        $newVehicule = null === $annonces ? null : $this;
-        if ($annonces->getVehicule() !== $newVehicule) {
-            $annonces->setVehicule($newVehicule);
-        }
+        $this->modele = $modele;
 
         return $this;
     }
+
+    public function getEnergie(): ?Energie
+    {
+        return $this->energie;
+    }
+
+    public function setEnergie(?Energie $energie): self
+    {
+        $this->energie = $energie;
+
+        return $this;
+    }
+
 
 }
