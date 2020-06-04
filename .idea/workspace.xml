@@ -2,7 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e912cdd3-886b-4849-9d4b-969f10f6beae" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/Entity/Annonces.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Annonces.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/kiloukoe.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kiloukoe.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/bundles.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/bundles.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/symfony.lock" beforeDir="false" afterPath="$PROJECT_DIR$/symfony.lock" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/public/build/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -17,19 +23,34 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Entity/Mode.php">
+        <entry file="file://$PROJECT_DIR$/src/Controller/VehiculeController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="25" column="67" selection-start-line="25" selection-start-column="62" selection-end-line="25" selection-end-column="67" />
+            <state relative-caret-position="459">
+              <caret line="33" column="65" selection-start-line="33" selection-start-column="56" selection-end-line="33" selection-end-column="65" />
+              <folding>
+                <element signature="e#34#58#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Controller/ImmobilierController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="340">
+              <caret line="38" column="16" selection-start-line="38" selection-start-column="16" selection-end-line="38" selection-end-column="16" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/Entity/Taille.php">
+        <entry file="file://$PROJECT_DIR$/src/DataFixtures/AppFixtures.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="25" column="64" selection-start-line="25" selection-start-column="64" selection-end-line="25" selection-end-column="64" />
+            <state relative-caret-position="271">
+              <caret line="32" column="55" selection-start-line="32" selection-start-column="55" selection-end-line="32" selection-end-column="55" />
+              <folding>
+                <element signature="e#36#62#0#PHP" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -57,6 +78,7 @@
         <option value="$PROJECT_DIR$/src/Entity/Annonces.php" />
         <option value="$PROJECT_DIR$/src/Entity/Mode.php" />
         <option value="$PROJECT_DIR$/src/Entity/Taille.php" />
+        <option value="$PROJECT_DIR$/src/DataFixtures/AppFixtures.php" />
       </list>
     </option>
   </component>
@@ -155,6 +177,8 @@
       <path value="$PROJECT_DIR$/vendor/doctrine/lexer" />
       <path value="$PROJECT_DIR$/vendor/doctrine/doctrine-bundle" />
       <path value="$PROJECT_DIR$/vendor/doctrine/common" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/doctrine-fixtures-bundle" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/data-fixtures" />
     </include_path>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
@@ -226,12 +250,13 @@
       <workItem from="1591069945109" duration="1894000" />
       <workItem from="1591088490207" duration="761000" />
       <workItem from="1591149182559" duration="6114000" />
-      <workItem from="1591168782933" duration="7481000" />
+      <workItem from="1591168782933" duration="8174000" />
+      <workItem from="1591241810520" duration="2476000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="21788000" />
+    <option name="totallyTimeSpent" value="24957000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -239,9 +264,9 @@
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info id="npm" order="1" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="2" visible="true" weight="0.2677761" />
+      <window_info active="true" content_ui="combo" id="Project" order="2" visible="true" weight="0.27155825" />
       <window_info id="Structure" order="3" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="0" visible="true" weight="0.3295082" />
+      <window_info anchor="bottom" id="Terminal" order="0" visible="true" weight="0.19836065" />
       <window_info anchor="bottom" id="Database Changes" order="1" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="3" show_stripe_button="false" />
@@ -372,13 +397,7 @@
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Controller/TableController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#34#99#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Controller/AnnoncesController.php">
       <provider selected="true" editor-type-id="text-editor">
@@ -418,16 +437,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Controller/VehiculeController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="18" column="32" selection-start-line="18" selection-start-column="32" selection-end-line="18" selection-end-column="32" />
-          <folding>
-            <element signature="e#34#58#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Entity/Immobilier.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-166">
@@ -442,9 +451,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="391">
           <caret line="23" column="39" selection-start-line="23" selection-start-column="39" selection-end-line="23" selection-end-column="39" />
-          <folding>
-            <element signature="e#28#54#0#PHP" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -491,15 +497,47 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Entity/Mode.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="25" column="67" selection-start-line="25" selection-start-column="62" selection-end-line="25" selection-end-column="67" />
+        <state relative-caret-position="-578">
+          <caret line="9" column="3" selection-start-line="9" selection-start-column="3" selection-end-line="9" selection-end-column="3" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Entity/Taille.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="25" column="64" selection-start-line="25" selection-start-column="64" selection-end-line="25" selection-end-column="64" />
+        <state relative-caret-position="306">
+          <caret line="21" column="7" selection-start-line="21" selection-start-column="7" selection-end-line="21" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Controller/VehiculeController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="33" column="65" selection-start-line="33" selection-start-column="56" selection-end-line="33" selection-end-column="65" />
+          <folding>
+            <element signature="e#34#58#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Kernel.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-508" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Controller/ImmobilierController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="38" column="16" selection-start-line="38" selection-start-column="16" selection-end-line="38" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataFixtures/AppFixtures.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="271">
+          <caret line="32" column="55" selection-start-line="32" selection-start-column="55" selection-end-line="32" selection-end-column="55" />
+          <folding>
+            <element signature="e#36#62#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
