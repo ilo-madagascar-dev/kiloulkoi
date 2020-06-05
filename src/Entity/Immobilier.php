@@ -11,13 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Immobilier extends Annonces
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $surface;
@@ -26,11 +19,6 @@ class Immobilier extends Annonces
      * @ORM\Column(type="integer")
      */
     private $nbrChambre;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
 
     public function getSurface()

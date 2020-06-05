@@ -20,8 +20,9 @@ class VehiculeController extends AbstractController
      */
     public function index(VehiculeRepository $vehiculeRepository): Response
     {
+        $vehicules = $vehiculeRepository->findAll();
         return $this->render('vehicule/index.html.twig', [
-            'vehicules' => $vehiculeRepository->findAll(),
+            'vehicules' => $vehicules
         ]);
     }
 

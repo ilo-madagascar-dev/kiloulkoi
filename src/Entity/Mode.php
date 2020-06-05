@@ -11,13 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Mode extends Annonces
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $pointure;
@@ -27,11 +20,6 @@ class Mode extends Annonces
      * @ORM\JoinColumn(name="taille_id", referencedColumnName="id", nullable=false)
      */
     private $taille;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getPointure(): ?int
     {

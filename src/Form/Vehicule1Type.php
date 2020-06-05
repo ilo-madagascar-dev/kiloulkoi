@@ -17,6 +17,7 @@ class Vehicule1Type extends AbstractType
         $builder
             ->add('description')
             ->add('marque')
+            ->add('prix')
             ->add('categorie', EntityType::class, [
                 // looks for choices from this entity
                 'class' => Categories::class,

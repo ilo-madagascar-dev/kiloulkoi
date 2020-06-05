@@ -10,12 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Vehicule extends Annonces
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -32,12 +26,6 @@ class Vehicule extends Annonces
      * @ORM\JoinColumn(name="energie_id", referencedColumnName="id", nullable=false)
      */
     private $energie;
-
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getMarque(): ?string
     {
