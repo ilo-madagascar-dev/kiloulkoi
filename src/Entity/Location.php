@@ -34,6 +34,14 @@ class Location
      */
     private $statutLocation;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Annonces::class, inversedBy="location", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="annonce_id", referencedColumnName="id", nullable=false)
+     */
+    private $annonces;
+
+    //id client
+
     public function getId(): ?int
     {
         return $this->id;
@@ -71,6 +79,18 @@ class Location
     public function setStatutLocation(?StatutLocation $statutLocation): self
     {
         $this->statutLocation = $statutLocation;
+
+        return $this;
+    }
+
+    public function getAnnonces(): ?Annonces
+    {
+        return $this->annonces;
+    }
+
+    public function setAnnonces(Annonces $annonces): self
+    {
+        $this->annonces = $annonces;
 
         return $this;
     }

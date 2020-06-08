@@ -44,6 +44,11 @@ class Annonces
      */
     private $categorie;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Location::class, mappedBy="annonce", cascade={"persist", "remove"})
+     */
+    private $location;
+
 
     public function getId(): ?int
     {
@@ -94,6 +99,24 @@ class Annonces
     public function setPrix(float $prix): self
     {
         $this->prix = $prix;
+
+        return $this;
+    }
+
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?Location $location): self
+    {
+        $this->location = $location;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newAnnonce = null === $location ? null : $this;
+        if ($location->getAnnonce() !== $newAnnonce) {
+            $location->setAnnonce($newAnnonce);
+        }
 
         return $this;
     }
