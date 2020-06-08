@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Categories;
 use App\Entity\Energie;
+use App\Entity\StatutLocation;
 use App\Entity\Taille;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -35,6 +36,13 @@ class AppFixtures extends Fixture
             $categorie = new Categories();
             $categorie->setLibelle($categories[$i]);
             $manager->persist($categorie);
+        }
+
+        $statuLocations = ['nouveau', 'en cours'];
+        for ($i = 0; $i < count($statuLocations); $i++) {
+            $statuLocation = new StatutLocation();
+            $statuLocation->setLibelle($statuLocations[$i]);
+            $manager->persist($statuLocation);
         }
 
 

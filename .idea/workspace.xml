@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e912cdd3-886b-4849-9d4b-969f10f6beae" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataFixtures/AppFixtures.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataFixtures/AppFixtures.php" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/public/build/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -38,19 +38,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/Entity/StatutLocation.php">
+        <entry file="file://$PROJECT_DIR$/src/DataFixtures/AppFixtures.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="30" column="62" lean-forward="true" selection-start-line="30" selection-start-column="62" selection-end-line="30" selection-end-column="62" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Entity/Categories.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="37" column="4" lean-forward="true" selection-start-line="37" selection-start-column="4" selection-end-line="40" selection-end-column="22" />
+            <state relative-caret-position="441">
+              <caret line="40" column="48" selection-start-line="40" selection-start-column="48" selection-end-line="40" selection-end-column="48" />
             </state>
           </provider>
         </entry>
@@ -73,7 +64,6 @@
         <option value="$PROJECT_DIR$/src/Form/Immobilier1Type.php" />
         <option value="$PROJECT_DIR$/src/Entity/Annonces.php" />
         <option value="$PROJECT_DIR$/src/Entity/Taille.php" />
-        <option value="$PROJECT_DIR$/src/DataFixtures/AppFixtures.php" />
         <option value="$PROJECT_DIR$/src/Form/Vehicule1Type.php" />
         <option value="$PROJECT_DIR$/templates/vehicule/index.html.twig" />
         <option value="$PROJECT_DIR$/src/Entity/Vehicule.php" />
@@ -85,6 +75,7 @@
         <option value="$PROJECT_DIR$/var/cache/dev/ContainerRRfSODl/srcApp_KernelDevDebugContainer.php" />
         <option value="$PROJECT_DIR$/src/Entity/Location.php" />
         <option value="$PROJECT_DIR$/src/Entity/StatutLocation.php" />
+        <option value="$PROJECT_DIR$/src/DataFixtures/AppFixtures.php" />
       </list>
     </option>
   </component>
@@ -215,18 +206,7 @@
               <item name="kiloukoi.webapp" type="b2602c69:ProjectViewProjectNode" />
               <item name="kiloukoi.webapp" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="Entity" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="kiloukoi.webapp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="kiloukoi.webapp" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="kiloukoi.webapp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="kiloukoi.webapp" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="annonces" type="462c0819:PsiDirectoryNode" />
+              <item name="DataFixtures" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -272,12 +252,12 @@
       <workItem from="1591335216953" duration="2877000" />
       <workItem from="1591359650222" duration="597000" />
       <workItem from="1591367093306" duration="14000" />
-      <workItem from="1591594164104" duration="3184000" />
+      <workItem from="1591594164104" duration="3584000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="32229000" />
+    <option name="totallyTimeSpent" value="32629000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -473,13 +453,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataFixtures/AppFixtures.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="373">
-          <caret line="32" column="55" selection-start-line="32" selection-start-column="55" selection-end-line="32" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Form/Vehicule1Type.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
@@ -586,6 +559,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Entity/StatutLocation.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="32" column="62" selection-start-line="32" selection-start-column="62" selection-end-line="32" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Entity/Location.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
@@ -593,10 +573,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Entity/StatutLocation.php">
+    <entry file="file://$PROJECT_DIR$/src/DataFixtures/AppFixtures.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="30" column="62" lean-forward="true" selection-start-line="30" selection-start-column="62" selection-end-line="30" selection-end-column="62" />
+        <state relative-caret-position="441">
+          <caret line="40" column="48" selection-start-line="40" selection-start-column="48" selection-end-line="40" selection-end-column="48" />
         </state>
       </provider>
     </entry>
