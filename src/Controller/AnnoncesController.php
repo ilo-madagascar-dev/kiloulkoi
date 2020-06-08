@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Annonces;
 use App\Entity\Categories;
+use App\Entity\Vehicule;
 use App\Form\AnnoncesType;
+use App\Form\Vehicule1Type;
 use App\Form\VehiculeType;
 use App\Form\ImmobilierType;
 use App\Form\AnnoncesType_test;
@@ -36,6 +38,29 @@ class AnnoncesController extends AbstractController
      * @Route("/new", name="annonces_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
+    {
+        $annonce = new Vehicule();
+        $form = $this->createForm(Vehicule1Type::class, $annonce);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($annonce);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('categories_index');
+        }
+
+        return $this->render('annonces/new.html.twig', [
+            'annonce' => $annonce,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/newe", name="annonces_newe", methods={"GET","POST"})
+     */
+    public function newe(Request $request): Response
     {
         $nomClasse = null;
         $lowerName = null;

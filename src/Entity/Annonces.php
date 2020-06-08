@@ -114,8 +114,8 @@ class Annonces
 
         // set (or unset) the owning side of the relation if necessary
         $newAnnonce = null === $location ? null : $this;
-        if ($location->getAnnonce() !== $newAnnonce) {
-            $location->setAnnonce($newAnnonce);
+        if ($location->getAnnonces() !== $newAnnonce) {
+            $location->setAnnonces($newAnnonce);
         }
 
         return $this;

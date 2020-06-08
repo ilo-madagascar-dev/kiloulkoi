@@ -25,7 +25,7 @@ class AnnoncesType extends AbstractType
                         // 'multiple' => true,
                         // 'expanded' => true,
                         ])
-                //->add('vehicule', VehiculeType::class, array('required' => false))
+                ->add('location', LocationType::class, array('required' => false))
             ;
     }
 
