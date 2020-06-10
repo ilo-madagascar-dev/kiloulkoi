@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Annonces;
 use App\Entity\Location;
 use App\Form\LocationType;
 use App\Repository\LocationRepository;
@@ -30,7 +31,15 @@ class LocationController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        $idAnnonces = $request->query->get('id');
+        $annonce = null;
+        if ($idAnnonces != null) {
+            $repositoryAnnonces = $this->getDoctrine()->getRepository(Annonces::class);
+            $annonce = $repositoryAnnonces->find(intval($idAnnonces));
+        }
+
         $location = new Location();
+        $location->setAnnonces($annonce);
         $form = $this->createForm(LocationType::class, $location);
         $form->handleRequest($request);
 
