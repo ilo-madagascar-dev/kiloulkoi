@@ -35,7 +35,6 @@ class Vehicule1Type extends AbstractType
 
                 'choice_label' => 'libelle',
             ])
-            ->add('location', LocationType::class, array('required' => false))
         ;
     }
 

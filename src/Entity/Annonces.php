@@ -44,12 +44,6 @@ class Annonces
      */
     private $categorie;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Location::class, mappedBy="annonce", cascade={"persist", "remove"})
-     */
-    private $location;
-
-
     public function getId(): ?int
     {
         return $this->id;

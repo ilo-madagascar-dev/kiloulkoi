@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\LocationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -35,10 +37,15 @@ class Location
     private $statutLocation;
 
     /**
-     * @ORM\OneToOne(targetEntity=Annonces::class, inversedBy="location", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="annonce_id", referencedColumnName="id", nullable=false)
+     * @ORM\ManyToOne(targetEntity=Annonces::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="annonces_id", referencedColumnName="id", nullable=false)
      */
     private $annonces;
+
+    public function __construct()
+    {
+        $this->annonces = new ArrayCollection();
+    }
 
     //id client
 
@@ -83,15 +90,20 @@ class Location
         return $this;
     }
 
-    public function getAnnonces(): ?Annonces
+    /**
+     * @return Collection|Annonces[]
+     */
+    public function getAnnonces(): Collection
     {
         return $this->annonces;
     }
 
-    public function setAnnonces(Annonces $annonces): self
+    public function setAnnonces(?Annonces $annonces): self
     {
         $this->annonces = $annonces;
 
         return $this;
     }
+
+
 }
