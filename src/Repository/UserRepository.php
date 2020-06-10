@@ -80,4 +80,13 @@ class UserRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findAllUsers($lastUsername)
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.username = :lastUsername')
+            ->setParameter('lastUsername', $lastUsername)
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -3,9 +3,14 @@
 {% block title %}Connexion{% endblock %}
 
 {% block stylesheets %}
-    <link href="{{ asset('css/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"/>
+    {# <link href="{{ asset('css/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"/> #}
     <link href="{{ asset('css/responsivevoiture.css') }}" rel="stylesheet"/>
     <link href="{{ asset('css/styleconnection.css') }}" rel="stylesheet"/>
+     <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"/>
+       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 {% endblock %}
 
 {% block body %}
@@ -35,6 +40,11 @@
                     <h2 id="slogan" class="text-center">N'achetez que le nécessaire, pour le reste il y a Kiloukoi!</h2>
                    <div></div>
                     <div id="inscri">
+                    {% for message in app.flashes('invalideMDP') %}
+									<div class="alert alert-warning">
+			 						{{ message }}
+									</div>
+						{% endfor %}
 
                     
                         {% if error %}
@@ -54,6 +64,8 @@
                           {# <button type="submit" class="btn btn-success"> Connexion </button> #}
                             <input type="submit" value="Connexion">
                           <p style="text-align:center"><a href="/choix">S'inscrire</a></p>
+
+{# ------------------------------- #}
                           {# <p style="text-align:center"><a href="/inscriptionpresta">S'inscrire</a></p> #}
                       </div>
                       </form>
@@ -62,6 +74,40 @@
             </div>
         </div>
 
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+ Mot de passe oublier
+</button>
+
+<!-- The Modal -->
+<div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Réinitialisation de mot de passe</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form  method="post" action="{{ path('verify_mdp') }}" class="oublié-mdp">
+								        <div class="form-group">
+										    <input type="text" name="username" class="form-control e-mail" id="" placeholder="Adresse e-mail"  required></br>
+										    <input type="hidden" name="password" value="{{ random(900, 9000) }}" placeholder="nouveaux mot de passe">
+										</div>
+										<button type="submit" class="btn-outline-white px-4 py-3">Connexion</button>
+								    </form>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
         <div id="bg">
             <div class="container">
                 <div class="row bas">
@@ -168,4 +214,8 @@
                       </div>
                      </div>
                 </div>
+
+ 
+
+
 {% endblock %}
