@@ -2,15 +2,16 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\User;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use App\Controller\MailerController;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class VerificationController extends AbstractController
 {
@@ -46,11 +47,13 @@ class VerificationController extends AbstractController
 	/**
 	* @Route("/login/verification", name="verify_mdp", methods="GET|POST")
 	*/
-	public function verification(Request $request,UserRepository $repositoryuser,MailerController $mailmdp): Response
+    public function verification(Request $request,UserRepository $repositoryuser,MailerController $mailmdp,
+    UserPasswordEncoderInterface $encoder): Response
 	{	
         
 
         $users = $repositoryuser->findAllUsers($request->get('username'));
+        // dd($users[0]);
 
         if (!$users) 
         {
@@ -58,23 +61,45 @@ class VerificationController extends AbstractController
             throw new AccessDeniedException('Votre address email est invalide');
         }
 
-        $username;$password;$fonction;
+        $username;$password;$fonction;$confirm_password;
+        // $nom;$prenom;$pseudo;$rue;$ville;$telephone;$cp;
         foreach ($users as $listusers) 
         {
+        //    $hash = $encoder->encodePassword($listusers, $listusers->getPassword());
            $listusers->setUsername($request->get('username'));
-           $listusers->setPassword(($request->get('password')+random_int(100, 900)));
+           $listusers->setPassword(($request->get('password')+random_int(10000000, 9000000000)));
            $username = $listusers->getUsername($request->get('username'));
            $password = $listusers->getPassword($request->get('password'));
+           $confirm_password = $listusers->getConfirmPassword($request->get('password'));
            $fonction = $listusers->getFonction($request->get('fonction'));
+           $nom = $listusers->getNom($request->get('nom'));
+           $prenom = $listusers->getPrenom($request->get('prenom'));
+           $rue = $listusers->getRue($request->get('rue'));
+           $ville = $listusers->getVille($request->get('ville'));
+           $telephone = $listusers->getTelephone($request->get('telephone'));
+           $pseudo = $listusers->getPseudo($request->get('pseudo'));
+           $cp = $listusers->getCp($request->get('cp'));
         }
         
-        $user = new User();
+        $user = $users[0];
         $user->setUsername($username);
+        $hash = $encoder->encodePassword($user, $user->getPassword());
         $user->setPassword($password);
+        $user->setConfirmPassword($confirm_password);
         $user->setFonction($fonction);
+        $user->setNom($nom);
+        $user->setPrenom($prenom);
+        $user->setRue($rue);
+        $user->setPseudo($pseudo);
+        $user->setVille($ville);
+        $user->setCp($cp);
+        $user->setTelephone($telephone);
+        
+    
 
         $mailmdp->sendEmailMdp($user);
-        /*$this->em->persist($user);*/
+        $user->setPassword($hash);
+        $this->em->persist($user);
         $this->em->flush();
         $this->addFlash('invalideMDP','Modification mot de passe , veulliez verifier votre email');
         

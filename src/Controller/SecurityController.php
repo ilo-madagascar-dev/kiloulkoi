@@ -40,6 +40,7 @@ class SecurityController extends AbstractController
           // l'objet $em sera affecté automatiquement grâce à l'injection des dépednaces 
           $em->persist($user);
           $em->flush();
+          return $this->redirectToRoute('securitylogin');
       }
       return $this->render('security/registration.html.twig', ['form' =>$form->createView()]);
     }
@@ -65,6 +66,7 @@ class SecurityController extends AbstractController
           // l'objet $em sera affecté automatiquement grâce à l'injection des dépednaces 
           $em->persist($user);
           $em->flush();
+          return $this->redirectToRoute('securitylogin');
       }
       return $this->render('security/prestataire.html.twig', ['form' =>$form->createView()]);
     }

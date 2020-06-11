@@ -48,7 +48,7 @@
 
                     
                         {% if error %}
-                             <div>{{error.messageKey|trans(error.messageData, 'security')}}</div>
+                             <div style="color:red; font-size:20px">{{error.messageKey|trans(error.messageData, 'security')}}</div>
                         {% endif %}
                        
                         <form action="{{ path('securitylogin') }}" method="POST">
@@ -63,6 +63,9 @@
                         <div class="form-group">
                           {# <button type="submit" class="btn btn-success"> Connexion </button> #}
                             <input type="submit" value="Connexion">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                              Mot de passe oublier
+                            </button>
                           <p style="text-align:center"><a href="/choix">S'inscrire</a></p>
 
 {# ------------------------------- #}
@@ -74,10 +77,6 @@
             </div>
         </div>
 
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
- Mot de passe oublier
-</button>
-
 <!-- The Modal -->
 <div class="modal" id="myModal">
   <div class="modal-dialog">
@@ -85,7 +84,7 @@
 
       <!-- Modal Header -->
       <div class="modal-header">
-        <h4 class="modal-title">Réinitialisation de mot de passe</h4>
+        <h4 class="modal-title" style="color:black;text-align:center;">Réinitialisation de mot de passe</h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
 
@@ -94,16 +93,16 @@
         <form  method="post" action="{{ path('verify_mdp') }}" class="oublié-mdp">
 								        <div class="form-group">
 										    <input type="text" name="username" class="form-control e-mail" id="" placeholder="Adresse e-mail"  required></br>
-										    <input type="hidden" name="password" value="{{ random(900, 9000) }}" placeholder="nouveaux mot de passe">
+										    <input type="hidden" name="password" value="{{ random(9000000, 90000000000) }}" placeholder="nouveaux mot de passe">
 										</div>
-										<button type="submit" class="btn-outline-white px-4 py-3">Connexion</button>
+										<button style="margin-left:180px" type="submit" class="btn btn-success">Envoyer</button>
 								    </form>
       </div>
 
       <!-- Modal footer -->
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-      </div>
+      {# <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Fermer</button>
+      </div> #}
 
     </div>
   </div>
