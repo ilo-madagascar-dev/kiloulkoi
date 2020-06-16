@@ -67,7 +67,12 @@
                               Mot de passe oublier
                             </button> #}
                             <p style="text-align:center;cursor: pointer;color:#1E90FF" data-toggle="modal" data-target="#myModal"><a>Mot de passe oublier</a></p>
-                          <p style="text-align:center"><a href="/choix">S'inscrire</a></p>
+                            <p style="text-align:center"><a href="/choix">S'inscrire</a></p>
+                            <p  style="text-align:center;cursor: pointer;color:#1E90FF">
+                              <a href="{{ path('hwi_oauth_service_redirect', {'service': 'facebook' }) }}">
+                                <span>Login with facebook</span>
+                            </a>
+                            </p>
 
 {# ------------------------------- #}
                           {# <p style="text-align:center"><a href="/inscriptionpresta">S'inscrire</a></p> #}

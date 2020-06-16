@@ -55,7 +55,19 @@ class User implements UserInterface
         $this->confirm_password = $confirm_password;
         
         return $this;
-    }
+    } 
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $facebookID;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $facebookAccessToken;
+
+
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -222,6 +234,29 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getFacebookID(): ?string
+    {
+        return $this->facebookID;
+    }
+
+    public function setFacebookID(string $facebookID): self
+    {
+        $this->facebookID = $facebookID;
+
+        return $this;
+    }
+
+    public function getFacebookAccessToken(): ?string
+    {
+        return $this->facebookAccessToken;
+    }
+
+    public function setFacebookAccessToken(string $facebookAccessToken): self
+    {
+        $this->facebookAccessToken = $facebookAccessToken;
+
+        return $this;
+    }
     public function getRoles() {
         return  ['ROLE_USER'];
     }
