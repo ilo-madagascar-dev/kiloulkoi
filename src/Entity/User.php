@@ -234,11 +234,17 @@ class User implements UserInterface
         return $this;
     }
 
+     /**
+     * @return mixed
+     */
     public function getFacebookID(): ?string
     {
         return $this->facebookID;
     }
 
+    /**
+     * @param mixed $facebookID
+     */
     public function setFacebookID(string $facebookID): self
     {
         $this->facebookID = $facebookID;
@@ -246,11 +252,17 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
     public function getFacebookAccessToken(): ?string
     {
         return $this->facebookAccessToken;
     }
 
+    /**
+     * @param mixed $facebookAccessToken
+     */
     public function setFacebookAccessToken(string $facebookAccessToken): self
     {
         $this->facebookAccessToken = $facebookAccessToken;
