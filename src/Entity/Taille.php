@@ -25,6 +25,11 @@ class Taille
     private $libelle;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $classe;
+
+    /**
      * @ORM\OneToMany(targetEntity=Mode::class, mappedBy="taille")
      */
     private $modes;
@@ -78,6 +83,18 @@ class Taille
                 $mode->setTaille(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getClasse(): ?string
+    {
+        return $this->classe;
+    }
+
+    public function setClasse(string $classe): self
+    {
+        $this->classe = $classe;
 
         return $this;
     }

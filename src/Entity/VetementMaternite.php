@@ -2,23 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\ModeRepository;
+use App\Repository\VetementMaterniteRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\InheritanceType;
-use Doctrine\ORM\Mapping\DiscriminatorColumn;
-use Doctrine\ORM\Mapping\DiscriminatorMap;
 
 /**
- * @ORM\Entity(repositoryClass=ModeRepository::class)
- * @InheritanceType("JOINED")
- * @DiscriminatorColumn(name="discr", type="string")
- * @DiscriminatorMap({"Mode" = "Mode",
- *     "HommeFemmeMode" = "HommeFemmeMode",
- *     "EnfantMode" = "EnfantMode"
- * })
+ * @ORM\Entity(repositoryClass=VetementMaterniteRepository::class)
  */
-class Mode extends Annonces
+class VetementMaternite extends Maternite
 {
+
     /**
      * @ORM\ManyToOne(targetEntity=Pointure::class, inversedBy="modes" ,cascade={"persist"})
      * @ORM\JoinColumn(name="pointure_id", referencedColumnName="id", nullable=false)

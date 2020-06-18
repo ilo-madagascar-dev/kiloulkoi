@@ -4,12 +4,16 @@ namespace App\Controller;
 
 use App\Entity\Annonces;
 use App\Entity\Categories;
+use App\Entity\Mode;
 use App\Entity\Vehicule;
+use App\Entity\VetementMaternite;
 use App\Form\AnnoncesType;
+use App\Form\ModeType;
 use App\Form\Vehicule1Type;
 use App\Form\VehiculeType;
 use App\Form\ImmobilierType;
 use App\Form\AnnoncesType_test;
+use App\Form\VetementMaterniteType;
 use App\Repository\AnnoncesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,8 +43,8 @@ class AnnoncesController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        $annonce = new Vehicule();
-        $form = $this->createForm(Vehicule1Type::class, $annonce);
+        $annonce = new VetementMaternite();
+        $form = $this->createForm(VetementMaterniteType::class, $annonce);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
