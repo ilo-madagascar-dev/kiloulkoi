@@ -2,36 +2,14 @@
 
 namespace App\Controller;
 
-<<<<<<< HEAD
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
-
-class AnnoncesController extends AbstractController
-{
-    /**
-     * @Route("/annonces",name="annonces")
-     */
-    public function index()
-    {
-        return $this->render('annonces/index.html.twig', [
-            'controller_name' => 'AnnoncesController',
-        ]);
-    }
-=======
 use App\Entity\Annonces;
 use App\Entity\Categories;
 use App\Form\AnnoncesType;
-use App\Form\VehiculeType;
-use App\Form\ImmobilierType;
-use App\Form\AnnoncesType_test;
 use App\Repository\AnnoncesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * @Route("/annonces")
@@ -101,26 +79,7 @@ class AnnoncesController extends AbstractController
 
             return $this->redirectToRoute('annonces_index');
         }
-        
-//        if ($request->isXmlHttpRequest()) {
-//            $repository = $this->getDoctrine()->getRepository(Categories::class);
-//            $annonce = new Annonces();
-//            annonces[categorie]
-//            $idCate = $request->request->get('id');
-//            $categorie = $repository->find(intval($idCate));
-//            $annonce->setCategorie($categorie);
-//            $form = $this->createForm(AnnoncesType::class, $annonce);
-//            
-//            $form->handleRequest($request);
-//            $formHtml = $this->renderView('annonces/_form.html.twig', array(
-//                'form' => $form->createView(),
-//            ));
-//            return new JsonResponse(
-//                array(
-//                    'formHtml' => $formHtml
-//                )
-//            );
-//        }
+
         return $this->render('annonces/new.html.twig', [
             'annonce' => $annonce,
             'form' => $form->createView(),
@@ -170,5 +129,4 @@ class AnnoncesController extends AbstractController
 
         return $this->redirectToRoute('annonces_index');
     }
->>>>>>> 5d39ba55b5ac1b79d7adc01fbd9ef9a6a0fcfe80
 }
