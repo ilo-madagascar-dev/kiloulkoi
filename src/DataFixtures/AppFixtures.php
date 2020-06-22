@@ -19,6 +19,7 @@ class AppFixtures extends Fixture
         // $manager->persist($product);
 
         // create 20 products! Bam!
+        //pll
         $energies = ['Essence', 'Diesel', 'Electrique'];
         for ($i = 0; $i < count($energies); $i++) {
             $energie = new Energie();
@@ -27,7 +28,8 @@ class AppFixtures extends Fixture
         }
 
         //taille HommeFemmeMode
-        $tailles = ['S', 'M', 'L', 'XL'];
+        //XS
+        $tailles = ['S', 'M', 'L', 'XL', 'XS', 'XXl', 'XXXL'];
         for ($i = 0; $i < count($tailles); $i++) {
             $taille = new Taille();
             $taille->setLibelle($tailles[$i]);
@@ -36,6 +38,7 @@ class AppFixtures extends Fixture
         }
 
         //pointure HommeFemmeMode
+        //femme 36
         for ($i = 37; $i <= 50; $i++) {
             $pointure = new Pointure();
             $pointure->setLibelle($i);
@@ -62,7 +65,7 @@ class AppFixtures extends Fixture
         }
 
         //taille EnfantMode
-        for ($i = 4; $i <= 16; $i++) {
+        for ($i = 3; $i <= 16; $i++) {
             $taille = new Taille();
             $taille->setLibelle($i);
             $taille->setClasse("EnfantMode");
@@ -70,7 +73,7 @@ class AppFixtures extends Fixture
         }
 
         //pointure EnfantMode
-        for ($i = 12; $i <= 32; $i++) {
+        for ($i = 12; $i <= 37; $i++) {
             $pointure = new Pointure();
             $pointure->setLibelle($i);
             $pointure->setClasse("EnfantMode");
