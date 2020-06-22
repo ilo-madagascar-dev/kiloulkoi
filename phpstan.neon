@@ -1,0 +1,9 @@
+parameters:
+    excludes_analyse:
+        - src/Migrations/*
+        - tests/*/data/*
+    ignoreErrors:
+        - '#Property [a-zA-Z0-9\\_]+::\$[a-zA-Z0-9]* has no typehint specified.#'
+    reportUnmatchedIgnoredErrors: false
+    symfony:
+        container_xml_path: '%rootDir%/../../../var/cache/dev/srcApp_KernelDevDebugContainer.xml'

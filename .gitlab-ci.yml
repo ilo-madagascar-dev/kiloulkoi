@@ -1,0 +1,28 @@
+# GitLab CI/CD - Symfony
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - vendor/
+
+stages:
+  - build
+  - code_analysis
+
+build:
+  image: composer
+  stage: build
+  script:
+    - composer install --prefer-dist --no-ansi --no-interaction --no-progress
+
+phpstan:
+  image: php:7.4-cli
+  stage: code_analysis
+  script:
+    - vendor/bin/phpstan analyse -c phpstan.neon --level 8 --no-progress src tests > phpstan-report-${CI_COMMIT_SHA}.txt
+  when: on_success
+  artifacts:
+    paths:
+      - phpstan-report-${CI_COMMIT_SHA}.txt
+    expire_in: 24 hours
+    when: always
+  allow_failure: true

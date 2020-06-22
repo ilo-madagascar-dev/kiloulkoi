@@ -22,6 +22,9 @@
         "symfony/yaml": "4.4.*"
     },
     "require-dev": {
+        "phpstan/extension-installer": "^1.0",
+        "phpstan/phpstan": "^0.12.30",
+        "phpstan/phpstan-symfony": "^0.12.6",
         "symfony/maker-bundle": "^1.16",
         "symfony/profiler-pack": "^1.0"
     },
@@ -54,6 +57,8 @@
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
+        "phpstan-max-level": "vendor/bin/phpstan analyse -c phpstan.neon --level 8 --no-progress --memory-limit 1G src",
+        "phpstan-mid-level": "vendor/bin/phpstan analyse -c phpstan.neon --level 4 --no-progress --memory-limit 1G src",
         "post-install-cmd": [
             "@auto-scripts"
         ],
