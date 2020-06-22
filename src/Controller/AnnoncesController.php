@@ -7,6 +7,7 @@ use App\Entity\Categories;
 use App\Form\AnnoncesType;
 use App\Repository\AnnoncesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
