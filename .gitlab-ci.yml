@@ -18,7 +18,7 @@ phpstan:
   image: php:7.4-cli
   stage: code_analysis
   script:
-    - vendor/bin/phpstan analyse -c phpstan.neon --level 8 --no-progress src tests > phpstan-report-${CI_COMMIT_SHA}.txt
+    - vendor/bin/phpstan analyse -c phpstan.neon --level 8 --no-progress --memory-limit 1G src > phpstan-report-${CI_COMMIT_SHA}.txt
   when: on_success
   artifacts:
     paths:
