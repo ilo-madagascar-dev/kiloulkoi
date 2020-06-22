@@ -24,7 +24,6 @@
     "require-dev": {
         "phpstan/extension-installer": "^1.0",
         "phpstan/phpstan": "^0.12.30",
-        "phpstan/phpstan-symfony": "^0.12.6",
         "symfony/maker-bundle": "^1.16",
         "symfony/profiler-pack": "^1.0"
     },

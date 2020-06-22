@@ -4,6 +4,6 @@ parameters:
         - tests/*/data/*
     ignoreErrors:
         - '#Property [a-zA-Z0-9\\_]+::\$[a-zA-Z0-9]* has no typehint specified.#'
+        - '#Call to an undefined method [a-zA-Z0-9\\_<>]+::findOneBy[A-Z][a-zA-Z]*\(\)#'
+        - '#Call to an undefined method [a-zA-Z0-9\\_<>]+::find[A-Z][a-zA-Z]*\(\)#'
     reportUnmatchedIgnoredErrors: false
-    symfony:
-        container_xml_path: '%rootDir%/../../../var/cache/dev/srcApp_KernelDevDebugContainer.xml'

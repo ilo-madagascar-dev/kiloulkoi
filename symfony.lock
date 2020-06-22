@@ -96,9 +96,6 @@
     "phpstan/phpstan": {
         "version": "0.12.30"
     },
-    "phpstan/phpstan-symfony": {
-        "version": "0.12.6"
-    },
     "pmill/doctrine-array-hydrator": {
         "version": "v0.1.7"
     },
