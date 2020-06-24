@@ -16,6 +16,7 @@ class MyEntityUserProvider extends EntityUserProvider implements AccountConnecto
     
     public function loadUserByOAuthUserResponse(UserResponseInterface $response)
     {
+        
         $resourceOwnerName = $response->getResourceOwner()->getName();
 
         if (!isset($this->properties[$resourceOwnerName])) {
@@ -32,7 +33,7 @@ class MyEntityUserProvider extends EntityUserProvider implements AccountConnecto
             // TODO: Create the user
             $user = new User();
 
-            $user->setUsername($response->getEmail());
+            $user->setUsername($response->getUsername());
             $user->setPassword('');
             $user->setFonction('ROLE_CLIENT');
             $user->setCp('');
@@ -66,6 +67,7 @@ class MyEntityUserProvider extends EntityUserProvider implements AccountConnecto
      */
     public function connect(UserInterface $user, UserResponseInterface $response)
     {
+        // dump('Test');die;
         if (!$user instanceof User) {
             throw new UnsupportedUserException(sprintf('Expected an instance of App\Model\User, but got "%s".', get_class($user)));
         }

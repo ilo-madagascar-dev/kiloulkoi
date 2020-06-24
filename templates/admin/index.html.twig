@@ -210,6 +210,7 @@
                 <!-- Counter - Alerts -->
                 <span class="badge badge-danger badge-counter">3+</span>
               </a>
+       
               <!-- Dropdown - Alerts -->
               <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
                 <h6 class="dropdown-header">
@@ -330,12 +331,18 @@
                   <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                   Activity Log
                 </a> -->
-                <div class="dropdown-divider"></div>
+                <div class="dropdown-divider"> 
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Déconnecter
+                  Client
                 </a>
               </div>
+            </li>
+            <li >
+            
+               
+           <a class="dropdown-item" href="{{path('security_logout')}}"><label>Se Déconnecter</label></a>
+               
             </li>
 
           </ul>
