@@ -102,22 +102,5 @@ class Annonces
         return $this;
     }
 
-    public function getLocation(): ?Location
-    {
-        return $this->location;
-    }
-
-    public function setLocation(?Location $location): self
-    {
-        $this->location = $location;
-
-        // set (or unset) the owning side of the relation if necessary
-        $newAnnonce = null === $location ? null : $this;
-        if ($location->getAnnonces() !== $newAnnonce) {
-            $location->setAnnonces($newAnnonce);
-        }
-
-        return $this;
-    }
 
 }

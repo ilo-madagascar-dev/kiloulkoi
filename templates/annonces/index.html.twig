@@ -1,56 +1,20 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Annonces index{% endblock %}
-
-{% block body %}
-    <h1>Annonces index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Description</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for annonce in annonces %}
-            <tr>
-                <td>{{ annonce.id }}</td>
-                <td>{{ annonce.description }}</td>
-                <td>
-                    <a href="{{ path('annonces_show', {'id': annonce.id}) }}">show</a>
-                    <a href="{{ path('annonces_edit', {'id': annonce.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('annonces_new') }}">Create new</a>
+{% extends "base.html.twig" %}
+{% block stylesheets %}
+  <link href="{{ asset('css/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('css/styleannonces.css') }}" rel="stylesheet"/>
+  
 {% endblock %}
 
-{% block body %}
-{# navigation #}
-        <header>
-            {# <center>
-                <div class="head">
-                    <ul id="liste">
-                        <li> <img id="icone" src="icone/search.png"><label>Mes recherches</label></li>
-                        <li><img id="icone" src="icone/star.png"><label>Favoris</label></li>
-                        <li><img id="icone" src="icone/user.png"><label>User</label></li>
-                    </ul>      
-                    </div>
-            </center> #}
 
-            <div class="container-fluid">
+{% block title %}Annonce{% endblock %}
+{% block body %}
+
+<header>
+
+   <div class="container-fluid">
                 <div class="row"> 
-                    <div  class="col-md-2">
-                      <span><div id="deposer"> + Déposer une annonce </div></span>
+                    <div id="ano" class="col-md-2">
+               
                     {# <div id="deposer"> + Déposer une annonce </div> #}
                     </div>
                     <div id="head" class="col-md-8">
@@ -59,153 +23,165 @@
                         <span><img id="icone" src="icone/star.png"><label>Favoris</label></span>
                         <span><img id="icone" src="icone/user.png"><label>User</label></span>
                 </center>     
-                    </div>
-                     <div id="mp" class="col-md-2">
-                    <img  src="icone/message.png"><label>Messages</label>
+              
                     </div>
                 </div>
-            
-            </div>
 
-        </header>
-        
-<div id="bg">
-{# formulaire #}
-    <div id="content" class="container">
-        <div class="row">
-            <div class="col-md-2">
+</header>
 
-            </div>
-            <div class="col-md-8">
-                      <h2>Déposer une annonce</h2>
-                    <div>
-                    <h3 id="titre" >Commençons par l'éssentiel</h3>
-                    <form id="form" action="">
-                    <label for="titre">Quel est le titre de votre annonce ?</label><br>
-                    <span><input id="text" type="text" name="titre">
-                    </span><span><input id="continuer" type="submit" value="Continuer"></span>
-                    </form>
-                    </div>
-            </div>
-             <div class="col-md-2">
 
-            </div>
+<div id="bg" >
 
-        </div>
-    </div>
-    {# Ligne categorie 1 #}
-        <div id="content" class="container">
-        <div class="row">
-            <div class="col-md-2">
+              <div class="container">
+                <div class="row">
+                  <div class="col-sm-4"> 
+                  </div>
+                  <div class="col-sm-4"> 
+                      <h1 class="align-content-center">Choisir la catégorie</h1>
+                  </div>
+                  <div class="col-sm-4"> 
+                  </div>
+                </div>
+              <div>
 
-            </div>
-            <div class="col-md-8">
-             <span>
-                       <select name="pets" id="pet-select">
-                    <option value="">--Catégorie--</option>
-                    <option value="dog">Dog</option>
-                    <option value="cat">Cat</option>
-                    <option value="hamster">Hamster</option>
-                    <option value="parrot">Parrot</option>
-                    <option value="spider">Spider</option>
-                    <option value="goldfish">Goldfish</option>
-                </select>
-             </span>
-                     <span>
-                       <select name="pets" id="pet-select">
-                    <option value="">--Catégorie--</option>
-                    <option value="dog">Dog</option>
-                    <option value="cat">Cat</option>
-                    <option value="hamster">Hamster</option>
-                    <option value="parrot">Parrot</option>
-                    <option value="spider">Spider</option>
-                    <option value="goldfish">Goldfish</option>
-                </select>
-             </span>
-                     <span>
-                       <select name="pets" id="pet-select">
-                    <option value="">--Catégorie--</option>
-                    <option value="dog">Dog</option>
-                    <option value="cat">Cat</option>
-                    <option value="hamster">Hamster</option>
-                    <option value="parrot">Parrot</option>
-                    <option value="spider">Spider</option>
-                    <option value="goldfish">Goldfish</option>
-                </select>
-             </span>
-              <span>
-                       <select name="pets" id="pet-select">
-                    <option value="">--Catégorie--</option>
-                    <option value="dog">Dog</option>
-                    <option value="cat">Cat</option>
-                    <option value="hamster">Hamster</option>
-                    <option value="parrot">Parrot</option>
-                    <option value="spider">Spider</option>
-                    <option value="goldfish">Goldfish</option>
-                </select>
-             </span>
-             <span>
-                     <select name="pets" id="pet-select">
-                    <option value="">--Catégorie--</option>
-                    <option value="dog">Dog</option>
-                    <option value="cat">Cat</option>
-                    <option value="hamster">Hamster</option>
-                    <option value="parrot">Parrot</option>
-                    <option value="spider">Spider</option>
-                    <option value="goldfish">Goldfish</option>
-                </select>
-             </span>
-                     <span>
-                       <select name="pets" id="pet-select">
-                    <option value="">--Catégorie--</option>
-                    <option value="dog">Dog</option>
-                    <option value="cat">Cat</option>
-                    <option value="hamster">Hamster</option>
-                    <option value="parrot">Parrot</option>
-                    <option value="spider">Spider</option>
-                    <option value="goldfish">Goldfish</option>
-                </select>
-             </span>
-              <span>
-                       <select name="pets" id="pet-select">
-                    <option value="">--Catégorie--</option>
-                    <option value="dog">Dog</option>
-                    <option value="cat">Cat</option>
-                    <option value="hamster">Hamster</option>
-                    <option value="parrot">Parrot</option>
-                    <option value="spider">Spider</option>
-                    <option value="goldfish">Goldfish</option>
-                </select>
-             </span>
-                     <span>
-                       <select name="pets" id="pet-select">
-                    <option value="">--Catégorie--</option>
-                    <option value="dog">Dog</option>
-                    <option value="cat">Cat</option>
-                    <option value="hamster">Hamster</option>
-                    <option value="parrot">Parrot</option>
-                    <option value="spider">Spider</option>
-                    <option value="goldfish">Goldfish</option>
-                </select>
-             </span>
-                     <span>
-                       <select name="pets" id="pet-select">
-                    <option value="">--Catégorie--</option>
-                    <option value="dog">Dog</option>
-                    <option value="cat">Cat</option>
-                    <option value="hamster">Hamster</option>
-                    <option value="parrot">Parrot</option>
-                    <option value="spider">Spider</option>
-                    <option value="goldfish">Goldfish</option>
-                </select>
-             </span>
-             <div class="col-md-2">
 
-            </div>
 
-        </div>
-    </div>
-       {# Ligne categorie 1 #}
+
+
+
+                        <div class="container">
+                          <div class="row">
+                            <div class="col-sm-4"> 
+                            </div>
+                            <div class="col-sm-4"> 
+                                    <div id="select" class="form-group"> 
+                                  <select class="form-control" id="sel1">
+                                    <option>Voiture</option>
+                                    <option>Immobillier</option>
+                                  </select>
+                                  </div>
+                            </div>
+                            <div class="col-sm-4"> 
+                            </div>
+                          </div>
+                        <div>
+
+
+                        {# Vehicule #}
+
+                        <div id="vehicule" class="container">
+                          <div class="row">
+                            <div class="col-sm-2"> 
+                            </div>
+                            <div class="col-sm-8"> 
+                              <div id="formulaire_annonce" >
+                              <form action=" " methode="post">
+                                 <label for="titre" style="font-family: Dosis;">Titre de votre annonces</label>
+                                    <input type="text" requied name=""  value = "">
+                                    <label for="titre" style="font-family: Dosis;">Marque</label>
+                                    <input type="text" requied name=""  value = "">
+                                      <label for="titre" style="font-family: Dosis;">Model</label>
+                                    <input type="text" requied name=""  value = "">
+                                    <label for="titre" style="font-family: Dosis;">Prix</label>
+                                    <input type="text" requied name=""  value = "">
+                                      <label for="titre" style="font-family: Dosis;">Energie</label>
+                                      <select class="select_energi"><option>Essence</option><option>Diesel</option><option>Electrique</option></select>
+                                       <label for="titre" style="font-family: Dosis;">Location par</label>
+                                      <select class="select_energi"><option>Jour</option><option>Semaine</option><option>Mois</option></select>
+                                    <label for="titre" style="font-family: Dosis;">Image</label>
+                                    <input type="image" requied name=""  value = "inserer une image">
+                                    <label for="ldate" style="font-family: Dosis;">Date de publication</label>
+                                    <input type="date" id="date" requied name="">
+                                  <label for="titre" style="font-family: Dosis;">Description</label>
+                                  <textarea></textarea>
+                                    <input type="submit" value="Publier">
+                                  </form>
+                              </div>
+                            <div class="col-sm-2"> 
+                            </div>
+                          </div>
+                        {# Immobilier #}
+                          
+                        <div id="immbolier" class="container">
+                          <div class="row">
+                            <div class="col-sm-2"> 
+                            </div>
+                            <div class="col-sm-8"> 
+                              <div id="formulaire_annonce" >
+                              <form action=" " methode="post">
+                                
+                                    <label for="titre" style="font-family: Dosis;">Titre de votre annonces</label>
+                                    <input type="text" requied name=""  value = "">
+                                    <label for="titre" style="font-family: Dosis;">Surface en m²</label>
+                                    <input type="text" requied name=""  value = "">
+                                     <label for="titre" style="font-family: Dosis;">Nombre de chambre</label>
+                                    <input type="text" requied name=""  value = "">
+                                    <label for="titre" style="font-family: Dosis;">Location par</label>
+                                      <select class="select_energi"><option>Jour</option><option>Semaine</option><option>Mois</option></select>
+                                    <label for="titre" style="font-family: Dosis;">Image</label>
+                                    <input type="image" requied name=""  value = "inserer une image">
+                                    <label for="ldate" style="font-family: Dosis;">Date de publication</label>
+                                    <input type="date" id="date" requied name="">
+                                  <label for="titre" style="font-family: Dosis;">Description</label>
+                                  <textarea></textarea>
+                                    <input type="submit" value="Publier">
+                                  </form>
+                              </div>
+                            <div class="col-sm-2"> 
+                            </div>
+                          </div>
+                        <div>
+                        <div>
+
+
+  {# mode #}
+                          
+                        <div id="mode" class="container">
+                          <div class="row">
+                            <div class="col-sm-2"> 
+                            </div>
+                            <div class="col-sm-8"> 
+                              <div id="formulaire_annonce" >
+                              <form action=" " methode="post">
+                                
+                                    <label for="titre" style="font-family: Dosis;">Titre de votre annonces</label>
+                                    <input type="text" requied name=""  value = "">
+                                    <label for="titre" style="font-family: Dosis;">Taille</label>
+                                    <input type="text" requied name=""  value = "">
+                                     <label for="titre" style="font-family: Dosis;">Pointure</label>
+                                    <input type="text" requied name=""  value = "">
+                                    <label for="titre" style="font-family: Dosis;">Prix</label>
+                                    <input type="text" requied name=""  value = "">
+                                    <label for="titre" style="font-family: Dosis;">Image</label>
+                                    <input type="image" requied name=""  value = "inserer une image">
+                                    <label for="ldate" style="font-family: Dosis;">Date de publication</label>
+                                    <input type="date" id="date" requied name="">
+                                  <label for="titre" style="font-family: Dosis;">Description</label>
+                                  <textarea></textarea>
+                                    <input type="submit" value="Publier">
+                                  </form>
+                              </div>
+                            <div class="col-sm-2"> 
+                            </div>
+                          </div>
+                        <div>
+                        <div>
+
+
+
+    {% block script %}
+       <script scr="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ <script>
+  $(document).ready(function(){
+    $("#vehicule").hide();
+  })
+ </script>
+
+
+    {% endblock %}
+
 </div>
+
+
 
 {% endblock %}

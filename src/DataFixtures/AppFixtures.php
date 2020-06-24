@@ -8,12 +8,12 @@ use App\Entity\Pointure;
 use App\Entity\StatutLocation;
 use App\Entity\Taille;
 use App\Entity\TypeLocation;
-use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Persistence\ObjectManager;
 
-class AppFixtures extends Fixture
+class AppFixtures implements FixtureInterface
 {
-    public function load(ObjectManager $manager)
+    function load(ObjectManager $manager)
     {
         // $product = new Product();
         // $manager->persist($product);

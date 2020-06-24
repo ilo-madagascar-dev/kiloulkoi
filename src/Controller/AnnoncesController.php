@@ -114,26 +114,7 @@ class AnnoncesController extends AbstractController
 
             return $this->redirectToRoute('annonces_index');
         }
-        
-//        if ($request->isXmlHttpRequest()) {
-//            $repository = $this->getDoctrine()->getRepository(Categories::class);
-//            $annonce = new Annonces();
-//            annonces[categorie]
-//            $idCate = $request->request->get('id');
-//            $categorie = $repository->find(intval($idCate));
-//            $annonce->setCategorie($categorie);
-//            $form = $this->createForm(AnnoncesType::class, $annonce);
-//            
-//            $form->handleRequest($request);
-//            $formHtml = $this->renderView('annonces/_form.html.twig', array(
-//                'form' => $form->createView(),
-//            ));
-//            return new JsonResponse(
-//                array(
-//                    'formHtml' => $formHtml
-//                )
-//            );
-//        }
+
         return $this->render('annonces/new.html.twig', [
             'annonce' => $annonce,
             'form' => $form->createView(),

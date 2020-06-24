@@ -31,7 +31,6 @@ class Energie
 
     public function __construct()
     {
-        $this->vehicule = new ArrayCollection();
         $this->vehicules = new ArrayCollection();
     }
 
@@ -52,13 +51,6 @@ class Energie
         return $this;
     }
 
-    /**
-     * @return Collection|Vehicule[]
-     */
-    public function getVehicule(): Collection
-    {
-        return $this->vehicule;
-    }
 
     /**
      * @return Collection|Vehicule[]
