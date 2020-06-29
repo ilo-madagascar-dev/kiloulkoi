@@ -20,8 +20,6 @@
                     </div>
             </center>
         </header>
-
-
         <div class="container">
             <div class="row">
                 <div class="col-md-2"></div>
@@ -34,28 +32,21 @@
                     <h2 id="slogan" class="text-center">N'achetez que le nécessaire, pour le reste il y a Kiloukoi!</h2>
                    <div></div>
                     <div id="inscri">
-{# 
-                    
-                        {% if error %}
-                             <div>{{error.messageKey|trans(error.messageData, 'security')}}</div>
-                        {% endif %}
-                        #}
-                        <form action="{{ path('security_login') }} " methode="post">
+                       
+                        <form action=" ">
                       
                           <label for="lmail" style="font-family: Dosis;">Adresse E-mail :</label>
-                          <input type="mail" requied name="_lastUsername" placeholder="Adresse E-mail"  value = "">
+                          <input type="mail" id="mail" name="Adresse" placeholder="Adresse E-mail">
                           <label for="lmdp" style="font-family: Dosis;">Mots de passe :</label>
-                          <input type="password" id="lmdp" requied name="_password" placeholder="Mots de Passe">
+                          <input type="password" id="lmdp" name="motdepasse" placeholder="Mots de Passe">
                         
                           <input type="submit" value="Se connecter">
-                          <p style="text-align:center"><a href="/inscription">S'inscrire</a></p>
                         </form>
                       </div>
                 </div>
                 <div class="col-md-2"></div>
             </div>
         </div>
-
         <div id="bg">
             <div class="container">
                 <div class="row bas">

@@ -14,6 +14,6 @@ hwi_oauth:
                 csrf: true
         google:
             type:                google
-            client_id:           '%env(G_ID)%'
-            client_secret:       '%env(G_SECRET)%'
+            client_id:           client_if
+            client_secret:       client_secret
             redirect_route: connect_google_check

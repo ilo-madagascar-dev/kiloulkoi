@@ -17,7 +17,7 @@
                             <li> <img id="icone" src="icone/search.png"><label>Mes recherches</label></li>
                             <li><img id="icone" src="icone/star.png"><label>Favoris</label></li>
                             {% if app.user %}
-                             <li> <img id="icone" src="icone/search.png"><label>Annonce</label></li>
+                             <li> <img id="icone" src="icone/search.png"><a href="{{path('annonces_index')}}"><label>Annonce</label></a></li>
                             <li><img id="icone" src="icone/star.png"><label>Abonnement</label></li>
                             {% endif %}
                             {% if not app.user %}

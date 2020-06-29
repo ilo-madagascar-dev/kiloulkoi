@@ -1,3 +1,8 @@
+#bg{
+  height: 100%;
+  background: linear-gradient(#004E5B, #3FB5C8 60% );
+
+}
 header{
 
     background: white;
@@ -5,16 +10,8 @@ header{
     width: 100%;
     box-shadow: 0px 0px 5px 0px;
 }
-#mp{
-    margin: 0;
-    font-family: Dosis;
-    margin-top: 20px;
-    /* margin-left: 600px; */
-}
-#categorie{
-    padding-top: 25px;
-    text-align: center;
-}
+
+
 #head{
 
     margin-top: 20px;
@@ -26,159 +23,81 @@ header{
     margin-top: 20px;
     
 }
-#liste{ 
-    
-    opacity: 50%;
-    list-style-type: none;
-}
-li{
-    display: inline;
-}
-#liste li{
-    font-family: Dosis;
-    padding: 0 10px 0 10px;
-    margin-left: 40px;
-}
+
 label{
     padding-left: 10px;
 }
-label{
-    padding-left: 10px;
-}
-#deposer{
-    /* margin-left: ; */
-    width: 100%;
-    margin-top: 15px;
-    /*! padding-left: 10%; */
-    height: 40px;
-    color: white;
-    background: #00CD9C;
-    font-family: dosis;
-    border-radius: 10px;
-    box-shadow: 0px 0px 5px 0px ;
-    font-size: 20px;
-}
-/* Select */
+.align-content-center{
 
-#bg{
-    margin-top: 4px;
-    height: 850px;
-    background-color: #F9F9F9;
+  padding-left: 25%;
+  font-size: 25px;
+  font-family: dosis;
+  margin-top: 50px;
+  color: white;
+}
+.select_energi{
+  width: 100%;
 }
 
-/* style select */
+#select{
+  margin-top: 25px;
+}
+input[type=text], select {
+  font-family: Dosis;
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  padding: 10px;
 
-/* ///  DECORATION CSS ///  */
-  .center {
-    position: absolute;
-    display: inline-block;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-  }
+}
+input[type=date], select {
+  font-family: Dosis;
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+input[type=image], select {
+  font-family: Dosis;
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+textarea{
+  width: 100%;
+}
+
+input[type=submit] {
+  font-family: Dosis;
+  width: 50%;
+  background-color:#3FB5C8;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 20px;
+}
   
-  /** Custom Select **/
-  .custom-select-wrapper {
-    position: relative;
-    display: inline-block;
-    user-select: none;
-  }
-    .custom-select-wrapper select {
-      display: none;
-    }
-    .custom-select {
-      position: relative;
-      display: inline-block;
-    }
-      .custom-select-trigger {
-        position: relative;
-        display: block;
-        width: 130px;
-        padding: 0 84px 0 22px;
-        font-size: 22px;
-        font-weight: 300;
-        color: #fff;
-        line-height: 60px;
-        background: #5c9cd8;
-        border-radius: 4px;
-        cursor: pointer;
-      }
-        .custom-select-trigger:after {
-          position: absolute;
-          display: block;
-          content: '';
-          width: 10px; height: 10px;
-          top: 50%; right: 25px;
-          margin-top: -3px;
-          border-bottom: 1px solid #fff;
-          border-right: 1px solid #fff;
-          transform: rotate(45deg) translateY(-50%);
-          transition: all .4s ease-in-out;
-          transform-origin: 50% 0;
-        }
-        .custom-select.opened .custom-select-trigger:after {
-          margin-top: 3px;
-          transform: rotate(-135deg) translateY(-50%);
-        }
-    .custom-options {
-      position: absolute;
-      display: block;
-      top: 100%; left: 0; right: 0;
-      min-width: 100%;
-      margin: 15px 0;
-      border: 1px solid #b5b5b5;
-      border-radius: 4px;
-      box-sizing: border-box;
-      box-shadow: 0 2px 1px rgba(0,0,0,.07);
-      background: #fff;
-      transition: all .4s ease-in-out;
-      
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-      transform: translateY(-15px);
-    }
-    .custom-select.opened .custom-options {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: all;
-      transform: translateY(0);
-    }
-      .custom-options:before {
-        position: absolute;
-        display: block;
-        content: '';
-        bottom: 100%; right: 25px;
-        width: 7px; height: 7px;
-        margin-bottom: -4px;
-        border-top: 1px solid #b5b5b5;
-        border-left: 1px solid #b5b5b5;
-        background: #fff;
-        transform: rotate(45deg);
-        transition: all .4s ease-in-out;
-      }
-      .option-hover:before {
-        background: #f9f9f9;
-      }
-      .custom-option {
-        position: relative;
-        display: block;
-        padding: 0 22px;
-        border-bottom: 1px solid #b5b5b5;
-        font-size: 18px;
-        font-weight: 600;
-        color: #b5b5b5;
-        line-height: 47px;
-        cursor: pointer;
-        transition: all .4s ease-in-out;
-      }
-      .custom-option:first-of-type {
-        border-radius: 4px 4px 0 0;
-      }
-      .custom-option:last-of-type {
-        border-bottom: 0;
-        border-radius: 0 0 4px 4px;
-      }
-      .custom-option:hover,
-      .custom-option.selection {
-        background: #f9f9f9;
-      }
+input[type=submit]:hover {
+  background-color:#00CD9C;
+}
+
+#formulaire_annonce{
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 50px;
+  background-color:white;
+}

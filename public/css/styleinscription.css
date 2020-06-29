@@ -33,16 +33,6 @@ input[type=text], select {
     border-radius: 4px;
     box-sizing: border-box;
   }
-  input[type=date], select {
-    font-family: Dosis;
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
   input[type=mail], select {
     font-family: Dosis;
     width: 100%;
@@ -145,7 +135,6 @@ h4{
     font-family: Dosis;
 }
 #bg{
- 
     margin-top: 50px;
     padding-top: 20px;
     width: 100%;
@@ -165,6 +154,3 @@ h4{
 body{
     background: linear-gradient(#004E5B, #3FB5C8 60% );
 }
-/* .form1{
-    display: none;
-} */

@@ -97,7 +97,12 @@
     
 
 
-      <!-- Nav Item - Charts -->
+
+      <li class="nav-item">
+        <a class="nav-link" href="charts.html">
+          <i class="fas fa-fw fa-chart-area"></i>
+          <span>Charts</span></a>
+      </li>
 
       <!-- Nav Item - Tables -->
       <li class="nav-item">
@@ -109,12 +114,6 @@
         <a class="nav-link" href="{{path('message')}}">
           <i class="fas fa-fw fa-table"></i>
           <span>Messages</span></a>
-      </li>
-
-          <li class="nav-item">
-        <a class="nav-link" href="{{path('calendrier')}}">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Calendrier</span></a>
       </li>
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
@@ -599,10 +598,10 @@
 
         {% endblock %}
         {% block javascripts %}
-        
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
-  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script
     src="https://code.jquery.com/jquery-3.3.1.min.js"
@@ -619,12 +618,6 @@
 
   <!-- Custom scripts for all pages-->
   <script src="js/sb-admin-2.min.js"></script>
-<!-- Page level plugins -->
-  <script src="vendor/chart.js/Chart.min.js"></script>
-
-  <!-- Page level custom scripts -->
-  <script src="js/demo/chart-area-demo.js"></script>
-  <script src="js/demo/chart-pie-demo.js"></script>
         {% endblock %}
 
 </html>
