@@ -43,8 +43,37 @@ class AnnoncesController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        $annonce = new VetementMaternite();
-        $form = $this->createForm(VetementMaterniteType::class, $annonce);
+        $nomClasse = null;
+        $classNameType = null;
+        $annonce = null;
+        $repositoryCategories = $this->getDoctrine()->getRepository(Categories::class);
+        if ($request->isMethod("GET")) {
+            var_dump("get");
+            $nomClasse = ucfirst($request->query->get('categorie'));
+            $class = 'App\Entity\\' . $nomClasse;
+            $annonce = new $class();
+
+            if ($nomClasse != null) {
+                $classNameType = 'App\Form\\' . $nomClasse . 'Type';
+            }
+            $categorie = $repositoryCategories->findOneBy(['libelle' => $nomClasse]);
+
+        }
+
+        if ($request->isMethod("POST")) {
+            var_dump("post");
+            $requestForm = $request->request->all();
+            foreach ($requestForm as $reqForm) {
+                //categorie
+                $categorie = $repositoryCategories->find($reqForm['categorie']);
+                $nomClasse = $categorie->getLibelle();
+                $classNameType = 'App\Form\\' . $nomClasse . 'Type';
+                $class = 'App\Entity\\' . $nomClasse;
+                $annonce = new $class();
+            }
+        }
+        $annonce->setCategorie($categorie);
+        $form = $this->createForm($classNameType, $annonce);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

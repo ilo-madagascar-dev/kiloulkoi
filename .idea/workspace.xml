@@ -3,15 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="e912cdd3-886b-4849-9d4b-969f10f6beae" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/AccueilController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/AccueilController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/accueil/index.html.twig" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/acceuil/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/acceuil/index.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/immobilier/_delete_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Immobilier/_delete_form.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/immobilier/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Immobilier/_form.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/immobilier/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Immobilier/edit.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/immobilier/index.html.twig" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/immobilier/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Immobilier/new.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/immobilier/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Immobilier/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/AnnoncesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/AnnoncesController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/VehiculeType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/VehiculeType.php" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/public/build/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -24,12 +17,57 @@
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/templates/acceuil/index.html.twig">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Controller/AnnoncesController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="16" column="87" lean-forward="true" selection-start-line="16" selection-start-column="87" selection-end-line="16" selection-end-column="87" />
+            <state relative-caret-position="136">
+              <caret line="66" column="27" selection-start-line="66" selection-start-column="27" selection-end-line="66" selection-end-column="27" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Form/VehiculeType.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="170">
+              <caret line="10" column="49" selection-start-line="10" selection-start-column="49" selection-end-line="10" selection-end-column="49" />
+              <folding>
+                <element signature="e#28#51#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Form/AnnoncesType.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="16" column="32" selection-start-line="16" selection-start-column="23" selection-end-line="16" selection-end-column="32" />
+              <folding>
+                <element signature="e#28#52#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Entity/Annonces.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="286">
+              <caret line="73" column="32" selection-start-line="73" selection-start-column="20" selection-end-line="73" selection-end-column="32" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Form/Vehicule1Type.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="4" selection-start-line="4" selection-end-line="10" selection-end-column="49" />
+              <folding>
+                <element signature="e#28#51#0#PHP" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -40,6 +78,8 @@
     <findStrings>
       <find>location</find>
       <find>$vehicules</find>
+      <find>$classNameType</find>
+      <find>$annonce</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -76,7 +116,6 @@
         <option value="$PROJECT_DIR$/src/Entity/VetementMaternite.php" />
         <option value="$PROJECT_DIR$/src/Entity/Maternite.php" />
         <option value="$PROJECT_DIR$/src/Entity/Mode.php" />
-        <option value="$PROJECT_DIR$/src/Controller/AnnoncesController.php" />
         <option value="$PROJECT_DIR$/src/Form/VetementMaterniteType.php" />
         <option value="$PROJECT_DIR$/src/Controller/AcceuilController.php" />
         <option value="$PROJECT_DIR$/var/cache/dev/ContainerK2aZ97o/srcApp_KernelDevDebugContainer.php" />
@@ -91,6 +130,8 @@
         <option value="$PROJECT_DIR$/src/Controller/AccueilController.php" />
         <option value="$PROJECT_DIR$/src/views/acceuil/index.html.twig" />
         <option value="$PROJECT_DIR$/templates/acceuil/index.html.twig" />
+        <option value="$PROJECT_DIR$/src/Controller/AnnoncesController.php" />
+        <option value="$PROJECT_DIR$/src/Form/VehiculeType.php" />
       </list>
     </option>
   </component>
@@ -208,7 +249,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -230,23 +270,19 @@
               <item name="kiloukoi.webapp" type="b2602c69:ProjectViewProjectNode" />
               <item name="kiloukoi.webapp" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="Controller" type="462c0819:PsiDirectoryNode" />
+              <item name="Entity" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="kiloukoi.webapp" type="b2602c69:ProjectViewProjectNode" />
               <item name="kiloukoi.webapp" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="kiloukoi.webapp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="kiloukoi.webapp" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="acceuil" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Form" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -315,22 +351,22 @@
       <workItem from="1593495663828" duration="843000" />
       <workItem from="1593496561347" duration="1695000" />
       <workItem from="1593581310017" duration="873000" />
-      <workItem from="1593584262379" duration="586000" />
+      <workItem from="1593584262379" duration="917000" />
+      <workItem from="1593753972864" duration="5147000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="76881000" />
+    <option name="totallyTimeSpent" value="82359000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info id="npm" order="1" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="2" visible="true" weight="0.21104388" />
+      <window_info active="true" content_ui="combo" id="Project" order="2" visible="true" weight="0.21406959" />
       <window_info id="Structure" order="3" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="0" visible="true" weight="0.38360655" />
+      <window_info anchor="bottom" id="Terminal" order="0" visible="true" weight="0.2852459" />
       <window_info anchor="bottom" id="Database Changes" order="1" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="3" show_stripe_button="false" />
@@ -497,13 +533,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Entity/VetementMaternite.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="10" column="23" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Entity/Maternite.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="152">
@@ -522,27 +551,6 @@
     <entry file="file://$PROJECT_DIR$/src/Controller/AcceuilController.php" />
     <entry file="file://$PROJECT_DIR$/var/cache/dev/ContainerT1JtRBm/srcApp_KernelDevDebugContainer.php" />
     <entry file="file://$PROJECT_DIR$/src/Controller/AccueilController" />
-    <entry file="file://$PROJECT_DIR$/src/Controller/AnnoncesController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="528">
-          <caret line="98" selection-start-line="98" selection-end-line="98" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Form/VetementMaterniteType.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="5" column="23" selection-start-line="5" selection-start-column="23" selection-end-line="5" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Form/Vehicule1Type.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="20" column="12" selection-start-line="20" selection-start-column="12" selection-end-line="30" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/config/packages/test/framework.yaml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -567,16 +575,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Form/AnnoncesType.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="27" column="16" selection-start-line="27" selection-start-column="16" selection-end-line="27" selection-end-column="82" />
-          <folding>
-            <element signature="e#28#52#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Form/AnnoncesType_test.php">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -591,13 +589,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="528">
           <caret line="52" selection-start-line="52" selection-end-line="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Entity/Annonces.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="528">
-          <caret line="103" selection-start-line="103" selection-end-line="103" />
         </state>
       </provider>
     </entry>
@@ -621,9 +612,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/acceuil/integration/index.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/views/acceuil/integration/index.html" />
     <entry file="file://$PROJECT_DIR$/templates/acceuil/integration/index.html">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -637,13 +626,6 @@
     <entry file="file://$PROJECT_DIR$/src/Controller/AdminController.php">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/acceuil/index.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="16" column="84" selection-start-line="16" selection-start-column="84" selection-end-line="16" selection-end-column="84" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Controller/AccueilController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
@@ -653,8 +635,69 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/acceuil/index.html.twig">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="87" lean-forward="true" selection-start-line="16" selection-start-column="87" selection-end-line="16" selection-end-column="87" />
+        <state relative-caret-position="221">
+          <caret line="16" column="87" selection-start-line="16" selection-start-column="87" selection-end-line="16" selection-end-column="87" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Entity/VetementMaternite.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="10" column="23" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Form/VetementMaterniteType.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-561">
+          <caret line="13" column="27" selection-start-line="13" selection-start-column="6" selection-end-line="13" selection-end-column="27" />
+          <folding>
+            <element signature="e#28#54#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Form/AnnoncesType.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="16" column="32" selection-start-line="16" selection-start-column="23" selection-end-line="16" selection-end-column="32" />
+          <folding>
+            <element signature="e#28#52#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Controller/AnnoncesController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="66" column="27" selection-start-line="66" selection-start-column="27" selection-end-line="66" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Entity/Annonces.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="73" column="32" selection-start-line="73" selection-start-column="20" selection-end-line="73" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Form/Vehicule1Type.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" selection-start-line="4" selection-end-line="10" selection-end-column="49" />
+          <folding>
+            <element signature="e#28#51#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Form/VehiculeType.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="49" selection-start-line="10" selection-start-column="49" selection-end-line="10" selection-end-column="49" />
+          <folding>
+            <element signature="e#28#51#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
