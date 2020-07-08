@@ -25,6 +25,11 @@ class Categories
     private $libelle;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $className;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Categories::class, inversedBy="categorieEnfant" ,cascade={"persist"})
      * @ORM\JoinColumn(name="parent", referencedColumnName="id", nullable=true)
      */
@@ -133,6 +138,18 @@ class Categories
                 $categorieEnfant->setCategorieParent(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getClassName(): ?string
+    {
+        return $this->className;
+    }
+
+    public function setClassName(string $className): self
+    {
+        $this->className = $className;
 
         return $this;
     }

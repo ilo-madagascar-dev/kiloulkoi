@@ -81,10 +81,19 @@ class AppFixtures implements FixtureInterface
             $manager->persist($pointure);
         }
 
-        $categories = ['Vehicule', 'Mode', 'Immobilier'];
+        $categories = [['Véhicule', 'Vehicule', ''], ['Immobilier', 'Immobilier', ''],
+            ['Mode', 'Mode', ''], ['Maternité', 'Maternite', ''], ['Service', 'Service', ''],
+            ['Homme', 'HommeFemmeMode', 'Mode'], ['Femme', 'HommeFemmeMode', 'Mode'],
+            ['Enfant', 'EnfantMode', 'Mode'], ['Vêtements', 'VetementMaternite', 'Maternite']];
+        $categoriesListe = [];
         for ($i = 0; $i < count($categories); $i++) {
             $categorie = new Categories();
-            $categorie->setLibelle($categories[$i]);
+            $categorie->setLibelle($categories[$i][0]);
+            $categorie->setClassName($categories[$i][1]);
+            if ($categories[$i][2] != '') {
+                $categorie->setCategorieParent($categoriesListe[$categories[$i][2]]);
+            }
+            $categoriesListe[$categories[$i][1]] = $categorie;
             $manager->persist($categorie);
         }
 

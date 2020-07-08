@@ -48,7 +48,6 @@ class AnnoncesController extends AbstractController
         $annonce = null;
         $repositoryCategories = $this->getDoctrine()->getRepository(Categories::class);
         if ($request->isMethod("GET")) {
-            var_dump("get");
             $nomClasse = ucfirst($request->query->get('categorie'));
             $class = 'App\Entity\\' . $nomClasse;
             $annonce = new $class();
@@ -61,7 +60,6 @@ class AnnoncesController extends AbstractController
         }
 
         if ($request->isMethod("POST")) {
-            var_dump("post");
             $requestForm = $request->request->all();
             foreach ($requestForm as $reqForm) {
                 //categorie
