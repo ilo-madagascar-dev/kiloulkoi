@@ -23,7 +23,7 @@ header{
     width: 100%;
     box-shadow: 0px 0px 5px 0px;
 }
-input[type=text], select {
+  input[type=mail], select {
     font-family: Dosis;
     width: 100%;
     padding: 12px 20px;
@@ -33,7 +33,7 @@ input[type=text], select {
     border-radius: 4px;
     box-sizing: border-box;
   }
-  input[type=mail], select {
+  input[type=text], select {
     font-family: Dosis;
     width: 100%;
     padding: 12px 20px;
@@ -55,32 +55,33 @@ input[type=text], select {
   }
   
   input[type=submit] {
+margin-left: 5%;
     font-family: Dosis;
-    width: 100%;
-    background-color:#3FB5C8;
+    width: 40%;
+    background-color:#00CD9C;
     color: white;
     padding: 14px 20px;
-    margin: 8px 0;
+    /* margin: 8px 0; */
     border: none;
     border-radius: 4px;
     cursor: pointer;
   }
   
   input[type=submit]:hover {
-    background-color:#00CD9C;
+    background-color:#3FB5C8;
   }
   
 #inscri {
-    background: white;
+    align-content: center;
     margin-top: 50px;
     border-radius: 5px;
-    padding: 20px;
-    box-shadow: 0px 0px 5px;
+    /* padding: 20px; */
+
   }
 #blog{
    
     margin-top: 50px;
-    height: 700px;
+    height: 500px;
 
 }
 .logo{
@@ -153,4 +154,10 @@ h4{
 }
 body{
     background: linear-gradient(#004E5B, #3FB5C8 60% );
+}
+#liste #1 :hover{
+    background: #00CD9C;
+}
+#contenue{
+    /* margin-top: 100px; */
 }

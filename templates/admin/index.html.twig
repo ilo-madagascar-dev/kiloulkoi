@@ -99,16 +99,13 @@
       </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
+     
 
-      <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>Charts</span></a>
-      </li>
+      <!-- Nav Item - Charts -->
 
       <!-- Nav Item - Tables -->
       <li class="nav-item">
-        <a class="nav-link" href="{{path('message')}}">
+        <a class="nav-link" href="{{path('table')}}">
           <i class="fas fa-fw fa-table"></i>
           <span>Tables</span></a>
       </li>
@@ -134,9 +131,14 @@
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Login Screens:</h6>
-            <a class="collapse-item" href="{{path('inscription')}}">Inscription</a>
-            <a class="collapse-item" href="{{path('connexion')}}">Connexion</a>
-            <a class="collapse-item" href="{{path('mdp')}}">Mots de passe oublié</a>
+            {# <a class="collapse-item" href="{{path('inscription')}}">Liste des articles</a>
+            <a class="collapse-item" href="{{path('connexion')}}">Article vendu</a>
+            <a class="collapse-item" href="{{path('mdp')}}">Liste des prestataire</a> #}  
+            <a class="collapse-item">Liste des prestataires</a>
+             <a class="collapse-item">Liste des clients</a>
+                 <a class="collapse-item">Les articles</a>
+                  <a class="collapse-item">Ajouter des categories</a>
+                   <a class="collapse-item" href="{{path('security_logout')}}">Deconnecter</a>
             <div class="collapse-divider"></div>
             <!-- <h6 class="collapse-header">Other Pages:</h6>
             <a class="collapse-item" href="404.html">404 Page</a>
@@ -208,6 +210,7 @@
                 <!-- Counter - Alerts -->
                 <span class="badge badge-danger badge-counter">3+</span>
               </a>
+       
               <!-- Dropdown - Alerts -->
               <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
                 <h6 class="dropdown-header">
@@ -311,7 +314,7 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span id="" class="mr-2 d-none d-lg-inline small">Valerie Luna</span>
+                <span id= class="mr-2 d-none d-lg-inline  small">Valerie Luna</span>
                 <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
               </a>
               <!-- Dropdown - User Information -->
@@ -328,12 +331,18 @@
                   <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                   Activity Log
                 </a> -->
-                <div class="dropdown-divider"></div>
+                <div class="dropdown-divider"> 
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Déconnecter
+                  Client
                 </a>
               </div>
+            </li>
+            <li >
+            
+               
+           <a class="dropdown-item" href="{{path('security_logout')}}"><label>Se Déconnecter</label></a>
+               
             </li>
 
           </ul>
@@ -644,29 +653,29 @@
   </div>
   <!-- End of Page Wrapper -->
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-      <i class="fas fa-angle-up"></i>
-    </a>
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
 
-      <!-- Logout Modal-->
-      <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">voulez-vous vraiment quitter ?</h5>
-              <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span>
-              </button>
-            </div>
-            <div class="modal-body"> Cliquer sur Déconnecter pour quitter !</div>
-            <div class="modal-footer">
-              <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
-              <a class="btn btn-primary" href="login.html">Déconnecter</a>
-            </div>
-          </div>
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">voulez-vous vraiment quitter ?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body"> Cliquer sur Déconnecter pour quitter !</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
+          <a class="btn btn-primary" href="login.html">Déconnecter</a>
         </div>
       </div>
+    </div>
+  </div>
 
 
 

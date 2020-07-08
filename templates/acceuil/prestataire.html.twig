@@ -14,17 +14,31 @@
                 <center>
                     <div class="head">
                         <ul id="liste">
-                            <li> <img id="icone" src="icone/search.png"><label>Mes recherches</label></li>
+                            {# <li> <img id="icone" src="icone/search.png"><label>Mes recherches</label></li>
                             <li><img id="icone" src="icone/star.png"><label>Favoris</label></li>
                             {% if app.user %}
-                             <li> <img id="icone" src="icone/search.png"><a href="{{path('annonces_index')}}"><label>Annonce</label></a></li>
+                             <li> <img id="icone" src="icone/search.png"><label>Annonce</label></li>
                             <li><img id="icone" src="icone/star.png"><label>Abonnement</label></li>
                             {% endif %}
                             {% if not app.user %}
                             <li><img id="icone" src="icone/user.png"><a href="{{path('securitylogin')}}"><label>Se Connecter</label></a></li>
                             {%  else %}
                              <li><img id="icone" src="icone/user.png"><a href="{{path('security_logout')}}"><label>Se Déconnecter</label></a></li>
-                             {% endif  %}
+                             {% endif  %} #}
+
+                                   <li> <img id="icone" src="icone/search.png"><label>Mes recherches</label></li>
+                            <li><img id="icone" src="icone/star.png"><label>Favoris</label></li>
+                            
+                             <li> <img id="icone" src="icone/search.png"><label>Annonce</label></li>
+                            <li><img id="icone" src="icone/star.png"><label>Abonnement</label></li>
+                                      <li><img id="icone" src="icone/star.png"><label>Editer</label></li>
+                           
+                          {% if not app.user %}
+                            <li><img id="icone" src="icone/user.png"><a href="{{path('securitylogin')}}"><label>Se Connecter</label></a></li>
+                            {%  else %}
+                             <li><img id="icone" src="icone/user.png"><a href="{{path('security_logout')}}"><label>Se Déconnecter</label></a></li>
+                             {% endif  %} 
+                            
                         </ul>      
                         </div>
                 </center>

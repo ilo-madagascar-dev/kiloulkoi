@@ -1,11 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Inscription{% endblock %}
-
 {% block stylesheets %}
-    <link href="{{ asset('css/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('css/responsivevoiture.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('css/styleinscription.css') }}" rel="stylesheet"/>
+ 
+        <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/responsivevoiture.css"/>
+        <link rel="stylesheet" type="text/css" href="css/choix.css"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 {% endblock %}
 
 {% block body %}
@@ -13,44 +14,58 @@
             <center>
                 <div class="head">
                     <ul id="liste">
-                        <li> <img id="icone" src="icone/search.png"><label>Mes recherches</label></li>
+                        <li><img id="icone" src="icone/search.png"><label>Mes recherches</label></li>
                         <li><img id="icone" src="icone/star.png"><label>Favoris</label></li>
-                        <li><img id="icone" src="icone/user.png"><label>Se Connecter</label></li>
+                        <li><img id="icone" src="icone/user.png"><a href="{{path('securitylogin')}}"><label>Se Connecter</label></a></li>
                     </ul>      
                     </div>
+                </div>
             </center>
-        </header>
-        <div class="container">
+</header>
+
+     <div class="container">
             <div class="row">
                 <div class="col-md-2"></div>
                
-                <div id="blog" class="col-md-8">
+                <div class="col-md-8">
 
                     <center>
                         <img class="logo"src="image/logo.png">
                     </center>
                     <h2 id="slogan" class="text-center">N'achetez que le nécessaire, pour le reste il y a Kiloukoi!</h2>
-                   <div></div>
-                    <div id="inscri">
-
-
-                        <form action="">
-                          <label for="fname" style="font-family: Dosis;">Nom :</label>
-                          <input type="text" id="fname" name="firstname" placeholder="Nom d'utilisateur">
-                      
-                          <label for="1mail" style="font-family: Dosis;">Adresse E-mail :</label>
-                          <input type="mail" id="1mail" name="lastname" placeholder="Adresse E-mail">
-                          <label for="1mdp" style="font-family: Dosis;">Mots de passe :</label>
-                          <input type="password" id="1mdp" name="1motdepass" placeholder="Mots de Passe">
-                        
-                          <input type="submit" value="Creer un compte">
-                        </form>
-                      </div>
                 </div>
                 <div class="col-md-2"></div>
             </div>
         </div>
-        <div id="bg">
+
+
+
+    
+        <div  class="container">
+            <div class="row">
+                <div class="col-md-2">
+
+
+                </div>
+                <div id="blog" class="col-md-8">
+                  
+                       
+                        <div id="inscri">
+                       {# <input type="submit" value="Client"><a href="{{ path('security_registrationlog') }}"></a></input>
+                        <input type="submit" value="Préstataire" action="{{ path('security_registrationpresta') }}"> #}
+                        <button style="margin-left:250px; width:100px" class="btn btn-success"><a href="{{ path('security_registrationlog') }}" style="color:white">Client</a></button>
+                         <button style="width:100px" class="btn btn-success"><a href="{{ path('security_registrationpresta') }}" style="color:white">Prestataire</a></button> 
+                        </div>
+                   
+                </div>
+                <div class="col-md-2">
+
+
+                </div>
+            </div>
+        </div>
+
+      <div id="bg">
             <div class="container">
                 <div class="row bas">
                     <div class="col-md-3">
@@ -145,16 +160,9 @@
                 </div>
                    </div>
                    </div>
-<<<<<<< HEAD
-           </div>
-
-                   <div class="footer">
-                      <div class="container">
-=======
                    </div>
                    <div class="footer">
                       <div class="container-fluid">
->>>>>>> d4c1ac5af6a51c37f9ad6e03dcca0cf6b428e5bd
                        <div class="row">
                            <div class="col-md-2">
                              <h6 id="footer">Copyrights Kiloukoi 2020</h6>
@@ -163,23 +171,5 @@
                       </div>
                      </div>
                 </div>
-
-<<<<<<< HEAD
-
-{# 
-<script src="js/jquery.js"></script>
-<script>
-  
-jQuery(document).ready(function(){
-    
-    jQuery('#suivant').click(function(){
-       jQuery(this).hide();
-        jQuery('#form1').prev().show();
-    });
-});
-
-
-</script> #}
-=======
->>>>>>> d4c1ac5af6a51c37f9ad6e03dcca0cf6b428e5bd
+        </div>
 {% endblock %}
