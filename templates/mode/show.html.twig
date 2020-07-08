@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mode{% endblock %}
+
+{% block body %}
+    <h1>Mode</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ mode.id }}</td>
+            </tr>
+            <tr>
+                <th>Titre</th>
+                <td>{{ mode.titre }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ mode.description }}</td>
+            </tr>
+            <tr>
+                <th>Prix</th>
+                <td>{{ mode.prix }}</td>
+            </tr>
+            <tr>
+                <th>Pointure</th>
+                <td>{{ mode.pointure }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('mode_index') }}">back to list</a>
+
+    <a href="{{ path('mode_edit', {'id': mode.id}) }}">edit</a>
+
+    {{ include('mode/_delete_form.html.twig') }}
+{% endblock %}

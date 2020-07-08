@@ -21,12 +21,16 @@
         "symfony/security-csrf": "4.4.*",
         "symfony/security-guard": "4.4.*",
         "symfony/security-http": "4.4.*",
+        "symfony/templating": "4.4.*",
         "symfony/twig-pack": "^1.0",
         "symfony/validator": "4.4.*",
         "symfony/webpack-encore-bundle": "^1.7",
         "symfony/yaml": "4.4.*"
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^3.3",
+        "phpstan/extension-installer": "^1.0",
+        "phpstan/phpstan": "^0.12.30",
         "symfony/maker-bundle": "^1.16",
         "symfony/profiler-pack": "^1.0",
         "symfony/web-server-bundle": "4.4.*"

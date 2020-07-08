@@ -4,13 +4,24 @@ namespace App\Controller;
 
 use App\Entity\Annonces;
 use App\Entity\Categories;
+use App\Entity\Mode;
+use App\Entity\Vehicule;
+use App\Entity\VetementMaternite;
 use App\Form\AnnoncesType;
+use App\Form\ModeType;
+use App\Form\Vehicule1Type;
+use App\Form\VehiculeType;
+use App\Form\ImmobilierType;
+use App\Form\AnnoncesType_test;
+use App\Form\VetementMaterniteType;
 use App\Repository\AnnoncesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * @Route("/annonces")
@@ -31,6 +42,58 @@ class AnnoncesController extends AbstractController
      * @Route("/new", name="annonces_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
+    {
+        $nomClasse = null;
+        $classNameType = null;
+        $annonce = null;
+        $repositoryCategories = $this->getDoctrine()->getRepository(Categories::class);
+        if ($request->isMethod("GET")) {
+            var_dump("get");
+            $nomClasse = ucfirst($request->query->get('categorie'));
+            $class = 'App\Entity\\' . $nomClasse;
+            $annonce = new $class();
+
+            if ($nomClasse != null) {
+                $classNameType = 'App\Form\\' . $nomClasse . 'Type';
+            }
+            $categorie = $repositoryCategories->findOneBy(['libelle' => $nomClasse]);
+
+        }
+
+        if ($request->isMethod("POST")) {
+            var_dump("post");
+            $requestForm = $request->request->all();
+            foreach ($requestForm as $reqForm) {
+                //categorie
+                $categorie = $repositoryCategories->find($reqForm['categorie']);
+                $nomClasse = $categorie->getLibelle();
+                $classNameType = 'App\Form\\' . $nomClasse . 'Type';
+                $class = 'App\Entity\\' . $nomClasse;
+                $annonce = new $class();
+            }
+        }
+        $annonce->setCategorie($categorie);
+        $form = $this->createForm($classNameType, $annonce);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($annonce);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('categories_index');
+        }
+
+        return $this->render('annonces/new.html.twig', [
+            'annonce' => $annonce,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/newe", name="annonces_newe", methods={"GET","POST"})
+     */
+    public function newe(Request $request): Response
     {
         $nomClasse = null;
         $lowerName = null;

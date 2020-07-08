@@ -4,9 +4,20 @@ namespace App\Entity;
 
 use App\Repository\AnnoncesRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\InheritanceType;
+use Doctrine\ORM\Mapping\DiscriminatorColumn;
+use Doctrine\ORM\Mapping\DiscriminatorMap;
 
 /**
  * @ORM\Entity(repositoryClass=AnnoncesRepository::class)
+ * @InheritanceType("JOINED")
+ * @DiscriminatorColumn(name="discr", type="string")
+ * @DiscriminatorMap({"Annonces" = "Annonces",
+ *     "Vehicule" = "Vehicule",
+ *     "Immobilier" = "Immobilier",
+ *     "Mode" = "Mode",
+ *     "Service" = "Service",
+ *     "Maternite" = "Maternite"})
  */
 class Annonces
 {
@@ -20,25 +31,23 @@ class Annonces
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
+    private $titre;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
     private $description;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $prix;
 
     /**
      * @ORM\ManyToOne(targetEntity=Categories::class, inversedBy="annonces" ,cascade={"persist"})
      * @ORM\JoinColumn(name="categorie_id", referencedColumnName="id", nullable=false)
      */
     private $categorie;
-            
-    /**
-     * @ORM\OneToOne(targetEntity=Vehicule::class, inversedBy="annonces",cascade={"persist"})
-     * @ORM\JoinColumn(name="vehicule_id", referencedColumnName="id", nullable=true)
-     */
-    private $vehicule;
-    
-    /**
-     * @ORM\OneToOne(targetEntity=Immobilier::class, inversedBy="annonces",cascade={"persist"})
-     * @ORM\JoinColumn(name="immobilier_id", referencedColumnName="id", nullable=true)
-     */
-    private $immobilier;
 
     public function getId(): ?int
     {
@@ -69,28 +78,29 @@ class Annonces
         return $this;
     }
 
-    public function getVehicule(): ?Vehicule
+    public function getTitre(): ?string
     {
-        return $this->vehicule;
+        return $this->titre;
     }
 
-    public function setVehicule(?Vehicule $vehicule): self
+    public function setTitre(?string $titre): self
     {
-        $this->vehicule = $vehicule;
+        $this->titre = $titre;
 
         return $this;
     }
 
-    public function getImmobilier(): ?Immobilier
+    public function getPrix(): ?float
     {
-        return $this->immobilier;
+        return $this->prix;
     }
 
-    public function setImmobilier(?Immobilier $immobilier): self
+    public function setPrix(float $prix): self
     {
-        $this->immobilier = $immobilier;
+        $this->prix = $prix;
 
         return $this;
     }
+
 
 }

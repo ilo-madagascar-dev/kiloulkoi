@@ -8,56 +8,39 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=ImmobilierRepository::class)
  */
-class Immobilier
+class Immobilier extends Annonces
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private $surface;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="integer")
      */
-    private $titre;
-    
-    /**
-     * @ORM\OneToOne(targetEntity=Annonces::class, mappedBy="immobilier")
-     */
-    private $annonces;
+    private $nbrChambre;
 
-    public function getId(): ?int
+
+    public function getSurface()
     {
-        return $this->id;
+        return $this->surface;
     }
 
-    public function getTitre(): ?string
+    public function setSurface($surface): self
     {
-        return $this->titre;
-    }
-
-    public function setTitre(?string $titre): self
-    {
-        $this->titre = $titre;
+        $this->surface = $surface;
 
         return $this;
     }
 
-    public function getAnnonces(): ?Annonces
+    public function getNbrChambre()
     {
-        return $this->annonces;
+        return $this->nbrChambre;
     }
 
-    public function setAnnonces(?Annonces $annonces): self
+    public function setNbrChambre($nbrChambre): self
     {
-        $this->annonces = $annonces;
-
-        // set (or unset) the owning side of the relation if necessary
-        $newImmobilier = null === $annonces ? null : $this;
-        if ($annonces->getImmobilier() !== $newImmobilier) {
-            $annonces->setImmobilier($newImmobilier);
-        }
+        $this->nbrChambre = $nbrChambre;
 
         return $this;
     }
