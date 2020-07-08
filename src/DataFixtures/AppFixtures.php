@@ -15,6 +15,7 @@ class AppFixtures implements FixtureInterface
 {
     function load(ObjectManager $manager)
     {
+        //list categorie
         // $product = new Product();
         // $manager->persist($product);
 
