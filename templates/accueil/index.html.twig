@@ -61,8 +61,9 @@
                     <div class="row">
                         <div class="col-md-4">
                            <select id="select">
-                               <option value="1">Voiture </option>
-                               <option value="2">immobilier</option>
+                               {% for categorie in categories %}
+                                   <option value="{{ categorie.className }}">{{ categorie.libelle }} </option>
+                               {% endfor %}
                            </select>
                         </div>
                         <div class="col-md-4">

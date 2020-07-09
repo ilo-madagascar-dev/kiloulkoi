@@ -13,8 +13,12 @@ class AccueilController extends AbstractController
      */
     public function index()
     {
+        //find all categories
+        $repository = $this->getDoctrine()->getRepository(Categories::class);
+        $categories = $repository->findAll();
         return $this->render('accueil/index.html.twig', [
             'controller_name' => 'AccueilController',
+            'categories' => $categories
         ]);
     }
 }
