@@ -2,14 +2,80 @@
 
 {% block title %}New Annonces{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('css/styleannonces.css') }}" rel="stylesheet"/>
+
+{% endblock %}
+
 {% block body %}
-    <h1>Create new Annonces</h1>
+<header>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div id="ano" class="col-md-2">
+
+                {# <div id="deposer"> + Déposer une annonce </div> #}
+            </div>
+            <div id="head" class="col-md-8">
+                <center>
+                    <span><img id="icone" src="icone/search.png"><label>Mes recherches</label></span>
+                    <span><img id="icone" src="icone/star.png"><label>Favoris</label></span>
+                    <span><img id="icone" src="icone/user.png"><label>User</label></span>
+                </center>
+
+            </div>
+        </div>
+
+</header>
+
+
+<div id="bg" >
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4">
+            </div>
+            <div class="col-sm-4">
+                <h1 class="align-content-center">Entrer les champs</h1>
+            </div>
+            <div class="col-sm-4">
+            </div>
+        </div>
+        <div>
+
+            <div class="container">
+                <div>
+                    <div id="vehicule" class="container">
+                        <div class="row">
+                            <div class="col-sm-2">
+                            </div>
+
+                            <div id="immbolier" class="container">
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <div id="formulaire_annonce" >
+                                            {{ include('annonces/_form.html.twig') }}
+                                            <div id="formAnnonces"></div>
+
+                                            <a href="{{ path('annonces_index') }}">back to list</a>
+
+                                        </div>
+                                        <div class="col-sm-2">
+                                        </div>
+                                    </div>
+                                    <div>
+                                <div>
+                        <div>
+
+                    </div>
+
     
 
-    {{ include('annonces/_form.html.twig') }}
-    <div id="formAnnonces"></div>
 
-    <a href="{{ path('annonces_index') }}">back to list</a>
 {% endblock %}
 
 {% block javascripts %}

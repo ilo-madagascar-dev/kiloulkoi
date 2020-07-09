@@ -1,5 +1,6 @@
 {% extends "base.html.twig" %}
 {% block stylesheets %}
+{{ parent() }}
   <link href="{{ asset('css/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"/>
     <link href="{{ asset('css/styleannonces.css') }}" rel="stylesheet"/>
   
@@ -55,11 +56,15 @@
                             </div>
                             <div class="col-sm-4"> 
                                     <div id="select" class="form-group"> 
-                                  <select class="form-control" id="sel1">
-                                    <option>Voiture</option>
-                                    <option>Immobillier</option>
+                                  <select class="form-control" id="selectAnnonceType">
+                                      {% for categorie in categories %}
+                                          <option value="{{ categorie.className }}">{{ categorie.libelle }} </option>
+                                      {% endfor %}
                                   </select>
                                   </div>
+                                <div id="deposerAnnonce" class="btn btn-success">
+                                    Déposer une Annonces
+                                </div>
                             </div>
                             <div class="col-sm-4"> 
                             </div>
@@ -169,19 +174,29 @@
 
 
 
-    {% block script %}
-       <script scr="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
- <script>
-  $(document).ready(function(){
-    $("#vehicule").hide();
-  })
- </script>
 
-
-    {% endblock %}
 
 </div>
 
 
 
 {% endblock %}
+
+{% block javascripts %}
+        {{ parent() }}
+
+         <script>
+          $(document).ready(function(){
+            //$("#vehicule").hide();
+            $("#deposerAnnonce").click( function() {
+              //get id
+              var idAnnonce = $( "#selectAnnonceType option:selected" ).attr('value');
+
+              window.location.href = "/annonces/new?categorie=" + idAnnonce;
+              //redirect
+            })
+          })
+         </script>
+
+
+    {% endblock %}
