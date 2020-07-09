@@ -58,7 +58,7 @@ class VerfRoleController extends AbstractController
         $repositoryuser->findAllisClients($userconnect,$roleadmin);
         
         /*if users->getUsername= userconect and */
-        Dump($userconnect);
+        //Dump($userconnect);
 
         if ($repositoryuser->findAllisPrestataire($userconnect, $role)){
             return $this->redirectToRoute('menupresta');

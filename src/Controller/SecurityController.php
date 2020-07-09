@@ -108,14 +108,14 @@ class SecurityController extends AbstractController
    */
 
   public  function client() {
-    return $this->render('acceuil/index.html.twig');
+    return $this->render('accueil/index.html.twig');
  }
 
        /**
    * @Route("/menupresta",name="menupresta")
    */
   public  function presta() {
-    return $this->render('acceuil/prestataire.html.twig');
+    return $this->render('accueil/prestataire.html.twig');
  }
 
         /**
