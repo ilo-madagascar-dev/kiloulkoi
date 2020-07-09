@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Utilisateur;
+use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -30,7 +30,7 @@ class InscritUtilisateurType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Utilisateur::class,
+            'data_class' => User::class,
         ]);
     }
 }

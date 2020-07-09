@@ -61,7 +61,7 @@ class VerificationController extends AbstractController
             throw new AccessDeniedException('Votre address email est invalide');
         }
 
-        $username;$password;$fonction;$confirm_password;
+        $username = null; $password = null; $fonction = null; $confirm_password = null;
         // $nom;$prenom;$pseudo;$rue;$ville;$telephone;$cp;
         foreach ($users as $listusers) 
         {
