@@ -2,7 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Categories;
 use App\Entity\Mode;
+use App\Entity\User;
+use Shapecode\Bundle\HiddenEntityTypeBundle\Form\Type\HiddenEntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -19,8 +22,15 @@ class ModeType extends AbstractType
             ->add('pointure', IntegerType::class, array(
                 'attr' => array('min' => 25, 'max' => 50)
             ))
-            //->add('categorie')
-            //->add('taille')
+            ->add('categorie', HiddenEntityType::class, [
+                // looks for choices from this entity
+                'class' => Categories::class,
+            ])
+            ->add('user', HiddenEntityType::class, [
+                // looks for choices from this entity
+                'class' => User::class,
+
+            ])
         ;
     }
 

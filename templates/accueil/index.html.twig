@@ -184,267 +184,35 @@
                         </div>
                     <div class="container">
                         <div class="row">
-                            <div class="col-md-4">
-                                <div class="content">
-                                    <img src="image/image1.png" alt="Nature" style="width:100%">
-                                      <h4>Mécanicien soudeur de nuit (H/F)</h4>
-                                      <div id="liste">
-                                       <div class="container">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <table style="width:100%">
-                                                    <tr>
-                                                      <td>contrats : </td>
-                                                    </tr>
-                                                    <tr>
-                                                      <td>Catégorie :</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Il y a 1h:30min</td>
-                                                        <td><a href="#">plus</a></td>
-                                                    </tr>
-                                                  </table>
-                                            </div>
-                                              
-                  
-                                        </div>
-                                       </div>
-                                     </div>
-                                    </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="content">
-                                    <img src="image/image2.png" alt="Nature" style="width:100%">
-                                    <h4>Mécanicien soudeur de nuit (H/F)</h4>
-                                    <div id="liste">
-                                        <div class="container">
-                                         <div class="row">
-                                             <div class="col-md-12">
-                                                 <table style="width:100%">
-                                                     <tr>
-                                                       <td>contrats : </td>
-                                                     </tr>
-                                                     <tr>
-                                                       <td>Catégorie :</td>
-                                                     </tr>
-                                                     <tr>
-                                                         <td>Il y a 1h:30min</td>
-                                                         <td><a href="#">plus</a></td>
-                                                     </tr>
-                                                   </table>
-                                             </div>
-                                               
-                   
-                                         </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="content">
-                                    <img src="image/image3.png" alt="Nature" style="width:100%">
-                                    <h4>Mécanicien soudeur de nuit (H/F)</h4>
-                                    <div id="liste">
-                                        <div class="container">
-                                         <div class="row">
-                                             <div class="col-md-12">
-                                                 <table style="width:100%">
-                                                     <tr>
-                                                       <td>contrats : </td>
-                                                     </tr>
-                                                     <tr>
-                                                       <td>Catégorie :</td>
-                                                     </tr>
-                                                     <tr>
-                                                         <td>Il y a 1h:30min</td>
-                                                         <td><a href="#">plus</a></td>
-                                                     </tr>
-                                                   </table>
-                                             </div>
-                                               
-                   
-                                         </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                            </div>
-                        </div>
-                        </div>
-                        <div class="container">
-                            <div class="row fluid">
+                            {% for annonce in annonces %}
                                 <div class="col-md-4">
                                     <div class="content">
                                         <img src="image/image1.png" alt="Nature" style="width:100%">
-                                        <h4>Mécanicien soudeur de nuit (H/F)</h4>
-                                        <div id="liste">
-                                            <div class="container">
-                                             <div class="row">
-                                                 <div class="col-md-12">
-                                                     <table style="width:100%">
-                                                         <tr>
-                                                           <td>contrats : </td>
-                                                         </tr>
-                                                         <tr>
-                                                           <td>Catégorie :</td>
-                                                         </tr>
-                                                         <tr>
-                                                             <td>Il y a 1h:30min</td>
-                                                             <td><a href="#">plus</a></td>
-                                                         </tr>
-                                                       </table>
-                                                 </div>
-                                                   
-                       
-                                             </div>
+                                          <h4>{{ annonce.titre }}</h4>
+                                          <div id="liste">
+                                           <div class="container">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <table style="width:100%">
+                                                        <tr>
+                                                          <td>description : {{ annonce.description }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                          <td>Catégorie : {{ annonce.categorie.libelle }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Il y a 1h:30min</td>
+                                                            <td><a href="#{{ annonce.id }}">plus</a></td>
+                                                        </tr>
+                                                      </table>
+                                                </div>
                                             </div>
-                                          </div>
+                                           </div>
+                                         </div>
                                         </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="content">
-                                        <img src="image/image2.png" alt="Nature" style="width:100%">
-                                        <h4>Mécanicien soudeur de nuit (H/F)</h4>
-                                        <div id="liste">
-                                            <div class="container">
-                                             <div class="row">
-                                                 <div class="col-md-12">
-                                                     <table style="width:100%">
-                                                         <tr>
-                                                           <td>contrats : </td>
-                                                         </tr>
-                                                         <tr>
-                                                           <td>Catégorie :</td>
-                                                         </tr>
-                                                         <tr>
-                                                             <td>Il y a 1h:30min</td>
-                                                             <td><a href="#">plus</a></td>
-                                                         </tr>
-                                                       </table>
-                                                 </div>
-                                                   
-                       
-                                             </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="content">
-                                        <img src="image/image3.png" alt="Nature" style="width:100%">
-                                        <h4>Mécanicien soudeur de nuit (H/F)</h4>
-                                        <div id="liste">
-                                            <div class="container">
-                                             <div class="row">
-                                                 <div class="col-md-12">
-                                                     <table style="width:100%">
-                                                         <tr>
-                                                           <td>contrats : </td>
-                                                         </tr>
-                                                         <tr>
-                                                           <td>Catégorie :</td>
-                                                         </tr>
-                                                         <tr>
-                                                             <td>Il y a 1h:30min</td>
-                                                             <td><a href="#">plus</a></td>
-                                                         </tr>
-                                                       </table>
-                                                 </div>
-                                                   
-                       
-                                             </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="container">
-                            <div class="row fluid">
-                                <div class="col-md-4">
-                                    <div class="content">
-                                        <img src="image/image1.png" alt="Nature" style="width:100%">
-                                        <h4>Mécanicien soudeur de nuit (H/F)</h4>
-                                        <div id="liste">
-                                            <div class="container">
-                                             <div class="row">
-                                                 <div class="col-md-12">
-                                                     <table style="width:100%">
-                                                         <tr>
-                                                           <td>contrats : </td>
-                                                         </tr>
-                                                         <tr>
-                                                           <td>Catégorie :</td>
-                                                         </tr>
-                                                         <tr>
-                                                             <td>Il y a 1h:30min</td>
-                                                             <td><a href="#">plus</a></td>
-                                                         </tr>
-                                                       </table>
-                                                 </div>
-                                                   
-                       
-                                             </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="content">
-                                        <img src="image/image2.png" alt="Nature" style="width:100%">
-                                        <h4>Mécanicien soudeur de nuit (H/F)</h4>
-                                        <div id="liste">
-                                            <div class="container">
-                                             <div class="row">
-                                                 <div class="col-md-12">
-                                                     <table style="width:100%">
-                                                         <tr>
-                                                           <td>contrats : </td>
-                                                         </tr>
-                                                         <tr>
-                                                           <td>Catégorie :</td>
-                                                         </tr>
-                                                         <tr>
-                                                             <td>Il y a 1h:30min</td>
-                                                             <td><a href="#">plus</a></td>
-                                                         </tr>
-                                                       </table>
-                                                 </div>
-                                                   
-                       
-                                             </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="content">
-                                        <img src="image/image3.png" alt="Nature" style="width:100%">
-                                        <h4>Mécanicien soudeur de nuit (H/F)</h4>
-                                        <div id="liste">
-                                            <div class="container">
-                                             <div class="row">
-                                                 <div class="col-md-12">
-                                                     <table style="width:100%">
-                                                         <tr>
-                                                           <td>contrats : </td>
-                                                         </tr>
-                                                         <tr>
-                                                           <td>Catégorie :</td>
-                                                         </tr>
-                                                         <tr>
-                                                             <td>Il y a 1h:30min</td>
-                                                             <td id="plus"><a href="#">plus</a></td>
-                                                         </tr>
-                                                       </table>
-                                                 </div>
-                                                   
-                       
-                                             </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                </div>
-                            </div>
+                            {% endfor %}
+
                     </div>    
                  </div>
                  <div class="container">

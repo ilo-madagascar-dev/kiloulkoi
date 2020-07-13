@@ -29,6 +29,10 @@ class Location
      */
     private $dateFin;
 
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $dateReservation;
 
     /**
      * @ORM\ManyToOne(targetEntity=StatutLocation::class, inversedBy="locations" ,cascade={"persist"})
@@ -41,6 +45,12 @@ class Location
      * @ORM\JoinColumn(name="annonces_id", referencedColumnName="id", nullable=false)
      */
     private $annonces;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="location", cascade={"persist"})
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
+     */
+    private $user;
 
     public function __construct()
     {
@@ -101,6 +111,30 @@ class Location
     public function setAnnonces(?Annonces $annonces): self
     {
         $this->annonces = $annonces;
+
+        return $this;
+    }
+
+    public function getDateReservation(): ?\DateTimeInterface
+    {
+        return $this->dateReservation;
+    }
+
+    public function setDateReservation(\DateTimeInterface $dateReservation): self
+    {
+        $this->dateReservation = $dateReservation;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

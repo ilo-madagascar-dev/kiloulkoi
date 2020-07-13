@@ -24,7 +24,7 @@ security:
 
             logout:
                 path: security_logout
-                target: acceuil
+                target: accueil
             oauth:
                 resource_owners:
                     facebook:           "/login/check-facebook"

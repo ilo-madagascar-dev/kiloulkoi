@@ -205,6 +205,9 @@
             "./config/packages/sensio_framework_extra.yaml"
         ]
     },
+    "shapecode/hidden-entity-type-bundle": {
+        "version": "4.1.0"
+    },
     "symfony/apache-pack": {
         "version": "1.0",
         "recipe": {
@@ -370,6 +373,9 @@
     "symfony/property-access": {
         "version": "v4.4.8"
     },
+    "symfony/property-info": {
+        "version": "v4.4.10"
+    },
     "symfony/routing": {
         "version": "4.2",
         "recipe": {
@@ -509,6 +515,9 @@
     },
     "twig/twig": {
         "version": "v3.0.3"
+    },
+    "webmozart/assert": {
+        "version": "1.9.1"
     },
     "zendframework/zend-code": {
         "version": "3.4.1"

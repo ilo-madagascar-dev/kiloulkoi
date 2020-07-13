@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Annonces;
 use App\Entity\Categories;
 use App\Entity\Mode;
+use App\Entity\User;
 use App\Entity\Vehicule;
 use App\Entity\VetementMaternite;
 use App\Form\AnnoncesType;
@@ -33,8 +34,14 @@ class AnnoncesController extends AbstractController
      */
     public function index(AnnoncesRepository $annoncesRepository): Response
     {
+
         $repository = $this->getDoctrine()->getRepository(Categories::class);
         $categories = $repository->findAll();
+        $repositoryAnnonces = $this->getDoctrine()->getRepository(Annonces::class);
+        $userconnect=$this->getUser()->getId();
+        $annonces = $repositoryAnnonces->findOtherAnnonceById($userconnect);
+        dump($userconnect);
+        dump($annonces);die;
         return $this->render('annonces/index.html.twig', [
             'categories' => $categories,
         ]);
@@ -49,8 +56,11 @@ class AnnoncesController extends AbstractController
         $classNameType = null;
         $annonce = null;
         $repositoryCategories = $this->getDoctrine()->getRepository(Categories::class);
+        $repositoryUser = $this->getDoctrine()->getRepository(User::class);
+        $user = null;
         if ($request->isMethod("GET")) {
             $nomClasse = ucfirst($request->query->get('categorie'));
+            $userId = ucfirst($request->query->get('user'));
             $class = 'App\Entity\\' . $nomClasse;
             $annonce = new $class();
 
@@ -58,8 +68,10 @@ class AnnoncesController extends AbstractController
                 $classNameType = 'App\Form\\' . $nomClasse . 'Type';
             }
             $categorie = $repositoryCategories->findOneBy(['libelle' => $nomClasse]);
-
+            $user = $repositoryUser->find($userId);
         }
+
+
 
         if ($request->isMethod("POST")) {
             $requestForm = $request->request->all();
@@ -72,6 +84,7 @@ class AnnoncesController extends AbstractController
                 $annonce = new $class();
             }
         }
+        $annonce->setUser($user);
         $annonce->setCategorie($categorie);
         $form = $this->createForm($classNameType, $annonce);
         $form->handleRequest($request);

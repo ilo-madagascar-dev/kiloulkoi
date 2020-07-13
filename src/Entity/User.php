@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -44,6 +46,11 @@ class User implements UserInterface
      * message = "Vous n'avez pas saisi le même mot de passe !")
      */
     private $confirm_password;
+
+    /**
+    * @ORM\OneToMany(targetEntity=Location::class, mappedBy="user")
+    */
+    private $location;
 
     public function getConfirmPassword()
     {
@@ -108,6 +115,11 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      */
     private $fonction;
+
+    public function __construct()
+    {
+        $this->location = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -279,5 +291,36 @@ class User implements UserInterface
 
     public function eraseCredentials() {}
     public function getSalt() {}
+
+    /**
+     * @return Collection|Location[]
+     */
+    public function getLocation(): Collection
+    {
+        return $this->location;
+    }
+
+    public function addLocation(Location $location): self
+    {
+        if (!$this->location->contains($location)) {
+            $this->location[] = $location;
+            $location->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLocation(Location $location): self
+    {
+        if ($this->location->contains($location)) {
+            $this->location->removeElement($location);
+            // set the owning side to null (unless already changed)
+            if ($location->getUser() === $this) {
+                $location->setUser(null);
+            }
+        }
+
+        return $this;
+    }
 
 }

@@ -20,7 +20,7 @@ use Doctrine\ORM\Mapping\DiscriminatorMap;
 class Mode extends Annonces
 {
     /**
-     * @ORM\ManyToOne(targetEntity=Pointure::class, inversedBy="modes" ,cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=Pointure::class ,cascade={"persist"})
      * @ORM\JoinColumn(name="pointure_id", referencedColumnName="id", nullable=false)
      */
     private $pointure;

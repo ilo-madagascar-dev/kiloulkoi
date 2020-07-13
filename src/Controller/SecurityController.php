@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Annonces;
+use App\Entity\Categories;
 use App\Entity\User;
 use App\Form\ClientType;
 use App\Form\RegistrationType;
@@ -108,14 +110,33 @@ class SecurityController extends AbstractController
    */
 
   public  function client() {
-    return $this->render('accueil/index.html.twig');
+      //find all categories
+      $repository = $this->getDoctrine()->getRepository(Categories::class);
+      $categories = $repository->findAll();
+      //find annonces with id other than mine
+      $repositoryAnnonces = $this->getDoctrine()->getRepository(Annonces::class);
+      $userconnect=$this->getUser()->getId();
+      $annonces = $repositoryAnnonces->findOtherAnnonceById($userconnect);
+    return $this->render('accueil/index.html.twig', [
+        'categories' => $categories,
+        'annonces' => $annonces
+    ]);
  }
 
        /**
    * @Route("/menupresta",name="menupresta")
    */
   public  function presta() {
-    return $this->render('accueil/prestataire.html.twig');
+      $repository = $this->getDoctrine()->getRepository(Categories::class);
+      $categories = $repository->findAll();
+      //find annonces with id other than mine
+      $repositoryAnnonces = $this->getDoctrine()->getRepository(Annonces::class);
+      $userconnect=$this->getUser()->getId();
+      $annonces = $repositoryAnnonces->findOtherAnnonceById($userconnect);
+    return $this->render('accueil/prestataire.html.twig', [
+        'categories' => $categories,
+        'annonces' => $annonces
+    ]);
  }
 
         /**

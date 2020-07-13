@@ -62,7 +62,7 @@
                                       {% endfor %}
                                   </select>
                                   </div>
-                                <div id="deposerAnnonce" class="btn btn-success">
+                                <div id="deposerAnnonce" class="btn btn-success" iduser="{{ app.user.id }}">
                                     Déposer une Annonces
                                 </div>
                             </div>
@@ -191,8 +191,8 @@
             $("#deposerAnnonce").click( function() {
               //get id
               var idAnnonce = $( "#selectAnnonceType option:selected" ).attr('value');
-
-              window.location.href = "/annonces/new?categorie=" + idAnnonce;
+              var isuser = $(this).attr('iduser');
+              window.location.href = "/annonces/new?categorie=" + idAnnonce + "&user=" + isuser;
               //redirect
             })
           })

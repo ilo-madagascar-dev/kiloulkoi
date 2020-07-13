@@ -15,4 +15,5 @@ return [
     HWI\Bundle\OAuthBundle\HWIOAuthBundle::class => ['all' => true],
     Http\HttplugBundle\HttplugBundle::class => ['all' => true],
     Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle::class => ['dev' => true, 'test' => true],
+    Shapecode\Bundle\HiddenEntityTypeBundle\ShapecodeHiddenEntityTypeBundle::class => ['all' => true],
 ];
