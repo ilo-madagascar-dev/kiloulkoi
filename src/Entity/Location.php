@@ -100,20 +100,7 @@ class Location
         return $this;
     }
 
-    /**
-     * @return Collection|Annonces[]
-     */
-    public function getAnnonces(): Collection
-    {
-        return $this->annonces;
-    }
-
-    public function setAnnonces(?Annonces $annonces): self
-    {
-        $this->annonces = $annonces;
-
-        return $this;
-    }
+    
 
     public function getDateReservation(): ?\DateTimeInterface
     {
@@ -135,6 +122,18 @@ class Location
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getAnnonces(): ?Annonces
+    {
+        return $this->annonces;
+    }
+
+    public function setAnnonces(?Annonces $annonces): self
+    {
+        $this->annonces = $annonces;
 
         return $this;
     }

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Annonces;
 use App\Entity\Location;
+use App\Entity\User;
 use App\Form\LocationType;
 use App\Repository\LocationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,20 +27,35 @@ class LocationController extends AbstractController
         ]);
     }
 
+    function cast($instance, $className)
+    {
+        return unserialize(sprintf(
+            'O:%d:"%s"%s',
+            \strlen($className),
+            $className,
+            strstr(strstr(serialize($instance), '"'), ':')
+        ));
+    }
+
     /**
      * @Route("/new", name="location_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
-        $idAnnonces = $request->query->get('id');
+        $idAnnonces = $request->query->get('idannonce');
+        $idUser = $this->getUser()->getId();
         $annonce = null;
+        $user = null;
         if ($idAnnonces != null) {
             $repositoryAnnonces = $this->getDoctrine()->getRepository(Annonces::class);
             $annonce = $repositoryAnnonces->find(intval($idAnnonces));
+            $user = $this->getDoctrine()->getRepository(User::class)->find(intval($idUser));
         }
-
+        $annonce = $this->cast($annonce, Annonces::class);
+        //dump($annonce);
         $location = new Location();
         $location->setAnnonces($annonce);
+        $location->setUser($user);
         $form = $this->createForm(LocationType::class, $location);
         $form->handleRequest($request);
 
