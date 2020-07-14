@@ -1,15 +1,14 @@
 {% extends 'base.html.twig' %}
 
+
+{% block title %}Profil{% endblock %}
+
 {% block stylesheets %}
     {{ parent() }}
     <link href="{{ asset('css/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"/>
-
     <link href="{{ asset('css/style.css') }}" rel="stylesheet"/>
     <link href="{{ asset('css/responsive.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('css/styleannonces.css') }}" rel="stylesheet"/>
 {% endblock %}
-
-{% block title %}Profil{% endblock %}
 
 {% block body %}
 
@@ -33,7 +32,9 @@
         </center>
     </header>
 
-    <div id="bg" >
+    <div id="bg" style="
+  height: 100%;
+  background: linear-gradient(#004E5B, #3FB5C8 60% );">
         <div class="container">
             <div class="row">
                 <div class="col-sm-4">
