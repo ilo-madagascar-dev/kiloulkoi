@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"/>
+
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('css/responsive.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('css/styleannonces.css') }}" rel="stylesheet"/>
+{% endblock %}
+
+{% block title %}Profil{% endblock %}
+
+{% block body %}
+
+    <header>
+        <center>
+            <div class="head">
+                <ul id="liste">
+                    <li> <img id="icone" src="icone/search.png"><label>Mes recherches</label></li>
+                    <li><img id="icone" src="icone/star.png"><label>Favoris</label></li>
+                    {% if app.user %}
+                        <li> <img id="icone" src="icone/search.png"><a href="{{path('annonces_index')}}"><label>Annonce</label></a></li>
+                        <li><img id="icone" src="icone/star.png"><label>Abonnement</label></li>
+                    {% endif %}
+                    {% if not app.user %}
+                        <li><img id="icone" src="icone/user.png"><a href="{{path('securitylogin')}}"><label>Se Connecter</label></a></li>
+                    {%  else %}
+                        <li><img id="icone" src="icone/user.png"><a href="{{path('security_logout')}}"><label>Se Déconnecter</label></a></li>
+                    {% endif  %}
+                </ul>
+            </div>
+        </center>
+    </header>
+
+    <div id="bg" >
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4">
+                </div>
+                <div class="col-sm-4">
+                    <h1 class="align-content-center">Profil</h1>
+                </div>
+                <div class="col-sm-4">
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4">
+                </div>
+                <div class="col-sm-4">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th>Username</th>
+                            <td>{{ user.username }}</td>
+                        </tr>
+                        <tr>
+                            <th>Nom</th>
+                            <td>{{ user.nom }}</td>
+                        </tr>
+                        <tr>
+                            <th>Prenom</th>
+                            <td>{{ user.prenom }}</td>
+                        </tr>
+                        <tr>
+                            <th>Ville</th>
+                            <td>{{ user.ville }}</td>
+                        </tr>
+                        <tr>
+                            <th>Cp</th>
+                            <td>{{ user.cp }}</td>
+                        </tr>
+                        <tr>
+                            <th>Rue</th>
+                            <td>{{ user.rue }}</td>
+                        </tr>
+                        <tr>
+                            <th>Telephone</th>
+                            <td>{{ user.telephone }}</td>
+                        </tr>
+                        <tr>
+                            <th>Pseudo</th>
+                            <td>{{ user.pseudo }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-sm-4">
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-2">
+                        <h6 id="footer">Copyrights Kiloukoi 2020</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

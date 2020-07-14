@@ -140,11 +140,12 @@ class SecurityController extends AbstractController
         ]);**/
      }
 
-        /**
-           * @Route("/menuAdmin",name="menuadmin")
-           */
-          public  function admin() {
-            return $this->render('admin/index.html.twig');
-         }
+    /**
+       * @Route("/menuAdmin",name="menuadmin")
+       */
+      public function admin() {
+        return $this->render('admin/index.html.twig');
+     }
+
 
 }
