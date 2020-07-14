@@ -100,7 +100,7 @@
                         </div>
                         <div class="col-md-4"></div>
                         <div id="btn2" class="col-md-4">
-                            Déposer une Annonce
+                            Rechercher une Annonce
                         </div>
 
                     </div>
@@ -202,7 +202,8 @@
                                                         </tr>
                                                         <tr>
                                                             <td>Il y a 1h:30min</td>
-                                                            <td><a href="{{ path('location_new', {'idannonce': annonce.id}) }}">plus</a></td>
+                                                            <td><a href="{{ path('location_new', {'idannonce': annonce.id}) }}">Louer</a>
+                                                                <a href="{{ path('annonces_show', {'id': annonce.id}) }}">plus</a></td>
                                                         </tr>
                                                       </table>
                                                 </div>

@@ -1,13 +1,15 @@
 {% extends "base.html.twig" %}
 {% block stylesheets %}
-{{ parent() }}
+    {{ parent() }}
   <link href="{{ asset('css/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"/>
     <link href="{{ asset('css/styleannonces.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('css/responsive.css') }}" rel="stylesheet"/>
   
 {% endblock %}
 
 
-{% block title %}Annonce{% endblock %}
+{% block title %}Annonces{% endblock %}
 {% block body %}
 
 <header>
@@ -16,164 +18,110 @@
                 <div class="row"> 
                     <div id="ano" class="col-md-2">
                
-                    {# <div id="deposer"> + Déposer une annonce </div> #}
                     </div>
                     <div id="head" class="col-md-8">
-                <center>
-                      <span><img id="icone" src="icone/search.png"><label>Mes recherches</label></span>
-                        <span><img id="icone" src="icone/star.png"><label>Favoris</label></span>
-                        <span><img id="icone" src="icone/user.png"><label>User</label></span>
-                </center>     
+                        <center>
+
+                              <span><img id="icone" src="icone/search.png"><label>Mes recherches</label></span>
+                                <span><img id="icone" src="icone/star.png"><label>Favoris</label></span>
+                                <span><img id="icone" src="icone/user.png"><label>User</label></span>
+                        </center>
               
                     </div>
                 </div>
+       </div>
 
 </header>
 
 
 <div id="bg" >
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-4">
+          </div>
+          <div class="col-sm-4">
+              <h1 class="align-content-center">Choisir la catégorie</h1>
+          </div>
+          <div class="col-sm-4">
+          </div>
+        </div>
+      </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-4">
+        </div>
+        <div class="col-sm-4">
+                <div id="select" class="form-group">
+              <select class="form-control" id="selectAnnonceType">
+                  {% for categorie in categories %}
+                      <option value="{{ categorie.className }}">{{ categorie.libelle }} </option>
+                  {% endfor %}
+              </select>
+              </div>
+            <div id="deposerAnnonce" class="btn btn-success" iduser="{{ app.user.id }}">
+                Déposer une Annonces
+            </div>
+        </div>
+        <div class="col-sm-4">
+        </div>
+      </div>
 
-              <div class="container">
-                <div class="row">
-                  <div class="col-sm-4"> 
-                  </div>
-                  <div class="col-sm-4"> 
-                      <h1 class="align-content-center">Choisir la catégorie</h1>
-                  </div>
-                  <div class="col-sm-4"> 
-                  </div>
-                </div>
-              <div>
 
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4">
+            </div>
+            <div class="col-sm-4">
+                <h1 class="align-content-center">Liste Annonces</h1>
+            </div>
+            <div class="col-sm-4">
+            </div>
+        </div>
+    </div>
 
-
-
-
-
-                        <div class="container">
-                          <div class="row">
-                            <div class="col-sm-4"> 
-                            </div>
-                            <div class="col-sm-4"> 
-                                    <div id="select" class="form-group"> 
-                                  <select class="form-control" id="selectAnnonceType">
-                                      {% for categorie in categories %}
-                                          <option value="{{ categorie.className }}">{{ categorie.libelle }} </option>
-                                      {% endfor %}
-                                  </select>
-                                  </div>
-                                <div id="deposerAnnonce" class="btn btn-success" iduser="{{ app.user.id }}">
-                                    Déposer une Annonces
+    <div class="container">
+        <div class="row">
+            {% for annonce in annonces %}
+                <div class="col-md-4">
+                    <div class="content">
+                        <img src="image/image1.png" alt="Nature" style="width:100%">
+                        <h4>{{ annonce.titre }}</h4>
+                        <div id="liste">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td>description : {{ annonce.description }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Catégorie : {{ annonce.categorie.libelle }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Il y a 1h:30min</td>
+                                                <td><a href="{{ path('location_new', {'idannonce': annonce.id}) }}">Louer</a>
+                                                    <a href="{{ path('annonces_show', {'id': annonce.id}) }}">plus</a></td>
+                                            </tr>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-sm-4"> 
-                            </div>
-                          </div>
-                        <div>
-
-
-                        {# Vehicule #}
-
-                        <div id="vehicule" class="container">
-                          <div class="row">
-                            <div class="col-sm-2"> 
-                            </div>
-                            <div class="col-sm-8"> 
-                              <div id="formulaire_annonce" >
-                              <form action=" " methode="post">
-                                 <label for="titre" style="font-family: Dosis;">Titre de votre annonces</label>
-                                    <input type="text" requied name=""  value = "">
-                                    <label for="titre" style="font-family: Dosis;">Marque</label>
-                                    <input type="text" requied name=""  value = "">
-                                      <label for="titre" style="font-family: Dosis;">Model</label>
-                                    <input type="text" requied name=""  value = "">
-                                    <label for="titre" style="font-family: Dosis;">Prix</label>
-                                    <input type="text" requied name=""  value = "">
-                                      <label for="titre" style="font-family: Dosis;">Energie</label>
-                                      <select class="select_energi"><option>Essence</option><option>Diesel</option><option>Electrique</option></select>
-                                       <label for="titre" style="font-family: Dosis;">Location par</label>
-                                      <select class="select_energi"><option>Jour</option><option>Semaine</option><option>Mois</option></select>
-                                    <label for="titre" style="font-family: Dosis;">Image</label>
-                                    <input type="image" requied name=""  value = "inserer une image">
-                                    <label for="ldate" style="font-family: Dosis;">Date de publication</label>
-                                    <input type="date" id="date" requied name="">
-                                  <label for="titre" style="font-family: Dosis;">Description</label>
-                                  <textarea></textarea>
-                                    <input type="submit" value="Publier">
-                                  </form>
-                              </div>
-                            <div class="col-sm-2"> 
-                            </div>
-                          </div>
-                        {# Immobilier #}
-                          
-                        <div id="immbolier" class="container">
-                          <div class="row">
-                            <div class="col-sm-2"> 
-                            </div>
-                            <div class="col-sm-8"> 
-                              <div id="formulaire_annonce" >
-                              <form action=" " methode="post">
-                                
-                                    <label for="titre" style="font-family: Dosis;">Titre de votre annonces</label>
-                                    <input type="text" requied name=""  value = "">
-                                    <label for="titre" style="font-family: Dosis;">Surface en m²</label>
-                                    <input type="text" requied name=""  value = "">
-                                     <label for="titre" style="font-family: Dosis;">Nombre de chambre</label>
-                                    <input type="text" requied name=""  value = "">
-                                    <label for="titre" style="font-family: Dosis;">Location par</label>
-                                      <select class="select_energi"><option>Jour</option><option>Semaine</option><option>Mois</option></select>
-                                    <label for="titre" style="font-family: Dosis;">Image</label>
-                                    <input type="image" requied name=""  value = "inserer une image">
-                                    <label for="ldate" style="font-family: Dosis;">Date de publication</label>
-                                    <input type="date" id="date" requied name="">
-                                  <label for="titre" style="font-family: Dosis;">Description</label>
-                                  <textarea></textarea>
-                                    <input type="submit" value="Publier">
-                                  </form>
-                              </div>
-                            <div class="col-sm-2"> 
-                            </div>
-                          </div>
-                        <div>
-                        <div>
-
-
-  {# mode #}
-                          
-                        <div id="mode" class="container">
-                          <div class="row">
-                            <div class="col-sm-2"> 
-                            </div>
-                            <div class="col-sm-8"> 
-                              <div id="formulaire_annonce" >
-                              <form action=" " methode="post">
-                                
-                                    <label for="titre" style="font-family: Dosis;">Titre de votre annonces</label>
-                                    <input type="text" requied name=""  value = "">
-                                    <label for="titre" style="font-family: Dosis;">Taille</label>
-                                    <input type="text" requied name=""  value = "">
-                                     <label for="titre" style="font-family: Dosis;">Pointure</label>
-                                    <input type="text" requied name=""  value = "">
-                                    <label for="titre" style="font-family: Dosis;">Prix</label>
-                                    <input type="text" requied name=""  value = "">
-                                    <label for="titre" style="font-family: Dosis;">Image</label>
-                                    <input type="image" requied name=""  value = "inserer une image">
-                                    <label for="ldate" style="font-family: Dosis;">Date de publication</label>
-                                    <input type="date" id="date" requied name="">
-                                  <label for="titre" style="font-family: Dosis;">Description</label>
-                                  <textarea></textarea>
-                                    <input type="submit" value="Publier">
-                                  </form>
-                              </div>
-                            <div class="col-sm-2"> 
-                            </div>
-                          </div>
-                        <div>
-                        <div>
-
-
-
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-2">
+                    <h6 id="footer">Copyrights Kiloukoi 2020</h6>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 </div>

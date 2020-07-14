@@ -40,10 +40,11 @@ class AnnoncesController extends AbstractController
         $repositoryAnnonces = $this->getDoctrine()->getRepository(Annonces::class);
         $userconnect=$this->getUser()->getId();
         $annonces = $repositoryAnnonces->findOtherAnnonceById($userconnect);
-        dump($userconnect);
-        dump($annonces);die;
+        //dump($userconnect);
+        //dump($annonces);die;
         return $this->render('annonces/index.html.twig', [
             'categories' => $categories,
+            'annonces' => $annonces
         ]);
     }
 
@@ -103,65 +104,7 @@ class AnnoncesController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/newe", name="annonces_newe", methods={"GET","POST"})
-     */
-    public function newe(Request $request): Response
-    {
-        $nomClasse = null;
-        $lowerName = null;
-        if ($request->isMethod("GET")) {
-            $nomClasse = $request->query->get('categorie');
-            $lowerName = lcfirst($nomClasse);
-        }
-        $repositoryCategories = $this->getDoctrine()->getRepository(Categories::class);
-        $categorie = $repositoryCategories->findOneBy(['libelle' => $nomClasse]);
-        $annonce = new Annonces();
-        $annonce->setCategorie($categorie);
-        //$form = $this->createForm(AnnoncesType::class, $annonce);
-        //mety olana oe tsy nitov y le form nandefa sy namerena ka na sarahana le methode rehetra na le form mihitsy no amboarina
-        $formBuilder = $this->createFormBuilder($annonce);
-        
-        $formBuilder->add('categorie', EntityType::class, [
-                    // looks for choices from this entity
-                    'class' => Categories::class,
-                    'choice_label' => 'libelle',
-                    ]);
-        if ($nomClasse != null) {
-            $classNameType = 'App\Form\\' . $nomClasse . 'Type';
-            $formBuilder->add($lowerName, $classNameType);
-        }
-        if ($request->isMethod("POST")) {
-            $requestForm = $request->request->all();
-            $requetFormField = array_keys($requestForm["form"]);
-            
-            foreach ($requetFormField as $reqForm) {
-                if (!$formBuilder->has($reqForm) && $reqForm != "_token") {
-                    $classNameType = 'App\Form\\' . ucfirst($reqForm) . 'Type';
-                    $formBuilder->add($reqForm, $classNameType);
-                }
-            }
-//            $classNameType = 'App\Form\VehiculeType';
-//            $formBuilder->add("vehicule", $classNameType);
-        }
-        $form = $formBuilder->getForm();
-        
-        $form->handleRequest($request);
-        //dump($form->has('vehicule'));
-        if ($form->isSubmitted() && $form->isValid()) {
-            //dump($form);die;
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($annonce);
-            $entityManager->flush();
 
-            return $this->redirectToRoute('annonces_index');
-        }
-
-        return $this->render('annonces/new.html.twig', [
-            'annonce' => $annonce,
-            'form' => $form->createView(),
-        ]);
-    }
 
     /**
      * @Route("/{id}", name="annonces_show", methods={"GET"})

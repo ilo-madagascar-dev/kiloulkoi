@@ -18,7 +18,11 @@ class AccueilController extends AbstractController
         $repository = $this->getDoctrine()->getRepository(Categories::class);
         $categories = $repository->findAll();
         //find annonces with id other than mine
-        $userconnect=$this->getUser()->getId();
+        $userconnect = null;
+        if ($this->getUser() != null) {
+            $userconnect = $this->getUser()->getId();
+        }
+
 
         $repositoryAnnonces = $this->getDoctrine()->getRepository(Annonces::class);
         $annonces = $repositoryAnnonces->findOtherAnnonceById($userconnect);

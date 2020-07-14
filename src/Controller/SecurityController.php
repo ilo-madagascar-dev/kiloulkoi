@@ -106,44 +106,45 @@ class SecurityController extends AbstractController
   }
 
       /**
-   * @Route("/menuclient",name="menu")
-   */
+       * @Route("/menuclient",name="menu")
+       */
 
-  public  function client() {
-      //find all categories
-      $repository = $this->getDoctrine()->getRepository(Categories::class);
-      $categories = $repository->findAll();
-      //find annonces with id other than mine
-      $repositoryAnnonces = $this->getDoctrine()->getRepository(Annonces::class);
-      $userconnect=$this->getUser()->getId();
-      $annonces = $repositoryAnnonces->findOtherAnnonceById($userconnect);
-    return $this->render('accueil/index.html.twig', [
-        'categories' => $categories,
-        'annonces' => $annonces
-    ]);
- }
+      public  function client() {
+          //find all categories
+          $repository = $this->getDoctrine()->getRepository(Categories::class);
+          $categories = $repository->findAll();
+          //find annonces with id other than mine
+          $repositoryAnnonces = $this->getDoctrine()->getRepository(Annonces::class);
+          $userconnect=$this->getUser()->getId();
+          $annonces = $repositoryAnnonces->findOtherAnnonceById($userconnect);
+        return $this->render('accueil/index.html.twig', [
+            'categories' => $categories,
+            'annonces' => $annonces
+        ]);
+     }
 
        /**
-   * @Route("/menupresta",name="menupresta")
-   */
-  public  function presta() {
-      $repository = $this->getDoctrine()->getRepository(Categories::class);
-      $categories = $repository->findAll();
-      //find annonces with id other than mine
-      $repositoryAnnonces = $this->getDoctrine()->getRepository(Annonces::class);
-      $userconnect=$this->getUser()->getId();
-      $annonces = $repositoryAnnonces->findOtherAnnonceById($userconnect);
-    return $this->render('accueil/prestataire.html.twig', [
-        'categories' => $categories,
-        'annonces' => $annonces
-    ]);
- }
+       * @Route("/menupresta",name="menupresta")
+       */
+      public  function presta() {
+          return $this->redirectToRoute('accueil');
+          /**$repository = $this->getDoctrine()->getRepository(Categories::class);
+          $categories = $repository->findAll();
+          //find annonces with id other than mine
+          $repositoryAnnonces = $this->getDoctrine()->getRepository(Annonces::class);
+          $userconnect=$this->getUser()->getId();
+          $annonces = $repositoryAnnonces->findOtherAnnonceById($userconnect);
+        return $this->render('accueil/prestataire.html.twig', [
+            'categories' => $categories,
+            'annonces' => $annonces
+        ]);**/
+     }
 
         /**
-   * @Route("/menuAdmin",name="menuadmin")
-   */
-  public  function admin() {
-    return $this->render('admin/index.html.twig');
- }
+           * @Route("/menuAdmin",name="menuadmin")
+           */
+          public  function admin() {
+            return $this->render('admin/index.html.twig');
+         }
 
 }
