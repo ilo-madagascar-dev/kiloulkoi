@@ -12,13 +12,13 @@ class VetementMaternite extends Maternite
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity=Pointure::class, inversedBy="modes" ,cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=Pointure::class,cascade={"persist"})
      * @ORM\JoinColumn(name="pointure_id", referencedColumnName="id", nullable=false)
      */
     private $pointure;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Taille::class, inversedBy="modes" ,cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=Taille::class,cascade={"persist"})
      * @ORM\JoinColumn(name="taille_id", referencedColumnName="id", nullable=false)
      */
     private $taille;
