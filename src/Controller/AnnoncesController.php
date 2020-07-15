@@ -34,7 +34,11 @@ class AnnoncesController extends AbstractController
      */
     public function index(AnnoncesRepository $annoncesRepository): Response
     {
-
+        $userconnect = null;
+        if ($this->getUser() == null) {
+            return $this->redirectToRoute('accueil');
+        }
+        $userconnect = $this->getUser()->getId();
         $repository = $this->getDoctrine()->getRepository(Categories::class);
         $categories = $repository->findAll();
         $repositoryAnnonces = $this->getDoctrine()->getRepository(Annonces::class);
@@ -53,6 +57,9 @@ class AnnoncesController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        if ($this->getUser() == null) {
+            return $this->redirectToRoute('accueil');
+        }
         $nomClasse = null;
         $classNameType = null;
         $annonce = null;
@@ -121,6 +128,9 @@ class AnnoncesController extends AbstractController
      */
     public function edit(Request $request, Annonces $annonce): Response
     {
+        if ($this->getUser() == null) {
+            return $this->redirectToRoute('accueil');
+        }
         $form = $this->createForm(AnnoncesType::class, $annonce);
         $form->handleRequest($request);
 
@@ -141,6 +151,9 @@ class AnnoncesController extends AbstractController
      */
     public function delete(Request $request, Annonces $annonce): Response
     {
+        if ($this->getUser() == null) {
+            return $this->redirectToRoute('accueil');
+        }
         if ($this->isCsrfTokenValid('delete'.$annonce->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($annonce);

@@ -20,6 +20,9 @@ class EnergieController extends AbstractController
      */
     public function index(EnergieRepository $energieRepository): Response
     {
+        if ($this->getUser() == null) {
+            return $this->redirectToRoute('accueil');
+        }
         return $this->render('energie/index.html.twig', [
             'energies' => $energieRepository->findAll(),
         ]);
@@ -30,6 +33,9 @@ class EnergieController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        if ($this->getUser() == null) {
+            return $this->redirectToRoute('accueil');
+        }
         $energie = new Energie();
         $form = $this->createForm(EnergieType::class, $energie);
         $form->handleRequest($request);
@@ -53,6 +59,9 @@ class EnergieController extends AbstractController
      */
     public function show(Energie $energie): Response
     {
+        if ($this->getUser() == null) {
+            return $this->redirectToRoute('accueil');
+        }
         return $this->render('energie/show.html.twig', [
             'energie' => $energie,
         ]);
@@ -63,6 +72,9 @@ class EnergieController extends AbstractController
      */
     public function edit(Request $request, Energie $energie): Response
     {
+        if ($this->getUser() == null) {
+            return $this->redirectToRoute('accueil');
+        }
         $form = $this->createForm(EnergieType::class, $energie);
         $form->handleRequest($request);
 
@@ -83,6 +95,9 @@ class EnergieController extends AbstractController
      */
     public function delete(Request $request, Energie $energie): Response
     {
+        if ($this->getUser() == null) {
+            return $this->redirectToRoute('accueil');
+        }
         if ($this->isCsrfTokenValid('delete'.$energie->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($energie);
