@@ -2,9 +2,13 @@
 
 namespace App\Form;
 
+use App\Entity\Categories;
 use App\Entity\HommeFemmeMode;
 use App\Entity\Pointure;
 use App\Entity\Taille;
+use App\Entity\User;
+use Doctrine\ORM\EntityRepository;
+use Shapecode\Bundle\HiddenEntityTypeBundle\Form\Type\HiddenEntityType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -28,27 +32,23 @@ class HommeFemmeModeType extends AbstractType
 
             ])
             ->add('pointure', EntityType::class, [
-                // looks for choices from this entity
                 'class' => Pointure::class,
-
-                // uses the User.username property as the visible option string
-                'choice_label' => 'libelle',
-
-                // used to render a select box, check boxes or radios
-                // 'multiple' => true,
-                // 'expanded' => true,
-            ])
+                'query_builder' => function (EntityRepository $er) {
+                    $classe = 'HommeFemmeMode';
+                    return $er->createQueryBuilder('p')
+                        ->where('p.classe = :classe')
+                        ->setParameter('classe', $classe);
+                },
+                'choice_label' => 'libelle'])
             ->add('taille', EntityType::class, [
-                // looks for choices from this entity
                 'class' => Taille::class,
-
-                // uses the User.username property as the visible option string
-                'choice_label' => 'libelle',
-
-                // used to render a select box, check boxes or radios
-                // 'multiple' => true,
-                // 'expanded' => true,
-            ])
+                'query_builder' => function (EntityRepository $er) {
+                    $classe = 'HommeFemmeMode';
+                    return $er->createQueryBuilder('t')
+                        ->where('t.classe = :classe')
+                        ->setParameter('classe', $classe);
+                },
+                'choice_label' => 'libelle'])
         ;
     }
 

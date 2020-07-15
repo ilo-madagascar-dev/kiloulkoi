@@ -13,9 +13,6 @@ class UserType extends AbstractType
     {
         $builder
             ->add('username')
-            ->add('password')
-            ->add('facebookID')
-            ->add('facebookAccessToken')
             ->add('nom')
             ->add('prenom')
             ->add('ville')
@@ -23,7 +20,6 @@ class UserType extends AbstractType
             ->add('rue')
             ->add('telephone')
             ->add('pseudo')
-            ->add('fonction')
         ;
     }
 

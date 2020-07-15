@@ -8,6 +8,7 @@
     <link href="{{ asset('css/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"/>
     <link href="{{ asset('css/style.css') }}" rel="stylesheet"/>
     <link href="{{ asset('css/responsive.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('css/design.css') }}" rel="stylesheet"/>
 {% endblock %}
 
 {% block body %}
@@ -32,9 +33,7 @@
         </center>
     </header>
 
-    <div id="bg" style="
-  height: 100%;
-  background: linear-gradient(#004E5B, #3FB5C8 60% );">
+    <div id="bg">
         <div class="container">
             <div class="row">
                 <div class="col-sm-4">
@@ -85,10 +84,19 @@
                             <th>Pseudo</th>
                             <td>{{ user.pseudo }}</td>
                         </tr>
+                        <tr>
+                            <th></th>
+                            <td>
+
+                                    <a href="{{ path('user_edit', {'id': user.id}) }}">
+                                        <div id="deposerAnnonce" class="btn btn-success">Modifier</div></a>
+                                </td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="col-sm-4">
+
                 </div>
             </div>
 
