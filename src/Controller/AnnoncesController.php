@@ -75,18 +75,17 @@ class AnnoncesController extends AbstractController
             if ($nomClasse != null) {
                 $classNameType = 'App\Form\\' . $nomClasse . 'Type';
             }
-            $categorie = $repositoryCategories->findOneBy(['libelle' => $nomClasse]);
+            $categorie = $repositoryCategories->findOneBy(['className' => $nomClasse]);
             $user = $repositoryUser->find($userId);
         }
-
-
 
         if ($request->isMethod("POST")) {
             $requestForm = $request->request->all();
             foreach ($requestForm as $reqForm) {
                 //categorie
+                //dump($reqForm);
                 $categorie = $repositoryCategories->find($reqForm['categorie']);
-                $nomClasse = $categorie->getLibelle();
+                $nomClasse = $categorie->getClassName();
                 $classNameType = 'App\Form\\' . $nomClasse . 'Type';
                 $class = 'App\Entity\\' . $nomClasse;
                 $annonce = new $class();
@@ -102,7 +101,7 @@ class AnnoncesController extends AbstractController
             $entityManager->persist($annonce);
             $entityManager->flush();
 
-            return $this->redirectToRoute('categories_index');
+            return $this->redirectToRoute('accueil');
         }
 
         return $this->render('annonces/new.html.twig', [

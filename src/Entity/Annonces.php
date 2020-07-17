@@ -50,7 +50,8 @@ class Annonces
     private $categorie;
 
     /**
-     * @ORM\OneToOne(targetEntity=User::class,cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=User::class,cascade={"persist"})
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     private $user;
 
@@ -120,6 +121,7 @@ class Annonces
 
         return $this;
     }
+
 
     
 
