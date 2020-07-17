@@ -58,6 +58,11 @@ class Annonces
      */
     private $user;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Photo::class, inversedBy="annonces", cascade={"persist", "remove"})
+     */
+    private $photo;
+
 
 
     public function getId(): ?int
@@ -121,6 +126,18 @@ class Annonces
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getPhoto(): ?Photo
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(?Photo $photo): self
+    {
+        $this->photo = $photo;
 
         return $this;
     }
