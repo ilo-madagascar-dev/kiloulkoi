@@ -17,7 +17,10 @@ use Doctrine\ORM\Mapping\DiscriminatorMap;
  *     "Immobilier" = "Immobilier",
  *     "Mode" = "Mode",
  *     "Service" = "Service",
- *     "Maternite" = "Maternite"})
+ *     "Maternite" = "Maternite",
+ *     "HommeFemmeMode" = "HommeFemmeMode",
+ *     "EnfantMode" = "EnfantMode",
+ *     "VetementMaternite" = "VetementMaternite"})
  */
 class Annonces
 {
