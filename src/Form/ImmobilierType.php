@@ -7,6 +7,7 @@ use App\Entity\Immobilier;
 use App\Entity\User;
 use Shapecode\Bundle\HiddenEntityTypeBundle\Form\Type\HiddenEntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -28,6 +29,14 @@ class ImmobilierType extends AbstractType
                 // looks for choices from this entity
                 'class' => User::class,
 
+            ])
+            ->add('photo', CollectionType::class ,[
+                'entry_type' => PhotoType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+                'prototype' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
             ])
         ;
     }

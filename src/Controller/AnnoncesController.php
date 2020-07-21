@@ -23,6 +23,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use App\Service\FileUploader;
 
 /**
  * @Route("/annonces")
@@ -55,7 +56,7 @@ class AnnoncesController extends AbstractController
     /**
      * @Route("/new", name="annonces_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, FileUploader $fileUploader): Response
     {
         if ($this->getUser() == null) {
             return $this->redirectToRoute('accueil');
@@ -66,9 +67,17 @@ class AnnoncesController extends AbstractController
         $repositoryCategories = $this->getDoctrine()->getRepository(Categories::class);
         $repositoryUser = $this->getDoctrine()->getRepository(User::class);
         $user = null;
+        $userconnect = null;
+        if ($this->getUser() == null) {
+            return $this->redirectToRoute('accueil');
+
+        }
+        $userconnect = $this->getUser()->getId();
+
+
         if ($request->isMethod("GET")) {
             $nomClasse = ucfirst($request->query->get('categorie'));
-            $userId = ucfirst($request->query->get('user'));
+            //$userId = ucfirst($request->query->get('user'));
             $class = 'App\Entity\\' . $nomClasse;
             $annonce = new $class();
 
@@ -76,9 +85,9 @@ class AnnoncesController extends AbstractController
                 $classNameType = 'App\Form\\' . $nomClasse . 'Type';
             }
             $categorie = $repositoryCategories->findOneBy(['className' => $nomClasse]);
-            $user = $repositoryUser->find($userId);
-        }
 
+        }
+        $user = $repositoryUser->find($userconnect);
         if ($request->isMethod("POST")) {
             $requestForm = $request->request->all();
             foreach ($requestForm as $reqForm) {
@@ -97,6 +106,17 @@ class AnnoncesController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $photos = $form->get('photo')->getData();
+            for ($i = 0; $i < count($annonce->getPhoto()); $i++) {
+                $photo = $annonce->getPhoto()[$i];
+                $fileName = $fileUploader->upload($photo->getFile());
+                $photo->setUrl($fileName) ;
+                //dump();
+            }
+            //dump($annonce);
+            //die;
+            //$fileName = $fileUploader->upload($photos->getFile());
+            //$annonce->setPhoto($annonce->getPhoto()->setUrl($fileName));
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($annonce);
             $entityManager->flush();

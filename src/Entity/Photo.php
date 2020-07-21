@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\PhotoRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PhotoRepository::class)
@@ -19,6 +21,8 @@ class Photo
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Please, upload the Annonce photo as a image file.")
+     * @Assert\File(mimeTypes={ "image/jpeg", "image/png", "image/gif", "image/jpg" })
      */
     private $url;
 
@@ -28,9 +32,24 @@ class Photo
     private $description;
 
     /**
-     * @ORM\OneToOne(targetEntity=Annonces::class, mappedBy="photo", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Annonces::class, inversedBy="photo", cascade={"persist"})
+     * @ORM\JoinColumn(name="annonce_id", referencedColumnName="id", nullable=true)
      */
     private $annonces;
+
+
+    private $file;
+
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    public function setFile(UploadedFile $file = null)
+    {
+        $this->file = $file;
+    }
+
 
     public function getId(): ?int
     {
@@ -70,12 +89,7 @@ class Photo
     {
         $this->annonces = $annonces;
 
-        // set (or unset) the owning side of the relation if necessary
-        $newPhoto = null === $annonces ? null : $this;
-        if ($annonces->getPhoto() !== $newPhoto) {
-            $annonces->setPhoto($newPhoto);
-        }
-
         return $this;
     }
+
 }

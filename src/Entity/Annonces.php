@@ -3,10 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\AnnoncesRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\InheritanceType;
 use Doctrine\ORM\Mapping\DiscriminatorColumn;
 use Doctrine\ORM\Mapping\DiscriminatorMap;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Entity(repositoryClass=AnnoncesRepository::class)
@@ -59,11 +62,15 @@ class Annonces
     private $user;
 
     /**
-     * @ORM\OneToOne(targetEntity=Photo::class, inversedBy="annonces", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=Photo::class, mappedBy="annonces", cascade={"persist"})
      */
     private $photo;
 
 
+    public function __construct()
+    {
+        $this->photo = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -130,20 +137,36 @@ class Annonces
         return $this;
     }
 
-    public function getPhoto(): ?Photo
+    /**
+     * @return Collection|Photo[]
+     */
+    public function getPhoto(): Collection
     {
         return $this->photo;
     }
 
-    public function setPhoto(?Photo $photo): self
+    public function addPhoto(Photo $photo): self
     {
-        $this->photo = $photo;
+        if (!$this->photo->contains($photo)) {
+            $this->photo[] = $photo;
+            $photo->setAnnonces($this);
+        }
 
         return $this;
     }
 
+    public function removePhoto(Photo $photo): self
+    {
+        if ($this->photo->contains($photo)) {
+            $this->photo->removeElement($photo);
+            // set the owning side to null (unless already changed)
+            if ($photo->getAnnonces() === $this) {
+                $photo->setAnnonces(null);
+            }
+        }
 
-    
+        return $this;
+    }
 
 
 }
