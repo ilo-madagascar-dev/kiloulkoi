@@ -54,6 +54,29 @@ class AnnoncesController extends AbstractController
     }
 
     /**
+     * @Route("/mes_annonces", name="mes_annonces_index", methods={"GET"})
+     */
+    public function mesAnnonces(AnnoncesRepository $annoncesRepository): Response
+    {
+        $userconnect = null;
+        if ($this->getUser() == null) {
+            return $this->redirectToRoute('accueil');
+        }
+        $userconnect = $this->getUser()->getId();
+        $repository = $this->getDoctrine()->getRepository(Categories::class);
+        $categories = $repository->findAll();
+        $repositoryAnnonces = $this->getDoctrine()->getRepository(Annonces::class);
+        $userconnect=$this->getUser()->getId();
+        $annonces = $repositoryAnnonces->findMesAnnonces($userconnect);
+        //dump($userconnect);
+        //dump($annonces);die;
+        return $this->render('annonces/mesAnnonces.html.twig', [
+            'categories' => $categories,
+            'annonces' => $annonces
+        ]);
+    }
+
+    /**
      * @Route("/new", name="annonces_new", methods={"GET","POST"})
      */
     public function new(Request $request, FileUploader $fileUploader): Response
@@ -150,7 +173,7 @@ class AnnoncesController extends AbstractController
         if ($this->getUser() == null) {
             return $this->redirectToRoute('accueil');
         }
-        $form = $this->createForm(AnnoncesType::class, $annonce);
+        $form = $this->createForm('App\Form\\' . substr(get_class($annonce), 11) . 'Type', $annonce);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

@@ -36,6 +36,23 @@ class AnnoncesRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * @return Annonces[] Returns an array of Annonces objects
+     */
+
+    public function findMesAnnonces($id)
+    {
+        return $this->createQueryBuilder('a')
+            ->leftJoin('a.user', 'u')
+            ->where('u.id = :id')
+            ->setParameter('id', $id)
+            ->orderBy('a.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 
     /*
     public function findOneBySomeField($value): ?Annonces
