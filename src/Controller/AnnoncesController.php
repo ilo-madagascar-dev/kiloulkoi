@@ -160,6 +160,10 @@ class AnnoncesController extends AbstractController
      */
     public function show(Annonces $annonce): Response
     {
+        //dump($annonce);
+        $repositoryAnnonces = $this->getDoctrine()->getRepository('App\Entity\\' . substr(get_class($annonce), 11));
+        $annonce = $repositoryAnnonces->findOneArrayById($annonce->getId());
+        //dump($annonce);
         return $this->render('annonces/show.html.twig', [
             'annonce' => $annonce,
         ]);

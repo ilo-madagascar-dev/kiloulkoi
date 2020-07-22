@@ -19,6 +19,18 @@ class ServiceRepository extends ServiceEntityRepository
         parent::__construct($registry, Service::class);
     }
 
+    public function findOneArrayById($value): ?array
+    {
+        return $this->createQueryBuilder('a')
+            ->leftJoin('a.photo', 'p')
+            ->addSelect('p')
+            ->andWhere('a.id = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+        ;
+    }
+
     // /**
     //  * @return Service[] Returns an array of Service objects
     //  */

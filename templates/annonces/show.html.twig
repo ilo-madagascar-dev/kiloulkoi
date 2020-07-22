@@ -8,12 +8,22 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ annonce.id }}</td>
-            </tr>
-            <tr>
                 <th>Description</th>
-                <td>{{ annonce.description }}</td>
+                <td>{{ annonce["description"] }}</td>
+            </tr>
+
+            <tr>
+                <th>Energie</th>
+                <td>{{ annonce["energie"]["libelle"] }}</td>
+            </tr>
+
+            <tr>
+                <th>Photos</th>
+                <td>
+                {% for photo in annonce["photo"] %}
+                    <img id="icone" src="{{ asset('uploads/') }}{{ photo["url"] }}">
+                {% endfor %}
+                </td>
             </tr>
 
         </tbody>

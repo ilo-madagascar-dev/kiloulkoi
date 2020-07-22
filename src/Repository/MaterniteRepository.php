@@ -19,6 +19,18 @@ class MaterniteRepository extends ServiceEntityRepository
         parent::__construct($registry, Maternite::class);
     }
 
+    public function findOneArrayById($value): ?array
+    {
+        return $this->createQueryBuilder('a')
+            ->leftJoin('a.photo', 'p')
+            ->addSelect('p')
+            ->andWhere('a.id = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+        ;
+    }
+
     // /**
     //  * @return Maternite[] Returns an array of Maternite objects
     //  */
