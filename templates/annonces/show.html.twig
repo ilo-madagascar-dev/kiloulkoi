@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Annonces{% endblock %}
+{% block title %}Details annonces{% endblock %}
 
 {% block body %}
     <h1>Annonces</h1>
@@ -12,11 +12,14 @@
                 <td>{{ annonce["description"] }}</td>
             </tr>
 
-            <tr>
-                <th>Energie</th>
-                <td>{{ annonce["energie"]["libelle"] }}</td>
-            </tr>
+            {% if annonce["energie"] is defined %}
+                {#special pour l'annonce type vehicule#}
+                <tr>
+                    <th>Energie</th>
+                    <td>{{ annonce["energie"]["libelle"] }}</td>
+                </tr>
 
+            {% endif %}
             <tr>
                 <th>Photos</th>
                 <td>

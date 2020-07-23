@@ -32,7 +32,7 @@
     </header>
 
 
-<div id="bg" >
+<div id="bg" class="container">
       <div class="container">
         <div class="row">
           <div class="col-sm-4">
@@ -49,18 +49,25 @@
         <div class="col-sm-4">
         </div>
         <div class="col-sm-4">
-                <div id="select" class="form-group">
-              <select class="form-control" id="selectAnnonceType">
-                  {% for categorie in categories %}
-                      <option value="{{ categorie.className }}">{{ categorie.libelle }} </option>
-                  {% endfor %}
-              </select>
+            <div id="select" class="form-group">
+                  <select class="form-control" id="selectAnnonceType">
+                      {% for categorie in categories %}
+                          <option value="{{ categorie.className }}">{{ categorie.libelle }} </option>
+                      {% endfor %}
+                  </select>
               </div>
             <div id="deposerAnnonce" class="btn btn-success" iduser="{{ app.user.id }}">
                 Déposer une Annonces
             </div>
+            <a href="{{ path('mes_annonces_index') }}">
+                <div class="btn btn-success">
+                    Mes Annonces
+                </div>
+            </a>
+
         </div>
         <div class="col-sm-4">
+
         </div>
       </div>
 
@@ -111,10 +118,6 @@
             {% endfor %}
         </div>
     </div>
-
-
-
-
 </div>
 
     <div class="container">
