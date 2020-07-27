@@ -3,21 +3,15 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- *  *  * @UniqueEntity(
- *  fields={"username"},
- *  message = "L' username que vous avez tapé est déjà utilisé !"
- * )
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
-class User implements UserInterface   
+class User implements UserInterface
 {
     /**
      * @ORM\Id()
@@ -27,54 +21,20 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $username;
+    private $email;
 
-      /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Length(
-     *  min = 8,
-     *  minMessage = "Votre mot de passe doit comporter au minimun {{ limit }} caractères")
-     *  @Assert\EqualTo(propertyPath = "confirm_password",
-     *  message = "Vous n 'avez pas saisi le même mot de passe !")
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
+    /**
+     * @var string The hashed password
+     * @ORM\Column(type="string")
      */
     private $password;
-
-      /**
-     * @Assert\EqualTo(propertyPath = "password",
-     * message = "Vous n'avez pas saisi le même mot de passe !")
-     */
-    private $confirm_password;
-
-    /**
-    * @ORM\OneToMany(targetEntity=Location::class, mappedBy="user")
-    */
-    private $location;
-
-    public function getConfirmPassword()
-    {
-        return $this->confirm_password;
-    }
-
-    public function setConfirmPassword($confirm_password)
-    {
-        $this->confirm_password = $confirm_password;
-        
-        return $this;
-    } 
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $facebookID;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $facebookAccessToken;
-
-
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -111,36 +71,58 @@ class User implements UserInterface
      */
     private $pseudo;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $fonction;
-
-    public function __construct()
-    {
-        $this->location = new ArrayCollection();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUsername(): ?string
+    public function getEmail(): ?string
     {
-        return $this->username;
+        return $this->email;
     }
 
-    public function setUsername(string $username): self
+    public function setEmail(string $email): self
     {
-        $this->username = $username;
+        $this->email = $email;
 
         return $this;
     }
 
-    public function getPassword(): ?string
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUsername(): string
     {
-        return $this->password;
+        return (string) $this->email;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getPassword(): string
+    {
+        return (string) $this->password;
     }
 
     public function setPassword(string $password): self
@@ -148,6 +130,23 @@ class User implements UserInterface
         $this->password = $password;
 
         return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getSalt()
+    {
+        // not needed when using the "bcrypt" algorithm in security.yaml
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 
     public function getNom(): ?string
@@ -233,94 +232,4 @@ class User implements UserInterface
 
         return $this;
     }
-
-    public function getFonction(): ?string
-    {
-        return $this->fonction;
-    }
-
-    public function setFonction(string $fonction): self
-    {
-        $this->fonction = $fonction;
-
-        return $this;
-    }
-
-     /**
-     * @return mixed
-     */
-    public function getFacebookID(): ?string
-    {
-        return $this->facebookID;
-    }
-
-    /**
-     * @param mixed $facebookID
-     */
-    public function setFacebookID(string $facebookID): self
-    {
-        $this->facebookID = $facebookID;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFacebookAccessToken(): ?string
-    {
-        return $this->facebookAccessToken;
-    }
-
-    /**
-     * @param mixed $facebookAccessToken
-     */
-    public function setFacebookAccessToken(string $facebookAccessToken): self
-    {
-        $this->facebookAccessToken = $facebookAccessToken;
-
-        return $this;
-    }
-    public function getRoles() {
-        return  ['ROLE_USER'];
-    }
-
-    // public function getUsername(): ?string {
-    //     return $this->nom;
-    // }
-
-    public function eraseCredentials() {}
-    public function getSalt() {}
-
-    /**
-     * @return Collection|Location[]
-     */
-    public function getLocation(): Collection
-    {
-        return $this->location;
-    }
-
-    public function addLocation(Location $location): self
-    {
-        if (!$this->location->contains($location)) {
-            $this->location[] = $location;
-            $location->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeLocation(Location $location): self
-    {
-        if ($this->location->contains($location)) {
-            $this->location->removeElement($location);
-            // set the owning side to null (unless already changed)
-            if ($location->getUser() === $this) {
-                $location->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
 }
