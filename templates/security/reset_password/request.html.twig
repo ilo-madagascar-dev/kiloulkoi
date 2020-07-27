@@ -1,0 +1,171 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block stylesheets %}
+    {# <link href="{{ asset('css/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"/> #}
+    <link href="{{ asset('css/responsivevoiture.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('css/styleconnection.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+{% endblock %}
+
+{% block body %}
+    <header>
+        <center>
+            <div class="head">
+                <ul id="liste">
+                    <li><img id="icone" src="icone/search.png"><label>Mes recherches</label></li>
+                    <li><img id="icone" src="icone/star.png"><label>Favoris</label></li>
+                    <li><img id="icone" src="icone/user.png"><a href="{{ path('app_login') }}"><label>Se Connecter</label></a></li>
+                </ul>      
+            </div>
+        </center>
+    </header>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2">
+            </div>
+
+            <div id="blog" class="col-md-8">
+                <center>
+                    <img class="logo"src="image/logo.png">
+                </center>
+                
+                <h2 id="slogan" class="text-center">N'achetez que le nécessaire, pour le reste il y a Kiloukoi!</h2>
+                
+                <div id="inscri">
+                    {% for flashError in app.flashes('reset_password_error') %}
+                        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+                    {% endfor %}
+                    <h1>Reset your password</h1>
+
+                    {{ form_start(requestForm) }}
+                        {{ form_row(requestForm.email) }}
+                        <div>
+                            <small>
+                                Enter your email address and we we will send you a
+                                link to reset your password.
+                            </small>
+                        </div>
+
+                        <button class="btn btn-primary">Send password reset email</button>
+                    {{ form_end(requestForm) }}
+                </div>
+
+                <div class="col-md-2"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="bg">
+        <div class="container">
+            <div class="row bas">
+                <div class="col-md-3">
+                    <div class="box1">
+                        <div id="tete">
+                            A propos
+                        </div>
+                        <div>
+                            <a href="#">Qui sommes-nous ?</a>
+                        </div>
+                        <div>
+                            <a href="#">Nous rejoindre</a>
+                        </div>
+                        <div>
+                            <a href="#">Acteur responsable de l'économie française</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div id="tete">
+                        information
+                    </div>
+                    <div>
+                        <a href="#"> condition générale d'utilisation</a>
+                    </div>
+                    <div>
+                        <a href="#">Règles de diffusion de référencement et de déréférencement</a>
+                    </div>
+                    <div>
+                        <a href="#">Condition générale de vente</a>
+                    </div>
+                    <div>
+                        <a href="#">Vie privé/cookies</a>
+                    </div>
+                    <div>
+                        <a href="#">Vos droit et obligations</a>
+                    </div>
+                    <div>
+                        <a href="#"> Critère de classement</a>
+                    </div>
+
+                </div>
+                <div class="col-md-3">
+                    <div id="tete">
+                        Nos solution pros
+                    </div>
+                    <div>
+                        <a href="#">Professionnel de l'immobilier</a>
+                    </div>
+                    <div>
+                        <a href="#">Vos recrutements</a>
+                    </div>
+                    <div>
+                        <a href="#">Professionnel de l'auto</a>
+                    </div>
+                    <div>
+                        <a href="#">Autres solutions professionnelles</a>
+                    </div>
+                    <div>
+                        <a href="#">Annuaires des professionnelles</a>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div id="tete">
+                        Des questions ?
+                    </div>
+                    <div>
+                        <a href="#">Aides</a>
+                    </div>
+                    <div>
+                        <a href="#">Le service de paiement sécurisé et la livraison</a>
+                    </div>
+                    <div>
+                        <a href="#">Demandez conseil à la Communauté</a>
+                    </div>
+                    <div id="retrouver">
+                        Retrouvez-nous sur
+                    </div>
+                    <div id="contact">
+                        <div class="row">
+                            <div class="col-md-4">
+
+                            </div>
+                            <div class="col-md-4">
+                                <img src="icone/facebook.png">
+                            </div>
+                            <div class="col-md-4">
+                                <img src="icone/twiter.png">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-2">
+                        <h6 id="footer">Copyrights Kiloukoi 2020</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
