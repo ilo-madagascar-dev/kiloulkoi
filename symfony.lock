@@ -121,6 +121,24 @@
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
+    "knpuniversity/oauth2-client-bundle": {
+        "version": "1.20",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.20",
+            "ref": "80acc9223a205cbf5d9828fd616c82a374d281dd"
+        }
+    },
+    "league/oauth2-client": {
+        "version": "2.5.0"
+    },
+    "league/oauth2-facebook": {
+        "version": "2.0.2"
+    },
+    "league/oauth2-google": {
+        "version": "3.0.3"
+    },
     "nikic/php-parser": {
         "version": "v4.4.0"
     },
@@ -312,6 +330,15 @@
             "./src/Controller/.gitignore",
             "./src/Kernel.php"
         ]
+    },
+    "symfony/google-mailer": {
+        "version": "4.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.4",
+            "ref": "f8fd4ddb9b477510f8f4bce2b9c054ab428c0120"
+        }
     },
     "symfony/http-foundation": {
         "version": "v4.4.8"

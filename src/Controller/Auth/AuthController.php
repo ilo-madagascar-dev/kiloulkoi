@@ -24,13 +24,13 @@ class AuthController extends AbstractController
     }
 
     /**
-     * @Route("/connexion", name="app_login")
+     * @Route("/connexion", name="securitylogin")
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser())
         {
-            return $this->redirectToRoute('profile');
+            return $this->redirectToRoute('accueil');
         }
 
         // get the login error if there is one
@@ -48,7 +48,7 @@ class AuthController extends AbstractController
     {
         if ($this->getUser())
         {
-            return $this->redirectToRoute('profile');
+            return $this->redirectToRoute('accueil');
         }
 
         $user = new User();
@@ -82,7 +82,7 @@ class AuthController extends AbstractController
     }
 
     /**
-     * @Route("/logout", name="app_logout")
+     * @Route("/logout", name="security_logout")
      */
     public function logout()
     {

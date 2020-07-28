@@ -64,4 +64,46 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         ;
     }
     */
+   
+    public function findAllisClients($lastUsername,$role)
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.username = :lastUsername')
+            ->andWhere('u.fonction = :role')
+            ->setParameter('lastUsername', $lastUsername)
+            ->setParameter('role', $role)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllisPrestataire($lastUsername,$role)
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.username = :lastUsername')
+            ->andWhere('u.fonction = :role')
+            ->setParameter('lastUsername', $lastUsername)
+            ->setParameter('role', $role)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllisAdmin($lastUsername,$role)
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.username = :lastUsername')
+            ->andWhere('u.fonction = :role')
+            ->setParameter('lastUsername', $lastUsername)
+            ->setParameter('role', $role)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllUsers($lastUsername)
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.username = :lastUsername')
+            ->setParameter('lastUsername', $lastUsername)
+            ->getQuery()
+            ->getResult();
+    }
 }

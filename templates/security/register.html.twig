@@ -15,7 +15,7 @@
             <ul id="liste">
                 <li> <img id="icone" src="icone/search.png"><label>Mes recherches</label></li>
                 <li><img id="icone" src="icone/star.png"><label>Favoris</label></li>
-                <li><img id="icone" src="icone/user.png"><a href="{{path('app_login')}}"><label>Se Connecter</label></a></li>
+                <li><img id="icone" src="icone/user.png"><a href="{{path('securitylogin')}}"><label>Se Connecter</label></a></li>
             </ul>      
         </div>
     </center>
@@ -26,41 +26,62 @@
         <div class="col-md-2">   </div>
         <div id="blog" class="col-md-8">
            <center>
-            <img class="logo"src="image/logo.png">
-        </center>
-        <h2 id="slogan" class="text-center">N'achetez que le nécessaire, pour le reste il y a Kiloukoi!</h2>
-        <div id="inscri">
+                <img class="logo"src="/image/logo.png">
+            </center>
+            <h2 id="slogan" class="text-center">N'achetez que le nécessaire, pour le reste il y a Kiloukoi!</h2>
 
-            {{ form_start(registrationForm) }}
-                {{ form_row(registrationForm.nom) }}
-                {{ form_row(registrationForm.prenom) }}
-                {{ form_row(registrationForm.telephone) }}
-                {{ form_row(registrationForm.email) }}
-                {{ form_row(registrationForm.pseudo) }}
-                {{ form_row(registrationForm.ville) }}
-                {{ form_row(registrationForm.rue) }}
-                {{ form_row(registrationForm.cp) }}
-                {{ form_row(registrationForm.password) }}
-                {{ form_row(registrationForm.agreeTerms) }}
-                
-                <div class="form-group">
-                    <div class="col-12">
-                        <button type="submit" class="btn btn-primary btn-block">
-                            <i class="fa fa-btn fa-user"></i> Enregistrer
-                        </button>
+            <div id="inscri">
+                {{ form_start(registrationForm) }}
+                    {{ form_row(registrationForm.email) }}
+                    {{ form_row(registrationForm.password) }}
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form_row(registrationForm.nom) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_row(registrationForm.prenom) }}
+                        </div>
                     </div>
-                </div>
-            {{ form_end(registrationForm) }}
 
-            {#
-                {{ form_start(form) }}
-                    {{form_row(form.pseudo, {'label':'Pseudo', 'attr': { 'placeholder': 'Pseudo' } } )}}
-                    {{form_row(form.username, {'label':'Email', 'attr': { 'placeholder': 'email' } } )}}
-                    {{form_row(form.password, {'label':'Mot de passe', 'attr': { 'placeholder': 'Mot de passe' } } )}}
-                    {{form_row(form.confirm_password, {'label':'Répétez votre mot de passe', 'attr': { 'placeholder': 'Répétez votre mot de passe' } } )}}
-                    <input type="submit" value="Inscription">
-                {{ form_end(form) }}
-            #}
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form_row(registrationForm.telephone) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_row(registrationForm.pseudo) }}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            {{ form_row(registrationForm.ville) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_row(registrationForm.rue) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_row(registrationForm.cp) }}
+                        </div>
+                    </div>
+
+                    {# {{ form_row(registrationForm.agreeTerms) }} #}
+                    
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <i class="fa fa-btn fa-user"></i> Enregistrer
+                    </button>
+                {{ form_end(registrationForm) }}
+
+                {#
+                    {{ form_start(form) }}
+                        {{form_row(form.pseudo, {'label':'Pseudo', 'attr': { 'placeholder': 'Pseudo' } } )}}
+                        {{form_row(form.username, {'label':'Email', 'attr': { 'placeholder': 'email' } } )}}
+                        {{form_row(form.password, {'label':'Mot de passe', 'attr': { 'placeholder': 'Mot de passe' } } )}}
+                        {{form_row(form.confirm_password, {'label':'Répétez votre mot de passe', 'attr': { 'placeholder': 'Répétez votre mot de passe' } } )}}
+                        <input type="submit" value="Inscription">
+                    {{ form_end(form) }}
+                #}
+            </div>
         </div>
     </div>
 </div>

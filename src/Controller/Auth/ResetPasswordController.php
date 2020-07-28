@@ -49,7 +49,7 @@ class ResetPasswordController extends AbstractController
             );
         }
 
-        return $this->render('reset_password/request.html.twig', [
+        return $this->render('security/reset_password/request.html.twig', [
             'requestForm' => $form->createView(),
         ]);
     }
@@ -66,7 +66,7 @@ class ResetPasswordController extends AbstractController
             return $this->redirectToRoute('app_forgot_password_request');
         }
 
-        return $this->render('reset_password/check_email.html.twig', [
+        return $this->render('security/reset_password/check_email.html.twig', [
             'tokenLifetime' => $this->resetPasswordHelper->getTokenLifetime(),
         ]);
     }
@@ -122,10 +122,10 @@ class ResetPasswordController extends AbstractController
             // The session is cleaned up after the password has been changed.
             $this->cleanSessionAfterReset();
 
-            return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('securitylogin');
         }
 
-        return $this->render('reset_password/reset.html.twig', [
+        return $this->render('security/reset_password/reset.html.twig', [
             'resetForm' => $form->createView(),
         ]);
     }
@@ -159,7 +159,7 @@ class ResetPasswordController extends AbstractController
             ->from(new Address('njanahary46@gmail.com', 'Kiloukoi'))
             ->to($user->getEmail())
             ->subject('Your password reset request')
-            ->htmlTemplate('reset_password/email.html.twig')
+            ->htmlTemplate('security/reset_password/email.html.twig')
             ->context([
                 'resetToken' => $resetToken,
                 'tokenLifetime' => $this->resetPasswordHelper->getTokenLifetime(),

@@ -20,7 +20,7 @@
                 <ul id="liste">
                     <li><img id="icone" src="icone/search.png"><label>Mes recherches</label></li>
                     <li><img id="icone" src="icone/star.png"><label>Favoris</label></li>
-                    <li><img id="icone" src="icone/user.png"><a href="{{ path('app_login') }}"><label>Se Connecter</label></a></li>
+                    <li><img id="icone" src="icone/user.png"><a href="{{ path('securitylogin') }}"><label>Se Connecter</label></a></li>
                 </ul>      
             </div>
         </center>
@@ -33,14 +33,22 @@
 
             <div id="blog" class="col-md-8">
                 <center>
-                    <img class="logo"src="image/logo.png">
+                    <img class="logo" src="/image/logo.png">
                 </center>
                 
                 <h2 id="slogan" class="text-center">N'achetez que le nécessaire, pour le reste il y a Kiloukoi!</h2>
                 
                 <div id="inscri">
-            	   	<p>An email has been sent that contains a link that you can click to reset your password. This link will expire in {{ tokenLifetime|date('g') }} hour(s).</p>
-    				<p>If you don't receive an email please check your spam folder or <a href="{{ path('app_forgot_password_request') }}">try again</a>.</p>
+                    <div class="text-center">
+                        <p>
+                            Un e-mail a été envoyé contenant un lien sur lequel vous pouvez cliquer pour réinitialiser votre mot de passe. 
+                            Ce lien expirera dans {{ tokenLifetime|date('g') }} heure(s).
+                        </p>
+                        <p>
+                            Si vous ne recevez pas d'e-mail, veuillez vérifier votre dossier spam ou 
+                            <a href="{{ path('app_forgot_password_request') }}">réessayer</a>.
+                        </p>
+                    </div>
                 </div>
 
                 <div class="col-md-2"></div>

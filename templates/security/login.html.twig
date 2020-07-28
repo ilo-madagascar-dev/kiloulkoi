@@ -20,7 +20,7 @@
                 <ul id="liste">
                     <li><img id="icone" src="icone/search.png"><label>Mes recherches</label></li>
                     <li><img id="icone" src="icone/star.png"><label>Favoris</label></li>
-                    <li><img id="icone" src="icone/user.png"><a href="{{ path('app_login') }}"><label>Se Connecter</label></a></li>
+                    <li><img id="icone" src="icone/user.png"><a href="{{ path('securitylogin') }}"><label>Se Connecter</label></a></li>
                 </ul>      
             </div>
         </center>
@@ -33,7 +33,7 @@
 
             <div id="blog" class="col-md-8">
                 <center>
-                    <img class="logo"src="image/logo.png">
+                    <img class="logo"src="/image/logo.png">
                 </center>
                 
                 <h2 id="slogan" class="text-center">N'achetez que le nécessaire, pour le reste il y a Kiloukoi!</h2>
@@ -53,29 +53,36 @@
                         <div class="form-group">
                             <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Mots de Passe" required>
                         </div>
-
+                        
                         <div class="form-group">
-                            {# <button type="submit" class="btn btn-success"> Connexion </button> #}
-                            <input type="submit" value="Connexion">
-                            {# <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                                Mot de passe oublier
-                            </button> #}
-                            <p style="text-align:center;cursor: pointer;color:#1E90FF" data-toggle="modal" data-target="#myModal"><a>Mot de passe oublier</a></p>
-                            <p style="text-align:center"><a href="{{ path('app_register') }}">S'inscrire</a></p>
-                            <p  style="text-align:center;cursor: pointer;color:#1E90FF">
-                                <a href="#">
-                                    <span>Login with facebook</span>
+                            <button class="btn btn-success btn-block" type="submit">Connexion</button>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12 col-lg-6 my-2 text-center">
+                                <a href="{{ path('connect_facebook') }}" class="btn btn-block btn-primary" >
+                                    <img src="{{ asset('image/facebook.png') }}" class="mr-2 float-left" style="height: 25px"><span>Se connecter avec facebook</span>
                                 </a>
-                            </p>
-                            <p  style="text-align:center;cursor: pointer;color:#1E90FF">
-                                <a href="#">
-                                    <span>Login with Google</span>
+                            </div>
+
+                            <div class="col-md-12 col-lg-6 my-2 text-center">
+                                <a href="{{ path('connect_google') }}" class="btn btn-block btn-danger" >
+                                    <img src="{{ asset('image/google.png') }}" class="float-left" style="height: 25px"><span>Se connecter avec google</span>
                                 </a>
-                            </p>
+                            </div>
                         </div>
                     </form>
                 </div>
-
+                
+                <div class="my-3 text-center">
+                    <p>
+                        <strong><a class="text-dark" style="text-decoration: underline" href="{{ path('app_forgot_password_request') }}">Mot de passe oublier?</a></strong>
+                    </p>
+                        
+                    <p>
+                        <strong>Nouveau sur kiloukoi ? <a class="text-dark" style="text-decoration: underline" href="{{ path('app_register') }}">Créez votre compte</a></strong>
+                    </p>
+                </div>
                 <div class="col-md-2"></div>
             </div>
         </div>

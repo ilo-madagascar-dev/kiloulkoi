@@ -20,7 +20,7 @@
                 <ul id="liste">
                     <li><img id="icone" src="icone/search.png"><label>Mes recherches</label></li>
                     <li><img id="icone" src="icone/star.png"><label>Favoris</label></li>
-                    <li><img id="icone" src="icone/user.png"><a href="{{ path('app_login') }}"><label>Se Connecter</label></a></li>
+                    <li><img id="icone" src="icone/user.png"><a href="{{ path('securitylogin') }}"><label>Se Connecter</label></a></li>
                 </ul>      
             </div>
         </center>
@@ -33,7 +33,7 @@
 
             <div id="blog" class="col-md-8">
                 <center>
-                    <img class="logo"src="image/logo.png">
+                    <img class="logo" src="{{ app.request.getSchemeAndHttpHost() ~ asset('/image/logo.png') }}">
                 </center>
                 
                 <h2 id="slogan" class="text-center">N'achetez que le nécessaire, pour le reste il y a Kiloukoi!</h2>
@@ -42,18 +42,16 @@
                     {% for flashError in app.flashes('reset_password_error') %}
                         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
                     {% endfor %}
-                    <h1>Reset your password</h1>
+
+                    <p class="text-center">
+                        Entrer votre adresse mail ici et nous enverrons un
+                        lien pour réinitialiser votre mot de passe.
+                    </p>
 
                     {{ form_start(requestForm) }}
                         {{ form_row(requestForm.email) }}
-                        <div>
-                            <small>
-                                Enter your email address and we we will send you a
-                                link to reset your password.
-                            </small>
-                        </div>
 
-                        <button class="btn btn-primary">Send password reset email</button>
+                        <button class="btn btn-primary">Envoyer le mail</button>
                     {{ form_end(requestForm) }}
                 </div>
 
