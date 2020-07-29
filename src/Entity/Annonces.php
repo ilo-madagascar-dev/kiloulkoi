@@ -62,7 +62,7 @@ class Annonces
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity=Photo::class, mappedBy="annonces", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=Photo::class, mappedBy="annonces", cascade={"persist", "remove"})
      */
     private $photo;
 
