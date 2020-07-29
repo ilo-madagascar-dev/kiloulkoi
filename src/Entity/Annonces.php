@@ -138,6 +138,14 @@ class Annonces
     }
 
     /**
+     * @param mixed $photo
+     */
+    public function setPhoto(): void
+    {
+        $this->photo = new ArrayCollection();
+    }
+
+    /**
      * @return Collection|Photo[]
      */
     public function getPhoto(): Collection

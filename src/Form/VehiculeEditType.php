@@ -10,7 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
-class Vehicule1Type extends AbstractType
+class VehiculeEditType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

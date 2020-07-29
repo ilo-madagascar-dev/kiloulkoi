@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\FileUploader;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * @Route("/photo")
@@ -95,5 +96,24 @@ class PhotoController extends AbstractController
         }
 
         return $this->redirectToRoute('photo_index');
+    }
+
+    /**
+     * @Route("/delete", name="photo_delete_ajax", methods={"POST"})
+     */
+    public function deleteAjax(Request $request): Response
+    {
+        if ($request->isXmlHttpRequest()) {
+            // Ajax request
+            $id = $request->get("id");
+            $photo = $this->getDoctrine()->getRepository('App\Entity\Photo')->find($id);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($photo);
+            $entityManager->flush();
+            $jsonData = [$id];
+            return new JsonResponse($jsonData);
+        } else {
+            // Normal request
+        }
     }
 }

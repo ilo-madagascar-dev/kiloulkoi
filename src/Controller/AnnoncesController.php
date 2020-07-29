@@ -10,7 +10,7 @@ use App\Entity\Vehicule;
 use App\Entity\VetementMaternite;
 use App\Form\AnnoncesType;
 use App\Form\ModeType;
-use App\Form\Vehicule1Type;
+use App\Form\VehiculeEditType;
 use App\Form\VehiculeType;
 use App\Form\ImmobilierType;
 use App\Form\AnnoncesType_test;
@@ -163,7 +163,7 @@ class AnnoncesController extends AbstractController
         //dump($annonce);
         $repositoryAnnonces = $this->getDoctrine()->getRepository('App\Entity\\' . substr(get_class($annonce), 11));
         $annonce = $repositoryAnnonces->findOneArrayById($annonce->getId());
-        //dump($annonce);
+        //
         return $this->render('annonces/show.html.twig', [
             'annonce' => $annonce,
         ]);
@@ -172,15 +172,30 @@ class AnnoncesController extends AbstractController
     /**
      * @Route("/{id}/edit", name="annonces_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Annonces $annonce): Response
+    public function edit(Request $request, Annonces $annonce, FileUploader $fileUploader): Response
     {
+        /*
+        $class = substr(get_class($annonce), 11);
+        $repositoryAnnonces = $this->getDoctrine()->getRepository('App\Entity\\' . $class);
+        $annonce = $repositoryAnnonces->findOneById($annonce->getId());
+   */
+        $photo = $this->getDoctrine()->getRepository('App\Entity\Photo')->findBy(['annonces'=>$annonce->getId()]);
+        //dump($photo);
+        $annonce->setPhoto();
         if ($this->getUser() == null) {
             return $this->redirectToRoute('accueil');
         }
         $form = $this->createForm('App\Form\\' . substr(get_class($annonce), 11) . 'Type', $annonce);
         $form->handleRequest($request);
-
+        //dump($annonce);
         if ($form->isSubmitted() && $form->isValid()) {
+            $photos = $form->get('photo')->getData();
+            for ($i = 0; $i < count($annonce->getPhoto()); $i++) {
+                $photo = $annonce->getPhoto()[$i];
+                $fileName = $fileUploader->upload($photo->getFile());
+                $photo->setUrl($fileName) ;
+                //dump();
+            }
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('annonces_index');
@@ -188,6 +203,7 @@ class AnnoncesController extends AbstractController
 
         return $this->render('annonces/edit.html.twig', [
             'annonce' => $annonce,
+            'photoAnnonce' => $photo,
             'form' => $form->createView(),
         ]);
     }
@@ -208,4 +224,6 @@ class AnnoncesController extends AbstractController
 
         return $this->redirectToRoute('annonces_index');
     }
+
+
 }
