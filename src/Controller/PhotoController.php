@@ -112,8 +112,7 @@ class PhotoController extends AbstractController
             $entityManager->flush();
             $jsonData = [$id];
             return new JsonResponse($jsonData);
-        } else {
-            // Normal request
         }
+        return new Response("Erreur, ce n'est pas une requête ajax", 404);
     }
 }
