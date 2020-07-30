@@ -52,9 +52,15 @@ class Location
      */
     private $user;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Conversation::class, mappedBy="location", orphanRemoval=true)
+     */
+    private $conversations;
+
     public function __construct()
     {
         $this->annonces = new ArrayCollection();
+        $this->conversations = new ArrayCollection();
     }
 
     //id client
@@ -100,8 +106,6 @@ class Location
         return $this;
     }
 
-    
-
     public function getDateReservation(): ?\DateTimeInterface
     {
         return $this->dateReservation;
@@ -134,6 +138,37 @@ class Location
     public function setAnnonces(?Annonces $annonces): self
     {
         $this->annonces = $annonces;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Conversation[]
+     */
+    public function getConversations(): Collection
+    {
+        return $this->conversations;
+    }
+
+    public function addConversation(Conversation $conversation): self
+    {
+        if (!$this->conversations->contains($conversation)) {
+            $this->conversations[] = $conversation;
+            $conversation->setLocation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConversation(Conversation $conversation): self
+    {
+        if ($this->conversations->contains($conversation)) {
+            $this->conversations->removeElement($conversation);
+            // set the owning side to null (unless already changed)
+            if ($conversation->getLocation() === $this) {
+                $conversation->setLocation(null);
+            }
+        }
 
         return $this;
     }
