@@ -38,7 +38,7 @@ class PhotoController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $photos = $form->get('url')->getData();
-            dump($photos);die;
+            //dump($photos);die;
             $fileName = $fileUploader->upload($photos);
             $photo->setUrl($fileName);
             $entityManager = $this->getDoctrine()->getManager();
