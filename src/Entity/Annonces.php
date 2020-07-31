@@ -50,6 +50,31 @@ class Annonces
     private $prix;
 
     /**
+     * @ORM\Column(type="float")
+     */
+    private $proucentageTva;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $dateCreation;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $dateModification;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $statut;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $validationAdmin;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Categories::class, inversedBy="annonces" ,cascade={"persist"})
      * @ORM\JoinColumn(name="categorie_id", referencedColumnName="id", nullable=false)
      */
@@ -70,6 +95,7 @@ class Annonces
     public function __construct()
     {
         $this->photo = new ArrayCollection();
+        $this->dateCreation = new \Datetime();
     }
 
     public function getId(): ?int
@@ -172,6 +198,65 @@ class Annonces
                 $photo->setAnnonces(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getProucentageTva(): ?float
+    {
+        return $this->proucentageTva;
+    }
+
+    public function setProucentageTva(float $proucentageTva): self
+    {
+        $this->proucentageTva = $proucentageTva;
+
+        return $this;
+    }
+
+    public function getDateCreation(): ?\DateTimeInterface
+    {
+        return $this->dateCreation;
+    }
+
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    {
+        $this->dateCreation = $dateCreation;
+
+        return $this;
+    }
+
+    public function getDateModification(): ?\DateTimeInterface
+    {
+        return $this->dateModification;
+    }
+
+    public function setDateModification(): self
+    {
+        $this->dateModification = new \Datetime();
+        return $this;
+    }
+
+    public function getStatut(): ?string
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(?string $statut): self
+    {
+        $this->statut = $statut;
+
+        return $this;
+    }
+
+    public function getValidationAdmin(): ?bool
+    {
+        return $this->validationAdmin;
+    }
+
+    public function setValidationAdmin(bool $validationAdmin): self
+    {
+        $this->validationAdmin = $validationAdmin;
 
         return $this;
     }

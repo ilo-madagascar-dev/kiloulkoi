@@ -196,6 +196,7 @@ class AnnoncesController extends AbstractController
                 $photo->setUrl($fileName) ;
                 //dump();
             }
+            $annonce->setDateModification();
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('annonces_index');
