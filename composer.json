@@ -8,6 +8,7 @@
         "knpuniversity/oauth2-client-bundle": "^2.2",
         "league/oauth2-facebook": "^2.0",
         "league/oauth2-google": "^3.0",
+        "ninsuo/symfony-collection": "^2.1",
         "pmill/doctrine-array-hydrator": "^0.1.7",
         "sensio/framework-extra-bundle": "^5.5",
         "shapecode/hidden-entity-type-bundle": "^4.1",
@@ -31,7 +32,8 @@
         "symfony/validator": "4.4.*",
         "symfony/webpack-encore-bundle": "^1.7",
         "symfony/yaml": "4.4.*",
-        "symfonycasts/reset-password-bundle": "^1.1"
+        "symfonycasts/reset-password-bundle": "^1.1",
+        "vich/uploader-bundle": "^1.15"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.3",

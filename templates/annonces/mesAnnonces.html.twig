@@ -32,7 +32,7 @@
     </header>
 
 
-<div id="bg" class="container">
+<div id="bg" >
       <div class="container">
         <div class="row">
           <div class="col-sm-4">
@@ -49,25 +49,18 @@
         <div class="col-sm-4">
         </div>
         <div class="col-sm-4">
-            <div id="select" class="form-group">
-                  <select class="form-control" id="selectAnnonceType">
-                      {% for categorie in categories %}
-                          <option value="{{ categorie.className }}">{{ categorie.libelle }} </option>
-                      {% endfor %}
-                  </select>
+                <div id="select" class="form-group">
+              <select class="form-control" id="selectAnnonceType">
+                  {% for categorie in categories %}
+                      <option value="{{ categorie.className }}">{{ categorie.libelle }} </option>
+                  {% endfor %}
+              </select>
               </div>
             <div id="deposerAnnonce" class="btn btn-success" iduser="{{ app.user.id }}">
                 Déposer une Annonces
             </div>
-            <a href="{{ path('mes_annonces_index') }}">
-                <div class="btn btn-success">
-                    Mes Annonces
-                </div>
-            </a>
-
         </div>
         <div class="col-sm-4">
-
         </div>
       </div>
 
@@ -105,8 +98,9 @@
                                             </tr>
                                             <tr>
                                                 <td>Il y a 1h:30min</td>
-                                                <td><a href="{{ path('location_new', {'idannonce': annonce.id}) }}">Louer</a>
-                                                    <a href="{{ path('annonces_show', {'id': annonce.id}) }}">plus</a></td>
+                                                <td><a href="{{ path('annonces_show', {'id': annonce.id}) }}">plus</a>
+                                                    <a href="{{ path('annonces_edit', {'id': annonce.id}) }}">modifier</a>
+                                                    {{ include('annonces/_delete_form.html.twig') }}<td>
                                             </tr>
                                         </table>
                                     </div>
@@ -118,6 +112,10 @@
             {% endfor %}
         </div>
     </div>
+
+
+
+
 </div>
 
     <div class="container">

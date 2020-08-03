@@ -6,6 +6,7 @@ use App\Entity\Categories;
 use App\Entity\Service;
 use App\Entity\User;
 use Shapecode\Bundle\HiddenEntityTypeBundle\Form\Type\HiddenEntityType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -29,7 +30,14 @@ class ServiceType extends AbstractType
                 'class' => User::class,
 
             ])
-
+            ->add('photo', CollectionType::class ,[
+                'entry_type' => PhotoType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+                'prototype' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+            ])
         ;
     }
 

@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 
-{% block title %}Profil{% endblock %}
+{% block title %}Mes infos{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -39,7 +39,7 @@
                 <div class="col-sm-4">
                 </div>
                 <div class="col-sm-4">
-                    <h1 class="align-content-center">Profil</h1>
+                    <h1 class="align-content-center">Mes infos</h1>
                 </div>
                 <div class="col-sm-4">
                 </div>
@@ -90,6 +90,11 @@
 
                                     <a href="{{ path('user_edit', {'id': user.id}) }}">
                                         <div id="deposerAnnonce" class="btn btn-success">Modifier</div></a>
+                                <a href="{{ path('mes_annonces_index') }}">
+                                    <div class="btn btn-success">
+                                        Mes Annonces
+                                    </div>
+                                </a>
                                 </td>
                         </tr>
                         </tbody>

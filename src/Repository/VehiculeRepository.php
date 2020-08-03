@@ -19,6 +19,21 @@ class VehiculeRepository extends ServiceEntityRepository
         parent::__construct($registry, Vehicule::class);
     }
 
+    public function findOneArrayById($value): ?array
+    {
+        return $this->createQueryBuilder('a')
+            ->leftJoin('a.photo', 'p')
+            ->addSelect('p')
+            ->leftJoin('a.energie', 'e')
+            ->addSelect('e')
+            ->andWhere('a.id = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+        ;
+    }
+
+
     // /**
     //  * @return Vehicule[] Returns an array of Vehicule objects
     //  */

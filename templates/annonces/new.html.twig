@@ -72,8 +72,8 @@
                         </div>
 
                     </div>
-                                </div>
-                                    </div>
+            </div>
+        </div>
         </div>
 
 {% endblock %}
@@ -81,37 +81,104 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
-    $(document).ready(function () {
-    var $divAnnonces = $('#form_categorie');
-    
-    // When sport gets selected ...
-    $('body').on('submit', "[name='form']", function(e){
-        console.log("2e")
-      });
-    $(document).on('change', '#form_categorie', function() {
-        var $form = $(this).closest("[name='form']");
-      // ... retrieve the corresponding form.
-      var $form = $(this).closest('form');
-      var $annonces = $('#form_categorie :selected');
-      // Simulate form data, but only include the selected sport value.
-      var data = {};
-      // Submit data via AJAX to the form's action path.
-      $.ajax({
-        url : $form.attr('action'),
-        type: $form.attr('method'),
-        data : {id: $annonces.val()},
-        success: function(html) {
-            
-            //$form.remove();
-          // Replace current position field ...
-          
-          $form.replaceWith(html["formHtml"]);
-         //$divAnnonces.append(html["formHtml"]);
-          // Position field now displays the appropriate positions.
+        function addTagForm($collectionHolder, $newLinkLi) {
+            // Get the data-prototype explained earlier
+            //console.log($collectionHolder);
+            var prototype = $collectionHolder.data('prototype');
+
+            // get the new index
+            var index = $collectionHolder.data('index');
+
+            var newForm = prototype;
+            // You need this only if you didn't set 'label' => false in your tags field in TaskType
+            // Replace '__name__label__' in the prototype's HTML to
+            // instead be a number based on how many items we have
+            // newForm = newForm.replace(/__name__label__/g, index);
+
+            // Replace '__name__' in the prototype's HTML to
+            // instead be a number based on how many items we have
+            newForm = newForm.replace(/__name__/g, index);
+
+            // increase the index with one for the next item
+            $collectionHolder.data('index', index + 1);
+
+            // Display the form in the page in an li, before the "Add a tag" link li
+            var $newFormLi = $('<li></li>').append(newForm);
+            $newLinkLi.before($newFormLi);
+
+            // add a delete link to the new form
+            addTagFormDeleteLink($newFormLi);
         }
-      });
-    }
-);
+
+        function addTagFormDeleteLink($tagFormLi) {
+            var $removeFormButton = $('<button type="button">Delete this image</button>');
+            $tagFormLi.append($removeFormButton);
+
+            $removeFormButton.on('click', function(e) {
+                // remove the li for the tag form
+                $tagFormLi.remove();
+            });
+        }
+
+    $(document).ready(function () {
+            var $divAnnonces = $('#form_categorie');
+
+            // When sport gets selected ...
+            $('body').on('submit', "[name='form']", function(e){
+                console.log("2e");
+              });
+            $(document).on('change', '#form_categorie', function() {
+                var $form = $(this).closest("[name='form']");
+              // ... retrieve the corresponding form.
+              var $form = $(this).closest('form');
+              var $annonces = $('#form_categorie :selected');
+              // Simulate form data, but only include the selected sport value.
+              var data = {};
+              // Submit data via AJAX to the form's action path.
+              $.ajax({
+                url : $form.attr('action'),
+                type: $form.attr('method'),
+                data : {id: $annonces.val()},
+                success: function(html) {
+
+                    //$form.remove();
+                  // Replace current position field ...
+
+                  $form.replaceWith(html["formHtml"]);
+                 //$divAnnonces.append(html["formHtml"]);
+                  // Position field now displays the appropriate positions.
+                }
+              });
+            }
+        );
+
+        var $collectionHolder;
+
+        // setup an "add a tag" link
+        var $addTagButton = $('<button type="button" class="add_tag_link">Ajouter Image</button>');
+        var $newLinkLi = $('<li></li>').append($addTagButton);
+
+        // Get the ul that holds the collection of tags
+        $collectionHolder = $('ul.photo');
+
+        // add the "add a tag" anchor and li to the tags ul
+        $collectionHolder.append($newLinkLi);
+
+
+        // count the current form inputs we have (e.g. 2), use that as the new
+        // index when inserting a new item (e.g. 2)
+        $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+        $addTagButton.on('click', function(e) {
+            // add a new tag form (see next code block)
+            addTagForm($collectionHolder, $newLinkLi);
+        });
+
+        // add a delete link to all of the existing tag form li elements
+        //$collectionHolder.find('li').each(function() {
+          //  addTagFormDeleteLink($(this));
+        //});
+
     })
 </script>
 {% endblock %}

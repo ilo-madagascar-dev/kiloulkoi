@@ -1,6 +1,11 @@
 {{ form_start(form) }}
+    <ul class="photo" data-prototype="{{ form_widget(form.photo.vars.prototype)|e('html_attr') }}">
+    </ul>
+    {{ form_widget(form.photo) }}
     {{ form_rest(form) }}
+
     {{ form_widget(form) }}
+
     <button class="btn btn-success">{{ button_label|default('Save') }}</button>
     
 {{ form_end(form) }}

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Annonces{% endblock %}
+{% block title %}Details annonces{% endblock %}
 
 {% block body %}
     <h1>Annonces</h1>
@@ -8,12 +8,25 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ annonce.id }}</td>
-            </tr>
-            <tr>
                 <th>Description</th>
-                <td>{{ annonce.description }}</td>
+                <td>{{ annonce["description"] }}</td>
+            </tr>
+
+            {% if annonce["energie"] is defined %}
+                {#special pour l'annonce type vehicule#}
+                <tr>
+                    <th>Energie</th>
+                    <td>{{ annonce["energie"]["libelle"] }}</td>
+                </tr>
+
+            {% endif %}
+            <tr>
+                <th>Photos</th>
+                <td>
+                {% for photo in annonce["photo"] %}
+                    <img id="icone" src="{{ asset('uploads/') }}{{ photo["url"] }}">
+                {% endfor %}
+                </td>
             </tr>
 
         </tbody>
