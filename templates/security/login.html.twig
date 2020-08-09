@@ -2,54 +2,30 @@
 
 {% block title %}Connexion{% endblock %}
 
-{% block stylesheets %}
-    {# <link href="{{ asset('css/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"/> #}
-    <link href="{{ asset('css/responsivevoiture.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('css/styleconnection.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-{% endblock %}
-
 {% block body %}
-    <header>
-        <center>
-            <div class="head">
-                <ul id="liste">
-                    <li><img id="icone" src="icone/search.png"><label>Mes recherches</label></li>
-                    <li><img id="icone" src="icone/star.png"><label>Favoris</label></li>
-                    <li><img id="icone" src="icone/user.png"><a href="{{ path('securitylogin') }}"><label>Se Connecter</label></a></li>
-                </ul>      
-            </div>
+
+<div class="container-fluid">
+        <div id="bg" style="position:absolute;z-index:-1;left:0;height:375px;"></div>
+        
+        <center class="py-4">
+            <img src="image/logo.png" class="mb-3" style="height: 150px;width: auto;" >
+            <p class="text-center text-white"><strong>N'achetez que le nécessaire, pour le reste il y a Kiloukoi!</strong></p>
         </center>
-    </header>
 
-    <div class="container">
         <div class="row">
-            <div class="col-md-2">
-            </div>
-
-            <div id="blog" class="col-md-8">
-                <center>
-                    <img class="logo"src="/image/logo.png">
-                </center>
-                
-                <h2 id="slogan" class="text-center">N'achetez que le nécessaire, pour le reste il y a Kiloukoi!</h2>
-                
-                <div id="inscri">
+            <div class="col-md-8 offset-md-2">
+                <div class="card">
                     {% if error %}
                         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                     {% endif %}
-
-                    <form method="post">
+        
+                    <form method="post" class="card-body">
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" >
                         
                         <div class="form-group">
                             <input type="email" value="{{ last_username }}" name="email" id="inputEmail" placeholder="Adresse Email" class="form-control e-mai" required autofocus>
                         </div>
-
+        
                         <div class="form-group">
                             <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Mots de Passe" required>
                         </div>
@@ -57,14 +33,14 @@
                         <div class="form-group">
                             <button class="btn btn-success btn-block" type="submit">Connexion</button>
                         </div>
-
+        
                         <div class="row">
                             <div class="col-md-12 col-lg-6 my-2 text-center">
                                 <a href="{{ path('connect_facebook') }}" class="btn btn-block btn-primary" >
                                     <img src="{{ asset('image/facebook.png') }}" class="mr-2 float-left" style="height: 25px"><span>Se connecter avec facebook</span>
                                 </a>
                             </div>
-
+        
                             <div class="col-md-12 col-lg-6 my-2 text-center">
                                 <a href="{{ path('connect_google') }}" class="btn btn-block btn-danger" >
                                     <img src="{{ asset('image/google.png') }}" class="float-left" style="height: 25px"><span>Se connecter avec google</span>
@@ -73,125 +49,19 @@
                         </div>
                     </form>
                 </div>
+            </div>
+        </div>
+        
+        <div class="my-3 text-center">
+            <p>
+                <strong><a class="text-dark" style="text-decoration: underline" href="{{ path('app_forgot_password_request') }}">Mot de passe oublier?</a></strong>
+            </p>
                 
-                <div class="my-3 text-center">
-                    <p>
-                        <strong><a class="text-dark" style="text-decoration: underline" href="{{ path('app_forgot_password_request') }}">Mot de passe oublier?</a></strong>
-                    </p>
-                        
-                    <p>
-                        <strong>Nouveau sur kiloukoi ? <a class="text-dark" style="text-decoration: underline" href="{{ path('app_register') }}">Créez votre compte</a></strong>
-                    </p>
-                </div>
-                <div class="col-md-2"></div>
-            </div>
+            <p>
+                <span>Nouveau sur kiloukoi ?</span>
+                <strong><a class="text-dark" style="text-decoration: underline" href="{{ path('app_register') }}">Créez votre compte</a></strong>
+            </p>
         </div>
-    </div>
+</div>
 
-    <div id="bg">
-        <div class="container">
-            <div class="row bas">
-                <div class="col-md-3">
-                    <div class="box1">
-                        <div id="tete">
-                            A propos
-                        </div>
-                        <div>
-                            <a href="#">Qui sommes-nous ?</a>
-                        </div>
-                        <div>
-                            <a href="#">Nous rejoindre</a>
-                        </div>
-                        <div>
-                            <a href="#">Acteur responsable de l'économie française</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div id="tete">
-                        information
-                    </div>
-                    <div>
-                        <a href="#"> condition générale d'utilisation</a>
-                    </div>
-                    <div>
-                        <a href="#">Règles de diffusion de référencement et de déréférencement</a>
-                    </div>
-                    <div>
-                        <a href="#">Condition générale de vente</a>
-                    </div>
-                    <div>
-                        <a href="#">Vie privé/cookies</a>
-                    </div>
-                    <div>
-                        <a href="#">Vos droit et obligations</a>
-                    </div>
-                    <div>
-                        <a href="#"> Critère de classement</a>
-                    </div>
-
-                </div>
-                <div class="col-md-3">
-                    <div id="tete">
-                        Nos solution pros
-                    </div>
-                    <div>
-                        <a href="#">Professionnel de l'immobilier</a>
-                    </div>
-                    <div>
-                        <a href="#">Vos recrutements</a>
-                    </div>
-                    <div>
-                        <a href="#">Professionnel de l'auto</a>
-                    </div>
-                    <div>
-                        <a href="#">Autres solutions professionnelles</a>
-                    </div>
-                    <div>
-                        <a href="#">Annuaires des professionnelles</a>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div id="tete">
-                        Des questions ?
-                    </div>
-                    <div>
-                        <a href="#">Aides</a>
-                    </div>
-                    <div>
-                        <a href="#">Le service de paiement sécurisé et la livraison</a>
-                    </div>
-                    <div>
-                        <a href="#">Demandez conseil à la Communauté</a>
-                    </div>
-                    <div id="retrouver">
-                        Retrouvez-nous sur
-                    </div>
-                    <div id="contact">
-                        <div class="row">
-                            <div class="col-md-4">
-
-                            </div>
-                            <div class="col-md-4">
-                                <img src="icone/facebook.png">
-                            </div>
-                            <div class="col-md-4">
-                                <img src="icone/twiter.png">
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="footer">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-2">
-                        <h6 id="footer">Copyrights Kiloukoi 2020</h6>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 {% endblock %}

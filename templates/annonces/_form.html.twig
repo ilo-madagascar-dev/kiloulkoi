@@ -1,11 +1,36 @@
 {{ form_start(form) }}
-    <ul class="photo" data-prototype="{{ form_widget(form.photo.vars.prototype)|e('html_attr') }}">
+
+    <ul class="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item pr-2">
+            <a class="nav-link active btn btn-outline-primary" id="pills-detail-tab" data-toggle="pill" href="#pills-detail" role="tab" aria-controls="pills-detail" aria-selected="true">Détails</a>
+        </li>
+        <li class="nav-item pl-2">
+            <a class="nav-link btn btn-outline-primary" id="pills-photos-tab" data-toggle="pill" href="#pills-photos" role="tab" aria-controls="pills-photos" aria-selected="false">Photos</a>
+        </li>
     </ul>
-    {{ form_widget(form.photo) }}
-    {{ form_rest(form) }}
+    
+    <div class="tab-content" id="pills-tabContent" style="min-height: 370px;">
+        <div class="tab-pane fade" id="pills-photos" role="tabpanel" aria-labelledby="pills-photos-tab">
+            {% set i = 0 %}
+            <div class="photo row m-auto" data-prototype="{{ include('annonces/photo.html.twig', { 'form': form.photo.vars.prototype, 'photo': null }) | e('html_attr') }}">
+                {% for photo in photos %}
+                    <div class="col mb-3" id="photo_{{ photo.id }}">
+                        {{ include('annonces/photo.html.twig', { 'photo': photo, 'numero': i }) }}
+                    </div>
+                    {% set i = i + 1 %}
+                {% endfor %}
+                {% set annonce = false %}
+            </div>
+            {% do form.photo.setRendered() %}
+        </div>
 
-    {{ form_widget(form) }}
+        <div class="tab-pane fade show active" id="pills-detail" role="tabpanel" aria-labelledby="pills-detail-tab">
+            {{ form_rest(form) }}
+            {{ form_row(form.prix) }}
+            {{ form_row(form.description) }}
+        </div>
+    </div>
 
-    <button class="btn btn-success">{{ button_label|default('Save') }}</button>
+    <button class="btn btn-primary btn-block" type="submit">{{ button_label|default('Enregistrer') }}</button>
     
 {{ form_end(form) }}

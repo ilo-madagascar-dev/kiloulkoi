@@ -14,22 +14,15 @@ class AccueilController extends AbstractController
      */
     public function index()
     {
-        //find all categories
-        $repository = $this->getDoctrine()->getRepository(Categories::class);
-        $categories = $repository->findAll();
-        //find annonces with id other than mine
-        $userconnect = null;
-        if ($this->getUser() != null) {
-            $userconnect = $this->getUser()->getId();
-        }
-
-
-        $repositoryAnnonces = $this->getDoctrine()->getRepository(Annonces::class);
-        $annonces = $repositoryAnnonces->findOtherAnnonceById($userconnect);
+        $repoCategorie = $this->getDoctrine()->getRepository(Categories::class);
+        $repoAnnonce   = $this->getDoctrine()->getRepository(Annonces::class);
+        
+        $categories = $repoCategorie->findAll();
+        $annonces   = $repoAnnonce->findAll();
+        
         return $this->render('accueil/index.html.twig', [
-            'controller_name' => 'AccueilController',
             'categories' => $categories,
-            'annonces' => $annonces
+            'annonces' => $annonces,
         ]);
     }
 }

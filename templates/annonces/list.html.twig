@@ -1,0 +1,66 @@
+
+<div class="container mt-4 mb-3">
+	<h1 class="text-center text-muted">{{ annonce_title }}</h1>
+</div>
+
+<div class="container">
+	{% if annonces|length == 0 %}
+		<div class="alert alert-warning text-center">
+			Aucun résultat!
+		</div>
+	{% endif %}
+
+	<div class="row card-deck">
+		{% for annonce in annonces %}
+			<div class="col-12 col-md-6 col-lg-4 mb-3">
+				<div class="card h-100 shadow">
+
+					{% if annonce.type == "offre" %}
+						<small class="py-1 px-2 bg-success text-white shadow" style="position: absolute;">Offre</small>
+					{% else %}
+						<small class="py-1 px-2 bg-info text-white shadow" style="position: absolute;">Demande</small>
+					{% endif %}
+
+					<div style="height: 165px;" class="text-center overflow-hidden d-flex align-items-center bg-light">
+						{% if annonce.photo|length > 0 %}
+						<img src="{{ asset("uploads/" ~ annonce.photo[0].url) }}" class="card-img-top m-auto" alt="...">
+						{% else %}
+						<img src="{{ asset('image/logo.png') }}" class="card-img-top m-auto p-3" style="width: auto;height: 100%;" alt="...">
+						{% endif %}
+					</div>
+
+					<div class="card-body py-2 px-3">
+						<h3 class="card-title text-primary mb-2" style="font-size: 1.15rem;">
+							<strong><a href="{{ path('annonces_show', {'id': annonce.id}) }}" >{{ annonce.titre }}</a></strong>
+						</h3>
+
+						<div class="details" style="font-size: .8rem;">
+							<p class="card-text mb-0"><strong class="text-success">Prix : </strong>{{ annonce.prix }} Euro</p>
+							<p class="card-text mb-0"><strong class="text-success">Catégorie : </strong>{{ annonce.categorie.libelle }}</p>
+						</div>
+					</div>
+					
+						<div class="card-footer text-right p-0" style="font-size: .8rem;">
+							<div class="row">
+								{% if app.user and app.user.id == annonce.user.id %}
+									<div class="col text-left ml-3">
+											<a href="{{ path('annonces_edit', {'id': annonce.id}) }}" class="card-link" >Modifier</a>
+										{{ include('annonces/_delete_form.html.twig') }}
+									</div>
+								{% else %}
+									<div class="col text-left ml-3 py-2">
+										<!-- <span class="mr-3"><i class="fa fa-envelope"></i> Contact</span> -->
+										<span><i class="fa fa-eye"  ></i> {{ annonce.visite | number_format }}</span>
+									</div>
+								{% endif %}
+
+								<div class="col-4 py-2 text-center">
+									<small class="text-muted">{{ annonce.dateModification | date("d/m/Y") }}</small>
+								</div>
+							</div>
+						</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+</div>

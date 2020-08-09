@@ -1,0 +1,48 @@
+{% if photo is null %}
+
+   <div class="card shadow border border-secondary m-auto" style="width: 175px !important;">
+      <div  style="height:130px;margin:auto;">
+         <label type="button" class="btn w-100 h-100 mb-0 p-0 overflow-hidden">
+            <img src="{{ asset('image/img-add.png') }}" class="w-100 h-auto card-img-top" />
+            <input type="file" id="{{ form.file.vars.id }}" name="{{ form.file.vars.full_name }}" required="required" class="d-none file-upload" />
+         </label>
+      </div>
+      
+      <div class="card-body p-0">
+         <div>
+            <textarea id="{{ form.description.vars.id }}" 
+                        name="{{ form.description.vars.full_name }}" 
+                        required="required" 
+                        class="form-control h-100 rounded-0"
+                        placeholder="Descriptions..."></textarea>
+            <div class="p-0 suppression w-100"></div>
+         </div>
+      </div>
+   </div>
+
+{% else %} 
+
+   <div class="card shadow border border-secondary m-auto" style="width: 160px !important;">
+      <div  style="height:130px;margin:auto;">
+         <label type="button" class="btn w-100 h-100 mb-0 p-0 overflow-hidden">
+            <img src="{{ asset('uploads/') ~ photo.url }}" class="w-100 h-auto card-img-top" />
+            <input type="file" id="{{ form.photo.vars.id ~ '_' ~ numero }}_file" 
+                              name="{{ form.photo.vars.full_name ~ '[' ~ numero ~ ']' }}[file]" 
+                              class="d-none file-upload" />
+         </label>
+      </div>
+
+      <div class="card-body p-0">
+         <div>
+            <textarea   id="{{ form.photo.vars.id ~ '_' ~ numero }}_description" 
+                        name="{{ form.photo.vars.full_name ~ '[' ~ numero ~ ']' }}[description]" 
+                        class="form-control h-100 rounded-0"
+                        required="required" 
+                        placeholder="Descriptions...">{{ photo.description }}</textarea>
+            <div class="p-0 suppression w-100">
+               <button class="detelePhoto btn btn-sm btn-block btn-danger" idPhoto="{{ photo.id }}"><i class="fa fa-trash"></i></button>
+            </div>
+         </div>
+      </div>
+   </div>
+{% endif %}

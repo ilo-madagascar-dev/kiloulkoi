@@ -2,327 +2,138 @@
 
 {% block title %}Kiloukoi{% endblock %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link href="{{ asset('css/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('css/responsive.css') }}" rel="stylesheet"/>
-{% endblock %}
-
 {% block body %}
-<header>
-    <center>
-        <div class="head">
-            <ul id="liste">
-                <li><img id="icone" src="icone/search.png"><label>Mes recherches</label></li>
-                <li><img id="icone" src="icone/star.png"><label>Favoris</label></li>
-                
-                {% if app.user %}
-                    <li> <img id="icone" src="icone/search.png"><a href="{{path('annonces_index')}}"><label>Annonce</label></a></li>
-                    <li><img id="icone" src="icone/star.png"><label>Abonnement</label></li>
-                {% endif %}
-                
-                {% if not app.user %}
-                    <li><img id="icone" src="icone/user.png"><a href="{{path('securitylogin')}}"><label>Se Connecter</label></a></li>
-                {%  else %}
-                    <li><img id="icone" src="icone/user.png"><a href="{{path('security_logout')}}"><label>Se Déconnecter</label></a></li>
-                {% endif  %}
-            </ul>
-        </div>
+
+<div class="container-fluid">
+    <div id="bg" style="position:absolute;z-index:-1;left:0;height:375px;"></div>
+    
+    <center class="py-4">
+        <img src="image/logo.png" class="mb-3" style="height: 150px;width: auto;" >
+        <p class="text-center text-white"><strong>N'achetez que le nécessaire, pour le reste il y a Kiloukoi!</strong></p>
     </center>
-</header>
 
-
-<div class="banner">
-    <div class="container">
-        <center>
-            <img class="logo"src="image/logo.png">
-        </center>
-        <h2 id="slogan" class="text-center">N'achetez que le nécessaire, pour le reste il y a Kiloukoi!</h2>
-    </div>
-</div>
-
-
-<!--bar menu-->
-<center>
-    <div class="box" >
-        <div id="menu" class="container">
-            <div class="row">
-                <div class="col-md-5">
-                    <div class="text-center">01 Offre(s)</div>
-                </div>
-                <div class="col-md-2">
-                    <center> <img src="icone/separateur.png"></center>
-                </div>
-                <div class="col-md-5">
-                    <div class="text-center">
-                        02 Demande(s)
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <select id="select">
-                        {% for categorie in categories %}
-                            <option value="{{ categorie.className }}">{{ categorie.libelle }} </option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="col-md-4">
-                    <input id="recherche" type="text" placeholder="Que recherchez-vous ?">
-                </div>
-                <div class="col-md-4">
-                    <input id="ville" type="text" placeholder="saisissez un ville et un rayon">
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="custom-control custom-range custom-control-inline">
-                        <form action="">
-                            <table id="range">
-                                <tr>
-                                    <td> <label class="prix" for="customRange">Prix</label></td>
-                                    <td><input type="range" class="custom-range" id="customRange" name="points1"></td>
-                                </tr>
-                            </table>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div id="btn1" class="col-md-4">
-                    <img src="icone/calendar.png"> 20/01/2020 
-                </div>
-                <div class="col-md-4"></div>
-                <div id="btn2" class="col-md-4">
-                    Rechercher une Annonce
-                </div>
-            </div>
-        </div>
-    </div>
-</center>
-
-<div class="container">
     <div class="row">
-        <div class="col-md-2">
-        </div>
-
-        <div class="col-md-10">
-            <div class="container">
-                <div class="menu">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <img src="icone/green.png">
-                            <div id="planete">
-                                Protéger votre planète
+        <div class="col-md-10 offset-md-1">
+            <div class="card p-3 shadow">
+                <div class="card-body py-0 px-0 px-md-3">
+                    <form action="{{ path('annonces_new') }}" class="text-center">
+                        <div class="form-group row pb-md-3 text-muted text-left text-md-center">
+                            <div class="col-12 col-md-4 col-sm-6">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="type" style="height:30px;width:30px;" id="radio-offre" value="offre" checked>
+                                    <label class="form-check-label" style="font-size: 1.8rem;" for="radio-offre">
+                                        Offre
+                                    </label>
+                                </div>
                             </div>
-                            <div id="neuf">
-                                En évitant d'achetez du neuf
-                            </div>
-                            <div id="ligne1">
-                                <img src="icone/ligne.png">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <img src="icone/money.png">
-                            <div id="mois">
-                                Arrondissez vos fins de mois
-                            </div>
-                            <div id="services">
-                                En mettant  en location vos biens et services  
-                            </div>
-                            <div id="ligne2">
-                                <img src="icone/ligne.png">
+                            
+                            <div class="col-12 col-md-4 col-sm-6 offset-md-4">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="type" style="height:30px;width:30px;" id="radio-demande" value="demande">
+                                    <label class="form-check-label" style="font-size: 1.8rem;" for="radio-demande">
+                                        Demande
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <img src="icone/problem.png">
-                            <div id="monde">
-                                Changez le monde a votre façon
+                        
+                        <div class="row">
+                            <div class="form-group col-12 col-md-4">
+                                <select class="form-control custom-select" name="categorie">
+                                    {% for categorie in categories %}
+                                        <option value="{{ categorie.className }}">{{ categorie.libelle }} </option>
+                                    {% endfor %}
+                                </select>
                             </div>
-                            <div id="proches">
-                                En aidant vos voisins ou vos proches 
+                            <div class="form-group col-12 col-md-4">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Que cherchez vous?" aria-describedby="recherche-addon">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text bg-white" id="recherche-addon"><i class="fa fa-search"></i></span>
+                                    </div>
+                                </div>
                             </div>
-                            <div id="ligne3">
-                                <img src="icone/ligne.png">
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="bg">
-    <div class="contenu">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                </div>
-
-                <div class="col-md-4">
-                    <h1 id="annonces">
-                        Les dernères annonces
-                    </h1>
-                </div>
-
-                <div class="col-md-4">
-                </div>
-            </div>
-        </div>
-
-        <div class="container">
-            <div class="row">
-                {% for annonce in annonces %}
-                    <div class="col-md-4">
-                        <div class="content">
-                            <img src="image/image1.png" alt="Nature" style="width:100%">
-                            <h4>{{ annonce.titre }}</h4>
-                            <div id="liste">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <table style="width:100%">
-                                                <tr>
-                                                    <td>description : {{ annonce.description }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Catégorie : {{ annonce.categorie.libelle }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Il y a 1h:30min</td>
-                                                    <td>
-                                                        <a href="{{ path('location_new', {'idannonce': annonce.id}) }}">Louer</a>
-                                                        <a href="{{ path('annonces_show', {'id': annonce.id}) }}">plus</a>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
+                            <div class="form-group col-12 col-md-4">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Choisissez une ville" aria-describedby="ville-addon">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text bg-white" id="ville-addon"><i class="fa fa-city"></i></span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                {% endfor %}
-            </div>    
-        </div>
 
-        <div class="container">
-            <div class="row bas">
-                <div class="col-md-3">
-                    <div class="box1">
-                        <div id="tete">
-                            A propos
-                        </div>
-                        <div>
-                            <a href="#">Qui sommes-nous ?</a>
-                        </div>
-                        <div>
-                            <a href="#">Nous rejoindre</a>
-                        </div>
-                        <div>
-                            <a href="#">Acteur responsable de l'économie française</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <div id="tete">
-                        information
-                    </div>
-                    <div>
-                        <a href="#"> condition générale d'utilisation</a>
-                    </div>
-                    <div>
-                        <a href="#">Règles de diffusion de référencement et de déréférencement</a>
-                    </div>
-                    <div>
-                        <a href="#">Condition générale de vente</a>
-                    </div>
-                    <div>
-                        <a href="#">Vie privé/cookies</a>
-                    </div>
-                    <div>
-                        <a href="#">Vos droit et obligations</a>
-                    </div>
-                    <div>
-                        <a href="#"> Critère de classement</a>
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <div id="tete">
-                        Nos solution pros
-                    </div>
-                    <div>
-                        <a href="#">Professionnel de l'immobilier</a>
-                    </div>
-                    <div>
-                        <a href="#">Vos recrutements</a>
-                    </div>
-                    <div>
-                        <a href="#">Professionnel de l'auto</a>
-                    </div>
-                    <div>
-                        <a href="#">Autres solutions professionnelles</a>
-                    </div>
-                    <div>
-                        <a href="#">Annuaires des professionnelles</a>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div id="tete">
-                        Des questions ?
-                    </div>
-                    <div>
-                        <a href="#">Aides</a>
-                    </div>
-                    <div>
-                        <a href="#">Le service de paiement sécurisé et la livraison</a>
-                    </div>
-                    <div>
-                        <a href="#">Demandez conseil à la Communauté</a>
-                    </div>
-                    <div id="retrouver">
-                        Retrouvez-nous sur
-                    </div>
-                    <div id="contact">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-sm-8 col-12">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="input-group mb-3">
+                                            <input type="text" class="form-control">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text bg-white"> €</span>
+                                            </div>
+                                        </div>
+                                    </div>
 
+                                    <div class="col-6">
+                                        <div class="input-group mb-3">
+                                            <input type="text" class="form-control">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text bg-white"> €</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-4">
-                                <img src="icone/facebook.png">
+                            <div class="col-sm-4 col-12 mb-3">
+                                <input type="date" class="form-control" placeholder="Choisissez une ville" aria-describedby="ville-addon">
                             </div>
-                            <div class="col-md-4">
-                                <img src="icone/twiter.png">
-                            </div>
-
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    
-        <div class="footer">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-2">
-                        <h6 id="footer">Copyrights Kiloukoi 2020</h6>
-                    </div>
+
+                        <div class="row">
+                            <div class="col-md-4 offset-md-4">
+                                <button class="btn btn-success btn-block">
+                                    <i class="fa fa-search"></i> Rechercher
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<div class="container-fluid pt-5">
+    <div class="row">
+        <div class="col-sm-4 mb-5">
+            <div class="text-center ">
+                <img src="icone/green.png"  class="img-fluid mb-3" style="height: 60px !important;">
+                <p class="mb-1 text-success">Protegeons notre planete</p>
+                <p class="">En évitant d'acheter du neuf</p>
+            </div>
+        </div>
+
+        <div class="col-sm-4 mb-5">
+            <div class="text-center ">
+                <img src="icone/money.png"  class="img-fluid mb-3" style="height: 60px !important;">
+                <p class="mb-1 text-success">Arrondissez vos fins de mois</p>
+                <p class="">En mettant en location vos biens et services</p>
+            </div>
+        </div>
+
+        <div class="col-sm-4 mb-5">
+            <div class="text-center ">
+                <img src="icone/problem.png"  class="img-fluid mb-3" style="height: 60px !important;">
+                <p class="mb-1 text-success">Changez le monde</p>
+                <p class="">En aidant vos voisins ou vos proches</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% set annonce_title = "Les dérnières annonces" %}
+{% include "annonces/list.html.twig" %}
 
 {% endblock %}

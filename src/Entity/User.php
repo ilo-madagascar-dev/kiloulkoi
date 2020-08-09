@@ -88,11 +88,17 @@ class User implements UserInterface
      */
     private $conversations;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Annonces::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $annonces;
+
     public function __construct()
     {
         $this->location = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->conversations = new ArrayCollection();
+        $this->annonces = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -344,6 +350,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($conversation->getUser() === $this) {
                 $conversation->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Annonces[]
+     */
+    public function getAnnonces(): Collection
+    {
+        return $this->annonces;
+    }
+
+    public function addAnnonce(Annonces $annonce): self
+    {
+        if (!$this->annonces->contains($annonce)) {
+            $this->annonces[] = $annonce;
+            $annonce->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnnonce(Annonces $annonce): self
+    {
+        if ($this->annonces->contains($annonce)) {
+            $this->annonces->removeElement($annonce);
+            // set the owning side to null (unless already changed)
+            if ($annonce->getUser() === $this) {
+                $annonce->setUser(null);
             }
         }
 

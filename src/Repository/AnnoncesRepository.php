@@ -54,7 +54,29 @@ class AnnoncesRepository extends ServiceEntityRepository
     }
 
 
+    /**
+     * @return Annonces[] Returns an array of Annonces objects
+     */
 
+    public function findAnnonces(Array $criteria)
+    {
+        $query = $this->createQueryBuilder('a');
 
+        if( !empty($criteria['categorie']) )
+        {
+            $query
+                ->leftJoin('a.categorie', 'c')
+                ->where('c.className = :class_name')->setParameter('class_name', $criteria['categorie']);
+
+            // if( !empty($criteria['sous_categorie']) )
+            // {
+            //     $query
+            //         ->leftJoin('a.sous_categorie', 'c')
+            //         ->where('c.className = :class_name')->setParameter('class_name', $criteria['sous_categorie']);
+            // }
+        }
+
+        return $query->getQuery()->getResult();
+    }
 
 }

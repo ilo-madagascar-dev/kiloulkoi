@@ -40,7 +40,7 @@ class Annonces
     private $titre;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $description;
 
@@ -91,11 +91,47 @@ class Annonces
      */
     private $photo;
 
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $type; // offre, demande
+
+    /**
+     * @ORM\ManyToOne(targetEntity=SousCategorie::class, inversedBy="annonces")
+     */
+    private $sousCategorie;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $visite;
+
 
     public function __construct()
     {
         $this->photo = new ArrayCollection();
         $this->dateCreation = new \Datetime();
+    }
+
+    public function getCategoryId(string $className) : int
+    {
+        $categories = [
+            "Vehicule"=> 1,
+            "Immobilier"=> 2,
+            "Multimedia"=> 3,
+            "ImageEtSon"=> 4,
+            "ConsoleGaming"=> 5,
+            "MeubleDeco"=> 6,
+            "Electromenager"=> 7,
+            "Maternite"=> 8,
+            "HommeFemmeMode"=> 9,
+            "EnfantMode"=> 10,
+            "BricoJardin"=> 11,
+            "SportLoisir"=> 12,
+            "Service"=> 13,
+            "Divers"=> 14,
+        ];
+        return $categories[$className];
     }
 
     public function getId(): ?int
@@ -257,6 +293,42 @@ class Annonces
     public function setValidationAdmin(bool $validationAdmin): self
     {
         $this->validationAdmin = $validationAdmin;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getSousCategorie(): ?SousCategorie
+    {
+        return $this->sousCategorie;
+    }
+
+    public function setSousCategorie(?SousCategorie $sousCategorie): self
+    {
+        $this->sousCategorie = $sousCategorie;
+
+        return $this;
+    }
+
+    public function getVisite(): ?int
+    {
+        return $this->visite;
+    }
+
+    public function setVisite(int $visite): self
+    {
+        $this->visite = $visite;
 
         return $this;
     }
