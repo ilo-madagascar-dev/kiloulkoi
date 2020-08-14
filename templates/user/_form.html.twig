@@ -1,4 +1,65 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    {{ form_errors(form) }}
+
+    {{ form_row(form.email) }}
+
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(form.nom) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_row(form.prenom) }}
+        </div>
+    </div>
+
+{# 
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(form.password.first) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_row(form.password.second) }}
+        </div>
+    </div> 
+#}
+
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(form.telephone) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_row(form.pseudo) }}
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-4">
+            {{ form_row(form.ville) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.rue) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.cp) }}
+        </div>
+    </div>
+
+    <div class="row m-3 text-center">
+        <div class="col-md-4 offset-md-4">
+            <img src="{{ asset('uploads/avatar/') ~ app.user.avatar }}" alt="" class="img-fluid rounded output-image">
+            <div>
+                {% do form.avatar.setRendered() %}
+
+                <label href="#" type="button" class="btn btn-info btn-block">
+                    <input type="file" name="{{ form.avatar.vars.full_name }}" class="d-none input-image"> Changer d'avatar
+                </label>
+            </div>
+        </div>
+    </div>
+
+    {# {{ form_row(form.agreeTerms) }} #}
+    
+    <button type="submit" class="btn btn-primary btn-block">
+        <i class="fa fa-btn fa-user"></i> Enregistrer
+    </button>
 {{ form_end(form) }}

@@ -10,20 +10,30 @@ use Doctrine\ORM\Mapping\InheritanceType;
 use Doctrine\ORM\Mapping\DiscriminatorColumn;
 use Doctrine\ORM\Mapping\DiscriminatorMap;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 /**
  * @ORM\Entity(repositoryClass=AnnoncesRepository::class)
  * @InheritanceType("JOINED")
  * @DiscriminatorColumn(name="discr", type="string")
- * @DiscriminatorMap({"Annonces" = "Annonces",
- *     "Vehicule" = "Vehicule",
- *     "Immobilier" = "Immobilier",
- *     "Mode" = "Mode",
- *     "Service" = "Service",
- *     "Maternite" = "Maternite",
- *     "HommeFemmeMode" = "HommeFemmeMode",
- *     "EnfantMode" = "EnfantMode",
- *     "VetementMaternite" = "VetementMaternite"})
+ * @DiscriminatorMap({
+ *     "Annonces" = "Annonces",
+ *     "AnnonceVehicule" = "AnnonceVehicule",
+ *     "AnnonceImmobilier" = "AnnonceImmobilier",
+ *     "AnnonceBricoJardin" = "AnnonceBricoJardin",
+ *     "AnnonceConsoleGaming" = "AnnonceConsoleGaming",
+ *     "AnnonceDivers" = "AnnonceDivers",
+ *     "AnnonceElectromenager" = "AnnonceElectromenager",
+ *     "AnnonceImageEtSon" = "AnnonceImageEtSon",
+ *     "AnnonceMaternite" = "AnnonceMaternite",
+ *     "AnnonceMeubleDeco" = "AnnonceMeubleDeco",
+ *     "AnnonceModeFemme" = "AnnonceModeFemme",
+ *     "AnnonceModeEnfant" = "AnnonceModeEnfant",
+ *     "AnnonceModeHomme" = "AnnonceModeHomme",
+ *     "AnnonceMultimedia" = "AnnonceMultimedia",
+ *     "AnnonceService" = "AnnonceService",
+ *     "AnnonceSportLoisir" = "AnnonceSportLoisir",
+ * })
  */
 class Annonces
 {
@@ -106,11 +116,22 @@ class Annonces
      */
     private $visite;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Conversation::class, mappedBy="annonce", orphanRemoval=true)
+     */
+    private $conversations;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
+
 
     public function __construct()
     {
         $this->photo = new ArrayCollection();
         $this->dateCreation = new \Datetime();
+        $this->conversations = new ArrayCollection();
     }
 
     public function getCategoryId(string $className) : int
@@ -124,12 +145,13 @@ class Annonces
             "MeubleDeco"=> 6,
             "Electromenager"=> 7,
             "Maternite"=> 8,
-            "HommeFemmeMode"=> 9,
-            "EnfantMode"=> 10,
-            "BricoJardin"=> 11,
-            "SportLoisir"=> 12,
-            "Service"=> 13,
-            "Divers"=> 14,
+            "ModeHomme"=> 9,
+            "ModeFemme"=> 10,
+            "ModeEnfant"=> 11,
+            "BricoJardin"=> 12,
+            "SportLoisir"=> 13,
+            "Service"=> 14,
+            "Divers"=> 15,
         ];
         return $categories[$className];
     }
@@ -329,6 +351,50 @@ class Annonces
     public function setVisite(int $visite): self
     {
         $this->visite = $visite;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Conversation[]
+     */
+    public function getConversations(): Collection
+    {
+        return $this->conversations;
+    }
+
+    public function addConversation(Conversation $conversation): self
+    {
+        if (!$this->conversations->contains($conversation)) {
+            $this->conversations[] = $conversation;
+            $conversation->setAnnonce($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConversation(Conversation $conversation): self
+    {
+        if ($this->conversations->contains($conversation)) {
+            $this->conversations->removeElement($conversation);
+            // set the owning side to null (unless already changed)
+            if ($conversation->getAnnonce() === $this) {
+                $conversation->setAnnonce(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(): self
+    {
+        $slugger    = new AsciiSlugger();
+        $this->slug = $slugger->slug($this->titre);
 
         return $this;
     }

@@ -13,6 +13,7 @@ use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Security\UserAuthenticator;
+use App\Service\FileUploader;
 
 class AuthController extends AbstractController
 {
@@ -44,7 +45,7 @@ class AuthController extends AbstractController
     /**
      * @Route("/inscription", name="app_register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, UserAuthenticator $authenticator): Response
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, UserAuthenticator $authenticator, FileUploader $uploader): Response
     {
         if ($this->getUser())
         {
@@ -55,7 +56,8 @@ class AuthController extends AbstractController
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid())
+        {
             // encode the plain password
             $user->setPassword(
                 $passwordEncoder->encodePassword(
@@ -63,6 +65,13 @@ class AuthController extends AbstractController
                     $form->get('password')->getData()
                 )
             );
+
+            $uploader->setTargetDirectory($this->getParameter('avatar_directory'));
+
+            $avatar_file = $form->get('avatar')->getData();
+            $avatar_url  = $uploader->upload($avatar_file);
+
+            $user->setAvatar($avatar_url);
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);

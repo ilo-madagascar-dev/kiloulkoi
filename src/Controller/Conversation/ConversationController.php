@@ -2,9 +2,12 @@
 
 namespace App\Controller\Conversation;
 
+use App\Entity\Annonces;
 use App\Entity\Conversation;
-use App\Form\ConversationType;
+use App\Entity\Message;
+use App\Entity\User;
 use App\Repository\ConversationRepository;
+use App\Repository\MessageRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,72 +18,83 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ConversationController extends AbstractController
 {
-    /**
-     * @Route("/", name="conversation_index", methods={"GET"})
-     */
-    public function index(ConversationRepository $conversationRepository): Response
+    private $conversationRepo;
+    private $messageRepo;
+
+    public function __construct(ConversationRepository $conversationRepository, MessageRepository $messageRepository)
     {
-        $conversations = $this->getUser()->getConversations();
-        return $this->render('conversation/index.html.twig', [
-            'conversations' => $conversations,
-        ]);
+        $this->conversationRepo = $conversationRepository;
+        $this->messageRepo      = $messageRepository;
     }
 
     /**
-     * @Route("/new", name="conversation_new", methods={"GET","POST"})
+     * @Route("/", name="conversation_index", methods={"get"})
      */
-    public function new(Request $request): Response
+    public function index()
     {
-        $conversation = new Conversation();
-        $form = $this->createForm(ConversationType::class, $conversation);
-        $form->handleRequest($request);
+        $user          = $this->getUser();
+        $conversations = $this->conversationRepo->findByUserQuery($user->getId())->getResult();
 
-        if ($form->isSubmitted() && $form->isValid())
+        if( count($conversations) > 0 )
         {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($conversation);
-            $entityManager->flush();
+            /**
+             * @var(Conversation $conversationEncours)
+             */
+            $conversationEncours = $conversations[0];
+            return $this->showConversation($conversationEncours, $conversations);
+        }
+        else
+        {
+            return $this->render('conversation/erreur.html.twig', [
+                'error' => "Vous n'avez aucune conversation!"
+            ]);
+        }
+    }
 
-            return $this->redirectToRoute('conversation_index');
+
+    /**
+     * @Route("/messages/{annonce}/{destinataire}", name="conversation_messages_new", methods={"post"})
+     */
+    public function nouveauMessage(Annonces $annonce, User $destinataire, Request $request)
+    {
+        $expediteur = $this->getUser();
+        if( $destinataire->getId() == $expediteur->getId() )
+        {
+            dump('Vous ne pouvez pas envoyer un message à vous meme');die;
         }
 
-        return $this->render('conversation/new.html.twig', [
-            'conversation' => $conversation,
-            'form' => $form->createView(),
-        ]);
+        $message      = new Message();
+        $conversation = $this->conversationRepo->findOneWith($destinataire->getId(), $expediteur->getId(), $annonce->getId());
+
+        if( $conversation == null )
+        {
+            $conversation = new Conversation();
+
+            $conversation->setUser1($expediteur);
+            $conversation->setUser2($destinataire);
+            $conversation->setAnnonce($annonce);
+        }
+
+        $message->setConversation($conversation);
+        $message->setUser($expediteur);
+        $message->setContenue($request->get("contenue"));
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($conversation);
+        $entityManager->persist($message);
+        $entityManager->flush();
+
+        $conversation->getMessages()->add($message);
+
+        return $this->showConversation($conversation);
     }
 
     /**
-     * @Route("/{id}", name="conversation_show", methods={"GET"})
+     * @Route("/{id}", name="conversation_show", methods={"get"})
      */
     public function show(Conversation $conversation): Response
     {
-        $messages = $conversation->getMessages();
-        return $this->render('conversation/show.html.twig', [
-            'conversation' => $conversation,
-            'messages' => $messages,
-        ]);
-    }
-
-    /**
-     * @Route("/{id}/edit", name="conversation_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, Conversation $conversation): Response
-    {
-        $form = $this->createForm(ConversationType::class, $conversation);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid())
-        {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('conversation_index');
-        }
-
-        return $this->render('conversation/edit.html.twig', [
-            'conversation' => $conversation,
-            'form' => $form->createView(),
-        ]);
+        return $this->showConversation($conversation);
     }
 
     /**
@@ -96,5 +110,29 @@ class ConversationController extends AbstractController
         }
 
         return $this->redirectToRoute('conversation_index');
+    }
+
+    private function showConversation(Conversation $conversation, Array $conversations = [])
+    {
+        $user = $this->getUser();
+        $conversationEncours = $conversation;
+    
+        $messages     = $this->messageRepo->findByConversation($conversationEncours->getId())->getResult();
+        $destinataire = ($user->getId() == $conversationEncours->getUser1()->getId()) ? $conversationEncours->getUser2() : $conversationEncours->getUser1();
+ 
+        if( empty($conversations) )
+        {
+            $conversations = $this->conversationRepo->findByUserQuery($user->getId())->getResult();
+        }
+
+        // dump($conversations);die;
+
+        return $this->render('conversation/index.html.twig', [
+            'conversations'       => $conversations,
+            'conversationEncours' => $conversationEncours,
+            'messages'            => $messages,                          // Messages de la conversation en cours
+            'annonce'             => $conversationEncours->getAnnonce(), // Annonce raccorder à la conversation en cours
+            'destinataire'        => $destinataire                       // Déstinataire des messages de la conversation en cours
+        ]);
     }
 }

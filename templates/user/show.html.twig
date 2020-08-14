@@ -1,122 +1,68 @@
 {% extends 'base.html.twig' %}
 
-
-{% block title %}Mes infos{% endblock %}
-
-{% block stylesheets %}
-    {{ parent() }}
-    <link href="{{ asset('css/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('css/responsive.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('css/design.css') }}" rel="stylesheet"/>
-{% endblock %}
+{% block title %}Profile - {{ app.user.nom | capitalize }}{% endblock %}
 
 {% block body %}
 
-    <header>
-        <center>
-            <div class="head">
-                <ul id="liste">
-                    <li> <img id="icone" src="icone/search.png"><label>Mes recherches</label></li>
-                    <li><img id="icone" src="icone/star.png"><label>Favoris</label></li>
-                    {% if app.user %}
-                        <li> <img id="icone" src="icone/search.png"><a href="{{path('annonces_index')}}"><label>Annonce</label></a></li>
-                        <li><img id="icone" src="icone/star.png"><label>Abonnement</label></li>
-                    {% endif %}
-                    {% if not app.user %}
-                        <li><img id="icone" src="icone/user.png"><a href="{{path('securitylogin')}}"><label>Se Connecter</label></a></li>
-                    {%  else %}
-                        <li><img id="icone" src="icone/user.png"><a href="{{path('security_logout')}}"><label>Se Déconnecter</label></a></li>
-                    {% endif  %}
-                </ul>
-            </div>
-        </center>
-    </header>
-
-    <div id="bg">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-4">
+    <div class="container-fluid" style="max-width: 1500px;">
+        <div id="bg" style="height:250px;"></div>
+        
+        <div class="row">
+            <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2 col-sm-12 bg-white rounded pb-3" style="margin-top: 50px;;">
+                <div class="text-center">
+                    <img src="{{ asset('image/logo-fond-blanc.png') }}" class="" alt="" style="height: 150px;width:auto;margin-top:-50px">
                 </div>
-                <div class="col-sm-4">
-                    <h1 class="align-content-center">Mes infos</h1>
-                </div>
-                <div class="col-sm-4">
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-4">
-                </div>
-                <div class="col-sm-4">
-                    <table class="table">
-                        <tbody>
-                        <tr>
-                            <th>Username</th>
-                            <td>{{ user.username }}</td>
-                        </tr>
-                        <tr>
-                            <th>Nom</th>
-                            <td>{{ user.nom }}</td>
-                        </tr>
-                        <tr>
-                            <th>Prenom</th>
-                            <td>{{ user.prenom }}</td>
-                        </tr>
-                        <tr>
-                            <th>Ville</th>
-                            <td>{{ user.ville }}</td>
-                        </tr>
-                        <tr>
-                            <th>Cp</th>
-                            <td>{{ user.cp }}</td>
-                        </tr>
-                        <tr>
-                            <th>Rue</th>
-                            <td>{{ user.rue }}</td>
-                        </tr>
-                        <tr>
-                            <th>Telephone</th>
-                            <td>{{ user.telephone }}</td>
-                        </tr>
-                        <tr>
-                            <th>Pseudo</th>
-                            <td>{{ user.pseudo }}</td>
-                        </tr>
-                        <tr>
-                            <th></th>
-                            <td>
 
-                                    <a href="{{ path('user_edit', {'id': user.id}) }}">
-                                        <div id="deposerAnnonce" class="btn btn-success">Modifier</div></a>
-                                <a href="{{ path('mes_annonces_index') }}">
-                                    <div class="btn btn-success">
-                                        Mes Annonces
-                                    </div>
-                                </a>
-                                </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="col-sm-4">
+                <div class="card" style="min-height: calc(100vh - 310px);">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h2 class="text-success text-center">Mes infos</h2>
+                        </div>
 
-                </div>
-            </div>
-
-
-        </div>
-
-        <div class="footer">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-2">
-                        <h6 id="footer">Copyrights Kiloukoi 2020</h6>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-12">
+                                <table class="table table-borderless table-sm">
+                                    <tr>
+                                        <td style="width: 120px"><strong>Nom :</strong></td>
+                                        <td>{{ app.user.nom }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Prénom :</strong></td>
+                                        <td>{{ app.user.prenom }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Mail :</strong></td>
+                                        <td>{{ app.user.email }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Pseudo :</strong></td>
+                                        <td>{{ app.user.pseudo }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Téléphone :</strong></td>
+                                        <td>{{ app.user.telephone }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Ville :</strong></td>
+                                        <td>{{ app.user.ville }} - {{ app.user.rue }}  ({{ app.user.cp }})</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-lg-6 col-md-12 text-center">
+                                <p><strong>Avatar</strong></p>
+                                {% if app.user.avatar %}
+                                    <img src="{{ asset('uploads/avatar/') ~ app.user.avatar }}" alt="" class="img-fluid rounded">
+                                {% else %}
+                                    <img src="{{ asset('image/img-add.png') }}" alt="" class="img-fluid rounded">
+                                {% endif %}
+                            </div>
+                            <div class="col-12 mt-3 d-flex justify-content-center">
+                                <a href="{{ path('user_edit', { id: app.user.id }) }}" class="btn btn-primary btn-block w-50">Modifier votre compte</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 {% endblock %}

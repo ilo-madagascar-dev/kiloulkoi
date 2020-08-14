@@ -4,60 +4,23 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
-use App\Repository\UserRepository;
+use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/user")
+ * @Route("/utilisateur")
  */
 class UserController extends AbstractController
 {
-    /**
-     * @Route("/", name="user_index", methods={"GET"})
-     */
-    public function index(UserRepository $userRepository): Response
-    {
-        return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
-        ]);
-    }
-
-    /**
-     * @Route("/new", name="user_new", methods={"GET","POST"})
-     */
-    public function new(Request $request): Response
-    {
-        $user = new User();
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('user_index');
-        }
-
-        return $this->render('user/new.html.twig', [
-            'user' => $user,
-            'form' => $form->createView(),
-        ]);
-    }
-
     /**
      * @Route("/profil", name="user_profil", methods={"GET"})
      */
     public function profil(): Response
     {
-        $userconnect = null;
-        if ($this->getUser() != null) {
-            $userconnect = $this->getUser()->getId();
-        }
-        $user = $this->getDoctrine()->getRepository(User::class)->find($userconnect);
+        $user = $this->getUser();
         return $this->render('user/show.html.twig', [
             'user' => $user,
         ]);
@@ -76,34 +39,29 @@ class UserController extends AbstractController
     /**
      * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, User $user): Response
+    public function edit(User $user, Request $request, FileUploader $uploader): Response
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) 
+        {
+            if( $form->get('avatar')->getData() )
+            {
+                $uploader->setTargetDirectory($this->getParameter('avatar_directory'));
+                $avatar_file = $form->get('avatar')->getData();
+                $avatar_url  = $uploader->upload($avatar_file);
+                $user->setAvatar($avatar_url);
+            }
+
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('user_index');
+            return $this->redirectToRoute('user_profil');
         }
 
         return $this->render('user/edit.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
         ]);
-    }
-
-    /**
-     * @Route("/{id}", name="user_delete", methods={"DELETE"})
-     */
-    public function delete(Request $request, User $user): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($user);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('user_index');
     }
 }

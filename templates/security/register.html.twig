@@ -49,6 +49,19 @@
                             </div>
                         </div>
 
+                        <div class="row m-3 text-center">
+                            <div class="col-md-4 offset-md-4">
+                                <img src="{{ asset('image/img-add.png') }}" alt="" class="img-fluid rounded output-image">
+                                <div>
+                                    {% do registrationForm.avatar.setRendered() %}
+                    
+                                    <label href="#" type="button" class="btn btn-info btn-block">
+                                        <input type="file" name="{{ registrationForm.avatar.vars.full_name }}" class="d-none input-image"> Changer d'avatar
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
                         {# {{ form_row(registrationForm.agreeTerms) }} #}
                         
                         <button type="submit" class="btn btn-primary btn-block">
@@ -62,4 +75,25 @@
 </div>
 
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready( function()
+        {
+            $(document).on('change', '.input-image', function(e) 
+            {
+                var input = this;
+
+                var reader = new FileReader();
+                reader.onload = function(e) 
+                {
+                    $('.output-image').attr('src', e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]); // convert to base64 string
+            });
+        })
+
+    </script>
 {% endblock %}

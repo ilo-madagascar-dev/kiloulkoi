@@ -28,16 +28,16 @@ class Message
     private $contenue;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="messages")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $user;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Conversation::class, inversedBy="messages")
      * @ORM\JoinColumn(nullable=false)
      */
     private $conversation;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
 
 
     public function __construct()
@@ -75,18 +75,6 @@ class Message
         return $this;
     }
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
     public function getConversation(): ?Conversation
     {
         return $this->conversation;
@@ -95,6 +83,18 @@ class Message
     public function setConversation(?Conversation $conversation): self
     {
         $this->conversation = $conversation;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

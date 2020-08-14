@@ -27,7 +27,7 @@ class Photo
     private $url;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $description;
 

@@ -3,11 +3,9 @@
 namespace App\DataFixtures;
 
 use App\Entity\Categories;
-use App\Entity\Energie;
-use App\Entity\Pointure;
+use App\Entity\Propriete;
 use App\Entity\SousCategorie;
 use App\Entity\StatutLocation;
-use App\Entity\Taille;
 use App\Entity\TypeLocation;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -17,77 +15,65 @@ class AppFixtures implements FixtureInterface
 {
     function load(ObjectManager $manager)
     {
-        //list categorie
-        // $product = new Product();
-        // $manager->persist($product);
 
-        // create 20 products! Bam!
-        //pll
+        // Energie vehicule
         $energies = ['Essence', 'Diesel', 'Electrique'];
-        for ($i = 0; $i < count($energies); $i++) {
-            $energie = new Energie();
-            $energie->setLibelle($energies[$i]);
+        for ($i = 0; $i < count($energies); $i++) 
+        {
+            $energie = new Propriete();
+            $energie->setValeur($energies[$i]);
+            $energie->setLibelle('energie');
             $manager->persist($energie);
         }
 
         //taille HommeFemmeMode
-        //XS
-        $tailles = ['S', 'M', 'L', 'XL', 'XS', 'XXl', 'XXXL'];
-        for ($i = 0; $i < count($tailles); $i++) {
-            $taille = new Taille();
-            $taille->setLibelle($tailles[$i]);
-            $taille->setClasse("HommeFemmeMode");
-            $manager->persist($taille);
-        }
-
-        //pointure HommeFemmeMode
-        //femme 36
-        for ($i = 37; $i <= 50; $i++) {
-            $pointure = new Pointure();
-            $pointure->setLibelle($i);
-            $pointure->setClasse("HommeFemmeMode");
-            $manager->persist($pointure);
-        }
-
-        //taille VetementMaternite
-        $tailles = ["Prématuré", "Naissance", "0-3mois", "3-6mois", "6-9mois", "9-12mois", "12-18mois", "18-24mois", "24-36mois"];
-        for ($i = 0; $i < count($tailles); $i++) {
-            $taille = new Taille();
-            $taille->setLibelle($tailles[$i]);
-            $taille->setClasse("VetementMaternite");
+        $tailles = ['XS', 'S', 'M', 'L', 'XL', 'XXl', 'XXXL'];
+        for ($i = 0; $i < count($tailles); $i++) 
+        {
+            $taille = new Propriete();
+            $taille->setValeur($tailles[$i]);
+            $taille->setLibelle("taille");
             $manager->persist($taille);
         }
 
         //pointure VetementMaternite
-        $pointures = ["Prématuré", "Naissance", "0-3mois", "3-6mois", "6-9mois", "9-12mois", "12-18mois", "18-24mois", "24-36mois"];
-        for ($i = 0; $i < count($pointures); $i++) {
-            $pointure = new Pointure();
-            $pointure->setLibelle($pointures[$i]);
-            $pointure->setClasse("VetementMaternite");
-            $manager->persist($pointure);
-        }
-
-        //taille EnfantMode
-        for ($i = 3; $i <= 16; $i++) {
-            $taille = new Taille();
-            $taille->setLibelle($i);
-            $taille->setClasse("EnfantMode");
+        $tailles = ["Prématuré", "Naissance", "0-3mois", "3-6mois", "6-9mois", "9-12mois", "12-18mois", "18-24mois", "24-36mois"];
+        for ($i = 0; $i < count($tailles); $i++) 
+        {
+            $taille = new Propriete();
+            $taille->setValeur($tailles[$i]);
+            $taille->setLibelle("taille_maternite");
             $manager->persist($taille);
         }
 
-        //pointure EnfantMode
-        for ($i = 12; $i <= 37; $i++) {
-            $pointure = new Pointure();
-            $pointure->setLibelle($i);
-            $pointure->setClasse("EnfantMode");
-            $manager->persist($pointure);
-        }
+        // //taille EnfantMode
+        // for ($i = 3; $i <= 16; $i++) 
+        // {
+        //     $taille = new Propriete();
+        //     $taille->setValeur($i);
+        //     $taille->setLibelle("taille_enfant");
+        //     $manager->persist($taille);
+        // }
 
-        // $categories = [['Véhicule', 'Vehicule', ''], ['Immobilier', 'Immobilier', ''],
-        //     ['Mode', 'Mode', ''], ['Maternité', 'Maternite', ''], ['Service', 'Service', ''],
-        //     ['Homme', 'HommeFemmeMode', 'Mode'], ['Femme', 'HommeFemmeMode', 'Mode'],
-        //     ['Enfant', 'EnfantMode', 'Mode'], ['Vêtements', 'VetementMaternite', 'Maternite']];
+        // //pointure FemmeMode
+        // for ($i = 37; $i <= 50; $i++) 
+        // {
+        //     $pointure = new Propriete();
+        //     $pointure->setValeur($i);
+        //     $pointure->setLibelle("pointure");
+        //     $manager->persist($pointure);
+        // }
 
+        // //pointure EnfantMode
+        // for ($i = 12; $i <= 37; $i++)
+        // {
+        //     $pointure = new Propriete();
+        //     $pointure->setValeur($i);
+        //     $pointure->setLibelle("pointure_enfant");
+        //     $manager->persist($pointure);
+        // }
+
+        // Listes des catégories et sous catégories d'une annonce
         $categories = [
             "Vehicule" => [
                 'icon' => 'fa fa-car',
@@ -208,7 +194,7 @@ class AppFixtures implements FixtureInterface
                     "Jeux"
                 ]
             ],
-            "HommeFemmeMode" => [
+            "ModeHomme" => [
                 'icon' => 'fas fa-male',
                 'libelle' => "MODE HOMME",
                 'sub_cat' => [
@@ -225,7 +211,7 @@ class AppFixtures implements FixtureInterface
                     "Luxe"
                 ]
             ],
-            "HommeFemmeMode" => [
+            "ModeFemme" => [
                 'icon' => 'fas fa-female',
                 'libelle' => "MODE FEMME",
                 'sub_cat' => [
@@ -242,7 +228,7 @@ class AppFixtures implements FixtureInterface
                     "Luxe"
                 ]
             ],
-            "EnfantMode" => [
+            "ModeEnfant" => [
                 'icon' => 'fas fa-baby',
                 'libelle' => "MODE ENFANT",
                 'sub_cat' => [
@@ -323,7 +309,8 @@ class AppFixtures implements FixtureInterface
         }
 
         $statuLocations = ['En attente', 'En cours', 'Effectué', 'Interrompu'];
-        for ($i = 0; $i < count($statuLocations); $i++) {
+        for ($i = 0; $i < count($statuLocations); $i++) 
+        {
             $statuLocation = new StatutLocation();
             $statuLocation->setLibelle($statuLocations[$i]);
             $manager->persist($statuLocation);
@@ -331,7 +318,8 @@ class AppFixtures implements FixtureInterface
 
         //type location
         $typeLocations = ["heure", "jour", "semaine", "mois"];
-        for ($i = 0; $i < count($typeLocations); $i++) {
+        for ($i = 0; $i < count($typeLocations); $i++) 
+        {
             $typeLocation = new TypeLocation();
             $typeLocation->setLibelle($typeLocations[$i]);
             $manager->persist($typeLocation);

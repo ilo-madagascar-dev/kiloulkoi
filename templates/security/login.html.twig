@@ -16,7 +16,7 @@
             <div class="col-md-8 offset-md-2">
                 <div class="card">
                     {% if error %}
-                        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                        <div class="alert alert-danger text-center">{{ error.messageKey|trans(error.messageData, 'security', 'fr') }}</div>
                     {% endif %}
         
                     <form method="post" class="card-body">

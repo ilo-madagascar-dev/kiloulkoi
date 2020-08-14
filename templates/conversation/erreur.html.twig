@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Messages{% endblock %}
+
+{% block body %}
+
+<!-- Begin Page Content -->
+<div class="container-fluid" style="max-width: 1500px;">
+	<div id="bg" style="position:absolute;z-index:-1;left:0;height:375px;"></div>
+
+	<center class="py-4">
+		<img src="{{ asset('image/logo.png') }}" class="mb-3" style="height: 150px;width: auto;" >
+		<p class="text-center text-white"><strong>N'achetez que le nécessaire, pour le reste il y a Kiloukoi!</strong></p>
+	</center>
+
+	<div class="card">
+		<div class="card-body text-danger d-flex align-items-center" style="height: 205px;">
+			<div class="m-auto" style="font-size: 1.5rem;">
+				{% if error is defined %}
+					{{ error | capitalize}}
+				{% else %}
+					Vous n'avez aucune conversation!
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

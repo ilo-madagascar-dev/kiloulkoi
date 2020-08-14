@@ -11,8 +11,6 @@
                 <th>Id</th>
                 <th>Username</th>
                 <th>Password</th>
-                <th>FacebookID</th>
-                <th>FacebookAccessToken</th>
                 <th>Nom</th>
                 <th>Prenom</th>
                 <th>Ville</th>
@@ -21,7 +19,6 @@
                 <th>Telephone</th>
                 <th>Pseudo</th>
                 <th>Fonction</th>
-                <th>actions</th>
             </tr>
         </thead>
         <tbody>
@@ -30,8 +27,6 @@
                 <td>{{ user.id }}</td>
                 <td>{{ user.username }}</td>
                 <td>{{ user.password }}</td>
-                <td>{{ user.facebookID }}</td>
-                <td>{{ user.facebookAccessToken }}</td>
                 <td>{{ user.nom }}</td>
                 <td>{{ user.prenom }}</td>
                 <td>{{ user.ville }}</td>
@@ -39,7 +34,6 @@
                 <td>{{ user.rue }}</td>
                 <td>{{ user.telephone }}</td>
                 <td>{{ user.pseudo }}</td>
-                <td>{{ user.fonction }}</td>
                 <td>
                     <a href="{{ path('user_show', {'id': user.id}) }}">show</a>
                     <a href="{{ path('user_edit', {'id': user.id}) }}">edit</a>

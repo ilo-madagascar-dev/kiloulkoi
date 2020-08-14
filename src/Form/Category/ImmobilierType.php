@@ -2,11 +2,9 @@
 
 namespace App\Form\Category;
 
+use App\Entity\AnnonceImmobilier;
 use App\Entity\Annonces;
-use App\Entity\Immobilier;
 use App\Form\AnnoncesType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -21,14 +19,15 @@ class ImmobilierType extends AnnoncesType
 
         $builder
             ->add('surface')
-            ->add('nbrChambre', IntegerType::class, ['label' => 'Nombre de chambre'])
+            ->add('etage')
+            ->add('chambre')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Immobilier::class,
+            'data_class' => AnnonceImmobilier::class,
         ]);
     }
 }

@@ -1,33 +1,120 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Conversation index{% endblock %}
+{% block title %}Messages{% endblock %}
 
 {% block body %}
-    <h1>Conversation index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for conversation in conversations %}
-            <tr>
-                <td>{{ conversation.id }}</td>
-                <td>
-                    <a href="{{ path('conversation_show', {'id': conversation.id}) }}">show</a>
-                    <a href="{{ path('conversation_edit', {'id': conversation.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="2">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+<!-- Begin Page Content -->
+<div class="container-fluid" style="max-width: 1500px;">
+	<div id="bg" style="height:250px;"></div>
 
-    <a href="{{ path('conversation_new') }}">Create new</a>
+	<div class="row rounded-lg overflow-hidden shadow pt-3 mx-2">
+		<!-- Users box-->
+		<div class="col-12 col-md-5 col-lg-4 px-0">
+			<div class="bg-white">
+				<div class="p-4 bg-primary text-white">
+					<h2 class="h5 mb-0 py-1">Messages</2>
+				</div>
+
+				<div class="messages-box border-right border-primary" style="height: calc(100vh - 200px);overflow-y:auto;">
+					<div class="list-group rounded-0">
+
+						{% for conversation in conversations %}
+							{% set active = (conversationEncours.id == conversation.id) %}
+
+							<a href="{{ path('conversation_show', {'id': conversation.id}) }}" class="list-group-item list-group-item-action text-muted rounded-0 {{ active ? 'list-group-item-info' : 'list-group-item-light' }}">
+								<div class="media">
+									{% if conversation.user1.id == app.user.id %}
+										<img src="{{ asset('uploads/avatar/') ~ conversation.user2.avatar }}" alt="user" width="50" height="50" class="rounded-circle">
+									{% else %}
+										<img src="{{ asset('uploads/avatar/') ~ conversation.user1.avatar }}" alt="user" width="50" height="50" class="rounded-circle">
+									{% endif %}
+									
+									<div class="media-body ml-3">
+										<div class="d-flex align-items-center justify-content-between mb-0">
+											{% if conversation.user1.id == app.user.id %}
+												<h6 class="mb-0" style="font-weight: bold;">{{ conversation.user2.nom }}</h6>
+											{% else %}
+												<h6 class="mb-0" style="font-weight: bold;">{{ conversation.user1.nom }}</h6>
+											{% endif %}
+											<small style="font-size: 60%;">{{ conversation.messages[0].date | date("d/m/Y | H:m") }}</small>
+										</div>
+										<p class="font-italic mb-0 text-small">
+											{% if conversation.messages[0].user.id == app.user.id %}
+												<strong><small>Moi: </small></strong>
+											{% endif %}
+											<small>{{ conversation.messages[0].contenue }}</small>
+										</p>
+									</div>
+								</div>
+							</a>
+							
+							{% set i = 1 %}
+						{% endfor %}
+						
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Chat Box-->
+		<div class="col-12 col-md-7 col-lg-8 px-0 bg-white">
+			{# Reciever name #}
+			<div class="p-4 bg-primary text-white border-left border-white">
+				<h2 class="h5 mb-0 py-1">{{ destinataire.nom ~ " " ~ destinataire.prenom }}</h2>
+			</div>
+
+			<div class="chat-box w-100">
+				<div id="messageBody" class="px-4 py-2" style="height: calc(100vh - 275px);overflow-y:auto;">
+					{% for message in messages %}
+						{% if message.user.id == app.user.id %}
+							<!-- Reciever Message-->
+							<div class="media w-50 ml-auto">
+								<div class="media-body mb-2">
+									<div class="bg-primary rounded py-2 px-3">
+										<p class="text-small mb-0 text-white">{{ message.contenue }}</p>
+									</div>
+									<small class="small text-muted">{{ message.date | date("d/m/Y | H:m") }}</small>
+								</div>
+							</div>	
+						{% else %}
+							<!-- Sender Message-->
+							<div class="media w-50">
+								<img src="{{ asset('uploads/avatar/') ~ message.user.avatar }}" alt="user" width="50" height="50" class="rounded-circle">
+								<div class="media-body mb-2 ml-3">
+									<div class="bg-light rounded py-2 px-3">
+										<p class="text-small mb-0 text-muted">{{ message.contenue }}</p>
+									</div>
+									<small class="small text-muted">{{ message.date | date("d/m/Y | H:m") }}</small>
+								</div>
+							</div>
+						{% endif %}
+					{% endfor %}
+				</div>
+
+				<!-- Typing area -->
+				<form method="POST" action="{{ path('conversation_messages_new', { annonce: annonce.id, destinataire: destinataire.id }) }}" class="bg-light border border-primary rounded-right">
+					<div class="input-group">
+						<textarea type="text" placeholder="Type a message" name="contenue" aria-describedby="button-addon2" rows="2" class="form-control rounded-0 border-0 py-2 bg-light"></textarea>
+						<div class="input-group-append">
+							<button id="button-addon2" type="submit" class="btn btn-primary"> <i class="fa fa-paper-plane"></i></button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+	 <script>
+		$(document).ready( function()
+		{
+			var messageBody = document.querySelector('#messageBody');
+			messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+		})
+	</script>
 {% endblock %}

@@ -19,6 +19,20 @@ class CategoriesRepository extends ServiceEntityRepository
         parent::__construct($registry, Categories::class);
     }
 
+    /**
+     * @return Categories[] Returns an array of Categories objects
+     */
+    public function findAllWithSousCategorie()
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c', 'sc')
+            ->leftJoin('c.sousCategories', 'sc')
+            ->orderBy('c.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     // /**
     //  * @return Categories[] Returns an array of Categories objects
     //  */

@@ -17,8 +17,8 @@ class AccueilController extends AbstractController
         $repoCategorie = $this->getDoctrine()->getRepository(Categories::class);
         $repoAnnonce   = $this->getDoctrine()->getRepository(Annonces::class);
         
-        $categories = $repoCategorie->findAll();
-        $annonces   = $repoAnnonce->findAll();
+        $categories = $repoCategorie->findAllWithSousCategorie();
+        $annonces   = $repoAnnonce->findAllAnnonces(10)->getResult();
         
         return $this->render('accueil/index.html.twig', [
             'categories' => $categories,

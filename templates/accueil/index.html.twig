@@ -16,7 +16,7 @@
         <div class="col-md-10 offset-md-1">
             <div class="card p-3 shadow">
                 <div class="card-body py-0 px-0 px-md-3">
-                    <form action="{{ path('annonces_new') }}" class="text-center">
+                    <form action="{{ path('annonces_filter') }}" class="text-center">
                         <div class="form-group row pb-md-3 text-muted text-left text-md-center">
                             <div class="col-12 col-md-4 col-sm-6">
                                 <div class="form-check form-check-inline">
@@ -47,7 +47,7 @@
                             </div>
                             <div class="form-group col-12 col-md-4">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Que cherchez vous?" aria-describedby="recherche-addon">
+                                    <input type="text" class="form-control" placeholder="Que cherchez vous?" aria-describedby="recherche-addon" name="titre">
                                     <div class="input-group-append">
                                         <span class="input-group-text bg-white" id="recherche-addon"><i class="fa fa-search"></i></span>
                                     </div>
@@ -55,7 +55,7 @@
                             </div>
                             <div class="form-group col-12 col-md-4">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Choisissez une ville" aria-describedby="ville-addon">
+                                    <input type="text" class="form-control" placeholder="Choisissez une ville" aria-describedby="ville-addon" name="ville">
                                     <div class="input-group-append">
                                         <span class="input-group-text bg-white" id="ville-addon"><i class="fa fa-city"></i></span>
                                     </div>
@@ -68,7 +68,7 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="input-group mb-3">
-                                            <input type="text" class="form-control">
+                                            <input type="text" class="form-control" name="min_prix">
                                             <div class="input-group-append">
                                                 <span class="input-group-text bg-white"> €</span>
                                             </div>
@@ -77,7 +77,7 @@
 
                                     <div class="col-6">
                                         <div class="input-group mb-3">
-                                            <input type="text" class="form-control">
+                                            <input type="text" class="form-control" name="max_prix">
                                             <div class="input-group-append">
                                                 <span class="input-group-text bg-white"> €</span>
                                             </div>
@@ -86,7 +86,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-4 col-12 mb-3">
-                                <input type="date" class="form-control" placeholder="Choisissez une ville" aria-describedby="ville-addon">
+                                <input type="date" class="form-control" placeholder="Choisissez une ville" aria-describedby="ville-addon" name="date">
                             </div>
                         </div>
 

@@ -13,7 +13,9 @@ class ConversationType extends AbstractType
     {
         $builder
             ->add('derniere_lecture')
-            ->add('location')
+            ->add('user')
+            ->add('user_destination')
+            ->add('annonce')
         ;
     }
 

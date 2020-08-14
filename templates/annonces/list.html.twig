@@ -1,14 +1,18 @@
 
 <div class="container mt-4 mb-3">
-	<h1 class="text-center text-muted">{{ annonce_title }}</h1>
+	<div class="card">
+		<h1 class="h3 text-center text-muted pt-2">{{ annonce_title }}</h1>
+		{% if annonces|length == 0 %}
+			<div class="card-body">
+				<div class="alert alert-warning text-center">
+					Aucun résultat!
+				</div>
+			</div>
+		{% endif %}
+	</div>
 </div>
 
 <div class="container">
-	{% if annonces|length == 0 %}
-		<div class="alert alert-warning text-center">
-			Aucun résultat!
-		</div>
-	{% endif %}
 
 	<div class="row card-deck">
 		{% for annonce in annonces %}
@@ -23,28 +27,29 @@
 
 					<div style="height: 165px;" class="text-center overflow-hidden d-flex align-items-center bg-light">
 						{% if annonce.photo|length > 0 %}
-						<img src="{{ asset("uploads/" ~ annonce.photo[0].url) }}" class="card-img-top m-auto" alt="...">
+							<img src="{{ asset("uploads/" ~ annonce.photo[0].url) }}" class="card-img-top m-auto" alt="...">
 						{% else %}
-						<img src="{{ asset('image/logo.png') }}" class="card-img-top m-auto p-3" style="width: auto;height: 100%;" alt="...">
+							<img src="{{ asset('image/logo.png') }}" class="card-img-top m-auto p-3" style="width: auto;height: 100%;" alt="...">
 						{% endif %}
 					</div>
 
 					<div class="card-body py-2 px-3">
 						<h3 class="card-title text-primary mb-2" style="font-size: 1.15rem;">
-							<strong><a href="{{ path('annonces_show', {'id': annonce.id}) }}" >{{ annonce.titre }}</a></strong>
+							{% set slug = annonce.slug == '' ? 'annonces_' : annonce.slug %}
+							<strong><a href="{{ path('annonces_show', {id: annonce.id, slug: slug }) }}" >{{ annonce.titre }}</a></strong>
 						</h3>
 
 						<div class="details" style="font-size: .8rem;">
 							<p class="card-text mb-0"><strong class="text-success">Prix : </strong>{{ annonce.prix }} Euro</p>
-							<p class="card-text mb-0"><strong class="text-success">Catégorie : </strong>{{ annonce.categorie.libelle }}</p>
+							<p class="card-text mb-0"><strong class="text-success">Catégorie : </strong>{{ annonce.categorie.libelle }} / {{ annonce.sousCategorie.libelle }}</p>
 						</div>
 					</div>
 					
-						<div class="card-footer text-right p-0" style="font-size: .8rem;">
+						<div class="card-footer text-right p-0 bg-white" style="font-size: .8rem;">
 							<div class="row">
 								{% if app.user and app.user.id == annonce.user.id %}
 									<div class="col text-left ml-3">
-											<a href="{{ path('annonces_edit', {'id': annonce.id}) }}" class="card-link" >Modifier</a>
+										<a href="{{ path('annonces_edit', {'id': annonce.id}) }}" class="card-link" >Modifier</a>
 										{{ include('annonces/_delete_form.html.twig') }}
 									</div>
 								{% else %}
@@ -62,5 +67,6 @@
 				</div>
 			</div>
 		{% endfor %}
+
 	</div>
 </div>

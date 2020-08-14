@@ -1,5 +1,9 @@
 <form method="post" style="display: inline;" action="{{ path('annonces_delete', {'id': annonce.id}) }}" onsubmit="return confirm('Voulez vous vraiment supprimer ?');">
     <input type="hidden" name="_method" value="DELETE">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ annonce.id) }}">
-    <button class="btn btn-link text-danger"  style="font-size: .8rem;">Supprimer</button>
+    {% if style is defined and style == "show" %}
+        <button class="btn btn-danger">Supprimer</button>
+    {% else %}
+        <button class="btn btn-link text-danger"  style="font-size: .8rem;">Supprimer</button>
+    {% endif %}
 </form>

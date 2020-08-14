@@ -3,36 +3,47 @@
 namespace App\Controller\Annonce;
 
 use App\Entity\Annonces;
-use App\Entity\Categories;
 use App\Repository\AnnoncesRepository;
+use App\Repository\CategoriesRepository;
+use App\Repository\SousCategorieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\FileUploader;
 
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+
 /**
  * @Route("/annonces")
  */
 class AnnoncesController extends AbstractController
 {
+    private $repAnnonce;
+    private $repCategorie;
+    private $repSousCategorie;
+
+    public function __construct(AnnoncesRepository $repAnnonce, CategoriesRepository $repCategorie, SousCategorieRepository $repSousCategorie)
+    {
+        $this->repAnnonce = $repAnnonce;
+        $this->repCategorie = $repCategorie;
+        $this->repSousCategorie = $repSousCategorie;
+    }
+
     /**
      * @Route("/", name="annonces_index", methods={"GET"})
      */
-    public function index(AnnoncesRepository $annoncesRepository): Response
+    public function index(): Response
     {
-        $repoCategorie = $this->getDoctrine()->getRepository(Categories::class);
-        $repoAnnonce   = $this->getDoctrine()->getRepository(Annonces::class);
-        
-        $categories = $repoCategorie->findAll();
-        $annonces   = $repoAnnonce->findAll();
-        
+        $categories = $this->repCategorie->findAllWithSousCategorie();
+        $annonces   = $this->repAnnonce->findAllAnnonces()->getResult();
+
         return $this->render('annonces/index.html.twig', [
             'categories' => $categories,
             'annonces' => $annonces,
         ]);
     }
-
 
     /**
      * @Route("/mes_annonces", name="mes_annonces_index", methods={"GET"})
@@ -44,10 +55,9 @@ class AnnoncesController extends AbstractController
         {
             return $this->redirectToRoute('securitylogin');
         }
-        
-        $repository = $this->getDoctrine()->getRepository(Categories::class);
-        $categories = $repository->findAll();
-        $annonces   = $user->getAnnonces();
+
+        $categories = $this->repCategorie->findAllWithSousCategorie();
+        $annonces   = $this->repAnnonce->findMesAnnonces($user->getId())->getResult();
 
         return $this->render('annonces/mesAnnonces.html.twig', [
             'categories' => $categories,
@@ -57,17 +67,12 @@ class AnnoncesController extends AbstractController
 
 
     /**
-     * @Route("/filter", name="annonces_filtre", methods={"GET"})
+     * @Route("/filter", name="annonces_filter", methods={"GET"})
      */
     public function filter(Request $request): Response
     {
-        $repCategorie = $this->getDoctrine()->getRepository(Categories::class);
-        $repAnnonce   = $this->getDoctrine()->getRepository(Annonces::class);
-        
-        $categories = $repCategorie->findAll();
-        $annonces   = $repAnnonce->findAnnonces($request->query->all());
-        
-        $annonce_titre = $request->query->has('titre') ? "Résultats des recherches" : "Catégorie: ";
+        $categories    = $this->repCategorie->findAllWithSousCategorie();
+        $annonces      = $this->repAnnonce->findAnnonces($request->query->all())->getResult();
         $annonce_titre = "Résultats des recherches";
         
         return $this->render('annonces/mesAnnonces.html.twig', [
@@ -77,6 +82,36 @@ class AnnoncesController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/categorie/{categorie_slug}/{sous_categorie_slug}", name="annonces_categorie", methods={"GET"})
+     */
+    public function catégorie(string $categorie_slug, string $sous_categorie_slug)
+    {
+        $criteria         = [
+            'categorie' => $categorie_slug,
+            'sous_categorie' => $sous_categorie_slug,
+        ];
+
+        $categories = $this->repCategorie->findAllWithSousCategorie();
+        $sous_cat   = $this->repSousCategorie->findOneBy(['slug' => $sous_categorie_slug]);
+        $annonces   = $this->repAnnonce->findAnnonces($criteria)->getResult();
+
+        foreach($categories as $c)
+        {
+            if( $c->getClassName() == $categorie_slug)
+            {
+                $annonce_titre = $sous_cat->getLibelle() . ' (' . $c->getLibelle()  .')';
+            }
+        }
+
+        $annonce_titre = empty($annonce_titre) ? "Résultats des recherches" : $annonce_titre;
+        
+        return $this->render('annonces/mesAnnonces.html.twig', [
+            'categories' => $categories,
+            'annonces' => $annonces,
+            'annonce_title' => $annonce_titre
+        ]);
+    }
 
     /**
      * @Route("/creation", name="annonces_new", methods={"GET","POST"})
@@ -89,16 +124,15 @@ class AnnoncesController extends AbstractController
             return $this->redirectToRoute('securitylogin');
         }
 
-        $repCategorie = $this->getDoctrine()->getRepository(Categories::class);
         $nomClasse    = ucfirst($request->query->get('categorie'));
-        $categorie    = $repCategorie->findOneBy(['className' => $nomClasse]);
+        $categorie    = $this->repCategorie->findOneBy(['className' => $nomClasse]);
         if( $categorie == null)
         {
             // Category not found....
-            return $this->redirectToRoute('annonces_new');
+            return $this->redirectToRoute('annonces_index');
         }
 
-        $class    = 'App\Entity\\' . $nomClasse;
+        $class    = 'App\Entity\Annonce' . $nomClasse;
         $formType = 'App\Form\Category\\' . trim($nomClasse) . 'Type';
         $annonce  = new $class();
 
@@ -124,6 +158,7 @@ class AnnoncesController extends AbstractController
             $annonce->setValidationAdmin(false);
             $annonce->setVisite(0);
             $annonce->setType($request->query->get('type'));
+            $annonce->setSlug();
 
             $annonce->setProucentageTva(0.5);
             $annonce->setDateModification();
@@ -145,20 +180,28 @@ class AnnoncesController extends AbstractController
 
 
     /**
-     * @Route("/{id}", name="annonces_show", methods={"GET"})
+     * @Route("/details/{id}/{slug}", name="annonces_show", methods={"GET"})
      */
-    public function show(Annonces $annonce): Response
+    public function show(Annonces $annonce, string $slug, SerializerInterface $serializer): Response
     {
-        $user = $this->getUser();
+        $user    = $this->getUser();
         if ($user == null || ($user !== null && $user->getId() !== $annonce->getUser()->getId()) ) 
         {
             $annonce->setVisite( intval($annonce->getVisite()) + 1);
         }
         
+        $annonce_serialized = $serializer->normalize($annonce, null, [AbstractNormalizer::IGNORED_ATTRIBUTES => [
+            'photo', 'user', 'conversations', 'sousCategorie', 'categorie',  // Relation to ignore
+            'id', 'titre', 'description', 'prix', 'proucentageTva', //////////////
+            'dateCreation', 'dateModification', 'statut',           // Annonce's parent attributes
+            'visite', 'slug', 'validationAdmin', 'type'             //////////////
+        ]]);
+
         $this->getDoctrine()->getManager()->flush();
 
         return $this->render('annonces/show.html.twig', [
             'annonce' => $annonce,
+            'annonce_serialized' => $annonce_serialized,
         ]);
     }
 
@@ -172,7 +215,8 @@ class AnnoncesController extends AbstractController
             return $this->redirectToRoute('securitylogin');
         }
 
-        $class = 'App\Form\Category\\' . substr(get_class($annonce), 11) . 'Type';
+        $formType = str_replace('Annonce', '', substr(get_class($annonce), 11) );
+        $class = 'App\Form\Category\\' . $formType . 'Type';
         $form  = $this->createForm($class, $annonce);
         $form->handleRequest($request);
 
@@ -190,6 +234,7 @@ class AnnoncesController extends AbstractController
                 }
             }
 
+            $annonce->setSlug();
             $annonce->setDateModification();
             $this->getDoctrine()->getManager()->flush();
 

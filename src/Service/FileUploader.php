@@ -36,4 +36,11 @@ class FileUploader
     {
         return $this->targetDirectory;
     }
+
+
+    public function setTargetDirectory(string $targetDirectory)
+    {
+        $this->targetDirectory = $targetDirectory;
+        return $this;
+    }
 }

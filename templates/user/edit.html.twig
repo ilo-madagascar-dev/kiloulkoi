@@ -1,75 +1,53 @@
-
 {% extends 'base.html.twig' %}
 
-
-{% block title %}Modifier Profil{% endblock %}
-
-{% block stylesheets %}
-    {{ parent() }}
-    <link href="{{ asset('css/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('css/responsive.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('css/design.css') }}" rel="stylesheet"/>
-{% endblock %}
+{% block title %}Profile - {{ app.user.nom | capitalize }}{% endblock %}
 
 {% block body %}
 
-    <header>
-        <center>
-            <div class="head">
-                <ul id="liste">
-                    <li> <img id="icone" src="icone/search.png"><label>Mes recherches</label></li>
-                    <li><img id="icone" src="icone/star.png"><label>Favoris</label></li>
-                    {% if app.user %}
-                        <li> <img id="icone" src="icone/search.png"><a href="{{path('annonces_index')}}"><label>Annonce</label></a></li>
-                        <li><img id="icone" src="icone/star.png"><label>Abonnement</label></li>
-                    {% endif %}
-                    {% if not app.user %}
-                        <li><img id="icone" src="icone/user.png"><a href="{{path('securitylogin')}}"><label>Se Connecter</label></a></li>
-                    {%  else %}
-                        <li><img id="icone" src="icone/user.png"><a href="{{path('security_logout')}}"><label>Se Déconnecter</label></a></li>
-                    {% endif  %}
-                </ul>
-            </div>
-        </center>
-    </header>
+    <div class="container-fluid" style="max-width: 1500px;">
+        <div id="bg" style="height:250px;"></div>
+        
+        <div class="row">
+            <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2 col-sm-12 bg-white rounded pb-3" style="margin-top: 50px;;">
+                <div class="text-center">
+                    <img src="{{ asset('image/logo-fond-blanc.png') }}" class="" alt="" style="height: 150px;width:auto;margin-top:-50px">
+                </div>
 
-    <div id="bg">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-4">
-                </div>
-                <div class="col-sm-4">
-                    <h1 class="align-content-center">Profil</h1>
-                </div>
-                <div class="col-sm-4">
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-4">
-                </div>
-                <div class="col-sm-4">
-                    {{ include('user/_form.html.twig', {'button_label': 'Modifier'}) }}
-                </div>
-                <div class="col-sm-4">
+                <div class="card" style="min-height: calc(100vh - 310px);">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h2 class="text-success text-center">Mes infos</h2>
+                        </div>
 
-                </div>
-            </div>
-
-
-        </div>
-
-        <div class="footer">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-2">
-                        <h6 id="footer">Copyrights Kiloukoi 2020</h6>
+                        <div class="row">
+                            <div class="col-12">
+                                {{ include('user/_form.html.twig', {'button_label': 'Modifier'}) }}                                
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+{% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready( function()
+        {
+            $(document).on('change', '.input-image', function(e) 
+            {
+                var input = this;
+
+                var reader = new FileReader();
+                reader.onload = function(e) 
+                {
+                    $('.output-image').attr('src', e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]); // convert to base64 string
+            });
+        })
+
+    </script>
 {% endblock %}

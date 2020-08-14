@@ -3,37 +3,43 @@
 namespace App\Form\Category;
 
 use App\Entity\Annonces;
-use App\Entity\Energie;
-use App\Entity\SousCategorie;
-use App\Entity\Vehicule;
+use App\Entity\AnnonceVehicule;
 use App\Form\AnnoncesType;
+use App\Entity\Propriete;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class VehiculeType extends AnnoncesType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $annonce = new Annonces();
-        $options['categorie_id'] = $annonce->getCategoryId('Vehicule');
+        $classe  = 'Vehicule';
+        $options['categorie_id'] = $annonce->getCategoryId($classe);
         parent::buildForm($builder, $options);
-        
+
         $builder
-            ->add('energie', EntityType::class, [
-                // looks for choices from this entity
-                'class' => Energie::class,
-                'choice_label' => 'libelle',
-            ])
             ->add('marque')
+            ->add('modele')
+            ->add('energie', EntityType::class, [
+                'class' => Propriete::class,
+                'query_builder' => function (EntityRepository $er) 
+                {
+                    return $er->createQueryBuilder('p')
+                        ->where('p.libelle = :libelle')
+                        ->setParameter('libelle', 'energie');
+                },
+                'choice_label' => 'valeur'
+            ])
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Vehicule::class,
+            'data_class' => AnnonceVehicule::class,
         ]);
     }
 }

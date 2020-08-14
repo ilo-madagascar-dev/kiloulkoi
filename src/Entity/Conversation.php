@@ -25,25 +25,32 @@ class Conversation
     private $derniere_lecture;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Location::class, inversedBy="conversations")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="conversations")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $location;
+    private $user_1;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="conversations")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $user;
+    private $user_2;
 
     /**
      * @ORM\OneToMany(targetEntity=Message::class, mappedBy="conversation", orphanRemoval=true)
      */
     private $messages;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Annonces::class, inversedBy="conversations")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $annonce;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
+        $this->derniere_lecture = new \DateTime();
     }
 
     public function getId(): ?int
@@ -59,30 +66,6 @@ class Conversation
     public function setDerniereLecture(\DateTimeInterface $derniere_lecture): self
     {
         $this->derniere_lecture = $derniere_lecture;
-
-        return $this;
-    }
-
-    public function getLocation(): ?Location
-    {
-        return $this->location;
-    }
-
-    public function setLocation(?Location $location): self
-    {
-        $this->location = $location;
-
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
 
         return $this;
     }
@@ -114,6 +97,43 @@ class Conversation
                 $message->setConversation(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAnnonce(): ?Annonces
+    {
+        return $this->annonce;
+    }
+
+    public function setAnnonce(?Annonces $annonce): self
+    {
+        $this->annonce = $annonce;
+
+        return $this;
+    }
+
+    public function getUser1(): ?User
+    {
+        return $this->user_1;
+    }
+
+    public function setUser1(?User $user_1): self
+    {
+        $this->user_1 = $user_1;
+
+        return $this;
+    }
+
+
+    public function getUser2(): ?User
+    {
+        return $this->user_2;
+    }
+
+    public function setUser2(?User $user_2): self
+    {
+        $this->user_2 = $user_2;
 
         return $this;
     }
