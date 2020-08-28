@@ -4,9 +4,14 @@ namespace App\Controller\Annonce;
 
 use App\Entity\Annonces;
 use App\Entity\Location;
+use App\Entity\StatutLocation;
 use App\Entity\User;
 use App\Form\LocationType;
+use App\Repository\AnnoncesRepository;
 use App\Repository\LocationRepository;
+use App\Repository\StatutLocationRepository;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,36 +45,41 @@ class LocationController extends AbstractController
     /**
      * @Route("/new", name="location_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, LocationRepository $locationRepository, AnnoncesRepository $annoncesRepository, StatutLocationRepository $statutReposistory): Response
     {
-        $idAnnonces = $request->query->get('idannonce');
-        $idUser = $this->getUser()->getId();
-        $annonce = null;
-        $user = null;
-        if ($idAnnonces != null) {
-            $repositoryAnnonces = $this->getDoctrine()->getRepository(Annonces::class);
-            $annonce = $repositoryAnnonces->find(intval($idAnnonces));
-            $user = $this->getDoctrine()->getRepository(User::class)->find(intval($idUser));
+        $token = $request->request->get('token');
+        if ($this->isCsrfTokenValid('new_location', $token))
+        {
+            $user    = $this->getUser();
+            $annonce = $annoncesRepository->find( $request->request->get('annonce'));
+            $em      = $this->getDoctrine()->getManager();
+            
+            $reservations = json_decode($request->request->get('reservations'));
+            $disponible   = $locationRepository->checkDates($reservations);
+            
+            if( $disponible && $annonce )
+            {
+                $statut    = $statutReposistory->find(1); // Statut en attente
+                $locations = new ArrayCollection();
+                foreach( $reservations as $reservation )
+                {
+                    $location = new Location();
+    
+                    $location->setDateDebut( new DateTime($reservation->debut) );
+                    $location->setDateFin( new DateTime($reservation->fin) );
+                    $location->setAnnonce($annonce);
+                    $location->setStatutLocation($statut);
+                    $location->setUser($user);
+                    
+                    $em->persist($location);
+                    $locations->add($location);
+                }
+                $em->flush();
+            }
         }
-        $annonce = $this->cast($annonce, Annonces::class);
-        //dump($annonce);
-        $location = new Location();
-        $location->setAnnonces($annonce);
-        $location->setUser($user);
-        $form = $this->createForm(LocationType::class, $location);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($location);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('location_index');
-        }
-
+        
         return $this->render('location/new.html.twig', [
-            'location' => $location,
-            'form' => $form->createView(),
+            'locations' => $locations,
         ]);
     }
 

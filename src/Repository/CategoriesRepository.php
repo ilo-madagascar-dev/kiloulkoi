@@ -26,8 +26,20 @@ class CategoriesRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('c')
             ->select('c', 'sc')
-            ->leftJoin('c.sousCategories', 'sc')
+            ->leftJoin('c.categorieEnfant', 'sc')
             ->orderBy('c.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
+     * @return Categories[] Returns an array of Categories objects
+     */
+    public function findParents()
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.categorieParent is null')
             ->getQuery()
             ->getResult()
             ;

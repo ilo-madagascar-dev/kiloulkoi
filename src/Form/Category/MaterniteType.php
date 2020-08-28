@@ -12,9 +12,7 @@ class MaterniteType extends AnnoncesType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $annonce = new Annonces();
-        $classe  = 'Maternite';
-        $options['categorie_id'] = $annonce->getCategoryId($classe);
+        $options['classe'] = 'Maternite';
         parent::buildForm($builder, $options);
 
         $builder

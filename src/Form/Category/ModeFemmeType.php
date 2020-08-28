@@ -4,7 +4,7 @@ namespace App\Form\Category;
 
 use App\Entity\AnnonceModeFemme;
 use App\Entity\Annonces;
-use App\Entity\Propriete;
+use App\Entity\Taille;
 use App\Form\AnnoncesType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -15,9 +15,7 @@ class ModeFemmeType extends AnnoncesType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $annonce = new Annonces();
-        $classe  = 'ModeFemme';
-        $options['categorie_id'] = $annonce->getCategoryId($classe);
+        $options['classe'] = 'ModeFemme';
         parent::buildForm($builder, $options);
 
         $builder
@@ -25,10 +23,11 @@ class ModeFemmeType extends AnnoncesType
             ->add('modele')
             ->add('pointure')
             ->add('taille', EntityType::class, [
-                'class' => Propriete::class,
+                'class' => Taille::class,
                 'query_builder' => function (EntityRepository $er) 
                 {
                     return $er->createQueryBuilder('p')
+                        ->orderBy('p.id')
                         ->where('p.libelle = :libelle')
                         ->setParameter('libelle', 'taille');
                 },

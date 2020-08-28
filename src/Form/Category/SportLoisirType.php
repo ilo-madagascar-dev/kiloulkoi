@@ -2,7 +2,6 @@
 
 namespace App\Form\Category;
 
-use App\Entity\Annonces;
 use App\Entity\AnnonceSportLoisir;
 use App\Form\AnnoncesType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -12,9 +11,7 @@ class SportLoisirType extends AnnoncesType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $annonce = new Annonces();
-        $classe  = 'SportLoisir';
-        $options['categorie_id'] = $annonce->getCategoryId($classe);
+        $options['classe'] = 'SportLoisir';
         parent::buildForm($builder, $options);
     }
 

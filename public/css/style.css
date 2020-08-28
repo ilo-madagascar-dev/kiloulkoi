@@ -14,3 +14,55 @@ label {
     padding-left: .2rem;
     margin: 0;
 }
+
+label.required::before {
+    content: "* ";
+    color: 
+    red;
+}
+
+.btn:disabled {
+    cursor: no-drop;
+}
+
+.calendar span {
+    width: 2.6rem;
+    height: 2rem;
+    display: inline-block;
+    text-align: center;
+    padding-top: .3rem;
+}
+
+.calendar .month i:hover {
+    cursor: pointer;
+    opacity: .5;
+}
+
+.calendar .days span:hover {
+    cursor: pointer;
+    background: lightgreen;
+}
+
+.calendar .days span.selected {
+    cursor: pointer;
+    background: lightgreen;
+}
+
+.calendar .days span.reserve {
+    background-color: rgba(255, 0, 0, 0.52);
+    cursor: no-drop;
+    color: white;
+}
+
+.calendar .weekdays, h3 {
+    font-weight: bold;
+}
+
+.calendar .month, .weekdays, .days {
+    width: 295px;
+    margin: auto;
+}
+
+.calendar .today {
+    border: 1px solid lightseagreen;
+}

@@ -5,7 +5,6 @@ namespace App\Controller\Annonce;
 use App\Entity\Annonces;
 use App\Repository\AnnoncesRepository;
 use App\Repository\CategoriesRepository;
-use App\Repository\SousCategorieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,13 +21,11 @@ class AnnoncesController extends AbstractController
 {
     private $repAnnonce;
     private $repCategorie;
-    private $repSousCategorie;
 
-    public function __construct(AnnoncesRepository $repAnnonce, CategoriesRepository $repCategorie, SousCategorieRepository $repSousCategorie)
+    public function __construct(AnnoncesRepository $repAnnonce, CategoriesRepository $repCategorie)
     {
         $this->repAnnonce = $repAnnonce;
         $this->repCategorie = $repCategorie;
-        $this->repSousCategorie = $repSousCategorie;
     }
 
     /**
@@ -36,7 +33,7 @@ class AnnoncesController extends AbstractController
      */
     public function index(): Response
     {
-        $categories = $this->repCategorie->findAllWithSousCategorie();
+        $categories = $this->repCategorie->findParents();
         $annonces   = $this->repAnnonce->findAllAnnonces()->getResult();
 
         return $this->render('annonces/index.html.twig', [
@@ -56,10 +53,10 @@ class AnnoncesController extends AbstractController
             return $this->redirectToRoute('securitylogin');
         }
 
-        $categories = $this->repCategorie->findAllWithSousCategorie();
+        $categories = $this->repCategorie->findParents();
         $annonces   = $this->repAnnonce->findMesAnnonces($user->getId())->getResult();
 
-        return $this->render('annonces/mesAnnonces.html.twig', [
+        return $this->render('annonces/index.html.twig', [
             'categories' => $categories,
             'annonces' => $annonces
         ]);
@@ -71,7 +68,7 @@ class AnnoncesController extends AbstractController
      */
     public function filter(Request $request): Response
     {
-        $categories    = $this->repCategorie->findAllWithSousCategorie();
+        $categories    = $this->repCategorie->findParents();
         $annonces      = $this->repAnnonce->findAnnonces($request->query->all())->getResult();
         $annonce_titre = "Résultats des recherches";
         
@@ -93,7 +90,7 @@ class AnnoncesController extends AbstractController
         ];
 
         $categories = $this->repCategorie->findAllWithSousCategorie();
-        $sous_cat   = $this->repSousCategorie->findOneBy(['slug' => $sous_categorie_slug]);
+        $sous_cat   = $this->repCategorie->findOneBy(['slug' => $sous_categorie_slug]);
         $annonces   = $this->repAnnonce->findAnnonces($criteria)->getResult();
 
         foreach($categories as $c)
@@ -126,6 +123,7 @@ class AnnoncesController extends AbstractController
 
         $nomClasse    = ucfirst($request->query->get('categorie'));
         $categorie    = $this->repCategorie->findOneBy(['className' => $nomClasse]);
+
         if( $categorie == null)
         {
             // Category not found....
@@ -157,12 +155,12 @@ class AnnoncesController extends AbstractController
             $annonce->setCategorie($categorie);
             $annonce->setValidationAdmin(false);
             $annonce->setVisite(0);
-            $annonce->setType($request->query->get('type'));
+            // $annonce->setType($request->query->get('type'));
             $annonce->setSlug();
 
             $annonce->setProucentageTva(0.5);
             $annonce->setDateModification();
-            
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($annonce);
             $em->flush();
@@ -182,22 +180,22 @@ class AnnoncesController extends AbstractController
     /**
      * @Route("/details/{id}/{slug}", name="annonces_show", methods={"GET"})
      */
-    public function show(Annonces $annonce, string $slug, SerializerInterface $serializer): Response
+    public function show(int $id, string $slug, SerializerInterface $serializer): Response
     {
         $user    = $this->getUser();
+        $annonce = $this->repAnnonce->findAnnonceById($id);
         if ($user == null || ($user !== null && $user->getId() !== $annonce->getUser()->getId()) ) 
         {
             $annonce->setVisite( intval($annonce->getVisite()) + 1);
+            $this->getDoctrine()->getManager()->flush();
         }
-        
+
         $annonce_serialized = $serializer->normalize($annonce, null, [AbstractNormalizer::IGNORED_ATTRIBUTES => [
-            'photo', 'user', 'conversations', 'sousCategorie', 'categorie',  // Relation to ignore
+            'photo', 'user', 'conversations', 'categorie', 'sousCategorie', 'locations',  // Relation to ignore
             'id', 'titre', 'description', 'prix', 'proucentageTva', //////////////
             'dateCreation', 'dateModification', 'statut',           // Annonce's parent attributes
             'visite', 'slug', 'validationAdmin', 'type'             //////////////
         ]]);
-
-        $this->getDoctrine()->getManager()->flush();
 
         return $this->render('annonces/show.html.twig', [
             'annonce' => $annonce,

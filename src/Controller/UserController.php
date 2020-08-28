@@ -11,16 +11,17 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/utilisateur")
+ * @Route("/profil")
  */
 class UserController extends AbstractController
 {
     /**
-     * @Route("/profil", name="user_profil", methods={"GET"})
+     * @Route("/", name="user_profil", methods={"GET"})
      */
     public function profil(): Response
     {
         $user = $this->getUser();
+        // dump($user);die;
         return $this->render('user/show.html.twig', [
             'user' => $user,
         ]);
@@ -41,7 +42,10 @@ class UserController extends AbstractController
      */
     public function edit(User $user, Request $request, FileUploader $uploader): Response
     {
-        $form = $this->createForm(UserType::class, $user);
+        $class = get_class($user);
+        $formType = str_replace('Entity', 'Form', $class) . 'UserType' ;
+
+        $form = $this->createForm($formType, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) 
@@ -53,6 +57,8 @@ class UserController extends AbstractController
                 $avatar_url  = $uploader->upload($avatar_file);
                 $user->setAvatar($avatar_url);
             }
+
+            $user->setDateMiseAJour();
 
             $this->getDoctrine()->getManager()->flush();
 

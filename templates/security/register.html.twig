@@ -7,7 +7,7 @@
     <div id="bg" style="position:absolute;z-index:-1;left:0;height:375px;"></div>
     
     <center class="py-4">
-        <img src="image/logo.png" class="mb-3" style="height: 150px;width: auto;" >
+        <img src="{{ asset('image/logo.png') }}" class="mb-3" style="height: 150px;width: auto;" >
         <p class="text-center text-white"><strong>N'achetez que le nécessaire, pour le reste il y a Kiloukoi!</strong></p>
     </center>
 
@@ -18,36 +18,47 @@
                     {{ form_start(registrationForm) }}
                         {{ form_row(registrationForm.email) }}
                         {{ form_row(registrationForm.password) }}
+                        {{ form_row(registrationForm.pseudo) }}
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                {{ form_row(registrationForm.nom) }}
+                        {% if registrationForm.nom is defined %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {{ form_row(registrationForm.nom) }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ form_row(registrationForm.prenom) }}
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                {{ form_row(registrationForm.prenom) }}
-                            </div>
-                        </div>
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                {{ form_row(registrationForm.telephone) }}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    {{ form_row(registrationForm.telephone) }}
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                {{ form_row(registrationForm.pseudo) }}
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    {{ form_row(registrationForm.ville) }}
+                                </div>
+                                <div class="col-md-4">
+                                    {{ form_row(registrationForm.rue) }}
+                                </div>
+                                <div class="col-md-4">
+                                    {{ form_row(registrationForm.cp) }}
+                                </div>
                             </div>
-                        </div>
+                        {% endif %}
                         
-                        <div class="row">
-                            <div class="col-md-4">
-                                {{ form_row(registrationForm.ville) }}
+                        {% if registrationForm.raison_social is defined %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {{ form_row(registrationForm.raison_social) }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ form_row(registrationForm.siret) }}
+                                </div>
                             </div>
-                            <div class="col-md-4">
-                                {{ form_row(registrationForm.rue) }}
-                            </div>
-                            <div class="col-md-4">
-                                {{ form_row(registrationForm.cp) }}
-                            </div>
-                        </div>
+                        {% endif %}
 
                         <div class="row m-3 text-center">
                             <div class="col-md-4 offset-md-4">
@@ -56,15 +67,25 @@
                                     {% do registrationForm.avatar.setRendered() %}
                     
                                     <label href="#" type="button" class="btn btn-info btn-block">
-                                        <input type="file" name="{{ registrationForm.avatar.vars.full_name }}" class="d-none input-image"> Changer d'avatar
+                                        <input type="file" accept="image/*" name="{{ registrationForm.avatar.vars.full_name }}" class="d-none input-image"> Changer d'avatar
                                     </label>
                                 </div>
                             </div>
                         </div>
-                        
+
+                        <div class="row m-3 text-center">
+                            <div class="col-md-8 offset-md-2">
+                                {% if form_errors(registrationForm.avatar) %}
+                                    <div id="image-validation" class="alert alert-warning">{{ registrationForm.avatar.vars.errors | replace({"ERROR: ": ""}) }}</div>
+                                {% else %}
+                                    <div id="image-validation" class="d-none alert alert-warning"></div>
+                                {% endif %}
+                            </div>
+                        </div>
+
                         {# {{ form_row(registrationForm.agreeTerms) }} #}
                         
-                        <button type="submit" class="btn btn-primary btn-block">
+                        <button type="submit" class="btn btn-primary btn-block" disabled  id="btn-submit">
                             <i class="fa fa-btn fa-user"></i> Enregistrer
                         </button>
                     {{ form_end(registrationForm) }}
@@ -84,15 +105,107 @@
         {
             $(document).on('change', '.input-image', function(e) 
             {
-                var input = this;
+                var _URL = window.URL || window.webkitURL;
+                var file = this.files[0];
+                var img = new Image();
+                var objectUrl = _URL.createObjectURL(file);
 
-                var reader = new FileReader();
-                reader.onload = function(e) 
+                img.onload = function () 
                 {
-                    $('.output-image').attr('src', e.target.result);
+                    if( this.width > 512 || this.height > 512 )
+                    {
+                        var error = "La taille de l'image ne doit pas éxcéder la dimension 512x512";
+                        $('#image-validation').removeClass('d-none');
+                        $('#image-validation').text(error);
+
+                        $('#btn-submit').attr('disabled', 'disabled');
+                    }
+                    else
+                    {
+                        $('#image-validation').addClass('d-none');
+                        $('.output-image').attr('src', objectUrl);
+
+                        $('#btn-submit').removeAttr('disabled');
+                    }
                 };
-                reader.readAsDataURL(input.files[0]); // convert to base64 string
+                img.src = objectUrl;
             });
+
+            $('#registration_form_password_second').keyup( function()
+            {
+                if( $(this).val() !== $('#registration_form_password_first').val() )
+                {
+                    $(this).addClass('is-invalid');
+                    $(this).removeClass('is-valid');
+                }
+                else
+                {
+                    $(this).addClass('is-valid');
+                    $(this).removeClass('is-invalid');
+                }
+            });
+
+            $('#registration_form_password_first').keyup( function()
+            {
+                var feedback = `<div id="password-feedback" class="invalid-feedback"></div>`;
+                var error    = '';
+                
+                if( $('#password-feedback').length == 0 )
+                {
+                    $(feedback).insertAfter( $(this));
+                }
+
+                if( $(this).val().length < 10 )
+                {
+                    $(this).addClass('is-invalid');
+                    $(this).removeClass('is-valid');
+
+                    error = "Doit contenir au moins 10 caractères."
+                    $('#password-feedback').html(error);
+
+                }
+                else
+                {
+                    var pass = $(this).val().match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{1,}(?=.*[@#$%^&+=]).*$/);
+
+                    if( pass === null )
+                    {
+                        $(this).addClass('is-invalid');
+                        $(this).removeClass('is-valid');
+
+                        error = "Doit contenir au moins un majuscule, un minuscule et un caractère spécial."
+                        $('#password-feedback').html(error);
+                    }
+                    else
+                    {
+                        $(this).addClass('is-valid');
+                        $(this).removeClass('is-invalid');
+                        $('#password-feedback').remove()
+                    }
+                } 
+            })
+
+            $('#registration_form_password_first').change( function()
+            {
+                $('#registration_form_password_first').trigger('keyup');
+            })
+
+            $('#registration_form_password_second').change( function()
+            {
+                $('#registration_form_password_second').trigger('keyup');
+            })
+
+            if( $('#registration_form_password_first').val().trim() != '' )
+            {
+                $('#registration_form_password_first').trigger('keyup');
+            }
+            else
+            {
+                $('#registration_form_password_first').removeClass('is-invalid');
+            }
+
+            $('#registration_form_password_second').removeClass('is-invalid');
+            $('#registration_form_password_second').removeClass('is-valid');
         })
 
     </script>

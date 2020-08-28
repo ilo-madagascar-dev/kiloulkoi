@@ -91,9 +91,11 @@ class GoogleController extends AbstractController
             $nom         = str_replace($googleUser->getFirstName(), '', $googleUser->getName());
 
             $user->setEmail($googleUser->getEmail());
-            $user->setNom($nom);
-            $user->setPrenom($googleUser->getFirstName());
+            // $user->setNom($nom);
+            // $user->setPrenom($googleUser->getFirstName());
             $user->setAvatar($avatar_url);
+            $user->setDateCreation();
+            $user->setDateMiseAJour();
             // encode the plain password
             $user->setPassword(
                 $passwordEncoder->encodePassword(

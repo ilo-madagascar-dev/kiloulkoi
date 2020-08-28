@@ -12,9 +12,7 @@ class ImageEtSonType extends AnnoncesType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $annonce = new Annonces();
-        $classe  = 'ImageEtSon';
-        $options['categorie_id'] = $annonce->getCategoryId($classe);
+        $options['classe'] = 'ImageEtSon';
         parent::buildForm($builder, $options);
 
         $builder

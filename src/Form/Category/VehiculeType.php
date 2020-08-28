@@ -5,7 +5,7 @@ namespace App\Form\Category;
 use App\Entity\Annonces;
 use App\Entity\AnnonceVehicule;
 use App\Form\AnnoncesType;
-use App\Entity\Propriete;
+use App\Entity\Energie;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -15,21 +15,18 @@ class VehiculeType extends AnnoncesType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $annonce = new Annonces();
-        $classe  = 'Vehicule';
-        $options['categorie_id'] = $annonce->getCategoryId($classe);
+        $options['classe'] = 'Vehicule';
         parent::buildForm($builder, $options);
 
         $builder
             ->add('marque')
             ->add('modele')
             ->add('energie', EntityType::class, [
-                'class' => Propriete::class,
+                'class' => Energie::class,
                 'query_builder' => function (EntityRepository $er) 
                 {
                     return $er->createQueryBuilder('p')
-                        ->where('p.libelle = :libelle')
-                        ->setParameter('libelle', 'energie');
+                            ->orderBy('p.id');
                 },
                 'choice_label' => 'valeur'
             ])

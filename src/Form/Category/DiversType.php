@@ -12,9 +12,7 @@ class DiversType extends AnnoncesType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $annonce = new Annonces();
-        $classe  = 'Divers';
-        $options['categorie_id'] = $annonce->getCategoryId($classe);
+        $options['classe'] = 'Divers';
         parent::buildForm($builder, $options);
 
         // $builder

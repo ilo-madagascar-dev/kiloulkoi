@@ -23,10 +23,9 @@ class AnnoncesRepository extends ServiceEntityRepository
     private function getAllQuery()
     {
         $query =  $this->createQueryBuilder('a')
-                        ->select('a', 'u', 'c', 'p', 'sc')
+                        ->select('a', 'u', 'c', 'p')
                         ->join('a.user', 'u')
                         ->leftJoin('a.categorie', 'c')
-                        ->leftJoin('a.sousCategorie', 'sc')
                         ->leftJoin('a.photo', 'p')
                         ->orderBy('a.id', 'DESC')
                         ->orderBy('p.id', 'ASC');
@@ -34,6 +33,8 @@ class AnnoncesRepository extends ServiceEntityRepository
     }
 
     /**
+     * Annonces des autres utilisateurs
+     * 
      * @return Annonces[] Returns an array of Annonces objects
      */
 
@@ -86,14 +87,19 @@ class AnnoncesRepository extends ServiceEntityRepository
     /**
      * @return Annonces
      */
-    public function findOneBy_id(int $id)
+    public function findAnnonceById(int $id)
     {
         $query = $this->getAllQuery()
-                      ->andWhere('a.id = :id')
-                      ->setParameter('id', $id)
-                      ->getQuery();
+                    ->addSelect('l')
+                    ->leftJoin('a.locations', 'l')
+                    ->where('a.id = :id')
+                    ->setParameter('id', $id)
+                    ->andWhere('l.dateFin >= :fin OR l.dateFin is null')
+                    ->setParameter('fin', date('Y-m-d'))
+                    ->orderBy('l.dateDebut', 'ASC')
+                    ->getQuery();
 
-        $query->getOneOrNullResult();
+        return $query->getOneOrNullResult();
     }
 
     /**
@@ -108,11 +114,6 @@ class AnnoncesRepository extends ServiceEntityRepository
         {
             $query->andWhere('c.className = :class_name')->setParameter('class_name', $criteria['categorie']);
 
-            if( !empty($criteria['sous_categorie']) )
-            {
-                $query->andWhere('sc.slug = :slug')
-                      ->setParameter('slug', $criteria['sous_categorie']);
-            }
         }
 
         if( !empty($criteria['titre']) )

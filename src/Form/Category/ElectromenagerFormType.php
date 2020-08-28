@@ -12,9 +12,7 @@ class ElectromenagerFormType extends AnnoncesType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $annonce = new Annonces();
-        $classe  = 'Electromenager';
-        $options['categorie_id'] = $annonce->getCategoryId($classe);
+        $options['classe'] = 'Electromenager';
         parent::buildForm($builder, $options);
 
         $builder

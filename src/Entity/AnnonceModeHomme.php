@@ -16,7 +16,7 @@ class AnnonceModeHomme extends Annonces
     private $marque;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Propriete::class)
+     * @ORM\ManyToOne(targetEntity=Taille::class)
      */
     private $taille;
 
@@ -42,12 +42,12 @@ class AnnonceModeHomme extends Annonces
         return $this;
     }
 
-    public function getTaille(): ?Propriete
+    public function getTaille(): ?Taille
     {
         return $this->taille;
     }
 
-    public function setTaille(?Propriete $taille): self
+    public function setTaille(?Taille $taille): self
     {
         $this->taille = $taille;
 

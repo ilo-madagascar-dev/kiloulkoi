@@ -2,6 +2,8 @@
 
 namespace App\Controller\Auth;
 
+use App\Entity\Particulier;
+use App\Entity\Professionnel;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -11,6 +13,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
 use App\Entity\User;
+use App\Form\ParticulierType;
+use App\Form\ProfessionnelType;
 use App\Form\RegistrationFormType;
 use App\Security\UserAuthenticator;
 use App\Service\FileUploader;
@@ -43,20 +47,29 @@ class AuthController extends AbstractController
     }
 
     /**
-     * @Route("/inscription", name="app_register")
+     * @Route("/inscription/{type}", name="app_register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, UserAuthenticator $authenticator, FileUploader $uploader): Response
+    public function register(Request $request, string $type, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, UserAuthenticator $authenticator, FileUploader $uploader): Response
     {
         if ($this->getUser())
         {
             return $this->redirectToRoute('accueil');
         }
 
-        $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        if( $type == 'particulier' )
+        {
+            $user = new Particulier();
+            $form = $this->createForm(ParticulierType::class, $user);
+        }
+        else
+        {
+            $user = new Professionnel();
+            $form = $this->createForm(ProfessionnelType::class, $user);
+        }
+
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid())
+        if ($form->isSubmitted() && $form->isValid() )
         {
             // encode the plain password
             $user->setPassword(
@@ -72,6 +85,8 @@ class AuthController extends AbstractController
             $avatar_url  = $uploader->upload($avatar_file);
 
             $user->setAvatar($avatar_url);
+            $user->setDateCreation();
+            $user->setDateMiseAJour();
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);

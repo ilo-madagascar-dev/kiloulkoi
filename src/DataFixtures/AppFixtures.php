@@ -4,7 +4,8 @@ namespace App\DataFixtures;
 
 use App\Entity\Categories;
 use App\Entity\Propriete;
-use App\Entity\SousCategorie;
+use App\Entity\Energie;
+use App\Entity\Taille;
 use App\Entity\StatutLocation;
 use App\Entity\TypeLocation;
 use Doctrine\Common\DataFixtures\FixtureInterface;
@@ -20,9 +21,8 @@ class AppFixtures implements FixtureInterface
         $energies = ['Essence', 'Diesel', 'Electrique'];
         for ($i = 0; $i < count($energies); $i++) 
         {
-            $energie = new Propriete();
+            $energie = new Energie();
             $energie->setValeur($energies[$i]);
-            $energie->setLibelle('energie');
             $manager->persist($energie);
         }
 
@@ -30,7 +30,7 @@ class AppFixtures implements FixtureInterface
         $tailles = ['XS', 'S', 'M', 'L', 'XL', 'XXl', 'XXXL'];
         for ($i = 0; $i < count($tailles); $i++) 
         {
-            $taille = new Propriete();
+            $taille = new Taille();
             $taille->setValeur($tailles[$i]);
             $taille->setLibelle("taille");
             $manager->persist($taille);
@@ -40,38 +40,11 @@ class AppFixtures implements FixtureInterface
         $tailles = ["Prématuré", "Naissance", "0-3mois", "3-6mois", "6-9mois", "9-12mois", "12-18mois", "18-24mois", "24-36mois"];
         for ($i = 0; $i < count($tailles); $i++) 
         {
-            $taille = new Propriete();
+            $taille = new Taille();
             $taille->setValeur($tailles[$i]);
             $taille->setLibelle("taille_maternite");
             $manager->persist($taille);
         }
-
-        // //taille EnfantMode
-        // for ($i = 3; $i <= 16; $i++) 
-        // {
-        //     $taille = new Propriete();
-        //     $taille->setValeur($i);
-        //     $taille->setLibelle("taille_enfant");
-        //     $manager->persist($taille);
-        // }
-
-        // //pointure FemmeMode
-        // for ($i = 37; $i <= 50; $i++) 
-        // {
-        //     $pointure = new Propriete();
-        //     $pointure->setValeur($i);
-        //     $pointure->setLibelle("pointure");
-        //     $manager->persist($pointure);
-        // }
-
-        // //pointure EnfantMode
-        // for ($i = 12; $i <= 37; $i++)
-        // {
-        //     $pointure = new Propriete();
-        //     $pointure->setValeur($i);
-        //     $pointure->setLibelle("pointure_enfant");
-        //     $manager->persist($pointure);
-        // }
 
         // Listes des catégories et sous catégories d'une annonce
         $categories = [
@@ -285,6 +258,7 @@ class AppFixtures implements FixtureInterface
             ],
         ];
 
+        $slugger = new AsciiSlugger();
         foreach ($categories as $name => $details)
         {
             $categorie = new Categories();
@@ -292,17 +266,17 @@ class AppFixtures implements FixtureInterface
             $categorie->setLibelle($details['libelle']);
             $categorie->setClassName(trim($name));
             $categorie->setIcon($details['icon']);
-            
+
             $manager->persist($categorie);
 
             foreach ($details['sub_cat'] as $sub_cat)
             {
-                $slugger       = new AsciiSlugger();
-                $sub_categorie = new SousCategorie();
+                $sub_categorie = new Categories();
 
                 $sub_categorie->setLibelle($sub_cat);
-                $sub_categorie->setSlug( $slugger->slug($sub_cat) );
-                $sub_categorie->setCategorie( $categorie );
+                $sub_categorie->setClassName(trim($name));
+                $sub_categorie->setCategorieParent( $categorie );
+                $sub_categorie->setIcon($details['icon']);
 
                 $manager->persist($sub_categorie);
             }

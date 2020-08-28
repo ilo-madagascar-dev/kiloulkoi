@@ -21,13 +21,7 @@ class UserType extends AbstractType
     {
         $builder
                 ->add('email', EmailType::class)
-                ->add('nom', TextType::class)
-                ->add('prenom', TextType::class)
                 ->add('pseudo', TextType::class)
-                ->add('telephone', TextType::class, ['label' => 'Téléphone'])
-                ->add('ville', TextType::class)
-                ->add('rue', TextType::class)
-                ->add('cp', TextType::class, ['label' => 'Code postale'])
                 ->add('avatar', FileType::class, [
                     'constraints' => [
                         new File([

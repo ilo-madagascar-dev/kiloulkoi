@@ -9,7 +9,6 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Entity\Categories;
-use App\Entity\SousCategorie;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -22,16 +21,16 @@ class AnnoncesType extends AbstractType
     {
         $builder->add('titre', TextType::class);
 
-        if( isset($options['categorie_id']) )
+        if( isset($options['classe']) )
         {
-
             $builder = $builder->add('sous_categorie', EntityType::class, [
-                'class' => SousCategorie::class,
+                'class' => Categories::class,
                 'query_builder' => function (EntityRepository $er) use($options)
                     {
-                        return $er->createQueryBuilder('sc')
-                                    ->where('sc.categorie = :id')
-                                    ->setParameter('id', $options['categorie_id']);
+                        return $er->createQueryBuilder('c')
+                                    ->where('c.categorieParent is not null')
+                                    ->andWhere('c.className = :classe')
+                                    ->setParameter('classe', $options['classe']);
                     },
                 'choice_label' => 'libelle'
             ]);

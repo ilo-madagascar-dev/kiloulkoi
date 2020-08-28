@@ -12,7 +12,7 @@ class AnnonceVehicule extends Annonces
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity=Propriete::class, inversedBy="marque")
+     * @ORM\ManyToOne(targetEntity=Energie::class, inversedBy="marque")
      */
     private $energie;
 
@@ -26,12 +26,12 @@ class AnnonceVehicule extends Annonces
      */
     private $modele;
 
-    public function getEnergie(): ?Propriete
+    public function getEnergie(): ?Energie
     {
         return $this->energie;
     }
 
-    public function setEnergie(?Propriete $energie): self
+    public function setEnergie(?Energie $energie): self
     {
         $this->energie = $energie;
 

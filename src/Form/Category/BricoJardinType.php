@@ -4,7 +4,7 @@ namespace App\Form\Category;
 
 use App\Entity\AnnonceBricoJardin;
 use App\Entity\Annonces;
-use App\Entity\Propriete;
+use App\Entity\Energie;
 use App\Form\AnnoncesType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -15,21 +15,18 @@ class BricoJardinType extends AnnoncesType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $annonce = new Annonces();
-        $classe  = 'BricoJardin';
-        $options['categorie_id'] = $annonce->getCategoryId($classe);
+        $options['classe'] = 'BricoJardin';
         parent::buildForm($builder, $options);
 
         $builder
             ->add('marque')
             ->add('modele')
             ->add('energie', EntityType::class, [
-                'class' => Propriete::class,
+                'class' => Energie::class,
                 'query_builder' => function (EntityRepository $er) 
                 {
                     return $er->createQueryBuilder('p')
-                        ->where('p.libelle = :libelle')
-                        ->setParameter('libelle', 'energie');
+                            ->orderBy('p.id');
                 },
                 'choice_label' => 'valeur'
             ])

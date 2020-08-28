@@ -50,16 +50,10 @@ class Categories
      */
     private $icon;
 
-    /**
-     * @ORM\OneToMany(targetEntity=SousCategorie::class, mappedBy="categorie", orphanRemoval=true)
-     */
-    private $sousCategories;
-
     public function __construct()
     {
         $this->annonces = new ArrayCollection();
         $this->categorieEnfant = new ArrayCollection();
-        $this->sousCategories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -173,37 +167,6 @@ class Categories
     public function setIcon(?string $icon): self
     {
         $this->icon = $icon;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|SousCategorie[]
-     */
-    public function getSousCategories(): Collection
-    {
-        return $this->sousCategories;
-    }
-
-    public function addSousCategory(SousCategorie $sousCategory): self
-    {
-        if (!$this->sousCategories->contains($sousCategory)) {
-            $this->sousCategories[] = $sousCategory;
-            $sousCategory->setCategorie($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSousCategory(SousCategorie $sousCategory): self
-    {
-        if ($this->sousCategories->contains($sousCategory)) {
-            $this->sousCategories->removeElement($sousCategory);
-            // set the owning side to null (unless already changed)
-            if ($sousCategory->getCategorie() === $this) {
-                $sousCategory->setCategorie(null);
-            }
-        }
 
         return $this;
     }

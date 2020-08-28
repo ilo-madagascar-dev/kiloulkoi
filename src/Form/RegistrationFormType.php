@@ -16,6 +16,7 @@ use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class RegistrationFormType extends AbstractType
 {
@@ -23,12 +24,7 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class)
-            ->add('nom', TextType::class)
-            ->add('prenom', TextType::class)
             ->add('pseudo', TextType::class)
-            ->add('telephone', TextType::class, ['label' => 'Téléphone'])
-            ->add('ville', TextType::class)
-            ->add('rue', TextType::class)
             ->add('avatar', FileType::class, [
                 'constraints' => [
                     new File([
@@ -39,7 +35,6 @@ class RegistrationFormType extends AbstractType
                     ])
                 ],
             ])
-            ->add('cp', TextType::class, ['label' => 'Code postale'])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les deux champs doivent être identiques.',
@@ -49,15 +44,20 @@ class RegistrationFormType extends AbstractType
                 'second_options' => ['label' => 'Confirmer votre mot de passe'],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter a password',
+                        'message' => 'Entrer un mot de passe svp',
                     ]),
                     new Length([
-                        'min' => 6,
+                        'min' => 10,
                         'minMessage' => 'Entrer au moins {{ limit }} caracteres',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
+                    new Regex([
+                        "pattern" => "/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{1,}(?=.*[@#$%^&+=]).*$/",
+                        'message' => 'Doit contenir au moins un majuscule, un miniscule et un caractère spécial.',
+                    ])
                 ],
+                'mapped' => false
             ])
             ->add('avatar', FileType::class, [
                 'constraints' => [
@@ -66,10 +66,14 @@ class RegistrationFormType extends AbstractType
                             'image/*',
                         ],
                         'mimeTypesMessage' => 'Veuillez choisir une photo!',
-                    ])
+                    ]),
+                    new NotBlank([
+                        'message' => 'Veuillez ajouter une photo!',
+                    ]),
                 ],
+                'required' => true,
                 'data_class' => null,
-                'mapped' => false
+                'label' => false
             ])
             ;
             

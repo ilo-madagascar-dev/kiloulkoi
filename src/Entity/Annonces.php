@@ -65,12 +65,12 @@ class Annonces
     private $proucentageTva;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
     private $dateCreation;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
     private $dateModification;
 
@@ -102,16 +102,6 @@ class Annonces
     private $photo;
 
     /**
-     * @ORM\Column(type="string", length=50)
-     */
-    private $type; // offre, demande
-
-    /**
-     * @ORM\ManyToOne(targetEntity=SousCategorie::class, inversedBy="annonces")
-     */
-    private $sousCategorie;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $visite;
@@ -126,34 +116,22 @@ class Annonces
      */
     private $slug;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Categories::class)
+     */
+    private $sousCategorie;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Location::class, mappedBy="annonce")
+     */
+    private $locations;
 
     public function __construct()
     {
         $this->photo = new ArrayCollection();
         $this->dateCreation = new \Datetime();
         $this->conversations = new ArrayCollection();
-    }
-
-    public function getCategoryId(string $className) : int
-    {
-        $categories = [
-            "Vehicule"=> 1,
-            "Immobilier"=> 2,
-            "Multimedia"=> 3,
-            "ImageEtSon"=> 4,
-            "ConsoleGaming"=> 5,
-            "MeubleDeco"=> 6,
-            "Electromenager"=> 7,
-            "Maternite"=> 8,
-            "ModeHomme"=> 9,
-            "ModeFemme"=> 10,
-            "ModeEnfant"=> 11,
-            "BricoJardin"=> 12,
-            "SportLoisir"=> 13,
-            "Service"=> 14,
-            "Divers"=> 15,
-        ];
-        return $categories[$className];
+        $this->locations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -319,29 +297,17 @@ class Annonces
         return $this;
     }
 
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
+    // public function getType(): ?string
+    // {
+    //     return $this->type;
+    // }
 
-    public function setType(string $type): self
-    {
-        $this->type = $type;
+    // public function setType(string $type): self
+    // {
+    //     $this->type = $type;
 
-        return $this;
-    }
-
-    public function getSousCategorie(): ?SousCategorie
-    {
-        return $this->sousCategorie;
-    }
-
-    public function setSousCategorie(?SousCategorie $sousCategorie): self
-    {
-        $this->sousCategorie = $sousCategorie;
-
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getVisite(): ?int
     {
@@ -399,5 +365,47 @@ class Annonces
         return $this;
     }
 
+    public function getSousCategorie(): ?Categories
+    {
+        return $this->sousCategorie;
+    }
+
+    public function setSousCategorie(?Categories $sousCategorie): self
+    {
+        $this->sousCategorie = $sousCategorie;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Location[]
+     */
+    public function getLocations(): Collection
+    {
+        return $this->locations;
+    }
+
+    public function addLocation(Location $location): self
+    {
+        if (!$this->locations->contains($location)) {
+            $this->locations[] = $location;
+            $location->setAnnonce($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLocation(Location $location): self
+    {
+        if ($this->locations->contains($location)) {
+            $this->locations->removeElement($location);
+            // set the owning side to null (unless already changed)
+            if ($location->getAnnonce() === $this) {
+                $location->setAnnonce(null);
+            }
+        }
+
+        return $this;
+    }
 
 }

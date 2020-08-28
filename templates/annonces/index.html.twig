@@ -1,7 +1,8 @@
 {% extends "base.html.twig" %}
 
+{% set annonce_title = annonce_title is defined ? annonce_title : "Annonces" %}
 
-{% block title %}Annonces{% endblock %}
+{% block title %}{{ annonce_title }}{% endblock %}
 
 {% block body %}
 
@@ -14,7 +15,8 @@
             <div class="card-body pt-1">
                 <div class="row">
                     <div class="col-12 col-md-6 offset-md-3">
-                        <form action="{{ path('annonces_new') }}" class="text-center">
+                        <form action="{{ path('annonces_new') }}" class="text-center"> 
+                            {#
                             <div class="form-group ">
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="type" id="radio-offre" value="offre" checked>
@@ -29,6 +31,7 @@
                                     </label>
                                 </div>
                             </div>
+                            #}
 
                             <div class="form-group">
                                 <select class="form-control custom-select" name="categorie">
@@ -37,7 +40,7 @@
                                     {% endfor %}
                                 </select>
                             </div>
-        
+
                             <button class="btn btn-success btn-block" type="submit">Continuer</button>
                         </form>
                     </div>
@@ -45,12 +48,12 @@
             </div>
         </div>
     </div>
-
+    
+    {# 
     <div class="container pt-3">
         <div class="card py-3 shadow">
             <div class="card-title"><h3 class="text-success text-center">Liste des catégries</h3></div>
             <div class="card-body">
-
                 <div class="row">
                     <div class="col-lg-4 col-md-6" id="list-1">
                         <div class="list-group">
@@ -100,8 +103,8 @@
             </div>
         </div>
     </div>
+    #}
 
-    {% set annonce_title = "Listes des annonces" %}
     {% include "annonces/list.html.twig" %}
 </div>
 

@@ -15,20 +15,22 @@
                 <div class="row">
                     <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
                         <form action="{{ path('annonces_new') }}" class="text-center">
-                            <div class="form-group ">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="type" id="radio-offre" value="offre" checked>
-                                    <label class="form-check-label" for="radio-offre">
-                                        Offre
-                                    </label>
+                            {#
+                                <div class="form-group ">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="type" id="radio-offre" value="offre" checked>
+                                        <label class="form-check-label" for="radio-offre">
+                                            Offre
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="type" id="radio-demande" value="demande">
+                                        <label class="form-check-label" for="radio-demande">
+                                            Demande
+                                        </label>
+                                    </div>
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="type" id="radio-demande" value="demande">
-                                    <label class="form-check-label" for="radio-demande">
-                                        Demande
-                                    </label>
-                                </div>
-                            </div>
+                            #}
 
                             <div class="form-group">
                                 <select class="form-control custom-select" name="categorie">

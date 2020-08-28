@@ -33,3 +33,4 @@ security:
         - { path: ^/admin, roles: [ROLE_CLIENT, ROLE_PRESTATAIRE] }
         - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/conversation, roles: ROLE_USER }
+        - { path: ^/location, roles: ROLE_USER }

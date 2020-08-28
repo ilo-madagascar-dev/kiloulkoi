@@ -17,7 +17,7 @@ class AnnonceMaternite extends Annonces
     private $marque;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Propriete::class)
+     * @ORM\ManyToOne(targetEntity=Taille::class)
      */
     private $pointure;
 
@@ -34,12 +34,12 @@ class AnnonceMaternite extends Annonces
         return $this;
     }
 
-    public function getPointure(): ?Propriete
+    public function getPointure(): ?Taille
     {
         return $this->pointure;
     }
 
-    public function setPointure(?Propriete $pointure): self
+    public function setPointure(?Taille $pointure): self
     {
         $this->pointure = $pointure;
 

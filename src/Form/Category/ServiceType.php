@@ -12,9 +12,7 @@ class ServiceType extends AnnoncesType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $annonce = new Annonces();
-        $classe  = 'Service';
-        $options['categorie_id'] = $annonce->getCategoryId($classe);
+        $options['classe'] = 'Service';
         parent::buildForm($builder, $options);
     }
 

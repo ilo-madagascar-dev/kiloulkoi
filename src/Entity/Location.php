@@ -41,12 +41,6 @@ class Location
     private $statutLocation;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Annonces::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="annonces_id", referencedColumnName="id", nullable=false)
-     */
-    private $annonces;
-
-    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="location", cascade={"persist"})
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
@@ -57,10 +51,22 @@ class Location
      */
     private $conversations;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Facture::class, mappedBy="locations")
+     */
+    private $factures;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Annonces::class, inversedBy="locations")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $annonce;
+
     public function __construct()
     {
-        $this->annonces = new ArrayCollection();
         $this->conversations = new ArrayCollection();
+        $this->factures = new ArrayCollection();
+        $this->setDateReservation(new \DateTime());
     }
 
     //id client
@@ -130,18 +136,6 @@ class Location
         return $this;
     }
 
-    public function getAnnonces(): ?Annonces
-    {
-        return $this->annonces;
-    }
-
-    public function setAnnonces(?Annonces $annonces): self
-    {
-        $this->annonces = $annonces;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Conversation[]
      */
@@ -173,5 +167,44 @@ class Location
         return $this;
     }
 
+    /**
+     * @return Collection|Facture[]
+     */
+    public function getFactures(): Collection
+    {
+        return $this->factures;
+    }
+
+    public function addFacture(Facture $facture): self
+    {
+        if (!$this->factures->contains($facture)) {
+            $this->factures[] = $facture;
+            $facture->addLocation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFacture(Facture $facture): self
+    {
+        if ($this->factures->contains($facture)) {
+            $this->factures->removeElement($facture);
+            $facture->removeLocation($this);
+        }
+
+        return $this;
+    }
+
+    public function getAnnonce(): ?Annonces
+    {
+        return $this->annonce;
+    }
+
+    public function setAnnonce(?Annonces $annonce): self
+    {
+        $this->annonce = $annonce;
+
+        return $this;
+    }
 
 }

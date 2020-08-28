@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\ProprieteRepository;
+use App\Repository\EnergieRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=ProprieteRepository::class)
+ * @ORM\Entity(repositoryClass=EnergieRepository::class)
  */
-class Propriete
+class Energie
 {
     /**
      * @ORM\Id()
@@ -21,15 +21,6 @@ class Propriete
      * @ORM\Column(type="string", length=255)
      */
     private $valeur;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $libelle;
-
-    public function __construct()
-    {
-    }
 
     public function getId(): ?int
     {
@@ -44,18 +35,6 @@ class Propriete
     public function setValeur(string $valeur): self
     {
         $this->valeur = $valeur;
-
-        return $this;
-    }
-
-    public function getLibelle(): ?string
-    {
-        return $this->libelle;
-    }
-
-    public function setLibelle(string $libelle): self
-    {
-        $this->libelle = $libelle;
 
         return $this;
     }

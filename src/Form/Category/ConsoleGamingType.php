@@ -12,9 +12,7 @@ class ConsoleGamingType extends AnnoncesType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $annonce = new Annonces();
-        $classe  = 'ConsoleGaming';
-        $options['categorie_id'] = $annonce->getCategoryId($classe);
+        $options['classe'] = 'ConsoleGaming';
         parent::buildForm($builder, $options);
 
         // $builder

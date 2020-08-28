@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Profile - {{ app.user.nom | capitalize }}{% endblock %}
+{% block title %}Profile{% endblock %}
 
 {% block body %}
 
@@ -18,18 +18,40 @@
                         <div class="card-title">
                             <h2 class="text-success text-center">Mes infos</h2>
                         </div>
-
+                        <hr>
                         <div class="row">
                             <div class="col-lg-6 col-md-12">
                                 <table class="table table-borderless table-sm">
-                                    <tr>
-                                        <td style="width: 120px"><strong>Nom :</strong></td>
-                                        <td>{{ app.user.nom }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Prénom :</strong></td>
-                                        <td>{{ app.user.prenom }}</td>
-                                    </tr>
+                                    {% if app.user.nom is defined %}
+                                        <tr>
+                                            <td style="width: 120px"><strong>Nom :</strong></td>
+                                            <td>{{ app.user.nom }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Prénom :</strong></td>
+                                            <td>{{ app.user.prenom }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Téléphone :</strong></td>
+                                            <td>{{ app.user.telephone }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Ville :</strong></td>
+                                            <td>{{ app.user.ville }} - {{ app.user.rue }}  ({{ app.user.cp }})</td>
+                                        </tr>
+                                    {% endif %}
+                                    
+                                    {% if app.user.raisonSocial is defined %}
+                                        <tr>
+                                            <td><strong>Raison social :</strong></td>
+                                            <td>{{ app.user.raisonSocial }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Siret :</strong></td>
+                                            <td>{{ app.user.Siret }}</td>
+                                        </tr>
+                                    {% endif %}
+                                    
                                     <tr>
                                         <td><strong>Mail :</strong></td>
                                         <td>{{ app.user.email }}</td>
@@ -38,26 +60,33 @@
                                         <td><strong>Pseudo :</strong></td>
                                         <td>{{ app.user.pseudo }}</td>
                                     </tr>
-                                    <tr>
-                                        <td><strong>Téléphone :</strong></td>
-                                        <td>{{ app.user.telephone }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Ville :</strong></td>
-                                        <td>{{ app.user.ville }} - {{ app.user.rue }}  ({{ app.user.cp }})</td>
-                                    </tr>
                                 </table>
                             </div>
                             <div class="col-lg-6 col-md-12 text-center">
-                                <p><strong>Avatar</strong></p>
+                                <p class="mb-0"><strong>Avatar</strong></p>
                                 {% if app.user.avatar %}
                                     <img src="{{ asset('uploads/avatar/') ~ app.user.avatar }}" alt="" class="img-fluid rounded">
                                 {% else %}
                                     <img src="{{ asset('image/img-add.png') }}" alt="" class="img-fluid rounded">
                                 {% endif %}
                             </div>
-                            <div class="col-12 mt-3 d-flex justify-content-center">
-                                <a href="{{ path('user_edit', { id: app.user.id }) }}" class="btn btn-primary btn-block w-50">Modifier votre compte</a>
+                            <div class="col-12 my-3 d-flex justify-content-center">
+                                <a href="{{ path('user_edit', { id: app.user.id }) }}" class="btn btn-primary btn-block w-md-50">Modifier votre compte</a>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-3 col-md-6 col-12 mb-3">
+                                <a href="{{ path('mes_annonces_index') }}" class="btn btn-block h-100 btn-outline-primary">Mes annonces</a>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-12 mb-3">
+                                <a href="{{ path('mes_annonces_index') }}" class="btn btn-block h-100 btn-outline-primary">Locations en cours</a>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-12 mb-3">
+                                <a href="{{ path('mes_annonces_index') }}" class="btn btn-block h-100 btn-outline-primary">Favoris</a>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-12 mb-3">
+                                <a href="{{ path('mes_annonces_index') }}" class="btn btn-block h-100 btn-outline-primary">Abonnements</a>
                             </div>
                         </div>
                     </div>

@@ -22,7 +22,7 @@ class AnnonceBricoJardin extends Annonces
     private $modele;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Propriete::class)
+     * @ORM\ManyToOne(targetEntity=Energie::class)
      */
     private $energie;
 
@@ -50,12 +50,12 @@ class AnnonceBricoJardin extends Annonces
         return $this;
     }
 
-    public function getEnergie(): ?Propriete
+    public function getEnergie(): ?Energie
     {
         return $this->energie;
     }
 
-    public function setEnergie(?Propriete $energie): self
+    public function setEnergie(?Energie $energie): self
     {
         $this->energie = $energie;
 
