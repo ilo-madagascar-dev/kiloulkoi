@@ -39,7 +39,7 @@ $(document).ready( function()
         document.querySelector(".date p").innerHTML  = new Date().toDateString();
 
         let days = "";
-    
+
         for (let x = firstDayIndex; x > 0; x--)
         {
             let day        = n_(prevLastDay - x + 1);
@@ -72,16 +72,25 @@ $(document).ready( function()
         locations.forEach(location => {
             let debut = location.debut.date.slice(0, 10);;
             let fin   = location.fin.date.slice(0, 10);
+            let statut = '';
 
             mois_debut = parseInt( debut.slice(5, 7) );
             mois_fin   = parseInt( fin.slice(5, 7) );
+
+            switch( location.statut )
+            {
+                case 1: statut = 'enAttente';break;
+                case 2: statut = 'enCours';break;
+                case 3: statut = 'effectue';break;
+                case 4: statut = 'interrompu';break;
+            }
 
             if( mois_debut == date.getMonth() + 1 || mois_fin == date.getMonth() + 1 )
             {
                 $(`.calendar span[data]`).each( (i, element) => {
                     if( debut <= $(element).attr('data') && $(element).attr('data') <= fin )
                     {
-                        $(element).addClass('reserve');
+                        $(element).addClass(statut);
                     }
                 });
             }
@@ -205,6 +214,7 @@ $(document).ready( function()
             $('#reservationModal .liste-reservation' ).addClass("d-none");
             $('#reservationModal .alert-indisponible').addClass("d-none");
             $('#reservationModal .alert-selection'   ).removeClass("d-none");
+            $('#reservationModal .modal-footer'      ).addClass("d-none");
         }
         else
         {
@@ -214,6 +224,7 @@ $(document).ready( function()
             {
                 $('#reservationModal .liste-reservation' ).addClass("d-none");
                 $('#reservationModal .alert-selection'   ).addClass("d-none");
+                $('#reservationModal .modal-footer'      ).addClass("d-none");
                 $('#reservationModal .alert-indisponible').removeClass("d-none");
             }
             else
@@ -238,6 +249,7 @@ $(document).ready( function()
                 }
                 $('#reservationModal .liste-reservation .list-group').html(listes);
                 $('#reservationModal .liste-reservation').removeClass("d-none");
+                $('#reservationModal .modal-footer').removeClass("d-none");
                 $('#reservationModal .alert').addClass("d-none");
 
                 $('#input-reservation').val( JSON.stringify(demandes) );

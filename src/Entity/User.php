@@ -34,7 +34,6 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\Unique(message="Email déja utilisé.")
      */
     private $email;
 
@@ -87,7 +86,12 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="datetime")
      */
-    private $date_mise_a_jour;
+    private $dateMiseAJour;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $actif;
 
     public function __construct()
     {
@@ -336,12 +340,24 @@ class User implements UserInterface
 
     public function getDateMiseAJour(): ?\DateTimeInterface
     {
-        return $this->date_mise_a_jour;
+        return $this->dateMiseAJour;
     }
 
     public function setDateMiseAJour(): self
     {
-        $this->date_mise_a_jour = new \Datetime();
+        $this->dateMiseAJour = new \Datetime();
+
+        return $this;
+    }
+
+    public function getActif(): ?bool
+    {
+        return $this->actif;
+    }
+
+    public function setActif(bool $actif): self
+    {
+        $this->actif = $actif;
 
         return $this;
     }

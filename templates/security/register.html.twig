@@ -17,7 +17,8 @@
                 <div class="card-body">
                     {{ form_start(registrationForm) }}
                         {{ form_row(registrationForm.email) }}
-                        {{ form_row(registrationForm.password) }}
+                        {{ form_row(registrationForm.password.first , { 'id': 'registration_form_password_first'} )  }}
+                        {{ form_row(registrationForm.password.second, { 'id': 'registration_form_password_second'} ) }}
                         {{ form_row(registrationForm.pseudo) }}
 
                         {% if registrationForm.nom is defined %}

@@ -2,6 +2,8 @@
 
 {% block title %}Kiloukoi{% endblock %}
 
+{% set annonce_titre = annonce_titre is defined ? annonce_titre : "Annonces" %}
+
 {% block body %}
 
 <div class="container">
@@ -110,7 +112,7 @@
 
 <div class="container pt-5">
     <div class="row">
-        <div class="col-sm-4 mb-5">
+        <div class="col-md-4 mb-5">
             <div class="text-center ">
                 <img src="icone/green.png"  class="img-fluid mb-3" style="height: 60px !important;">
                 <p class="mb-1 text-success">Protegeons notre planete</p>
@@ -118,7 +120,7 @@
             </div>
         </div>
 
-        <div class="col-sm-4 mb-5">
+        <div class="col-md-4 mb-5">
             <div class="text-center ">
                 <img src="icone/money.png"  class="img-fluid mb-3" style="height: 60px !important;">
                 <p class="mb-1 text-success">Arrondissez vos fins de mois</p>
@@ -126,7 +128,7 @@
             </div>
         </div>
 
-        <div class="col-sm-4 mb-5">
+        <div class="col-md-4 mb-5">
             <div class="text-center ">
                 <img src="icone/problem.png"  class="img-fluid mb-3" style="height: 60px !important;">
                 <p class="mb-1 text-success">Changez le monde</p>

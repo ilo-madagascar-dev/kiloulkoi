@@ -1,7 +1,7 @@
 
 <div class="container mt-4 mb-3">
 	<div class="card">
-		<h1 class="h3 text-center text-muted pt-2">{{ annonce_title }}</h1>
+		<h1 class="h3 text-center text-muted pt-2">{{ annonce_titre }}</h1>
 		{% if annonces|length == 0 %}
 			<div class="card-body">
 				<div class="alert alert-warning text-center">
@@ -17,7 +17,7 @@
 	<div class="row card-deck">
 		{% for annonce in annonces %}
 			<div class="col-12 col-md-6 col-lg-4 mb-3">
-				<div class="card h-100 shadow">
+				<div class="card h-100 shadow m-auto" style="max-width: 300px;">
 
 					{# 
 						{% if annonce.type == "offre" %}

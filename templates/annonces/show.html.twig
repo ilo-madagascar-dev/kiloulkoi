@@ -37,13 +37,9 @@
                                     </form>
                                 {% endif %}
                             {% else %}
-                                <h3 class="text-secondary mb-3" style="font-size: 1.2rem;"><strong>Pour envoyer un message, veuillez: </strong></h3>
                                 <div class="row">
-                                    <div class="col-md-12 col-lg-6 mb-3">
+                                    <div class="col-md-12 mb-3">
                                         <a href="{{ path('securitylogin') }}" class="btn btn-success btn-block">Se connecter</a>
-                                    </div>
-                                    <div class="col-md-12 col-lg-6 mb-3">
-                                        <a href="{{ path('app_register') }}" class="btn btn-success btn-block">Creer un compte</a>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -117,7 +113,7 @@
                     </div>
                     <div class="card-body px-0 py-3">
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="{% if app.user and app.user.id != annonce.user.id %} col-lg-6 {% else %} col-12 {% endif %}">
                                 <div class="calendar mb-3">
                                     <div class="month row py-3 bg-success text-white border border-success">
                                         <div class="col-2 m-auto p-0 text-right">
@@ -139,21 +135,23 @@
                                     <div class="days border border-success"></div>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
-                                <div class="p-3">
-                                    <div class="form-group">
-                                        <label for="date-debut">Date du début:</label>
-                                        <input type="date" id="date-debut" min="{{ date() | date('Y-m-d') }}" class="form-control" name="debut" placeholder="dd-mm-yyyy">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="date-fin">Date du fin:</label>
-                                        <input type="date" id="date-fin" min="{{ date() | date('Y-m-d') }}" class="form-control" name="fin">
-                                    </div>
-                                    <div class="calendar-action text-center">
-                                        <button id="reserver" class="btn btn-block btn-success" type="button" data-toggle="modal" data-target="#reservationModal">Réserver ces dates</button>
+                            {% if app.user and app.user.id != annonce.user.id %}
+                                <div class="col-lg-6">
+                                    <div class="p-3">
+                                        <div class="form-group">
+                                            <label for="date-debut">Date du début:</label>
+                                            <input type="date" id="date-debut" min="{{ date() | date('Y-m-d') }}" class="form-control" name="debut" placeholder="dd-mm-yyyy">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="date-fin">Date du fin:</label>
+                                            <input type="date" id="date-fin" min="{{ date() | date('Y-m-d') }}" class="form-control" name="fin">
+                                        </div>
+                                        <div class="calendar-action text-center">
+                                            <button id="reserver" class="btn btn-block btn-success" type="button" data-toggle="modal" data-target="#reservationModal">Vérifier la disponibilité</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -254,7 +252,7 @@
                         <input type="hidden" name="annonce" value="{{ annonce.id }}">
 
                         <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Annuler</button>
-                        <button type="submit" class="btn btn-outline-success" id="reservation-submit">Réserver</button>
+                        <button type="submit" class="btn btn-outline-success">Réserver</button>
                     </form>
                 </div>
             </div>
@@ -264,10 +262,10 @@
 
 {% block javascripts %}
     {{ parent() }}
-    
+
     {% set locations = [] %}
     {% for location in annonce.locations %}
-        {% set locations = locations|merge([{debut: location.dateDebut, fin: location.dateFin}]) %}
+        {% set locations = locations|merge([{debut: location.dateDebut, fin: location.dateFin, statut: location.statutLocation.id }]) %}
     {% endfor %}
 
     <script>

@@ -55,10 +55,12 @@ class AnnoncesController extends AbstractController
 
         $categories = $this->repCategorie->findParents();
         $annonces   = $this->repAnnonce->findMesAnnonces($user->getId())->getResult();
+        $annonce_titre = "Mes annonces";
 
         return $this->render('annonces/index.html.twig', [
             'categories' => $categories,
-            'annonces' => $annonces
+            'annonces' => $annonces,
+            'annonce_titre' => $annonce_titre
         ]);
     }
 
@@ -75,7 +77,7 @@ class AnnoncesController extends AbstractController
         return $this->render('annonces/mesAnnonces.html.twig', [
             'categories' => $categories,
             'annonces' => $annonces,
-            'annonce_title' => $annonce_titre
+            'annonce_titre' => $annonce_titre
         ]);
     }
 
@@ -106,7 +108,7 @@ class AnnoncesController extends AbstractController
         return $this->render('annonces/mesAnnonces.html.twig', [
             'categories' => $categories,
             'annonces' => $annonces,
-            'annonce_title' => $annonce_titre
+            'annonce_titre' => $annonce_titre
         ]);
     }
 

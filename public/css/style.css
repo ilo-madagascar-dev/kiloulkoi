@@ -1,3 +1,7 @@
+body {
+    min-width: 360px;
+}
+
 header .dropdown-toggle::after {
     margin-left: 0;
 }
@@ -8,6 +12,7 @@ header .dropdown-toggle::after {
     position:absolute;
     left:0;
     z-index: -1;
+    min-width: 360px;;
 }
 
 label {
@@ -48,11 +53,31 @@ label.required::before {
     background: lightgreen;
 }
 
-.calendar .days span.reserve {
-    background-color: rgba(255, 0, 0, 0.52);
+.calendar .days span.enAttente, span.enCours, span.effectue, span.interrompu {
     cursor: no-drop;
     color: white;
 }
+
+.calendar .days span.enAttente {
+    background-color: orange;
+}
+
+.calendar .days span.enCours {
+    background-color: orchid;
+}
+
+.calendar .days span.interrompu {
+    background-color: steelblue;
+}
+
+.calendar .days span.effectue {
+    background-color: darkblue;
+}
+
+case 1: statut = '';
+case 2: statut = 'enCours';
+case 3: statut = 'effectue';
+case 4: statut = 'interrompu';
 
 .calendar .weekdays, h3 {
     font-weight: bold;

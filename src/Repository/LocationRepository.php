@@ -19,9 +19,12 @@ class LocationRepository extends ServiceEntityRepository
         parent::__construct($registry, Location::class);
     }
 
-    public function checkDates(array $reservations)
+    public function checkDates(array $reservations, int $annonce)
     {
-        $query = $this->createQueryBuilder('l')->select('count(l.id)');
+        $query = $this->createQueryBuilder('l')
+                    ->select('count(l.id)')
+                    ->where('l.annonce = :annonce')
+                    ->setParameter('annonce', $annonce);
 
         $i = 0;
         foreach( $reservations as $reservation )

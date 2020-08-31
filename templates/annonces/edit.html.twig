@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Annonces{% endblock %}
+{% block title %}Modifier l'annonce{% endblock %}
 
 {% block body %}
 
@@ -11,7 +11,7 @@
             <div class="col-sm-8 offset-sm-2">
                 <div id="formulaire_annonce" class="card shadow">
                     <div class="card-header">
-                        <h2 class="mb-0 d-inline">{{ categorie.libelle }}</h2>
+                        <h2 class="h3 mb-0 d-inline">{{ categorie.libelle }}</h2>
                         <a href="{{ path('annonces_index') }}" class="float-right btn btn-primary">Retour</a>
                     </div>
                     <div class="card-body">

@@ -43,7 +43,7 @@ class LocationController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="location_new", methods={"GET","POST"})
+     * @Route("/new", name="location_new", methods={"POST"})
      */
     public function new(Request $request, LocationRepository $locationRepository, AnnoncesRepository $annoncesRepository, StatutLocationRepository $statutReposistory): Response
     {
@@ -55,12 +55,12 @@ class LocationController extends AbstractController
             $em      = $this->getDoctrine()->getManager();
             
             $reservations = json_decode($request->request->get('reservations'));
-            $disponible   = $locationRepository->checkDates($reservations);
-            
+            $disponible   = $locationRepository->checkDates($reservations, $annonce->getId());
+
+            $locations = new ArrayCollection();
             if( $disponible && $annonce )
             {
                 $statut    = $statutReposistory->find(1); // Statut en attente
-                $locations = new ArrayCollection();
                 foreach( $reservations as $reservation )
                 {
                     $location = new Location();
