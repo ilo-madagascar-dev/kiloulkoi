@@ -96,6 +96,8 @@ class GoogleController extends AbstractController
             $user->setAvatar($avatar_url);
             $user->setDateCreation();
             $user->setDateMiseAJour();
+            $user->setActif(true);
+            
             // encode the plain password
             $user->setPassword(
                 $passwordEncoder->encodePassword(

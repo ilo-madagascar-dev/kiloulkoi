@@ -87,6 +87,7 @@ class AuthController extends AbstractController
             $user->setAvatar($avatar_url);
             $user->setDateCreation();
             $user->setDateMiseAJour();
+            $user->setActif(true);
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
