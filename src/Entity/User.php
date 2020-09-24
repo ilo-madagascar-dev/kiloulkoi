@@ -93,6 +93,31 @@ class User implements UserInterface
      */
     private $actif;
 
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $ville;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $adresse;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $cp;
+
+    /**
+     * @ORM\Column(type="string", length=25)
+     */
+    private $telephone;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $rue;
+
     public function __construct()
     {
         $this->location = new ArrayCollection();
@@ -358,6 +383,66 @@ class User implements UserInterface
     public function setActif(bool $actif): self
     {
         $this->actif = $actif;
+
+        return $this;
+    }
+
+    public function getVille(): ?string
+    {
+        return $this->ville;
+    }
+
+    public function setVille(string $ville): self
+    {
+        $this->ville = $ville;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(string $adresse): self
+    {
+        $this->adresse = $adresse;
+
+        return $this;
+    }
+
+    public function getCp(): ?string
+    {
+        return $this->cp;
+    }
+
+    public function setCp(string $cp): self
+    {
+        $this->cp = $cp;
+
+        return $this;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(string $telephone): self
+    {
+        $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    public function getRue(): ?string
+    {
+        return $this->rue;
+    }
+
+    public function setRue(string $rue): self
+    {
+        $this->rue = $rue;
 
         return $this;
     }

@@ -82,9 +82,16 @@ class AuthController extends AbstractController
             $uploader->setTargetDirectory($this->getParameter('avatar_directory'));
 
             $avatar_file = $form->get('avatar')->getData();
-            $avatar_url  = $uploader->upload($avatar_file);
+            if( $avatar_file )
+            {
+                $avatar_url  = $uploader->upload($avatar_file);
+                $user->setAvatar($avatar_url);
+            }
+            else
+            {
+                $user->setAvatar('default.png');
+            }
 
-            $user->setAvatar($avatar_url);
             $user->setDateCreation();
             $user->setDateMiseAJour();
             $user->setActif(true);

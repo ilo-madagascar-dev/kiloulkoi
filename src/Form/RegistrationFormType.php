@@ -25,16 +25,11 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('email', EmailType::class)
             ->add('pseudo', TextType::class)
-            ->add('avatar', FileType::class, [
-                'constraints' => [
-                    new File([
-                        'mimeTypes' => [
-                            'image/*',
-                        ],
-                        'mimeTypesMessage' => 'Veuillez choisir une photo!',
-                    ])
-                ],
-            ])
+            ->add('telephone', TextType::class, ['label' => 'Téléphone'])
+            ->add('ville', TextType::class)
+            ->add('rue', TextType::class)
+            ->add('cp', TextType::class, ['label' => 'Code postale'])
+            ->add('adresse', TextType::class)
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les deux champs doivent être identiques.',
@@ -44,7 +39,7 @@ class RegistrationFormType extends AbstractType
                 'second_options' => ['label' => 'Confirmer votre mot de passe'],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Entrer un mot de passe svp',
+                        'message' => 'Veuillez entrer un mot de passe',
                     ]),
                     new Length([
                         'min' => 10,
@@ -66,10 +61,7 @@ class RegistrationFormType extends AbstractType
                             'image/*',
                         ],
                         'mimeTypesMessage' => 'Veuillez choisir une photo!',
-                    ]),
-                    new NotBlank([
-                        'message' => 'Veuillez ajouter une photo!',
-                    ]),
+                    ])
                 ],
                 'required' => true,
                 'data_class' => null,

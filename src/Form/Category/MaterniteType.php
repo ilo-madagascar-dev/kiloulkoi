@@ -5,6 +5,7 @@ namespace App\Form\Category;
 use App\Entity\AnnonceMaternite;
 use App\Entity\Annonces;
 use App\Form\AnnoncesType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -17,7 +18,7 @@ class MaterniteType extends AnnoncesType
 
         $builder
             ->add('marque')
-            ->add('pointure')
+            ->add('pointure', IntegerType::class)
         ;
     }
 

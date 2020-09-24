@@ -8,7 +8,7 @@ use App\Form\AnnoncesType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ElectromenagerFormType extends AnnoncesType
+class ElectromenagerType extends AnnoncesType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

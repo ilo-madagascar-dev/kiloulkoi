@@ -16,10 +16,6 @@ class ParticulierType extends RegistrationFormType
         $builder
             ->add('nom', TextType::class)
             ->add('prenom', TextType::class)
-            ->add('telephone', TextType::class, ['label' => 'Téléphone'])
-            ->add('ville', TextType::class)
-            ->add('rue', TextType::class)
-            ->add('cp', TextType::class, ['label' => 'Code postale'])
         ;
     }
 

@@ -5,6 +5,7 @@ namespace App\Form\Category;
 use App\Entity\AnnonceImmobilier;
 use App\Entity\Annonces;
 use App\Form\AnnoncesType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -17,8 +18,8 @@ class ImmobilierType extends AnnoncesType
 
         $builder
             ->add('surface')
-            ->add('etage')
-            ->add('chambre')
+            ->add('etage', IntegerType::class)
+            ->add('chambre', IntegerType::class)
         ;
     }
 

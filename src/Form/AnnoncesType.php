@@ -12,6 +12,7 @@ use App\Entity\Categories;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Validator\Constraints\File;
 
@@ -44,7 +45,7 @@ class AnnoncesType extends AbstractType
                     'allow_delete' => true,
                     'by_reference' => false,
                 ])
-                ->add('prix')
+                ->add('prix', IntegerType::class)
                 ->add('description', TextareaType::class)
                 // ->add('location', LocationType::class, array('required' => false))
                 // ->add('categorie', EntityType::class, [

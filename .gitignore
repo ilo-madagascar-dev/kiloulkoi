@@ -20,4 +20,5 @@ yarn-error.log
 
 
 ###< Uploaded files ###
-/public/uploads/
+/public/uploads/*
+!/public/uploads/avatar/default.png

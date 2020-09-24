@@ -54,8 +54,34 @@ class AnnoncesRepository extends ServiceEntityRepository
     /**
      * @return Annonces[] Returns an array of Annonces objects
      */
-
     public function findMesAnnonces($id)
+    {
+        $query = $this->getAllQuery();
+
+        return $query->where('u.id = :id')
+                    ->setParameter('id', $id)
+                    ->getQuery()
+            ;
+    }
+
+    /**
+     * @return Annonces[] Returns an array of Annonces objects
+     */
+    public function findLocationEncours($id)
+    {
+        $query = $this->getAllQuery();
+
+        return $query->where('u.id = :id')
+                    ->setParameter('id', $id)
+                    ->getQuery()
+            ;
+    }
+
+
+    /**
+     * @return Annonces[] Returns an array of Annonces objects
+     */
+    public function findAbonnements($id)
     {
         $query = $this->getAllQuery();
 
@@ -94,8 +120,8 @@ class AnnoncesRepository extends ServiceEntityRepository
                     ->leftJoin('a.locations', 'l')
                     ->where('a.id = :id')
                     ->setParameter('id', $id)
-                    ->andWhere('l.dateFin >= :fin OR l.dateFin is null')
-                    ->setParameter('fin', date('Y-m-d'))
+                    // ->andWhere('l.dateFin >= :fin OR l.dateFin is null')
+                    // ->setParameter('fin', date('Y-m-d'))
                     ->orderBy('l.dateDebut', 'ASC')
                     ->getQuery();
 

@@ -63,7 +63,50 @@ class AnnoncesController extends AbstractController
             'annonce_titre' => $annonce_titre
         ]);
     }
+    
+    /**
+     * @Route("/abonnements", name="abonnements", methods={"GET"})
+     */
+    public function abonnement(): Response
+    {
+        $user = $this->getUser();
+        if ($user == null) 
+        {
+            return $this->redirectToRoute('securitylogin');
+        }
 
+        $categories = $this->repCategorie->findParents();
+        $annonces   = $this->repAnnonce->findAbonnements($user->getId())->getResult();
+        $annonce_titre = "Abonnement";
+
+        return $this->render('annonces/index.html.twig', [
+            'categories' => $categories,
+            'annonces' => $annonces,
+            'annonce_titre' => $annonce_titre
+        ]);
+    }
+
+    /**
+     * @Route("/location_encours", name="location_encours", methods={"GET"})
+     */
+    public function location_encours(): Response
+    {
+        $user = $this->getUser();
+        if ($user == null) 
+        {
+            return $this->redirectToRoute('securitylogin');
+        }
+
+        $categories = $this->repCategorie->findParents();
+        $annonces   = $this->repAnnonce->findLocationEncours($user->getId())->getResult();
+        $annonce_titre = "Locations en cours";
+
+        return $this->render('annonces/index.html.twig', [
+            'categories' => $categories,
+            'annonces' => $annonces,
+            'annonce_titre' => $annonce_titre
+        ]);
+    }
 
     /**
      * @Route("/filter", name="annonces_filter", methods={"GET"})
@@ -178,7 +221,6 @@ class AnnoncesController extends AbstractController
         ]);
     }
 
-
     /**
      * @Route("/details/{id}/{slug}", name="annonces_show", methods={"GET"})
      */
@@ -202,7 +244,8 @@ class AnnoncesController extends AbstractController
         return $this->render('annonces/show.html.twig', [
             'annonce' => $annonce,
             'annonce_serialized' => $annonce_serialized,
-        ]);
+            'user_annonces' => $annonce->getUser()->getAnnonces()->count()
+        ]); 
     }
 
     /**

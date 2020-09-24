@@ -8,6 +8,7 @@ use App\Entity\Taille;
 use App\Form\AnnoncesType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -20,8 +21,8 @@ class ModeFemmeType extends AnnoncesType
 
         $builder
             ->add('marque')
-            ->add('modele')
-            ->add('pointure')
+            ->add('modele')            
+            ->add('pointure', IntegerType::class)
             ->add('taille', EntityType::class, [
                 'class' => Taille::class,
                 'query_builder' => function (EntityRepository $er) 
