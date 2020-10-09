@@ -1,8 +1,53 @@
-{{ form_start(form) }}
+{{ form_start(form, {'attr': {'id': 'registration_form'}} ) }}
     {{ form_errors(form) }}
 
+    {{ form_row(form.email) }}
+
+    {% if form.nom is defined %}
+        <div class="row">
+            <div class="col-md-6">
+                {{ form_row(form.nom) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.prenom) }}
+            </div>
+        </div>
+    {% endif %}
+    
+    {% if form.raison_social is defined %}
+        <div class="row">
+            <div class="col-md-6">
+                {{ form_row(form.raison_social) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.siret) }}
+            </div>
+        </div>
+    {% endif %}
+
+    {{ form_row(form.pseudo) }}
+
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_row(form.telephone, { 'id': 'registration_phone'} ) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            {{ form_row(form.ville, { 'id': 'registration_city'}) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.rue) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.cp, { 'id': 'registration_cp'} ) }}
+        </div>
+    </div>
+
+    {{ form_row(form.adresse, { 'id': 'registration_adresse'}) }}
+
     {% do form.avatar.setRendered() %}
-    {{ form_widget(form) }}
 
     <div class="row m-3 text-center">
         <div class="col-md-4 offset-md-4">
@@ -17,9 +62,19 @@
         </div>
     </div>
 
+    <div class="row m-3 text-center">
+        <div class="col-md-8 offset-md-2 col-lg-4 offset-lg-4">
+            {% if form_errors(form.avatar) %}
+                <div id="image-validation" class="error-image alert alert-warning">{{ form.avatar.vars.errors | replace({"ERROR: ": ""}) }}</div>
+            {% else %}
+                <div id="image-validation" class="error-image d-none alert alert-warning"></div>
+            {% endif %}
+        </div>
+    </div>
+
     {# {{ form_row(form.agreeTerms) }} #}
     
-    <button type="submit" class="btn btn-primary btn-block">
+    <button type="submit" class="btn btn-primary btn-block" id="btn-submit">
         <i class="fa fa-btn fa-user"></i> Enregistrer
     </button>
 {{ form_end(form) }}

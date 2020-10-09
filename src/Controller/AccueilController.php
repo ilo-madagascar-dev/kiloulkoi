@@ -2,10 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Annonces;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\Categories;
 use App\Repository\AnnoncesRepository;
 use App\Repository\CategoriesRepository;
 

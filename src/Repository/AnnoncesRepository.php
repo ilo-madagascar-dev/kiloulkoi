@@ -120,6 +120,7 @@ class AnnoncesRepository extends ServiceEntityRepository
                     ->leftJoin('a.locations', 'l')
                     ->where('a.id = :id')
                     ->setParameter('id', $id)
+                    // ->andWhere('l.statusLocation.id = 2') // En cours
                     // ->andWhere('l.dateFin >= :fin OR l.dateFin is null')
                     // ->setParameter('fin', date('Y-m-d'))
                     ->orderBy('l.dateDebut', 'ASC')

@@ -42,3 +42,8 @@ services:
             - '@doctrine'
             - 'App\Entity\User'
             - {facebook: facebookID, google: googleID}
+
+    
+    App\Service\MercureCookieGenerator:
+        arguments:
+            $secret: '%env(MERCURE_JWT_KEY)%'

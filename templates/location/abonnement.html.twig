@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Abonnements{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid" style="max-width: 1500px;">
+        <div id="bg" style="position:absolute;z-index:-1;left:0;height:375px;"></div>
+        
+        <center class="py-4">
+            <img src="{{ asset('image/logo.png') }}" class="mb-3" style="height: 120px;width: auto;" >
+            <p class="text-center text-white"><strong>N'achetez que le nécessaire, pour le reste il y a Kiloukoi!</strong></p>
+        </center>
+
+        <div class="row">
+            <div class="offset-md-2 col-md-8">
+                <div class="card shadow mb-3">
+                    <div class="card-header d-flex align-items-top">
+                        <i class="text-success fa fa-list mr-3" style="font-size: 3rem;"></i>
+                        <div class="d-inline">
+                            <h1 class="mb-0" style="font-size: 1.4rem;"><strong>Abonnements</strong></h1>
+                            <small class="text-muted">Liste des annonces que vous vous êtes abonnées.</small>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        {% if locations|length > 0 %}
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                       <th>Annonce</th>
+                                       <th>Début</th>
+                                       <th>Fin</th>
+                                       <th>Propriétaire</th>
+                                       <th>Statut</th>
+                                       <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for location in locations %}
+                                    <tr>
+                                       <td>{{ location.annonce.titre }}</td>
+                                       <td>{{ location.dateDebut ? location.dateDebut|date('d-m-Y') : '' }}</td>
+                                       <td>{{ location.dateFin ? location.dateFin|date('d-m-Y') : '' }}</td>
+                                       <td>{{ location.annonce.user.nomComplet }}</td>
+                                       <td>{{ location.statutLocation.libelle }}</td>
+                                       <td>
+                                            {% set slug = location.annonce.slug == '' ? 'annonces_' : location.annonce.slug %}
+                                            <a class="btn btn-primary btn-sm"            href="{{ path('annonces_show', { id: location.annonce.id, slug: slug }) }}"><i class="fa fa-eye"></i></a>
+                                          <a class="btn btn-warning text-white btn-sm" href="{{ path('location_edit', { id: location.id}) }}"><i class="fa fa-money-check-alt"></i></a>
+                                       </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                                <div class="mb-0 alert alert-warning text-center d-flex justify-content-center align-items-center" style="height: 120px;"><strong>Aucun résultat.</strong></div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -28,7 +28,7 @@ class LocationController extends AbstractController
     public function index(LocationRepository $locationRepository): Response
     {
         return $this->render('location/index.html.twig', [
-            'locations' => $locationRepository->findAll(),
+            'locations' => $locationRepository->findLocations( $this->getUser()->getId() ),
         ]);
     }
 
@@ -40,6 +40,27 @@ class LocationController extends AbstractController
             $className,
             strstr(strstr(serialize($instance), '"'), ':')
         ));
+    }
+
+
+    /**
+     * @Route("/en-cours", name="location_en_cours", methods={"GET"})
+     */
+    public function enCours(LocationRepository $locationRepository): Response
+    {
+        return $this->render('location/enCours.html.twig', [
+            'locations' => $locationRepository->findLocationsEnCours( $this->getUser()->getId() ),
+        ]);
+    }
+
+    /**
+     * @Route("/abonnements", name="location_abonnement", methods={"GET"})
+     */
+    public function abonnement(LocationRepository $locationRepository): Response
+    {
+        return $this->render('location/abonnement.html.twig', [
+            'locations' => $locationRepository->findAbonnements( $this->getUser()->getId() ),
+        ]);
     }
 
     /**
@@ -78,9 +99,7 @@ class LocationController extends AbstractController
             }
         }
         
-        return $this->render('location/new.html.twig', [
-            'locations' => $locations,
-        ]);
+        return $this->redirectToRoute('location_abonnement');
     }
 
     /**

@@ -1,37 +1,62 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Location index{% endblock %}
+{% block title %}Locations en cours{% endblock %}
 
 {% block body %}
-    <h1>Location index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>DateDebut</th>
-                <th>DateFin</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for location in locations %}
-            <tr>
-                <td>{{ location.id }}</td>
-                <td>{{ location.dateDebut ? location.dateDebut|date('Y-m-d') : '' }}</td>
-                <td>{{ location.dateFin ? location.dateFin|date('Y-m-d') : '' }}</td>
-                <td>
-                    <a href="{{ path('location_show', {'id': location.id}) }}">show</a>
-                    <a href="{{ path('location_edit', {'id': location.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="container-fluid" style="max-width: 1500px;">
+        <div id="bg" style="position:absolute;z-index:-1;left:0;height:375px;"></div>
+        
+        <center class="py-4">
+            <img src="{{ asset('image/logo.png') }}" class="mb-3" style="height: 120px;width: auto;" >
+            <p class="text-center text-white"><strong>N'achetez que le nécessaire, pour le reste il y a Kiloukoi!</strong></p>
+        </center>
 
-    <a href="{{ path('location_new') }}">Create new</a>
+        <div class="row">
+            <div class="offset-lg-2 col-lg-8 offset-md-1 col-md-10">
+                <div class="card shadow mb-3">
+                    <div class="card-header d-flex align-items-top">
+                        <i class="text-success fa fa-list mr-3" style="font-size: 3rem;"></i>
+                        <div class="d-inline">
+                            <h1 class="mb-0" style="font-size: 1.4rem;"><strong>Locations</strong></h1>
+                            <small class="text-muted">Liste des demandes de locations de vos annonces.</small>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        {% if locations|length > 0 %}
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                       <th>Annonce</th>
+                                        <th>Début</th>
+                                        <th>Fin</th>
+                                        <th>Locataire</th>
+                                        <th>Statut</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                 {% for location in locations %}
+                                    <tr>
+                                       <td>{{ location.annonce.titre }}</td>
+                                       <td>{{ location.dateDebut ? location.dateDebut|date('d-m-Y') : '' }}</td>
+                                       <td>{{ location.dateFin ? location.dateFin|date('d-m-Y') : '' }}</td>
+                                       <td>{{ location.user.nomComplet }}</td>
+                                       <td>{{ location.statutLocation.libelle }}</td>
+                                       <td>
+                                          <a class="btn btn-primary btn-sm"            href="{{ path('location_show', {'id': location.id}) }}"><i class="fa fa-eye"></i></a>
+                                          <a class="btn btn-warning text-white btn-sm" href="{{ path('location_edit', {'id': location.id}) }}"><i class="fa fa-money-check-alt"></i></a>
+                                       </td>
+                                    </tr>
+                                 {% endfor %}
+                              </tbody>
+                            </table>
+                        {% else %}
+                                <div class="mb-0 alert alert-warning text-center d-flex justify-content-center align-items-center" style="height: 120px;"><strong>Aucun résultat.</strong></div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -17,12 +17,13 @@
 				</div>
 
 				<div class="messages-box border-right border-primary" style="height: calc(100vh - 200px);overflow-y:auto;">
-					<div class="list-group rounded-0">
+					<div id="conversations" class="list-group rounded-0">
 
 						{% for conversation in conversations %}
 							{% set active = (conversationEncours.id == conversation.id) %}
+							{% set read   = (app.user.id == conversation.user1.id and conversation.lu1) or (app.user.id == conversation.user2.id and conversation.lu2) %}
 
-							<a href="{{ path('conversation_show', {'id': conversation.id}) }}" class="list-group-item list-group-item-action text-muted rounded-0 {{ active ? 'list-group-item-info' : 'list-group-item-light' }}">
+							<a id="conversation-{{ conversation.id }}" href="{{ path('conversation_show', {'id': conversation.id}) }}" class="list-group-item list-group-item-action rounded-0 {{ active ? 'list-group-item-primary' : (read ? 'list-group-item-light text-muted ' : 'list-group-item-info text-muted ') }}">
 								<div class="media">
 									{% if conversation.user1.id == app.user.id %}
 										<img src="{{ asset('uploads/avatar/') ~ conversation.user2.avatar }}" alt="user" width="50" height="50" class="rounded-circle">
@@ -37,11 +38,11 @@
 											{% else %}
 												<h6 class="mb-0" style="font-weight: bold;">{{ conversation.user1.nomComplet }}</h6>
 											{% endif %}
-											<small style="font-size: 60%;">{{ conversation.messages[0].date | date("d/m/Y | H:m") }}</small>
+											<small style="font-size: 60%;" class="conversation-date">{{ conversation.messages[0].date | date("d/m/Y | H:m") }}</small>
 										</div>
-										<p class="font-italic mb-0 text-small">
+										<p class="font-italic mb-0 text-small conversation-content">
 											{% if conversation.messages[0].user.id == app.user.id %}
-												<strong><small>Moi: </small></strong>
+												<small style="font-weight: bold;">Moi: </small>
 											{% endif %}
 											<small>{{ conversation.messages[0].contenue }}</small>
 										</p>
@@ -64,8 +65,8 @@
 				<h2 class="h5 mb-0 py-1">{{ destinataire.nomComplet }}</h2>
 			</div>
 
-			<div class="chat-box w-100">
-				<div id="messageBody" class="px-4 py-2" style="height: calc(100vh - 275px);overflow-y:auto;">
+			<div class="chat-box w-100" >
+				<div id="messageBody" data="chat-{{ conversationEncours.id }}" class="px-4 py-2" style="height: calc(100vh - 300px);overflow-y:auto;">
 					{% for message in messages %}
 						{% if message.user.id == app.user.id %}
 							<!-- Reciever Message-->
@@ -76,7 +77,7 @@
 									</div>
 									<small class="small text-muted">{{ message.date | date("d/m/Y | H:m") }}</small>
 								</div>
-							</div>	
+							</div>
 						{% else %}
 							<!-- Sender Message-->
 							<div class="media w-50">
@@ -93,11 +94,14 @@
 				</div>
 
 				<!-- Typing area -->
-				<form method="POST" action="{{ path('conversation_messages_new', { annonce: annonce.id, destinataire: destinataire.id }) }}" class="bg-light border border-primary rounded-right">
-					<div class="input-group">
-						<textarea type="text" placeholder="Type a message" name="contenue" aria-describedby="button-addon2" rows="2" class="form-control rounded-0 border-0 py-2 bg-light"></textarea>
+				<form id="message-form" method="POST" action="{{ path('conversation_messages_new', { annonce: annonce.id, destinataire: destinataire.id }) }}" class="bg-light border border-primary rounded-right w-100">
+					<div class="input-group" >
+						<textarea type="text" placeholder="Type a message" name="contenue" aria-describedby="message-submit" rows="2" class="form-control rounded-0 border-0 py-2 bg-light"  style="height: 100px;"></textarea>
 						<div class="input-group-append">
-							<button id="button-addon2" type="submit" class="btn btn-primary"> <i class="fa fa-paper-plane"></i></button>
+							<button id="message-submit" type="submit" class="btn btn-primary">
+								<i class="fa fa-paper-plane"></i>
+								<span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+							</button>
 						</div>
 					</div>
 				</form>
@@ -109,12 +113,6 @@
 {% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
-	 <script>
-		$(document).ready( function()
-		{
-			var messageBody = document.querySelector('#messageBody');
-			messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
-		})
-	</script>
+	 {{ parent() }}
+	 <script src="{{ asset('/js/message.js') }}"></script>
 {% endblock %}

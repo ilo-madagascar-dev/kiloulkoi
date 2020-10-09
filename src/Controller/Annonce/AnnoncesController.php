@@ -65,50 +65,6 @@ class AnnoncesController extends AbstractController
     }
     
     /**
-     * @Route("/abonnements", name="abonnements", methods={"GET"})
-     */
-    public function abonnement(): Response
-    {
-        $user = $this->getUser();
-        if ($user == null) 
-        {
-            return $this->redirectToRoute('securitylogin');
-        }
-
-        $categories = $this->repCategorie->findParents();
-        $annonces   = $this->repAnnonce->findAbonnements($user->getId())->getResult();
-        $annonce_titre = "Abonnement";
-
-        return $this->render('annonces/index.html.twig', [
-            'categories' => $categories,
-            'annonces' => $annonces,
-            'annonce_titre' => $annonce_titre
-        ]);
-    }
-
-    /**
-     * @Route("/location_encours", name="location_encours", methods={"GET"})
-     */
-    public function location_encours(): Response
-    {
-        $user = $this->getUser();
-        if ($user == null) 
-        {
-            return $this->redirectToRoute('securitylogin');
-        }
-
-        $categories = $this->repCategorie->findParents();
-        $annonces   = $this->repAnnonce->findLocationEncours($user->getId())->getResult();
-        $annonce_titre = "Locations en cours";
-
-        return $this->render('annonces/index.html.twig', [
-            'categories' => $categories,
-            'annonces' => $annonces,
-            'annonce_titre' => $annonce_titre
-        ]);
-    }
-
-    /**
      * @Route("/filter", name="annonces_filter", methods={"GET"})
      */
     public function filter(Request $request): Response
@@ -127,7 +83,7 @@ class AnnoncesController extends AbstractController
     /**
      * @Route("/categorie/{categorie_slug}/{sous_categorie_slug}", name="annonces_categorie", methods={"GET"})
      */
-    public function catégorie(string $categorie_slug, string $sous_categorie_slug)
+    public function categorie(string $categorie_slug, string $sous_categorie_slug)
     {
         $criteria         = [
             'categorie' => $categorie_slug,

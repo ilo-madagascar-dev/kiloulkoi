@@ -39,7 +39,6 @@ class ConversationRepository extends ServiceEntityRepository
         ;
     }
 
-
     public function findByUserQuery(int $user_id)
     {
         $msgDql = $this->getEntityManager()
@@ -61,6 +60,17 @@ class ConversationRepository extends ServiceEntityRepository
             ->andwhere('m.id IN (' . $msgDql . ')')
             ->orderBy('m.date', 'DESC')
             ->getQuery();
+    }
+
+    public function countUnreadBy(User $user)
+    {
+        return $this->createQueryBuilder('c')
+                    ->select('count(c.id)')
+                    ->where('c.user_1 = :user_id AND c.lu_1 = FALSE')
+                    ->orWhere('c.user_2 = :user_id AND c.lu_2 = FALSE')
+                    ->setParameter('user_id', $user->getId() )
+                    ->getQuery()
+                    ->getSingleScalarResult();
     }
 
     // /**

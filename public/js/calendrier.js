@@ -257,12 +257,5 @@ $(document).ready( function()
         }
     });
 
-
-    $('#reservation-submit').click( function()
-    {
-        let reservations = JSON.parse( $(this).attr('data') );
-
-        $.post( )
-    });
     renderCalendar();
 });

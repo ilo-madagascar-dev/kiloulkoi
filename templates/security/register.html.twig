@@ -111,9 +111,9 @@
                         <div class="row m-3 text-center">
                             <div class="col-md-8 offset-md-2 col-lg-4 offset-lg-4">
                                 {% if form_errors(registrationForm.avatar) %}
-                                    <div id="image-validation" class="alert alert-warning">{{ registrationForm.avatar.vars.errors | replace({"ERROR: ": ""}) }}</div>
+                                    <div id="image-validation" class="error-image alert alert-warning">{{ registrationForm.avatar.vars.errors | replace({"ERROR: ": ""}) }}</div>
                                 {% else %}
-                                    <div id="image-validation" class="d-none alert alert-warning"></div>
+                                    <div id="image-validation" class="error-image d-none alert alert-warning"></div>
                                 {% endif %}
                             </div>
                         </div>
@@ -122,7 +122,7 @@
 
                         <p class="text-center">( <span class="text-danger font-weight-bold">*</span> ) champs requis.</p>
 
-                        <button type="submit" class="btn btn-primary btn-block"  id="btn-submit">
+                        <button type="submit" class="btn btn-primary btn-block" id="btn-submit">
                             <i class="fa fa-btn fa-user"></i> Enregistrer
                         </button>
                     {{ form_end(registrationForm) }}
@@ -216,10 +216,16 @@
             }
         });
 
+        $('#registration_form_password_first').change( function()
+        {
+            if( $('#registration_form_password_second').val() !== '' )
+                $('#registration_form_password_second').trigger('change');
+        });
+
         $('#btn-submit').click( function(e)
         {
             e.preventDefault();
-            $('input').trigger('change');
+            $('input:not([type=file])').trigger('change');
             if( $('input.is-invalid').length > 0 )
             {
                 // $('#registration_form').addClass('was-validated');
@@ -240,6 +246,7 @@
 
                 if( !error )
                 {
+                    $('#registration_cp').removeAttr('disabled');
                     $('#registration_form').submit();
                 }
             }
@@ -284,5 +291,29 @@
             $('#registration_cp').trigger("change");
         })
 
+
+        $(document).on('change', '.input-image', function(e) 
+        {
+            var input = this;
+            var reader = new FileReader();
+            
+            reader.onload = function(e) 
+            {
+                if( e.total < 64000 )
+                {
+                    $('.error-image').addClass('d-none');
+                    $('.output-image').attr('src', e.target.result);
+                }
+                else
+                {
+                    $('.output-image').attr('src', "/image/img-add.png");
+                    $('.error-image').html('Image trop grande.');
+                    $('.error-image').removeClass('d-none');
+                    $(input).val(null);
+                }
+            };
+            
+            reader.readAsDataURL(input.files[0]); // convert to base64 string
+        });
     </script>
 {% endblock %}

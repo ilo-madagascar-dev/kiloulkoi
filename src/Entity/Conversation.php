@@ -47,6 +47,16 @@ class Conversation
      */
     private $annonce;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default" : false})
+     */
+    private $lu_1;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default" : false})
+     */
+    private $lu_2;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
@@ -134,6 +144,30 @@ class Conversation
     public function setUser2(?User $user_2): self
     {
         $this->user_2 = $user_2;
+
+        return $this;
+    }
+
+    public function getLu1(): ?bool
+    {
+        return $this->lu_1;
+    }
+
+    public function setLu1(bool $lu_1): self
+    {
+        $this->lu_1 = $lu_1;
+
+        return $this;
+    }
+
+    public function getLu2(): ?bool
+    {
+        return $this->lu_2;
+    }
+
+    public function setLu2(bool $lu_2): self
+    {
+        $this->lu_2 = $lu_2;
 
         return $this;
     }
