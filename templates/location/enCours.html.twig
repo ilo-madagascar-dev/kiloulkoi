@@ -12,18 +12,18 @@
             <p class="text-center text-white"><strong>N'achetez que le nécessaire, pour le reste il y a Kiloukoi!</strong></p>
         </center>
 
-        <div class="row">
+        <div class="row mb-3">
             <div class="offset-lg-2 col-lg-8 offset-md-1 col-md-10">
                 <div class="card shadow mb-3">
                     <div class="card-header d-flex align-items-top">
                         <i class="text-success fa fa-list mr-3" style="font-size: 3rem;"></i>
                         <div class="d-inline">
-                            <h1 class="mb-0" style="font-size: 1.4rem;"><strong>Locations en cours</strong></h1>
+                            <h1 class="mb-0" style="font-size: 1.4rem;"><strong>Mes biens</strong></h1>
                             <small class="text-muted">Liste des demandes de locations de vos annonces.</small>
                         </div>
                     </div>
                     <div class="card-body p-0">
-                        {% if locations|length > 0 %}
+                        {% if mesBiens|length > 0 %}
                             <table class="table">
                                 <thead>
                                     <tr>
@@ -36,7 +36,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                 {% for location in locations %}
+                                 {% for location in mesBiens %}
                                     <tr>
                                         <td>{{ location.annonce.titre }}</td>
                                         <td>{{ location.dateDebut ? location.dateDebut|date('d-m-Y') : '' }}</td>
@@ -45,8 +45,10 @@
                                         <td>{{ location.statutLocation.libelle }}</td>
                                         <td>
                                             {% set slug = location.annonce.slug == '' ? 'annonces_' : location.annonce.slug %}
-                                            <a class="btn btn-primary btn-sm"            href="{{ path('annonces_show', { id: location.annonce.id, slug: slug }) }}"><i class="fa fa-eye"></i></a>
-                                            <a class="btn btn-warning text-white btn-sm" href="{{ path('location_edit', {'id': location.id}) }}"><i class="fa fa-money-check-alt"></i></a>
+                                            <a class="btn btn-primary btn-sm"   href="{{ path('annonces_show', { id: location.annonce.id, slug: slug }) }}"><i class="fa fa-eye"></i></a>
+                                            <button class="btn btn-info btn-sm btn-message" data-toggle="modal" data-target="#message-modal" data-user="{{ location.user.nomComplet }}" data-url="{{ path('conversation_messages_new', { annonce: location.annonce.id, destinataire: location.user.id, expediteur: app.user.id }) }}">
+                                                <i class="fa fa-comments"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                  {% endfor %}
@@ -59,5 +61,96 @@
                 </div>
             </div>
         </div>
+
+        <div class="row">
+            <div class="offset-md-2 col-md-8">
+                <div class="card shadow mb-3">
+                    <div class="card-header d-flex align-items-top">
+                        <i class="text-success fa fa-list mr-3" style="font-size: 3rem;"></i>
+                        <div class="d-inline">
+                            <h1 class="mb-0" style="font-size: 1.4rem;"><strong>Mes emprunts</strong></h1>
+                            <small class="text-muted">Liste des annonces que vous vous êtes abonnées.</small>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        {% if mesEmprunts|length > 0 %}
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                       <th>Annonce</th>
+                                       <th>Début</th>
+                                       <th>Fin</th>
+                                       <th>Propriétaire</th>
+                                       <th>Statut</th>
+                                       <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for location in mesEmprunts %}
+                                    <tr>
+                                       <td>{{ location.annonce.titre }}</td>
+                                       <td>{{ location.dateDebut ? location.dateDebut|date('d-m-Y') : '' }}</td>
+                                       <td>{{ location.dateFin ? location.dateFin|date('d-m-Y') : '' }}</td>
+                                       <td>{{ location.annonce.user.nomComplet }}</td>
+                                       <td>{{ location.statutLocation.libelle }}</td>
+                                       <td>
+                                            {% set slug = location.annonce.slug == '' ? 'annonces_' : location.annonce.slug %}
+                                            <a class="btn btn-primary btn-sm"            href="{{ path('annonces_show', { id: location.annonce.id, slug: slug }) }}"><i class="fa fa-eye"></i></a>
+                                            <a class="btn btn-warning text-white btn-sm" href="{{ path('location_edit', { id: location.id}) }}"><i class="fa fa-money-check-alt"></i></a>
+                                            <button class="btn btn-info btn-sm btn-message" data-toggle="modal" data-target="#message-modal" data-user="{{ location.annonce.user.nomComplet }}" data-url="{{ path('conversation_messages_new', { annonce: location.annonce.id, destinataire: location.annonce.user.id, expediteur: app.user.id }) }}">
+                                                <i class="fa fa-comments"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <div class="mb-0 alert alert-warning text-center d-flex justify-content-center align-items-center" style="height: 120px;"><strong>Aucun résultat.</strong></div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="message-modal" tabindex="-1" role="dialog" aria-labelledby="message-modal-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="message-modal-label">Envoyer un message à <strong id="message-receiver"></strong></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="">
+                        <div class="form-group">
+                            <label for="message">Votre message</label>
+                            <textarea type="message" name="contenue" class="form-control" name="message" id="message" placeholder="Messages...." rows="3"></textarea>
+                        </div>
+                        <button class="btn btn-primary btn-block">Envoyer un message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready( function()
+        {
+            $('.btn-message').click( function()
+            {
+                var userName = $(this).attr('data-user');
+                var url      = $(this).attr('data-url');
+
+                $('#message-receiver').html(userName);
+                $('#message-modal form').attr('action', url);
+            })
+        })
+    </script>
 {% endblock %}

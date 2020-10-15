@@ -54,6 +54,26 @@ label.required::before {
 	cursor: no-drop;
 }
 
+#city-list {
+	list-style: none;
+	border: solid .5px var(--primary);
+	position: absolute;
+	width: 100%;
+	z-index: 12;
+	background:white;
+	padding: 0;
+}
+
+#city-list li:hover {
+	background-color: var(--success);
+	color: white;
+	cursor: pointer;
+}
+
+.form-group {
+	position: relative;
+}
+
 .calendar span {
 	width: 2.6rem;
 	height: 2rem;

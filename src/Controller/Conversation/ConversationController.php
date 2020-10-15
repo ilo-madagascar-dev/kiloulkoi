@@ -104,46 +104,33 @@ class ConversationController extends AbstractController
         $entityManager->flush();
 
         $conversation->getMessages()->add($message);
+        $serialized = $serializer->serialize( [
+            'user' => [
+                'id'       => $expediteur->getId(),
+                'avatar'   =>  '/uploads/avatar/' . $expediteur->getAvatar(),
+                'fullName' => $expediteur->getNomComplet()
+            ],
+            'content' => $message->getContenue(),
+            'date'    => $message->getDate()->format('d/m/Y | H:m'),
+            'conversation' => $conversation->getId(),
+            'path'    => $this->generateUrl('conversation_show', ['id' => $conversation->getId()] ),
+            'unread'  => $this->conversationRepo->countUnreadBy($destinataire)
+        ], 'json');
 
-        $update = new Update(
+        $publisher( new Update(
             [ "http://127.0.0.1:8080/message/" . $destinataire->getId() ],
-            $serializer->serialize( [
-                'user' => [
-                    'id'       => $expediteur->getId(),
-                    'avatar'   =>  '/uploads/avatar/' . $expediteur->getAvatar(),
-                    'fullName' => $expediteur->getNomComplet()
-                ],
-                'content' => $message->getContenue(),
-                'date'    => $message->getDate()->format('d/m/Y | H:m'),
-                'conversation' => $conversation->getId(),
-                'path'    => $this->generateUrl('conversation_show', ['id' => $conversation->getId()] ),
-                'unread'  => $this->conversationRepo->countUnreadBy($destinataire)
-            ], 'json'),
+            $serialized,
             true,
-        );
-        $publisher($update);
+        ));
 
         if ( $request->isXmlHttpRequest() ) 
         {
-            return new Response($serializer->serialize( [
-                'user' => [
-                        'id'       => $expediteur->getId(),
-                        'avatar'   =>  '/uploads/avatar/' . $expediteur->getAvatar(),
-                        'fullName' => $expediteur->getNomComplet()
-                    ],
-                    'content' => $message->getContenue(),
-                    'date'    => $message->getDate()->format('d/m/Y | H:m'),
-                    'conversation' => $conversation->getId(),
-                    'path'    => $this->generateUrl('conversation_show', ['id' => $conversation->getId()] ),
-                    'unread'  => $this->conversationRepo->countUnreadBy($destinataire)
-                ], 'json')
-            );
+            return new Response( $serialized );
         }
         else
         {
             return $this->redirectToRoute('conversation_show', ['id' => $conversation->getId()]);
         }
-        // return $this->showConversation($conversation);
     }
 
     /**

@@ -59,7 +59,7 @@ class LocationRepository extends ServiceEntityRepository
                     ->getResult();
     }
 
-    public function findLocationsEnCours(int $user_id)
+    public function findMesBiens(int $user_id)
     {
         return $this->getAllQuery()
                     ->where('s.id = 2') // En cours
@@ -69,7 +69,7 @@ class LocationRepository extends ServiceEntityRepository
                     ->getResult();
     }
 
-    public function findAbonnements(int $user_id)
+    public function findMesEmprunts(int $user_id)
     {
         return $this->getAllQuery()
                     ->where('lu.id = :user_id')

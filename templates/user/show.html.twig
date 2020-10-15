@@ -37,7 +37,7 @@
                                         </tr>
                                         <tr>
                                             <td><strong>Ville :</strong></td>
-                                            <td>{{ app.user.ville }} - {{ app.user.rue }}  ({{ app.user.cp }})</td>
+                                            <td>{{ app.user.ville }} - ({{ app.user.cp }})</td>
                                         </tr>
                                     {% endif %}
                                     
@@ -86,7 +86,16 @@
                                 <a href="{{ path('mes_annonces_index') }}" class="btn btn-block h-100 btn-outline-primary">Favoris</a>
                             </div>
                             <div class="col-lg-3 col-md-6 col-12 mb-3">
-                                <a href="{{ path('location_abonnement') }}" class="btn btn-block h-100 btn-outline-primary">Abonnements</a>
+                                <a href="{{ path('mes_annonces_index') }}" class="btn btn-block h-100 btn-outline-primary">Abonnements</a>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="offset-lg-3 col-lg-3 col-md-6 col-12 mb-3">
+                                <a href="{{ path('compte_portefeuille') }}" class="btn btn-block h-100 btn-outline-primary">Mon portefeuille</a>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-12 mb-3">
+                                <a href="{{ path('compte_facture') }}" class="btn btn-block h-100 btn-outline-primary">Mes Factures</a>
                             </div>
                         </div>
                     </div>

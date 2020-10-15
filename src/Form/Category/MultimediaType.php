@@ -5,6 +5,7 @@ namespace App\Form\Category;
 use App\Entity\AnnonceMultimedia;
 use App\Entity\Annonces;
 use App\Form\AnnoncesType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -16,9 +17,9 @@ class MultimediaType extends AnnoncesType
         parent::buildForm($builder, $options);
 
         $builder
-            ->add('systeme')
-            ->add('marque')
-            ->add('couleur')
+            ->add('systeme', TextType::class)
+            ->add('marque', TextType::class)
+            ->add('couleur', TextType::class)
         ;
     }
 

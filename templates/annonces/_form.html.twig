@@ -25,9 +25,26 @@
         </div>
 
         <div class="tab-pane fade show active" id="pills-detail" role="tabpanel" aria-labelledby="pills-detail-tab">
-            {{ form_rest(form) }}
-            {{ form_row(form.prix) }}
+    
+            {{ form_row(form.titre) }}
+
+            {# render the the rest, except submit button #}
+            {% for child in form %}
+                {% if child.vars.name not in ['prix', 'unite', 'description'] %}
+                    {{ form_row(child) }}
+                {% endif %}
+            {% endfor %}
+            
+            <div class="row">
+                <div class="col-8">
+                    {{ form_row(form.prix) }}
+                </div>
+                <div class="col-4">
+                    {{ form_row(form.unite) }}
+                </div>
+            </div>
             {{ form_row(form.description) }}
+
         </div>
     </div>
 

@@ -89,7 +89,14 @@ class AuthController extends AbstractController
             }
             else
             {
-                $user->setAvatar('default.png');
+                if( $user->getGenre() == 1 )
+                {
+                    $user->setAvatar('default.png');
+                }
+                else
+                {
+                    $user->setAvatar('default-women.png');
+                }
             }
 
             $user->setDateCreation();

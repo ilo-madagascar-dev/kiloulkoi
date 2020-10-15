@@ -141,8 +141,8 @@
             }
         })
 
-        $(`<ul id="city-list" class="d-none"></ul>`).insertAfter( $('#registration_city') );
-        $('#registration_city').keyup(function(event)
+        $(`<ul id="city-list" class="d-none"></ul>`).insertAfter( $('#city') );
+        $('#city').keyup(function(event)
         {
             var url = "https://datanova.legroupe.laposte.fr/api/records/1.0/search/?dataset=laposte_hexasmal&facet=nom_de_la_commune&facet=code_postal&q=" + $(this).val().trim();
             $.get(url, function(data)
@@ -157,12 +157,12 @@
             })
         });
 
-        $('#registration_city').focusin( function()
+        $('#city').focusin( function()
         {
             $('#city-list').removeClass('d-none');
         })
 
-        $('#registration_city').focusout( function()
+        $('#city').focusout( function()
         {
             setTimeout( function()
             {
@@ -172,12 +172,12 @@
 
         $(document).on('click', '#city-list li', function()
         {
-            $('#registration_cp').removeClass('is-invalid');
+            $('#code_postal').removeClass('is-invalid');
             var city = $(this).attr('data-city');
             var cp   = $(this).attr('data-cp');
-            $('#registration_city').val(city);
-            $('#registration_cp').val(cp);
-            $('#registration_cp').trigger("change");
+            $('#city').val(city);
+            $('#code_postal').val(cp);
+            $('#code_postal').trigger("change");
         })
 
         $(document).on('change', '.input-image', function(e) 

@@ -114,9 +114,9 @@ class User implements UserInterface
     private $telephone;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="smallint")
      */
-    private $rue;
+    private $genre;
 
     public function __construct()
     {
@@ -435,14 +435,14 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getRue(): ?string
+    public function getGenre(): ?int
     {
-        return $this->rue;
+        return $this->genre;
     }
 
-    public function setRue(string $rue): self
+    public function setGenre(int $genre): self
     {
-        $this->rue = $rue;
+        $this->genre = $genre;
 
         return $this;
     }

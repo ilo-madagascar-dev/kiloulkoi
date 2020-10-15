@@ -2,30 +2,6 @@
 
 {% block title %}Inscription{% endblock %}
 
-{% block stylesheets %}
-    <style>
-        #city-list {
-            list-style: none;
-            border: solid .5px var(--primary);
-            position: absolute;
-            width: 100%;
-            z-index: 12;
-            background:white;
-            padding: 0;
-        }
-
-        #city-list li:hover {
-            background-color: var(--success);
-            color: white;
-            cursor: pointer;
-        }
-
-        .form-group {
-            position: relative;
-        }
-    </style>
-{% endblock %}
-
 {% block body %}
 <div class="container-fluid">
     <div id="bg" style="position:absolute;z-index:-1;left:0;height:375px;"></div>
@@ -41,6 +17,15 @@
                 <div class="card-body">
                     {{ form_start(registrationForm, {'attr': {'id': 'registration_form'}} ) }}
                         {{ form_row(registrationForm.email) }}
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{ form_row(registrationForm.password.first , { 'id': 'registration_form_password_first'} )  }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(registrationForm.password.second, { 'id': 'registration_form_password_second'} ) }}
+                            </div>
+                        </div>
 
                         {% if registrationForm.nom is defined %}
                             <div class="row">
@@ -66,14 +51,12 @@
 
                         <div class="row">
                             <div class="col-md-6">
-                                {{ form_row(registrationForm.password.first , { 'id': 'registration_form_password_first'} )  }}
+                                {{ form_row(registrationForm.pseudo) }}
                             </div>
                             <div class="col-md-6">
-                                {{ form_row(registrationForm.password.second, { 'id': 'registration_form_password_second'} ) }}
+                                {{ form_row(registrationForm.genre) }}
                             </div>
                         </div>
-
-                        {{ form_row(registrationForm.pseudo) }}
 
                         <div class="row">
                             <div class="col-md-12">
@@ -82,16 +65,14 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-4">
-                                {{ form_row(registrationForm.ville, { 'id': 'registration_city'}) }}
+                            <div class="col-md-6">
+                                {{ form_row(registrationForm.ville, { 'id': 'city'}) }}
                             </div>
-                            <div class="col-md-4">
-                                {{ form_row(registrationForm.rue) }}
-                            </div>
-                            <div class="col-md-4">
-                                {{ form_row(registrationForm.cp, { 'id': 'registration_cp'} ) }}
+                            <div class="col-md-6">
+                                {{ form_row(registrationForm.cp, { 'id': 'code_postal'} ) }}
                             </div>
                         </div>
+                    
 
                         {{ form_row(registrationForm.adresse, { 'id': 'registration_adresse'}) }}
 
@@ -137,7 +118,7 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
-        $('#registration_cp').attr('disabled', 'disabled');
+        $('#code_postal').attr('disabled', 'disabled');
 
         var validations = [
             {
@@ -246,14 +227,14 @@
 
                 if( !error )
                 {
-                    $('#registration_cp').removeAttr('disabled');
+                    $('#code_postal').removeAttr('disabled');
                     $('#registration_form').submit();
                 }
             }
         })
 
-        $(`<ul id="city-list" class="d-none"></ul>`).insertAfter( $('#registration_city') );
-        $('#registration_city').keyup(function(event)
+        $(`<ul id="city-list" class="d-none"></ul>`).insertAfter( $('#city') );
+        $('#city').keyup(function(event)
         {
             var url = "https://datanova.legroupe.laposte.fr/api/records/1.0/search/?dataset=laposte_hexasmal&facet=nom_de_la_commune&facet=code_postal&q=" + $(this).val().trim();
             $.get(url, function(data)
@@ -268,12 +249,12 @@
             })
         });
 
-        $('#registration_city').focusin( function()
+        $('#city').focusin( function()
         {
             $('#city-list').removeClass('d-none');
         })
 
-        $('#registration_city').focusout( function()
+        $('#city').focusout( function()
         {
             setTimeout( function()
             {
@@ -283,12 +264,12 @@
 
         $(document).on('click', '#city-list li', function()
         {
-            $('#registration_cp').removeClass('is-invalid');
+            $('#code_postal').removeClass('is-invalid');
             var city = $(this).attr('data-city');
             var cp   = $(this).attr('data-cp');
-            $('#registration_city').val(city);
-            $('#registration_cp').val(cp);
-            $('#registration_cp').trigger("change");
+            $('#city').val(city);
+            $('#code_postal').val(cp);
+            $('#code_postal').trigger("change");
         })
 
 

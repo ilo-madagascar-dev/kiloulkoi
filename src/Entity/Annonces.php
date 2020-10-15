@@ -126,6 +126,11 @@ class Annonces
      */
     private $locations;
 
+    /**
+     * @ORM\Column(type="smallint")
+     */
+    private $unite;
+
     public function __construct()
     {
         $this->photo = new ArrayCollection();
@@ -404,6 +409,29 @@ class Annonces
                 $location->setAnnonce(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUnite(): ?int
+    {
+        return $this->unite;
+    }
+
+    public function getUniteLibelle(): ?string
+    {
+        $libelle = [
+            'par mois',
+            'par jours',
+            'par heure',
+        ];
+
+        return $libelle[$this->unite] ? $libelle[$this->unite] : $libelle[0];
+    }
+
+    public function setUnite(int $unite): self
+    {
+        $this->unite = $unite;
 
         return $this;
     }

@@ -12,6 +12,7 @@ use App\Entity\Categories;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Validator\Constraints\File;
@@ -46,6 +47,13 @@ class AnnoncesType extends AbstractType
                     'by_reference' => false,
                 ])
                 ->add('prix', IntegerType::class)
+                ->add('unite', ChoiceType::class, [
+                    'choices'  => [
+                        'Par mois' => 1,
+                        'Par jours' => 2,
+                        'Par heure' => 3,
+                    ],
+                ])
                 ->add('description', TextareaType::class)
                 // ->add('location', LocationType::class, array('required' => false))
                 // ->add('categorie', EntityType::class, [

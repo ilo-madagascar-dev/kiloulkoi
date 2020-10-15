@@ -1,0 +1,33 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Portefeuille{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid" style="max-width: 1500px;">
+        <div id="bg" style="position:absolute;z-index:-1;left:0;height:375px;"></div>
+        
+        <center class="py-4">
+            <img src="{{ asset('image/logo.png') }}" class="mb-3" style="height: 120px;width: auto;" >
+            <p class="text-center text-white"><strong>N'achetez que le nécessaire, pour le reste il y a Kiloukoi!</strong></p>
+        </center>
+
+        <div class="row mb-3">
+            <div class="offset-lg-2 col-lg-8 offset-md-1 col-md-10">
+                <div class="card shadow mb-3">
+                    <div class="card-header d-flex align-items-top">
+                        <i class="text-success fa fa-wallet mr-3" style="font-size: 3rem;"></i>
+                        <div class="d-inline">
+                            <h1 class="mb-0" style="font-size: 1.4rem;"><strong>Mon portefeuille</strong></h1>
+                            <small class="text-muted">Liste des factures de tout les mois.</small>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+						<div class="mb-0 alert alert-warning text-center d-flex justify-content-center align-items-center" style="height: 120px;"><strong>Aucun résultat.</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

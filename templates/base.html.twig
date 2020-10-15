@@ -10,6 +10,8 @@
         <link href="{{ asset('fontawesome/css/all.min.css') }}" rel="stylesheet"/>
         <link href="{{ asset('css/style.css') }}" rel="stylesheet"/>
 
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+        
         {% block stylesheets %}{% endblock %}
     </head>
 
@@ -92,7 +94,12 @@
                                 <a class="dropdown-item" href="{{ path('mes_annonces_index') }}">Mes annonces</a>
                                 <a class="dropdown-item" href="{{ path('location_en_cours') }}">Locations en cours</a>
                                 <a class="dropdown-item" href="{{ path('user_profil') }}">Favoris</a>
-                                <a class="dropdown-item" href="{{ path('location_abonnement') }}">Abonnements</a>
+                                
+                                <div class="dropdown-divider"></div>
+
+                                <a class="dropdown-item" href="{{ path('compte_abonnement') }}">Abonnements</a>
+                                <a class="dropdown-item" href="{{ path('compte_facture') }}">Mes Factures </a>
+                                <a class="dropdown-item" href="{{ path('compte_portefeuille') }}">Mon portefeuille</a>
 
                                 <div class="dropdown-divider"></div>
 
@@ -262,20 +269,23 @@
                 </script>
             {% endif %}
 
-            <script>
-                $(document).ready( function()
-                {
-                    $.get("{{ path('conversation_unread') }}", function(data)
+            {% if app.user %}
+                <script>
+                    $(document).ready( function()
                     {
-                        var message = JSON.parse(data);
-                        if( parseInt(message.unread) > 0 )
+                        $.get("{{ path('conversation_unread') }}", function(data)
                         {
-                            $('.messages .unread').html(message.unread);
-                            $('.messages .unread').removeClass('d-none');
-                        }
+                            var message = JSON.parse(data);
+                            if( parseInt(message.unread) > 0 )
+                            {
+                                $('.messages .unread').html(message.unread);
+                                $('.messages .unread').removeClass('d-none');
+                            }
+                        })
                     });
-                })
-            </script>
+                </script>
+            {% endif %}
+
         {% endblock %}
     </body>
 </html>

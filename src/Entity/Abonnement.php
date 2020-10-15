@@ -39,6 +39,12 @@ class Abonnement
      */
     private $factures;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=TypeAbonnement::class, inversedBy="abonnements")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $type;
+
     public function __construct()
     {
         $this->factures = new ArrayCollection();
@@ -107,6 +113,18 @@ class Abonnement
         if ($this->factures->contains($facture)) {
             $this->factures->removeElement($facture);
         }
+
+        return $this;
+    }
+
+    public function getType(): ?TypeAbonnement
+    {
+        return $this->type;
+    }
+
+    public function setType(?TypeAbonnement $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

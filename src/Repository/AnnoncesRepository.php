@@ -140,7 +140,6 @@ class AnnoncesRepository extends ServiceEntityRepository
         if( !empty($criteria['categorie']) )
         {
             $query->andWhere('c.className = :class_name')->setParameter('class_name', $criteria['categorie']);
-
         }
 
         if( !empty($criteria['titre']) )
@@ -148,14 +147,13 @@ class AnnoncesRepository extends ServiceEntityRepository
             $query->andWhere('a.titre LIKE :titre')->setParameter('titre', '%' . $criteria['titre'] . '%');
         }
 
-        if( !empty($criteria['min_prix']) )
+        if( !empty($criteria['prix']) )
         {
-            $query->andWhere('a.prix >= :min_prix')->setParameter('min_prix', $criteria['min_prix']);
-        }
+            $min_prix = floatval( explode('-', $criteria['prix'])[0] );
+            $max_prix = floatval( explode('-', $criteria['prix'])[1] );
 
-        if( !empty($criteria['max_prix']) )
-        {
-            $query->andWhere('a.prix <= :max_prix')->setParameter('max_prix', $criteria['max_prix']);
+            $query->andWhere('a.prix >= :min_prix')->setParameter('min_prix', $min_prix);
+            $query->andWhere('a.prix <= :max_prix')->setParameter('max_prix', $max_prix);
         }
 
         return $query->getQuery();

@@ -7,6 +7,7 @@ use App\Entity\Propriete;
 use App\Entity\Energie;
 use App\Entity\Taille;
 use App\Entity\StatutLocation;
+use App\Entity\TypeAbonnement;
 use App\Entity\TypeLocation;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -297,6 +298,15 @@ class AppFixtures implements FixtureInterface
             $typeLocation = new TypeLocation();
             $typeLocation->setLibelle($typeLocations[$i]);
             $manager->persist($typeLocation);
+        }
+
+        // Type abonnement
+        $typeAbonnements = ["Free", "Professionnel", "Premium"];
+        for ($i = 0; $i < count($typeAbonnements); $i++) 
+        {
+            $type = new TypeAbonnement();
+            $type->setLibelle($typeAbonnements[$i]);
+            $manager->persist($type);
         }
 
         $manager->flush();

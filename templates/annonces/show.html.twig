@@ -21,21 +21,11 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            {% if app.user %}
-                                {% if app.user.id == annonce.user.id %}
-                                    <div class="text-center">
-                                        <a href="{{ path('annonces_edit', {'id': annonce.id}) }}" class="btn btn-primary" >Modifier</a>
-                                        {{ include('annonces/_delete_form.html.twig', {style: 'show'} ) }}
-                                    </div>
-                                {% else %}
-                                    <form method="POST" action="{{ path('conversation_messages_new', { annonce: annonce.id, destinataire: annonce.user.id, expediteur: app.user.id }) }}">
-                                        <div class="form-group">
-                                            <label for="message">Votre message</label>
-                                            <textarea type="message" name="contenue" class="form-control" name="message" id="message" placeholder="Messages...." rows="3"></textarea>
-                                        </div>
-                                        <button class="btn btn-primary btn-block">Envoyer un message</button>
-                                    </form>
-                                {% endif %}
+                            {% if app.user and app.user.id == annonce.user.id %}
+                                <div class="text-center">
+                                    <a href="{{ path('annonces_edit', {'id': annonce.id}) }}" class="btn btn-primary" >Modifier</a>
+                                    {{ include('annonces/_delete_form.html.twig', {style: 'show'} ) }}
+                                </div>
                             {% else %}
                                 <div class="row">
                                     <div class="col-md-12 mb-3">
