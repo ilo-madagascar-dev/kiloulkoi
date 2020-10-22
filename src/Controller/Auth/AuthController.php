@@ -91,7 +91,7 @@ class AuthController extends AbstractController
             {
                 if( $user->getGenre() == 1 )
                 {
-                    $user->setAvatar('default.png');
+                    $user->setAvatar('default-men.png');
                 }
                 else
                 {

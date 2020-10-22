@@ -21,11 +21,6 @@ class AnnonceBricoJardin extends Annonces
      */
     private $modele;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Energie::class)
-     */
-    private $energie;
-
     public function getMarque(): ?string
     {
         return $this->marque;
@@ -46,18 +41,6 @@ class AnnonceBricoJardin extends Annonces
     public function setModele(?string $modele): self
     {
         $this->modele = $modele;
-
-        return $this;
-    }
-
-    public function getEnergie(): ?Energie
-    {
-        return $this->energie;
-    }
-
-    public function setEnergie(?Energie $energie): self
-    {
-        $this->energie = $energie;
 
         return $this;
     }

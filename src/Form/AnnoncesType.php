@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Entity\Categories;
+use App\Entity\TypeLocation;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -47,12 +48,24 @@ class AnnoncesType extends AbstractType
                     'by_reference' => false,
                 ])
                 ->add('prix', IntegerType::class)
-                ->add('unite', ChoiceType::class, [
-                    'choices'  => [
-                        'Par mois' => 1,
-                        'Par jours' => 2,
-                        'Par heure' => 3,
-                    ],
+                ->add('type', EntityType::class, [
+                    'label' => 'Location par ',
+                    'class' => TypeLocation::class,
+                    'query_builder' => function (EntityRepository $er) use($options)
+                    {
+                        if( $options['classe'] == "Service" )
+                        {
+                            return $er->createQueryBuilder('type')
+                                        ->orderBy('type.id');
+                        }
+                        else
+                        {
+                            return $er->createQueryBuilder('type')
+                                        ->where('type.id > 1')
+                                        ->orderBy('type.id');
+                        }
+                    },
+                    'choice_label' => 'libelle'
                 ])
                 ->add('description', TextareaType::class)
                 // ->add('location', LocationType::class, array('required' => false))

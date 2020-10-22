@@ -5,7 +5,8 @@ namespace App\Repository;
 use App\Entity\Annonces;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\VarExporter\Internal\Hydrator;
+use Symfony\Component\Security\Core\Security;
+use Doctrine\ORM\Query\Expr;
 
 /**
  * @method Annonces|null find($id, $lockMode = null, $lockVersion = null)
@@ -15,13 +16,18 @@ use Symfony\Component\VarExporter\Internal\Hydrator;
  */
 class AnnoncesRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+
+    protected $security;
+
+    public function __construct(ManagerRegistry $registry, Security $security)
     {
         parent::__construct($registry, Annonces::class);
+        $this->security = $security;
     }
 
     private function getAllQuery()
     {
+        $user = $this->security->getUser();
         $query =  $this->createQueryBuilder('a')
                         ->select('a', 'u', 'c', 'p')
                         ->join('a.user', 'u')
@@ -29,6 +35,13 @@ class AnnoncesRepository extends ServiceEntityRepository
                         ->leftJoin('a.photo', 'p')
                         ->orderBy('a.id', 'DESC')
                         ->orderBy('p.id', 'ASC');
+
+        if( $user )
+        {
+            $query = $query->leftJoin('a.user_favoris', 'user_favoris', Expr\Join::WITH, 'user_favoris.id = :user_favoris_id')
+                            ->setParameter('user_favoris_id', $user->getId() );
+        }
+
         return $query;
     }
 
@@ -49,6 +62,39 @@ class AnnoncesRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+    /**
+     * favoris des utilisateurs
+     * 
+     * @return Annonces[] Returns an array of Annonces objects
+     */
+
+    public function findFavoris($user_id)
+    {
+        $query = $this->getAllQuery()
+                        ->join('a.user_favoris', 'user')
+                        ->where('user.id = :user_id')
+                        ->setParameter('user_id', $user_id );
+
+        return $query->getQuery();
+    }
+
+    /**
+     * 
+     * @return int
+     */
+
+    public function checkFavoris($user_id, $annonce_id)
+    {
+        return $this->createQueryBuilder('a')
+                    ->select('a.id')
+                    ->select('count(a.id)')
+                    ->join('a.user_favoris', 'user')
+                    ->where('user.id = :user_id and a.id = :annonce_id')
+                    ->setParameter('user_id', $user_id)
+                    ->setParameter('annonce_id', $annonce_id)
+                    ->getQuery()
+                    ->getSingleScalarResult();
     }
 
     /**

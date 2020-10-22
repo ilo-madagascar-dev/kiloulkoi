@@ -32,7 +32,7 @@
 						</h3>
 
 						<div class="details" style="font-size: .8rem;">
-							<p class="card-text mb-0"><strong class="text-success">Prix : </strong>{{ annonce.prix }} Euro {{ annonce.uniteLibelle }}</p>
+							<p class="card-text mb-0"><strong class="text-success">Prix : </strong>{{ annonce.prix }}€ /{{ annonce.type ? annonce.type.libelle : "mois" }}</p>
 							<p class="card-text mb-0"><strong class="text-success">Catégorie : </strong>{{ annonce.categorie.libelle }} {% if annonce.sousCategorie is not null %}/ {{ annonce.sousCategorie.libelle }}{% endif %}</p>
 						</div>
 					</div>
@@ -45,9 +45,19 @@
 									{{ include('annonces/_delete_form.html.twig') }}
 								</div>
 							{% else %}
-								<div class="col text-left ml-3 py-2">
-									<!-- <span class="mr-3"><i class="fa fa-envelope"></i> Contact</span> -->
-									<span><i class="fa fa-eye"  ></i> {{ annonce.visite | number_format }}</span>
+								<div class="col text-left ml-3 py-2" title="Favoris">
+									{% if app.user %}
+										{% if annonce.userFavoris|length == 0 %}
+											<span class="btn-heart" data="{{ annonce.id }}">
+												<i class="far fa-heart mr-2"></i>
+											</span>
+										{% else %}
+											<span class="btn-heart" data="{{ annonce.id }}">
+												<i class="fa fa-heart mr-2 text-danger"></i>
+											</span>
+										{% endif %}
+									{% endif %}
+									<span><i class="fa fa-eye"></i> {{ annonce.visite | number_format }}</span>
 								</div>
 							{% endif %}
 

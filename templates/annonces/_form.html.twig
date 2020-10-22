@@ -30,7 +30,7 @@
 
             {# render the the rest, except submit button #}
             {% for child in form %}
-                {% if child.vars.name not in ['prix', 'unite', 'description'] %}
+                {% if child.vars.name not in ['prix', 'type', 'description'] %}
                     {{ form_row(child) }}
                 {% endif %}
             {% endfor %}
@@ -40,7 +40,7 @@
                     {{ form_row(form.prix) }}
                 </div>
                 <div class="col-4">
-                    {{ form_row(form.unite) }}
+                    {{ form_row(form.type) }}
                 </div>
             </div>
             {{ form_row(form.description) }}

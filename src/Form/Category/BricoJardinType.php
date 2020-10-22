@@ -21,15 +21,6 @@ class BricoJardinType extends AnnoncesType
         $builder
             ->add('marque')
             ->add('modele')
-            ->add('energie', EntityType::class, [
-                'class' => Energie::class,
-                'query_builder' => function (EntityRepository $er) 
-                {
-                    return $er->createQueryBuilder('p')
-                            ->orderBy('p.id');
-                },
-                'choice_label' => 'valeur'
-            ])
         ;
     }
 

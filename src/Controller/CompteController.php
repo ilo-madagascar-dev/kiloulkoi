@@ -16,7 +16,9 @@ class CompteController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('compte/facture.html.twig');
+        return $this->render('compte/facture.html.twig', [
+            'months' => $month = array("janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre")
+        ]);
     }
 
     /**

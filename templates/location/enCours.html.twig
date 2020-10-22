@@ -18,7 +18,7 @@
                     <div class="card-header d-flex align-items-top">
                         <i class="text-success fa fa-list mr-3" style="font-size: 3rem;"></i>
                         <div class="d-inline">
-                            <h1 class="mb-0" style="font-size: 1.4rem;"><strong>Mes biens</strong></h1>
+                            <h1 class="mb-0" style="font-size: 1.4rem;"><strong>Mes Biens</strong></h1>
                             <small class="text-muted">Liste des demandes de locations de vos annonces.</small>
                         </div>
                     </div>
@@ -38,17 +38,29 @@
                                 <tbody>
                                  {% for location in mesBiens %}
                                     <tr>
-                                        <td>{{ location.annonce.titre }}</td>
-                                        <td>{{ location.dateDebut ? location.dateDebut|date('d-m-Y') : '' }}</td>
-                                        <td>{{ location.dateFin ? location.dateFin|date('d-m-Y') : '' }}</td>
+                                        <td>
+                                            {% set slug = location.annonce.slug == '' ? 'annonces_' : location.annonce.slug %}
+                                            <a href="{{ path('annonces_show', { id: location.annonce.id, slug: slug }) }}">{{ location.annonce.titre }}</a>
+                                        </td>
+                                        <td>{{ location.dateDebut ? location.dateDebut|date('d/m/Y') : '' }}</td>
+                                        <td>{{ location.dateFin ? location.dateFin|date('d/m/Y') : '' }}</td>
                                         <td>{{ location.user.nomComplet }}</td>
                                         <td>{{ location.statutLocation.libelle }}</td>
                                         <td>
-                                            {% set slug = location.annonce.slug == '' ? 'annonces_' : location.annonce.slug %}
-                                            <a class="btn btn-primary btn-sm"   href="{{ path('annonces_show', { id: location.annonce.id, slug: slug }) }}"><i class="fa fa-eye"></i></a>
-                                            <button class="btn btn-info btn-sm btn-message" data-toggle="modal" data-target="#message-modal" data-user="{{ location.user.nomComplet }}" data-url="{{ path('conversation_messages_new', { annonce: location.annonce.id, destinataire: location.user.id, expediteur: app.user.id }) }}">
-                                                <i class="fa fa-comments"></i>
-                                            </button>
+                                            {# interrompu #}
+                                            {% if location.statutLocation.id != 4 %} 
+                                                <a href="{{ path('location_accept', {id: location.id, etat: 'accepter'}) }}" class="btn btn-sm btn-success" title="Accepter">
+                                                    <i class="fa fa-check"></i>
+                                                </a>
+                                                <a href="{{ path('location_accept', {id: location.id, etat: 'refuser'}) }}" class="btn btn-sm btn-danger" title="Réfuser">
+                                                    <i class="fa fa-times-circle"></i>
+                                                </a>
+                                                {% if location.statutLocation.id == 2 %}
+                                                    <button class="btn btn-info btn-sm btn-message" title="Envoyer un message" data-toggle="modal" data-target="#message-modal" data-user="{{ location.user.nomComplet }}" data-url="{{ path('conversation_messages_new', { annonce: location.annonce.id, destinataire: location.user.id, expediteur: app.user.id }) }}">
+                                                        <i class="fa fa-comments"></i>
+                                                    </button>
+                                                {% endif %}
+                                            {% endif %}
                                         </td>
                                     </tr>
                                  {% endfor %}
@@ -68,7 +80,7 @@
                     <div class="card-header d-flex align-items-top">
                         <i class="text-success fa fa-list mr-3" style="font-size: 3rem;"></i>
                         <div class="d-inline">
-                            <h1 class="mb-0" style="font-size: 1.4rem;"><strong>Mes emprunts</strong></h1>
+                            <h1 class="mb-0" style="font-size: 1.4rem;"><strong>Mes Emprunts</strong></h1>
                             <small class="text-muted">Liste des annonces que vous vous êtes abonnées.</small>
                         </div>
                     </div>
@@ -88,18 +100,25 @@
                                 <tbody>
                                     {% for location in mesEmprunts %}
                                     <tr>
-                                       <td>{{ location.annonce.titre }}</td>
-                                       <td>{{ location.dateDebut ? location.dateDebut|date('d-m-Y') : '' }}</td>
-                                       <td>{{ location.dateFin ? location.dateFin|date('d-m-Y') : '' }}</td>
+                                        <td>
+                                            {% set slug = location.annonce.slug == '' ? 'annonces_' : location.annonce.slug %}
+                                            <a href="{{ path('annonces_show', { id: location.annonce.id, slug: slug }) }}">{{ location.annonce.titre }}</a>
+                                        </td>
+                                       <td>{{ location.dateDebut ? location.dateDebut|date('d/m/Y') : '' }}</td>
+                                       <td>{{ location.dateFin ? location.dateFin|date('d/m/Y') : '' }}</td>
                                        <td>{{ location.annonce.user.nomComplet }}</td>
                                        <td>{{ location.statutLocation.libelle }}</td>
                                        <td>
-                                            {% set slug = location.annonce.slug == '' ? 'annonces_' : location.annonce.slug %}
-                                            <a class="btn btn-primary btn-sm"            href="{{ path('annonces_show', { id: location.annonce.id, slug: slug }) }}"><i class="fa fa-eye"></i></a>
-                                            <a class="btn btn-warning text-white btn-sm" href="{{ path('location_edit', { id: location.id}) }}"><i class="fa fa-money-check-alt"></i></a>
-                                            <button class="btn btn-info btn-sm btn-message" data-toggle="modal" data-target="#message-modal" data-user="{{ location.annonce.user.nomComplet }}" data-url="{{ path('conversation_messages_new', { annonce: location.annonce.id, destinataire: location.annonce.user.id, expediteur: app.user.id }) }}">
-                                                <i class="fa fa-comments"></i>
-                                            </button>
+                                            {% if location.dateReservation|date_modify("+24 hour")|date < date() %}
+                                                <a class="btn btn-sm btn-danger" href="{{ path('location_delete', { id: location.id}) }}" title="Annuler">
+                                                    <i class="fa fa-times-circle"></i>
+                                                </a>
+                                            {% endif %}
+                                            {% if location.statutLocation.id == 2 %}
+                                                <button class="btn btn-info btn-sm btn-message" data-toggle="modal" data-target="#message-modal" data-user="{{ location.annonce.user.nomComplet }}" data-url="{{ path('conversation_messages_new', { annonce: location.annonce.id, destinataire: location.annonce.user.id, expediteur: app.user.id }) }}">
+                                                    <i class="fa fa-comments"></i>
+                                                </button>
+                                            {% endif %}
                                         </td>
                                     </tr>
                                     {% endfor %}

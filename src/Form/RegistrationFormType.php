@@ -34,7 +34,7 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('telephone', TextType::class, ['label' => 'Téléphone'])
             ->add('ville', TextType::class)
-            ->add('cp', TextType::class, ['label' => 'Code postale'])
+            ->add('cp', TextType::class, ['label' => 'Code postal'])
             ->add('adresse', TextType::class)
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,

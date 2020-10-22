@@ -127,9 +127,14 @@ class Annonces
     private $locations;
 
     /**
-     * @ORM\Column(type="smallint")
+     * @ORM\ManyToOne(targetEntity=TypeLocation::class)
      */
-    private $unite;
+    private $type;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="favoris")
+     */
+    private $user_favoris;
 
     public function __construct()
     {
@@ -137,6 +142,7 @@ class Annonces
         $this->dateCreation = new \Datetime();
         $this->conversations = new ArrayCollection();
         $this->locations = new ArrayCollection();
+        $this->user_favoris = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -302,18 +308,6 @@ class Annonces
         return $this;
     }
 
-    // public function getType(): ?string
-    // {
-    //     return $this->type;
-    // }
-
-    // public function setType(string $type): self
-    // {
-    //     $this->type = $type;
-
-    //     return $this;
-    // }
-
     public function getVisite(): ?int
     {
         return $this->visite;
@@ -413,27 +407,43 @@ class Annonces
         return $this;
     }
 
-    public function getUnite(): ?int
+    public function getType(): ?TypeLocation
     {
-        return $this->unite;
+        return $this->type;
     }
 
-    public function getUniteLibelle(): ?string
+    public function setType(?TypeLocation $type): self
     {
-        $libelle = [
-            'par mois',
-            'par jours',
-            'par heure',
-        ];
-
-        return $libelle[$this->unite] ? $libelle[$this->unite] : $libelle[0];
-    }
-
-    public function setUnite(int $unite): self
-    {
-        $this->unite = $unite;
+        $this->type = $type;
 
         return $this;
     }
 
+    /**
+     * @return Collection|User[]
+     */
+    public function getUserFavoris(): Collection
+    {
+        return $this->user_favoris;
+    }
+
+    public function addUserFavori(User $userFavori): self
+    {
+        if (!$this->user_favoris->contains($userFavori)) {
+            $this->user_favoris[] = $userFavori;
+            $userFavori->addFavori($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserFavori(User $userFavori): self
+    {
+        if ($this->user_favoris->contains($userFavori)) {
+            $this->user_favoris->removeElement($userFavori);
+            $userFavori->removeFavori($this);
+        }
+
+        return $this;
+    }
 }

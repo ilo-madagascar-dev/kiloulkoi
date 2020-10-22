@@ -171,13 +171,25 @@ $(document).ready( function()
     }
 
     document.querySelector(".prev").addEventListener("click", () => {
-        date.setMonth(date.getMonth() - 1);
-        renderCalendar();
+        let current_month = (new Date()).getMonth();
+        let current_year  = (new Date()).getFullYear();
+
+        if( current_month > date.getMonth() && current_year >= date.getFullYear() )
+        {
+            $('.prev').addClass('d-none');
+        }
+        else
+        {
+            date.setMonth(date.getMonth() - 1);
+            renderCalendar();
+        }
     });
 
     document.querySelector(".next").addEventListener("click", () => {
         date.setMonth(date.getMonth() + 1);
         renderCalendar();
+
+        $('.prev').removeClass('d-none');
     });
 
     // $(document).on('click', '.days span', function()

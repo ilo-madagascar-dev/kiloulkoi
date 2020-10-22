@@ -44,7 +44,7 @@
                                     {{ form_row(registrationForm.raison_social) }}
                                 </div>
                                 <div class="col-md-6">
-                                    {{ form_row(registrationForm.siret) }}
+                                    {{ form_row(registrationForm.siret, { 'id': 'registration_siret'}) }}
                                 </div>
                             </div>
                         {% endif %}
@@ -54,7 +54,7 @@
                                 {{ form_row(registrationForm.pseudo) }}
                             </div>
                             <div class="col-md-6">
-                                {{ form_row(registrationForm.genre) }}
+                                {{ form_row(registrationForm.genre, { 'id': 'registration_gender'}) }}
                             </div>
                         </div>
 
@@ -78,7 +78,7 @@
 
                         <div class="row m-3 text-center">
                             <div class="col-md-8 offset-md-2 col-lg-4 offset-lg-4">
-                                <img src="{{ asset('image/img-add.png') }}" alt="" class="img-fluid rounded output-image">
+                                <img src="{{ asset('uploads/avatar/default-men.png') }}" alt="" class="img-fluid rounded output-image">
                                 <div>
                                     {% do registrationForm.avatar.setRendered() %}
 
@@ -147,7 +147,16 @@
                         message: "Doit contenir au moins 10 caractères, un majuscule, un minuscule et un caractère spécial."
                     }
                 ]
-            }
+            },
+            {
+                fields: '#registration_siret',
+                rules : [
+                    {
+                        regex: /^[0-9]{14}$/,
+                        message: "Veuillez entrer un numero de siret valide."
+                    }
+                ]
+            },
         ];
 
         validations.forEach( function(element, i) 
@@ -272,7 +281,22 @@
             $('#code_postal').trigger("change");
         })
 
-
+        $(document).on('change', '#registration_gender', function()
+        {
+            if( $(".input-image").val() == "" )
+            {
+                if( $(this).val() == 1 )
+                {
+                    $('.output-image').attr('src', "/uploads/avatar/default-men.png");
+                }
+                else
+                {
+                    $('.output-image').attr('src', "/uploads/avatar/default-women.png");
+                }
+            }
+        })
+        
+        $('.input-image').val(null);
         $(document).on('change', '.input-image', function(e) 
         {
             var input = this;

@@ -62,7 +62,7 @@ class LocationRepository extends ServiceEntityRepository
     public function findMesBiens(int $user_id)
     {
         return $this->getAllQuery()
-                    ->where('s.id = 2') // En cours
+                    // ->where('s.id in (2, 1)') // En cours
                     ->andWhere('au.id = :user_id')
                     ->setParameter('user_id', $user_id)
                     ->getQuery()

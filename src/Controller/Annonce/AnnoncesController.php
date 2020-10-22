@@ -43,7 +43,33 @@ class AnnoncesController extends AbstractController
     }
 
     /**
-     * @Route("/mes_annonces", name="mes_annonces_index", methods={"GET"})
+     * @Route("/heart/{id}", name="annonces_heart", methods={"GET"})
+     */
+    public function heart(Annonces $annonce): Response
+    {
+        $user      = $this->getUser();
+        $isFavoris = $this->repAnnonce->checkFavoris($user->getId(), $annonce->getId());
+        if( $isFavoris < 1 )
+        {
+            if( $user->getId() !== $annonce->getUser()->getId() )
+            {
+                $user->addFavori( $annonce );
+                $isFavoris = 1;
+                $this->getDoctrine()->getManager()->flush();
+            }
+        }
+        else
+        {
+            $user->removeFavori( $annonce );
+            $isFavoris = 0;
+            $this->getDoctrine()->getManager()->flush();
+        }
+
+        return new Response( $isFavoris > 0 ? 1 : 0);
+    }
+    
+    /**
+     * @Route("/mes-annonces", name="mes_annonces_index", methods={"GET"})
      */
     public function mesAnnonces(): Response
     {
@@ -73,6 +99,23 @@ class AnnoncesController extends AbstractController
         $annonces      = $this->repAnnonce->findAnnonces($request->query->all())->getResult();
         $annonce_titre = "Résultats des recherches";
         
+        return $this->render('annonces/mesAnnonces.html.twig', [
+            'categories' => $categories,
+            'annonces' => $annonces,
+            'annonce_titre' => $annonce_titre
+        ]);
+    }
+
+    
+    /**
+     * @Route("/favoris", name="annonces_favoris", methods={"GET"})
+     */
+    public function favoris(Request $request): Response
+    {
+        $categories    = $this->repCategorie->findParents();
+        $annonces      = $this->repAnnonce->findFavoris( $this->getUser()->getId() )->getResult();
+        $annonce_titre = "Mes Favoris";
+
         return $this->render('annonces/mesAnnonces.html.twig', [
             'categories' => $categories,
             'annonces' => $annonces,
@@ -192,9 +235,9 @@ class AnnoncesController extends AbstractController
 
         $annonce_serialized = $serializer->normalize($annonce, null, [AbstractNormalizer::IGNORED_ATTRIBUTES => [
             'photo', 'user', 'conversations', 'categorie', 'sousCategorie', 'locations',  // Relation to ignore
-            'id', 'titre', 'description', 'prix', 'proucentageTva', //////////////
-            'dateCreation', 'dateModification', 'statut',           // Annonce's parent attributes
-            'visite', 'slug', 'validationAdmin', 'type'             //////////////
+            'id', 'titre', 'description', 'prix', 'proucentageTva',                       //////////////
+            'dateCreation', 'dateModification', 'statut',                                 // Annonce's parent attributes
+            'visite', 'slug', 'validationAdmin', 'type', 'userFavoris'                    //////////////
         ]]);
 
         return $this->render('annonces/show.html.twig', [

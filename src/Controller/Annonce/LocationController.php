@@ -2,10 +2,8 @@
 
 namespace App\Controller\Annonce;
 
-use App\Entity\Annonces;
 use App\Entity\Location;
 use App\Entity\StatutLocation;
-use App\Entity\User;
 use App\Form\LocationType;
 use App\Repository\AnnoncesRepository;
 use App\Repository\LocationRepository;
@@ -89,8 +87,28 @@ class LocationController extends AbstractController
                 $em->flush();
             }
         }
-        
-        return $this->redirectToRoute('location_abonnement');
+
+        return $this->redirectToRoute('location_en_cours');
+    }
+
+
+    /**
+     * @Route("/action/{id}/{etat}", name="location_accept", methods={"GET"})
+     */
+    public function accept(Request $request, Location $location, string $etat, StatutLocationRepository $statutReposistory): Response
+    {
+        if( $etat == "accepter" )
+        {
+            $statut    = $statutReposistory->find(2); // Statut en cours
+            $location->setStatutLocation( $statut );
+        }
+        else
+        {
+            $statut    = $statutReposistory->find(4); // Statut interrompue
+            $location->setStatutLocation( $statut );
+        }
+        $this->getDoctrine()->getManager()->flush();
+        return $this->redirectToRoute('location_en_cours');
     }
 
     /**

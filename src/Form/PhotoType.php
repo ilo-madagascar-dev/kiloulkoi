@@ -18,7 +18,9 @@ class PhotoType extends AbstractType
             ->add('file', FileType::class,
                 ['label' => false, 'attr' => ['class' => 'd-none']]
             )
-            ->add('description', TextareaType::class)
+            ->add('description', TextareaType::class, [
+                'required' => false
+            ])
         ;
     }
 

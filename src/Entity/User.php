@@ -118,12 +118,18 @@ class User implements UserInterface
      */
     private $genre;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Annonces::class, inversedBy="user_favoris")
+     */
+    private $favoris;
+
     public function __construct()
     {
         $this->location = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->conversations = new ArrayCollection();
         $this->annonces = new ArrayCollection();
+        $this->favoris = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -443,6 +449,32 @@ class User implements UserInterface
     public function setGenre(int $genre): self
     {
         $this->genre = $genre;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Annonces[]
+     */
+    public function getFavoris(): Collection
+    {
+        return $this->favoris;
+    }
+
+    public function addFavori(Annonces $favori): self
+    {
+        if (!$this->favoris->contains($favori)) {
+            $this->favoris[] = $favori;
+        }
+
+        return $this;
+    }
+
+    public function removeFavori(Annonces $favori): self
+    {
+        if ($this->favoris->contains($favori)) {
+            $this->favoris->removeElement($favori);
+        }
 
         return $this;
     }

@@ -9,8 +9,8 @@
         
         <div class="row">
             <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2 col-sm-12 bg-white rounded pb-3" style="margin-top: 50px;;">
-                <div class="text-center">
-                    <img src="{{ asset('image/logo-fond-blanc.png') }}" class="" alt="" style="height: 150px;width:auto;margin-top:-50px">
+                <div class="text-center mb-3">
+                    <img src="{{ asset('uploads/avatar/') ~ app.user.avatar }}" class="" alt="" style="height: 150px;width:auto;margin-top:-60px;border-radius: 50%">
                 </div>
 
                 <div class="card" style="min-height: calc(100vh - 310px);">
@@ -35,10 +35,6 @@
                                             <td><strong>Téléphone :</strong></td>
                                             <td>{{ app.user.telephone }}</td>
                                         </tr>
-                                        <tr>
-                                            <td><strong>Ville :</strong></td>
-                                            <td>{{ app.user.ville }} - ({{ app.user.cp }})</td>
-                                        </tr>
                                     {% endif %}
                                     
                                     {% if app.user.raisonSocial is defined %}
@@ -51,7 +47,16 @@
                                             <td>{{ app.user.Siret }}</td>
                                         </tr>
                                     {% endif %}
-                                    
+
+                                    <tr>
+                                        <td><strong>Ville :</strong></td>
+                                        <td>{{ app.user.ville }} - {{ app.user.cp }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Mon adresse :</strong></td>
+                                        <td>{{ app.user.adresse }}</td>
+                                    </tr>
+
                                     <tr>
                                         <td><strong>Mail :</strong></td>
                                         <td>{{ app.user.email }}</td>
@@ -61,14 +66,6 @@
                                         <td>{{ app.user.pseudo }}</td>
                                     </tr>
                                 </table>
-                            </div>
-                            <div class="col-lg-6 col-md-12 text-center">
-                                <p class="mb-0"><strong>Avatar</strong></p>
-                                {% if app.user.avatar %}
-                                    <img src="{{ asset('uploads/avatar/') ~ app.user.avatar }}" alt="" class="img-fluid rounded">
-                                {% else %}
-                                    <img src="{{ asset('image/img-add.png') }}" alt="" class="img-fluid rounded">
-                                {% endif %}
                             </div>
                             <div class="col-12 my-3 d-flex justify-content-center">
                                 <a href="{{ path('user_edit', { id: app.user.id }) }}" class="btn btn-primary btn-block w-md-50">Modifier votre compte</a>
@@ -83,7 +80,7 @@
                                 <a href="{{ path('location_en_cours') }}" class="btn btn-block h-100 btn-outline-primary">Locations en cours</a>
                             </div>
                             <div class="col-lg-3 col-md-6 col-12 mb-3">
-                                <a href="{{ path('mes_annonces_index') }}" class="btn btn-block h-100 btn-outline-primary">Favoris</a>
+                                <a href="{{ path('annonces_favoris') }}" class="btn btn-block h-100 btn-outline-primary">Favoris</a>
                             </div>
                             <div class="col-lg-3 col-md-6 col-12 mb-3">
                                 <a href="{{ path('mes_annonces_index') }}" class="btn btn-block h-100 btn-outline-primary">Abonnements</a>
@@ -92,7 +89,7 @@
 
                         <div class="row">
                             <div class="offset-lg-3 col-lg-3 col-md-6 col-12 mb-3">
-                                <a href="{{ path('compte_portefeuille') }}" class="btn btn-block h-100 btn-outline-primary">Mon portefeuille</a>
+                                <a href="{{ path('compte_portefeuille') }}" class="btn btn-block h-100 btn-outline-primary">Mon Portefeuille</a>
                             </div>
                             <div class="col-lg-3 col-md-6 col-12 mb-3">
                                 <a href="{{ path('compte_facture') }}" class="btn btn-block h-100 btn-outline-primary">Mes Factures</a>
