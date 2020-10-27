@@ -95,7 +95,7 @@
                     </div>
                     <div class="card-body px-0 py-3">
                         <div class="row">
-                            <div class="col-lg-6 ">
+                            <div class="col-lg-6 {% if app.user and app.user.id == annonce.user.id %} offset-lg-3 {% endif %}">
                                 <div class="calendar mb-3">
                                     <div class="month row py-3 bg-success text-white border border-success">
                                         <div class="col-2 m-auto p-0 text-right">
@@ -117,22 +117,25 @@
                                     <div class="days border border-success"></div>
                                 </div>
                             </div>
-
-                            <div class="col-lg-6">
-                                <div class="p-3">
-                                    <div class="form-group">
-                                        <label for="date-debut">Date du début:</label>
-                                        <input type="date" id="date-debut" min="{{ date() | date('Y-m-d') }}" class="form-control" name="debut" placeholder="dd-mm-yyyy">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="date-fin">Date du fin:</label>
-                                        <input type="date" id="date-fin" min="{{ date() | date('Y-m-d') }}" class="form-control" name="fin">
-                                    </div>
-                                    <div class="calendar-action text-center">
-                                        <button id="reserver" class="btn btn-block btn-success" type="button" data-toggle="modal" data-target="#reservationModal">Vérifier la disponibilité</button>
+                            
+                            {% if not (app.user and app.user.id == annonce.user.id) %}
+                                <div class="col-lg-6">
+                                    <div class="p-3">
+                                        <div class="form-group">
+                                            <label for="date-debut">Date du début:</label>
+                                            <input type="date" id="date-debut" min="{{ date() | date('Y-m-d') }}" class="form-control" name="debut" placeholder="dd-mm-yyyy">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="date-fin">Date du fin:</label>
+                                            <input type="date" id="date-fin" min="{{ date() | date('Y-m-d') }}" class="form-control" name="fin">
+                                        </div>
+                                        <div class="calendar-action text-center">
+                                            <button id="reserver" class="btn btn-block btn-success" type="button" data-toggle="modal" data-target="#reservationModal">Vérifier la disponibilité</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            {% endif %}
+
                             {% if app.user and app.user.id != annonce.user.id %}
                             {% endif %}
                         </div>

@@ -123,6 +123,11 @@ class User implements UserInterface
      */
     private $favoris;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Abonnement::class, mappedBy="user")
+     */
+    private $abonnement;
+
     public function __construct()
     {
         $this->location = new ArrayCollection();
@@ -130,6 +135,7 @@ class User implements UserInterface
         $this->conversations = new ArrayCollection();
         $this->annonces = new ArrayCollection();
         $this->favoris = new ArrayCollection();
+        $this->abonnement = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -474,6 +480,37 @@ class User implements UserInterface
     {
         if ($this->favoris->contains($favori)) {
             $this->favoris->removeElement($favori);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Abonnement[]
+     */
+    public function getAbonnement(): Collection
+    {
+        return $this->abonnement;
+    }
+
+    public function addAbonnement(Abonnement $abonnement): self
+    {
+        if (!$this->abonnement->contains($abonnement)) {
+            $this->abonnement[] = $abonnement;
+            $abonnement->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAbonnement(Abonnement $abonnement): self
+    {
+        if ($this->abonnement->contains($abonnement)) {
+            $this->abonnement->removeElement($abonnement);
+            // set the owning side to null (unless already changed)
+            if ($abonnement->getUser() === $this) {
+                $abonnement->setUser(null);
+            }
         }
 
         return $this;

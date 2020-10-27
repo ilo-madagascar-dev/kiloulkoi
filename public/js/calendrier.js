@@ -1,7 +1,14 @@
 $(document).ready( function()
 {
-    var reservations = [];
     var date = new Date();
+    
+    const monthDiff = function(d1, d2) {
+        var months;
+        months = (d2.getFullYear() - d1.getFullYear()) * 12;
+        months -= d1.getMonth();
+        months += d2.getMonth();
+        return months <= 0 ? 0 : months;
+    }
 
     const n_ = (n) => {
         return n > 9 ? "" + n: "0" + n;
@@ -36,7 +43,8 @@ $(document).ready( function()
         const months   = ["Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "July", "Août", "Septembre", "Octobre", "Novembre", "Decembre"];
         
         document.querySelector(".date h3").innerHTML = months[date.getMonth()];
-        document.querySelector(".date p").innerHTML  = new Date().toDateString();
+        // document.querySelector(".date p").innerHTML  = new Date().toDateString();
+        document.querySelector(".date p").innerHTML  = date.getFullYear();
 
         let days = "";
 
@@ -170,25 +178,28 @@ $(document).ready( function()
         return demandes;
     }
 
-    document.querySelector(".prev").addEventListener("click", () => {
-        let current_month = (new Date()).getMonth();
-        let current_year  = (new Date()).getFullYear();
+    document.querySelector(".prev").addEventListener("click", () => 
+    {
+        date.setMonth(date.getMonth() - 1);
+        renderCalendar();
 
-        if( current_month > date.getMonth() && current_year >= date.getFullYear() )
+        if( monthDiff((new Date()), date) == 0 )
         {
             $('.prev').addClass('d-none');
         }
-        else
-        {
-            date.setMonth(date.getMonth() - 1);
-            renderCalendar();
-        }
+        $('.next').removeClass('d-none');
     });
 
-    document.querySelector(".next").addEventListener("click", () => {
+    document.querySelector(".next").addEventListener("click", () => 
+    {
         date.setMonth(date.getMonth() + 1);
         renderCalendar();
-
+        
+        if( monthDiff((new Date()), date) > 2 )
+        {
+            $('.next').addClass('d-none');
+        }
+        
         $('.prev').removeClass('d-none');
     });
 

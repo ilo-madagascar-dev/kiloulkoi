@@ -45,6 +45,12 @@ class Abonnement
      */
     private $type;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="abonnement")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
     public function __construct()
     {
         $this->factures = new ArrayCollection();
@@ -125,6 +131,18 @@ class Abonnement
     public function setType(?TypeAbonnement $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

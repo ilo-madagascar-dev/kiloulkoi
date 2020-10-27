@@ -3,6 +3,7 @@
 namespace App\Controller\Annonce;
 
 use App\Entity\Annonces;
+use App\Repository\AbonnementRepository;
 use App\Repository\AnnoncesRepository;
 use App\Repository\CategoriesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -223,10 +224,14 @@ class AnnoncesController extends AbstractController
     /**
      * @Route("/details/{id}/{slug}", name="annonces_show", methods={"GET"})
      */
-    public function show(int $id, string $slug, SerializerInterface $serializer): Response
+    public function show(int $id, string $slug, AbonnementRepository $repoAbonnement, SerializerInterface $serializer): Response
     {
         $user    = $this->getUser();
         $annonce = $this->repAnnonce->findAnnonceById($id);
+
+        $abonnement = $repoAbonnement->findOneBy( ['user' => $user->getId() ]);
+        $photoMax   = ($abonnement && $abonnement->getId()) == 2 ? 6 : 3;
+
         if ($user == null || ($user !== null && $user->getId() !== $annonce->getUser()->getId()) ) 
         {
             $annonce->setVisite( intval($annonce->getVisite()) + 1);
@@ -241,29 +246,35 @@ class AnnoncesController extends AbstractController
         ]]);
 
         return $this->render('annonces/show.html.twig', [
-            'annonce' => $annonce,
+            'annonce'  => $annonce,
+            'photoMax' => $photoMax,
             'annonce_serialized' => $annonce_serialized,
-            'user_annonces' => $annonce->getUser()->getAnnonces()->count()
+            'user_annonces'      => $annonce->getUser()->getAnnonces()->count()
         ]); 
     }
 
     /**
      * @Route("/{id}/modification", name="annonces_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Annonces $annonce, FileUploader $fileUploader): Response
+    public function edit(Request $request, Annonces $annonce, AbonnementRepository $repoAbonnement, FileUploader $fileUploader): Response
     {
-        if ($this->getUser() == null) 
+        $user = $this->getUser();
+        if ( $user == null) 
         {
             return $this->redirectToRoute('securitylogin');
         }
 
         $formType = str_replace('Annonce', '', substr(get_class($annonce), 11) );
-        $class = 'App\Form\Category\\' . $formType . 'Type';
-        $form  = $this->createForm($class, $annonce);
+        $class    = 'App\Form\Category\\' . $formType . 'Type';
+        $form     = $this->createForm($class, $annonce);
+        
+        $abonnement = $repoAbonnement->findOneBy( ['user' => $user->getId() ]);
+        $photoMax   = ($abonnement && $abonnement->getId()) == 2 ? 6 : 3;
+        
         $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) 
+        if ( $form->isSubmitted() && $form->isValid() ) 
         {
+            $max    = 0;
             $photos = $form->get('photo')->getData();
             foreach ($photos as $photo )
             {
@@ -274,6 +285,11 @@ class AnnoncesController extends AbstractController
 
                     $annonce->getPhoto()->add($photo);
                 }
+
+                if( $max >= $photoMax )
+                    break;
+                
+                $max++;
             }
 
             $annonce->setSlug();
@@ -284,10 +300,11 @@ class AnnoncesController extends AbstractController
         }
 
         return $this->render('annonces/edit.html.twig', [
-            'annonce' => $annonce,
-            'photos' => $annonce->getPhoto(),
-            'categorie' => $annonce->getCategorie(),
-            'form' => $form->createView(),
+            'annonce'  => $annonce,
+            'photos'   => $annonce->getPhoto(),
+            'categorie'=> $annonce->getCategorie(),
+            'form'     => $form->createView(),
+            'photoMax' => $photoMax,
         ]);
     }
 

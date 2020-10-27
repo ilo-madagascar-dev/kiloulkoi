@@ -163,10 +163,9 @@ class AnnoncesRepository extends ServiceEntityRepository
     {
         $query = $this->getAllQuery()
                     ->addSelect('l')
-                    ->leftJoin('a.locations', 'l')
+                    ->leftJoin('a.locations', 'l', Expr\Join::WITH, 'l.statutLocation = 2')
                     ->where('a.id = :id')
                     ->setParameter('id', $id)
-                    // ->andWhere('l.statusLocation.id = 2') // En cours
                     // ->andWhere('l.dateFin >= :fin OR l.dateFin is null')
                     // ->setParameter('fin', date('Y-m-d'))
                     ->orderBy('l.dateDebut', 'ASC')
@@ -174,6 +173,7 @@ class AnnoncesRepository extends ServiceEntityRepository
 
         return $query->getOneOrNullResult();
     }
+
 
     /**
      * @return \Doctrine\ORM\Query

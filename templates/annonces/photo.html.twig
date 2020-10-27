@@ -1,6 +1,8 @@
+<input type="hidden" value="{{ photoMax }}" id="photoMax">
+
 {% if photo is null %}
 
-   <div class="card shadow border border-secondary m-auto" style="width: 175px !important;">
+   <div class="card shadow border border-secondary photo-template m-auto" style="width: 175px !important;">
       <div  style="height:130px;margin:auto;">
          <label type="button" class="btn w-100 h-100 mb-0 p-0 overflow-hidden">
             <img src="{{ asset('image/img-add.png') }}" class="w-100 h-auto card-img-top" />
@@ -21,7 +23,7 @@
 
 {% else %} 
 
-   <div class="card shadow border border-secondary m-auto" style="width: 160px !important;">
+   <div class="card shadow border border-secondary photo-template m-auto" style="width: 160px !important;">
       <div  style="height:130px;margin:auto;">
          <label type="button" class="btn w-100 h-100 mb-0 p-0 overflow-hidden">
             <img src="{{ asset('uploads/') ~ photo.url }}" class="w-100 h-auto card-img-top" />
@@ -36,7 +38,6 @@
             <textarea   id="{{ form.photo.vars.id ~ '_' ~ numero }}_description" 
                         name="{{ form.photo.vars.full_name ~ '[' ~ numero ~ ']' }}[description]" 
                         class="form-control h-100 rounded-0"
-                        required="required" 
                         placeholder="Descriptions...">{{ photo.description }}</textarea>
             <div class="p-0 suppression w-100">
                <button class="detelePhoto btn btn-sm btn-block btn-danger" idPhoto="{{ photo.id }}"><i class="fa fa-trash"></i></button>
@@ -45,3 +46,20 @@
       </div>
    </div>
 {% endif %}
+
+<!-- Modal -->
+<div class="modal fade" id="photo-overflow" tabindex="-1" role="dialog" aria-labelledby="photo-overflow-label" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header bg-warning text-white">
+            <h5 class="modal-title" id="photo-overflow-label">Information!</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            Vous avez atteint le nombre maximum d'image à uploader.
+         </div>
+      </div>
+   </div>
+</div>

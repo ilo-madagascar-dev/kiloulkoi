@@ -19,22 +19,17 @@ class TypeLocationRepository extends ServiceEntityRepository
         parent::__construct($registry, TypeLocation::class);
     }
 
-    // /**
-    //  * @return TypeLocation[] Returns an array of TypeLocation objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return TypeLocation[] Returns an array of TypeLocation objects
+     */
+    public function findAllOrd()
     {
         return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
+            ->orderBy('t.id', 'DESC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?TypeLocation

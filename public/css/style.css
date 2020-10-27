@@ -102,11 +102,11 @@ label.required::before {
 	color: white;
 }
 
-.calendar .days span.enAttente {
+.calendar .days span.enCours {
 	background-color: orange;
 }
 
-.calendar .days span.enCours {
+.calendar .days span.enAttente {
 	background-color: orchid;
 }
 
