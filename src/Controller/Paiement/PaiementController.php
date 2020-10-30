@@ -25,8 +25,8 @@ class PaiementController extends AbstractController
     {
         $this->mangoPayApi = new MangoPay\MangoPayApi();
         $this->mangoPayApi->Config->ClientId = 'admin-kiloukoi';
-        $this->mangoPayApi->Config->ClientPassword = 'Azertyqsdf1234$';
-        $this->mangoPayApi->Config->TemporaryFolder = '../../some/pathfolder/';    
+        $this->mangoPayApi->Config->ClientPassword = 'MNHcmbW6FE5XMeG1M6KgzHZXfAUdAJdeZjmoNDOAQAoi6spMqF';
+        $this->mangoPayApi->Config->TemporaryFolder = '/Temp/tmp';    
         $this->mangoPayApi->Config->BaseUrl = 'https://api.sandbox.mangopay.com';
     }
 
@@ -39,18 +39,42 @@ class PaiementController extends AbstractController
         
         $mangoUser = new \MangoPay\UserNatural();
         $mangoUser->PersonType = "NATURAL";
-        $mangoUser->FirstName = 'John';
+        $mangoUser->FirstName = 'joetest';
         $mangoUser->LastName = 'Doe';
         $mangoUser->Birthday = 1409735187;
         $mangoUser->Nationality = "FR";
         $mangoUser->CountryOfResidence = "FR";
         $mangoUser->Email = 'john.doe@mail.com';
 
-        //Send the request
+        
         $mangoUser = $this->mangoPayApi->Users->Create($mangoUser);
+
+        $Wallet = new \MangoPay\Wallet();
+        $Wallet->Owners = array($mangoUser->Id);
+        $Wallet->Description = "Demo wallet for User 1";
+        $Wallet->Currency = "EUR";
+        $result = $mangoPayApi->Wallets->Create($Wallet);
 
         return $mangoUser;
     }
+
+    /**
+     * Create Mangopay User
+     * @returnMangopPayUser $mangoUser walet
+     */
+    /*public function CreatWaletMangoUser()
+    {
+        
+       $Wallet = new \MangoPay\Wallet();
+        $Wallet->Owners = array($_SESSION["UserNatural"]);
+        $Wallet->Description = "Demo wallet for User 1";
+        $Wallet->Currency = "EUR";
+        $result = $mangoPayApi->Wallets->Create($Wallet);
+
+        return $result;
+    }*/
+
+
 
     /**
      * @Route("/", name="paiement_index")
