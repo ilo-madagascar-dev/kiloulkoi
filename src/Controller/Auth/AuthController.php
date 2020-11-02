@@ -102,6 +102,7 @@ class AuthController extends AbstractController
             $user->setDateCreation();
             $user->setDateMiseAJour();
             $user->setActif(true);
+            $user->setMangoPay();
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);

@@ -68,7 +68,7 @@ class AnnoncesController extends AbstractController
 
         return new Response( $isFavoris > 0 ? 1 : 0);
     }
-    
+
     /**
      * @Route("/mes-annonces", name="mes_annonces_index", methods={"GET"})
      */
@@ -158,7 +158,7 @@ class AnnoncesController extends AbstractController
     /**
      * @Route("/creation", name="annonces_new", methods={"GET","POST"})
      */
-    public function new(Request $request, FileUploader $fileUploader): Response
+    public function new(Request $request, AbonnementRepository $repoAbonnement, FileUploader $fileUploader): Response
     {
         $user = $this->getUser();
         if ($user == null) 
@@ -166,18 +166,20 @@ class AnnoncesController extends AbstractController
             return $this->redirectToRoute('securitylogin');
         }
 
-        $nomClasse    = ucfirst($request->query->get('categorie'));
-        $categorie    = $this->repCategorie->findOneBy(['className' => $nomClasse]);
+        $nomClasse  = ucfirst($request->query->get('categorie'));
+        $categorie  = $this->repCategorie->findOneBy(['className' => $nomClasse]);
 
         if( $categorie == null)
         {
             // Category not found....
             return $this->redirectToRoute('annonces_index');
         }
-
-        $class    = 'App\Entity\Annonce' . $nomClasse;
-        $formType = 'App\Form\Category\\' . trim($nomClasse) . 'Type';
-        $annonce  = new $class();
+  
+        $class      = 'App\Entity\Annonce' . $nomClasse;
+        $formType   = 'App\Form\Category\\' . trim($nomClasse) . 'Type';
+        $annonce    = new $class();
+        $abonnement = $repoAbonnement->findOneBy( ['user' => $user->getId() ]);
+        $photoMax   = ($abonnement && $abonnement->getId()) == 2 ? 6 : 3;
 
         $form = $this->createForm($formType, $annonce);
         $form->handleRequest($request);
@@ -200,7 +202,6 @@ class AnnoncesController extends AbstractController
             $annonce->setCategorie($categorie);
             $annonce->setValidationAdmin(false);
             $annonce->setVisite(0);
-            // $annonce->setType($request->query->get('type'));
             $annonce->setSlug();
 
             $annonce->setProucentageTva(0.5);
@@ -210,13 +211,14 @@ class AnnoncesController extends AbstractController
             $em->persist($annonce);
             $em->flush();
 
-            return $this->redirectToRoute('mes_annonces_index');
+            return $this->redirectToRoute('annonces_show', ['id' => $annonce->getId(), 'slug' => $annonce->getSlug() ]);
         }
 
         return $this->render('annonces/edit.html.twig', [
             'annonce'   => $annonce,
             'form'      => $form->createView(),
             'photos'    => $annonce->getPhoto(),
+            'photoMax'  => $photoMax,
             'categorie' => $categorie
         ]);
     }
@@ -296,7 +298,7 @@ class AnnoncesController extends AbstractController
             $annonce->setDateModification();
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('annonces_index');
+            return $this->redirectToRoute('annonces_show', ['id' => $annonce->getId(), 'slug' => $annonce->getSlug() ]);
         }
 
         return $this->render('annonces/edit.html.twig', [

@@ -128,6 +128,11 @@ class User implements UserInterface
      */
     private $abonnement;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $mangoPayId;
+
     public function __construct()
     {
         $this->location = new ArrayCollection();
@@ -512,6 +517,18 @@ class User implements UserInterface
                 $abonnement->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMangoPayId(): ?string
+    {
+        return $this->mangoPayId;
+    }
+
+    public function setMangoPayId(string $mangoPayId): self
+    {
+        $this->mangoPayId = $mangoPayId;
 
         return $this;
     }
