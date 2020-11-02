@@ -4,7 +4,9 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+
     "content-hash": "99e86589541fb2297d005a5f0e790a02",
+    
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -2006,6 +2008,43 @@
                 "oauth2"
             ],
             "time": "2020-07-24T15:16:12+00:00"
+        },
+        {
+            "name": "mangopay/php-sdk-v2",
+            "version": "3.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Mangopay/mangopay2-php-sdk.git",
+                "reference": "90a9755a14992be71a0772c2493441788f523817"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Mangopay/mangopay2-php-sdk/zipball/90a9755a14992be71a0772c2493441788f523817",
+                "reference": "90a9755a14992be71a0772c2493441788f523817",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-openssl": "*",
+                "php": ">=5.4.0",
+                "psr/log": "^1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8.36 || ^5.7.27 || 7.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MangoPay\\": "MangoPay/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHP SDK for MANGOPAY",
+            "time": "2020-08-28T08:54:20+00:00"
         },
         {
             "name": "ninsuo/symfony-collection",
