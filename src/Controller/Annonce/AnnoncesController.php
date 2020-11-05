@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\FileUploader;
-
+use App\Service\PaginationService;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
@@ -32,10 +32,11 @@ class AnnoncesController extends AbstractController
     /**
      * @Route("/", name="annonces_index", methods={"GET"})
      */
-    public function index(): Response
+    public function index(Request $request, PaginationService $paginator): Response
     {
         $categories = $this->repCategorie->findParents();
-        $annonces   = $this->repAnnonce->findAllAnnonces()->getResult();
+        $query      = $this->repAnnonce->findAllAnnonces();
+        $annonces   = $paginator->paginate($query, $request->query->getInt('page', 1));
 
         return $this->render('annonces/index.html.twig', [
             'categories' => $categories,
@@ -72,7 +73,7 @@ class AnnoncesController extends AbstractController
     /**
      * @Route("/mes-annonces", name="mes_annonces_index", methods={"GET"})
      */
-    public function mesAnnonces(): Response
+    public function mesAnnonces(Request $request, PaginationService $paginator): Response
     {
         $user = $this->getUser();
         if ($user == null) 
@@ -81,7 +82,8 @@ class AnnoncesController extends AbstractController
         }
 
         $categories = $this->repCategorie->findParents();
-        $annonces   = $this->repAnnonce->findMesAnnonces($user->getId())->getResult();
+        $query      = $this->repAnnonce->findMesAnnonces($user->getId());
+        $annonces   = $paginator->paginate($query, $request->query->getInt('page', 1));
         $annonce_titre = "Mes annonces";
 
         return $this->render('annonces/index.html.twig', [
@@ -94,10 +96,11 @@ class AnnoncesController extends AbstractController
     /**
      * @Route("/filter", name="annonces_filter", methods={"GET"})
      */
-    public function filter(Request $request): Response
+    public function filter(Request $request, PaginationService $paginator): Response
     {
         $categories    = $this->repCategorie->findParents();
-        $annonces      = $this->repAnnonce->findAnnonces($request->query->all())->getResult();
+        $query         = $this->repAnnonce->findAnnonces($request->query->all());
+        $annonces      = $paginator->paginate($query, $request->query->getInt('page', 1));
         $annonce_titre = "Résultats des recherches";
         
         return $this->render('annonces/mesAnnonces.html.twig', [
@@ -111,10 +114,11 @@ class AnnoncesController extends AbstractController
     /**
      * @Route("/favoris", name="annonces_favoris", methods={"GET"})
      */
-    public function favoris(Request $request): Response
+    public function favoris(Request $request, PaginationService $paginator): Response
     {
         $categories    = $this->repCategorie->findParents();
-        $annonces      = $this->repAnnonce->findFavoris( $this->getUser()->getId() )->getResult();
+        $query         = $this->repAnnonce->findFavoris( $this->getUser()->getId() );
+        $annonces      = $paginator->paginate($query, $request->query->getInt('page', 1));
         $annonce_titre = "Mes Favoris";
 
         return $this->render('annonces/mesAnnonces.html.twig', [
@@ -231,7 +235,7 @@ class AnnoncesController extends AbstractController
         $user    = $this->getUser();
         $annonce = $this->repAnnonce->findAnnonceById($id);
 
-        $abonnement = $repoAbonnement->findOneBy( ['user' => $user->getId() ]);
+        $abonnement = $repoAbonnement->findOneBy( ['user' => $annonce->getUser()->getId() ]);
         $photoMax   = ($abonnement && $abonnement->getId()) == 2 ? 6 : 3;
 
         if ($user == null || ($user !== null && $user->getId() !== $annonce->getUser()->getId()) ) 
@@ -271,7 +275,7 @@ class AnnoncesController extends AbstractController
         $form     = $this->createForm($class, $annonce);
         
         $abonnement = $repoAbonnement->findOneBy( ['user' => $user->getId() ]);
-        $photoMax   = ($abonnement && $abonnement->getId()) == 2 ? 6 : 3;
+        $photoMax   = ($abonnement && $abonnement->getId() == 2) ? 6 : 3;
         
         $form->handleRequest($request);
         if ( $form->isSubmitted() && $form->isValid() ) 

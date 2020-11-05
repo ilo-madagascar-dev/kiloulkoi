@@ -116,45 +116,45 @@
                     </div>
                     <div class="card-body">
                         <div>
-                            <h3 class="text-success" style="font-size: 1.2rem;"><strong>{{ annonce.titre }}</strong></h3>
+                            <h3 class="text-success" style="font-size: 1.3rem;"><strong>{{ annonce.titre }}</strong></h3>
                             <p class="mb-0"><strong>Prix: </strong>{{ annonce.prix }} €/{{ annonce.type ? annonce.type.libelle : 'mois' }}</p>
                         </div>
-                        
                         <hr>
-                        
-                        <div>
-                            {% set separateur = annonce_serialized | length / 2 | round %}
-                            <div class="row">
-                                <div class="col-6">
-                                    {% for key, value in annonce_serialized | slice(0, separateur) %}
-                                        <div class="mb-2">
-                                            <h3 class="mb-0" style="font-size: 1.2rem;"><strong>{{ key | capitalize }}</strong></h3>
-                                            {% if value is iterable %}
-                                                <p>{{ value.valeur }}</p>
-                                            {% else %}
-                                                <p>{{ value == '' ? ' -- ' : value }}</p>
-                                            {% endif %}
-                                        </div>
-                                    {% endfor %}
-                                </div>
 
-                                <div class="col-6">
-                                    {% for key, value in annonce_serialized | slice(separateur, separateur) %}
-                                        <div class="mb-2">
-                                            <h3 class="mb-0" style="font-size: 1.2rem;"><strong>{{ key | capitalize }}</strong></h3>
-                                            {% if value is iterable %}
-                                                <p>{{ value.valeur }}</p>
-                                            {% else %}
-                                                <p>{{ value == '' ? ' -- ' : value }}</p>
-                                            {% endif %}
-                                        </div>
-                                    {% endfor %}
+                        {% if annonce_serialized|length > 1 %}
+                            <div>
+                                {% set separateur = annonce_serialized | length / 2 | round %}
+                                <div class="row">
+                                    <div class="col-6">
+                                        {% for key, value in annonce_serialized | slice(0, separateur) %}
+                                            <div class="mb-2">
+                                                <h4 class="mb-0" style="font-size: 1.2rem;"><strong>{{ key | capitalize }}</strong></h4>
+                                                {% if value is iterable %}
+                                                    <p>{{ value.valeur }}</p>
+                                                {% else %}
+                                                    <p>{{ value == '' ? ' -- ' : value }}</p>
+                                                {% endif %}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+
+                                    <div class="col-6">
+                                        {% for key, value in annonce_serialized | slice(separateur, separateur) %}
+                                            <div class="mb-2">
+                                                <h4 class="mb-0" style="font-size: 1.2rem;"><strong>{{ key | capitalize }}</strong></h4>
+                                                {% if value is iterable %}
+                                                    <p>{{ value.valeur }}</p>
+                                                {% else %}
+                                                    <p>{{ value == '' ? ' -- ' : value }}</p>
+                                                {% endif %}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                            <hr>
+                        {% endif %}
 
-                        <hr>
-                        
                         <div>
                             <h3 style="font-size: 1.2rem;"><strong>Description :</strong></h3>
                             <p class="mb-0">{{ annonce.description | nl2br }}</p>
@@ -164,7 +164,6 @@
                 {# Fin - Détail de l'annonce #}
             </div>
             {# Fin - Deuxieme colonne #}
-
         </div>
     </div>
 

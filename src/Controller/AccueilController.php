@@ -7,17 +7,20 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\AnnoncesRepository;
 use App\Repository\CategoriesRepository;
 use App\Repository\TypeLocationRepository;
+use App\Service\PaginationService;
+use Symfony\Component\HttpFoundation\Request;
 
 class AccueilController extends AbstractController
 {
     /**
      * @Route("/", name="accueil")
      */
-    public function index(AnnoncesRepository $repAnnonce, CategoriesRepository $repCategorie, TypeLocationRepository $ReptypeLocation)
+    public function index(Request $request, AnnoncesRepository $repAnnonce, CategoriesRepository $repCategorie, TypeLocationRepository $ReptypeLocation, PaginationService $paginator)
     {
         $categories = $repCategorie->findParents();
-        $annonces   = $repAnnonce->findAllAnnonces(10)->getResult();
         $types      = $ReptypeLocation->findAllOrd();
+        $query      = $repAnnonce->findAllAnnonces();
+        $annonces   = $paginator->paginate($query, $request->query->getInt('page', 1));
 
         return $this->render('accueil/index.html.twig', [
             'categories' => $categories,

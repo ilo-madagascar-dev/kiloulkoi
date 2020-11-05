@@ -19,22 +19,29 @@ class TypeAbonnementRepository extends ServiceEntityRepository
         parent::__construct($registry, TypeAbonnement::class);
     }
 
-    // /**
-    //  * @return TypeAbonnement[] Returns an array of TypeAbonnement objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return TypeAbonnement[] Returns an array of TypeAbonnement objects
+     */
+    public function findParticulierType()
     {
         return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('t.id = 3')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
+    /**
+     * @return TypeAbonnement[] Returns an array of TypeAbonnement objects
+     */
+    public function findProType()
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.id > 2')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
     /*
     public function findOneBySomeField($value): ?TypeAbonnement

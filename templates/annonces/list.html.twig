@@ -71,4 +71,5 @@
 		{% endfor %}
 	</div>
 
+	{% include "pagination.html.twig"  with { count: annonces.count, max: annonces.query.maxResults } %}
 </div>
