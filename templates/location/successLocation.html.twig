@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Locations en cours{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid" style="max-width: 1500px;">
+        <div id="bg" style="position:absolute;z-index:-1;left:0;height:375px;"></div>
+        
+        <center class="py-4">
+            <img src="{{ asset('image/logo.png') }}" class="mb-3" style="height: 120px;width: auto;" >
+            <p class="text-center text-white"><strong>N'achetez que le nécessaire, pour le reste il y a Kiloukoi!</strong></p>
+        </center>
+
+        <div class="row mb-3">
+            <div class="offset-lg-2 col-lg-8 offset-md-1 col-md-10">
+                <div class="card shadow mb-3">
+                    <div class="card-header d-flex align-items-top">
+                        <i class="text-success fa fa-list mr-3" style="font-size: 3rem;"></i>
+                        <div class="d-inline">
+                            <h1 class="mb-0" style="font-size: 1.4rem;"><strong>Paiement transfere Réussit</strong></h1>
+                            
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Propriétaire</th>
+                                        <th>Locataire</th>
+                                        <th>Prix du location</th>
+                                        <th>Devis</th>
+                                        <th>Statut</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                
+                                    <tr>
+                                        <td>{{ proprio }}</td>
+                                        <td>{{ locataire }}</td>
+                                        <td>{{ reponse.DebitedFunds.Amount }}</td>
+                                        <td>{{ reponse.DebitedFunds.Currency }}</td>
+                                        <td>{{ reponse.ResultMessage }}</td>
+                                        <td>
+                                                 
+                                                    <a href="{{ path('location_en_cours') }}" class="btn btn-sm btn-success" title="Accepter">
+                                                    Retour sur l'alocation
+                                                    </a>
+                                        
+                                        </td>
+                                    </tr>
+                                 
+                              </tbody>
+                            </table>
+                        
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+    </div>
+
+    <!-- Modal -->
+    
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready( function()
+        {
+            $('.btn-message').click( function()
+            {
+                var userName = $(this).attr('data-user');
+                var url      = $(this).attr('data-url');
+
+                $('#message-receiver').html(userName);
+                $('#message-modal form').attr('action', url);
+            })
+        })
+    </script>
+{% endblock %}

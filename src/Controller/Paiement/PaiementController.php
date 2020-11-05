@@ -39,12 +39,12 @@ class PaiementController extends AbstractController
         
         $mangoUser = new \MangoPay\UserNatural();
         $mangoUser->PersonType = "NATURAL";
-        $mangoUser->FirstName = 'joetest';
-        $mangoUser->LastName = 'Doe';
+        $mangoUser->FirstName = 'nouveauuser';
+        $mangoUser->LastName = 'nouveauuser';
         $mangoUser->Birthday = 1409735187;
         $mangoUser->Nationality = "FR";
         $mangoUser->CountryOfResidence = "FR";
-        $mangoUser->Email = 'john.doe@mail.com';
+        $mangoUser->Email = 'nouveauuser.doe@mail.com';
 
         
         $mangoUser = $this->mangoPayApi->Users->Create($mangoUser);
@@ -53,7 +53,7 @@ class PaiementController extends AbstractController
         $Wallet->Owners = array($mangoUser->Id);
         $Wallet->Description = "Demo wallet for User 1";
         $Wallet->Currency = "EUR";
-        $result = $mangoPayApi->Wallets->Create($Wallet);
+        $result = $this->mangoPayApi->Wallets->Create($Wallet);
 
         return $mangoUser;
     }

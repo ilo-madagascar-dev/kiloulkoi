@@ -39,6 +39,46 @@ class MoyenPaiement
      */
     private $type;
 
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $cardType;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $currency;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $ownerId;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $cardNumber;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $cardexpDate;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $cardCvx;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $creatDate;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $cardId;
+
     public function __construct()
     {
         $this->reglements = new ArrayCollection();
@@ -107,6 +147,102 @@ class MoyenPaiement
     public function setType(?TypeMoyenPaiement $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getCardType(): ?string
+    {
+        return $this->cardType;
+    }
+
+    public function setCardType(?string $cardType): self
+    {
+        $this->cardType = $cardType;
+
+        return $this;
+    }
+
+    public function getCurrency(): ?string
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency(?string $currency): self
+    {
+        $this->currency = $currency;
+
+        return $this;
+    }
+
+    public function getOwnerId(): ?int
+    {
+        return $this->ownerId;
+    }
+
+    public function setOwnerId(?int $ownerId): self
+    {
+        $this->ownerId = $ownerId;
+
+        return $this;
+    }
+
+    public function getCardNumber(): ?string
+    {
+        return $this->cardNumber;
+    }
+
+    public function setCardNumber(?string $cardNumber): self
+    {
+        $this->cardNumber = $cardNumber;
+
+        return $this;
+    }
+
+    public function getCardexpDate(): ?string
+    {
+        return $this->cardexpDate;
+    }
+
+    public function setCardexpDate(?string $cardexpDate): self
+    {
+        $this->cardexpDate = $cardexpDate;
+
+        return $this;
+    }
+
+    public function getCardCvx(): ?string
+    {
+        return $this->cardCvx;
+    }
+
+    public function setCardCvx(?string $cardCvx): self
+    {
+        $this->cardCvx = $cardCvx;
+
+        return $this;
+    }
+
+    public function getCreatDate(): ?\DateTimeInterface
+    {
+        return $this->creatDate;
+    }
+
+    public function setCreatDate(?\DateTimeInterface $creatDate): self
+    {
+        $this->creatDate = $creatDate;
+
+        return $this;
+    }
+
+    public function getCardId(): ?int
+    {
+        return $this->cardId;
+    }
+
+    public function setCardId(?int $cardId): self
+    {
+        $this->cardId = $cardId;
 
         return $this;
     }

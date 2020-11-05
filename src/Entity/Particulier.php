@@ -59,7 +59,7 @@ class Particulier extends User
 
         $mangoPayApi->Config->ClientId        = 'admin-kiloukoi';
         $mangoPayApi->Config->ClientPassword  = 'MNHcmbW6FE5XMeG1M6KgzHZXfAUdAJdeZjmoNDOAQAoi6spMqF';
-        $mangoPayApi->Config->TemporaryFolder = '/media/mendrika/Data/dev/Ilo/kiloukoi/var/mangopay';
+        $mangoPayApi->Config->TemporaryFolder = '/Temp/tmp';
         $mangoPayApi->Config->BaseUrl         = 'https://api.sandbox.mangopay.com';
 
         $mangoUser = new \MangoPay\UserNatural();

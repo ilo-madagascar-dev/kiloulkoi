@@ -59,10 +59,13 @@
                                         <td>{{ (difference * location.annonce.prix) |round(2, 'floor') }}</td>
                                         <td>{{ location.statutLocation.libelle }}</td>
                                         <td>
-                                            {% if location.statutLocation.id != 4 %} 
-                                                <a href="{{ path('location_accept', {id: location.id, etat: 'accepter'}) }}" class="btn btn-sm btn-success" title="Accepter">
+                                            {% if location.statutLocation.id != 4 %}
+                                                 
+                                                    <a href="{{ path('location_accept', {id: location.id, etat: 'accepter'}) }}" class="btn btn-sm btn-success" title="Accepter">
                                                     <i class="fa fa-check"></i>
-                                                </a>
+                                                    </a>
+                                                
+                                                
                                                 <a href="{{ path('location_accept', {id: location.id, etat: 'refuser'}) }}" class="btn btn-sm btn-danger" title="Réfuser">
                                                     <i class="fa fa-times-circle"></i>
                                                 </a>

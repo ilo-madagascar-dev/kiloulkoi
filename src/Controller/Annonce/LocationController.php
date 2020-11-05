@@ -14,12 +14,24 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use MangoPay;
 
 /**
  * @Route("/location")
  */
 class LocationController extends AbstractController
 {
+
+    private $mangoPayApi;
+
+    public function __construct()
+    {
+        $this->mangoPayApi = new MangoPay\MangoPayApi();
+        $this->mangoPayApi->Config->ClientId = 'admin-kiloukoi';
+        $this->mangoPayApi->Config->ClientPassword = 'MNHcmbW6FE5XMeG1M6KgzHZXfAUdAJdeZjmoNDOAQAoi6spMqF';
+        $this->mangoPayApi->Config->TemporaryFolder = '/Temp/tmp';    
+        $this->mangoPayApi->Config->BaseUrl = 'https://api.sandbox.mangopay.com';
+    }
     /**
      * @Route("/", name="location_index", methods={"GET"})
      */
@@ -99,6 +111,79 @@ class LocationController extends AbstractController
     {
         if( $etat == "accepter" )
         {
+            $locataire = $location->getUser();
+            /*dd($locataire->getMangoPayId());*/
+            // create pay-in CARD DIRECT direct paying card
+            $waletUserId = $this->mangoPayApi->Users->GetWallets($locataire->getMangoPayId());
+            $walletId;
+            foreach ($waletUserId as $value) {
+                $walletId = $value->Id;
+            }
+            $payIn = new \MangoPay\PayIn();
+            $payIn->CreditedWalletId = $walletId;
+            $payIn->AuthorId = $locataire->getMangoPayId();
+            $payIn->DebitedFunds = new \MangoPay\Money();
+            $payIn->DebitedFunds->Amount = 1000;
+            $payIn->DebitedFunds->Currency = "EUR";
+            $payIn->Fees = new \MangoPay\Money();
+            $payIn->Fees->Amount = 0;
+            $payIn->Fees->Currency = "EUR";
+            
+            $cards = $this->mangoPayApi->Users->GetCards($locataire->getMangoPayId());
+            $cardId;
+            $cardType;
+            foreach ($cards as $value) {
+                $cardId = $value->Id;
+                $cardType = $value->CardType;
+            }
+            //active card
+            /*$Card = new \MangoPay\Card();
+            $Card->Id = $cardId;
+            $Card->Active = true;
+            $this->mangoPayApi->Cards->Update($Card);*/
+
+            // payment type as CARD
+            $payIn->PaymentDetails = new \MangoPay\PayInPaymentDetailsCard();
+            $payIn->PaymentDetails->CardType = $cardType;
+            $payIn->PaymentDetails->CardId = $cardId;
+            
+            // execution type as DIRECT
+            $payIn->ExecutionDetails = new \MangoPay\PayInExecutionDetailsDirect();
+            $payIn->ExecutionDetails->SecureModeReturnURL = 'http://test.com';
+
+            // create Pay-In
+            $createdPayIn = $this->mangoPayApi->PayIns->Create($payIn);
+            if ($createdPayIn->Status == \MangoPay\PayInStatus::Succeeded) {
+                /*$createdPayIn->Id; 
+                $createdWallet->Id;*/
+                $waletproprietaire = $this->mangoPayApi->Users->GetWallets($this->getUser()->getMangoPayId());
+                $WIdproprietaire;
+                foreach ($waletproprietaire as $value) {
+                    $WIdproprietaire = $value->Id;
+                }
+                $Transfer = new \MangoPay\Transfer();
+                $Transfer->AuthorId = $locataire->getMangoPayId();
+                $Transfer->DebitedFunds = new \MangoPay\Money();
+                $Transfer->DebitedFunds->Currency = "EUR";
+                $Transfer->DebitedFunds->Amount = 500;
+                $Transfer->Fees = new \MangoPay\Money();
+                $Transfer->Fees->Currency = "EUR";
+                $Transfer->Fees->Amount = 100;
+                $Transfer->DebitedWalletID = $walletId;
+                $Transfer->CreditedWalletId = $WIdproprietaire;
+                $result = $this->mangoPayApi->Transfers->Create($Transfer);
+                return $this->render('location/successLocation.html.twig', [
+                    'reponse' => $result,
+                    'proprio' => $this->getUser()->getNomComplet(),
+                    'locataire' => $location->getUser()->getNomComplet()
+                ]);
+            }
+            else {
+                dd($createdPayIn->Status);
+                /*$createdPayIn->ResultCode;*/
+            }
+            
+            //status
             $statut    = $statutReposistory->find(2); // Statut en cours
             $location->setStatutLocation( $statut );
         }

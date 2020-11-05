@@ -27,7 +27,33 @@
                         </div>
                     </div>
                     <div class="card-body p-0">
-						<div class="mb-0 alert alert-warning text-center d-flex justify-content-center align-items-center" style="height: 120px;"><strong>Aucun résultat.</strong></div>
+						<table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Id Cartes</th>
+                                        <th>Numero de la cartes</th>
+                                        <th>Fournisseur de cartes</th>
+                                        <th>Types du cartes</th>
+                                        <th>Code banque</th>
+                                        <th>Pays</th>
+                                        <th>Devise</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for cartes in cards %}
+                                    <tr>
+                                        <td>{{cartes.Id}}</td>
+                                        <td>{{cartes.Alias}}</td>
+                                        <td>{{cartes.CardProvider}}</td>
+                                        <td>{{cartes.CardType}}</td>
+                                        <td>{{cartes.BankCode}}</td>
+                                        <td>{{cartes.Country}}</td>
+                                        <td>{{cartes.Currency}}</td>
+                                        
+                                    </tr>
+                                 {% endfor %}
+                              </tbody>
+                            </table>
                     </div>
                 </div>
             </div>
@@ -44,7 +70,27 @@
                         </div>
                     </div>
                     <div class="card-body p-0">
-						<div class="mb-0 alert alert-warning text-center d-flex justify-content-center align-items-center" style="height: 120px;"><strong>Aucun résultat.</strong></div>
+						<table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Proprietaire</th>
+                                        <th>Description</th>
+                                        <th>Balance</th>
+                                        <th>Devise</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for portfelle in walet %}
+                                    <tr>
+                                        <td>{{ proprietaire }}</td>
+                                        <td>{{ portfelle.Description }}</td>
+                                        <td>{{ portfelle.Balance.Amount }}</td>
+                                        <td>{{portfelle.Currency}}</td>
+                                        
+                                    </tr>
+                                 {% endfor %}
+                              </tbody>
+                            </table>
                     </div>
                 </div>
             </div>
@@ -62,27 +108,24 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="post" class="card-body">
+
+                    <form action="{{ dataform.CardRegistrationURL }}"  method="post" class="card-body">
+
+                        <input type="hidden" name="data" value="{{dataform.PreregistrationData}}" />
+                         <input type="hidden" name="accessKeyRef" value="{{dataform.AccessKey}}" />
+
+                         <input type="hidden" name="returnURL" value="{{ absolute_url (path('portefeuille_creat')) }}" />
                         
-                        
                         <div class="form-group">
-                            <input type="text" name="nom"  placeholder="Votre nom" class="form-control e-mai" required autofocus>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" name="prenom"  placeholder="Votre prenom" class="form-control e-mai" required autofocus>
-                        </div>
-        
-                        <div class="form-group">
-                            <input type="text" name="num_card" class="form-control" placeholder="Numeros de cart" required>
-                            
+                        <input class="form-control" placeholder="Numeros de cart" type="text" name="cardNumber" value="" />
                         </div>
 
                         <div class="form-group">
-                            <input type="text" name="epx_date" class="form-control" placeholder="Date d'éxpiration" required>
+                        <input class="form-control" placeholder="Date d' expiration" type="text" name="cardExpirationDate" value="" />
                         </div>
 
                         <div class="form-group">
-                            <input type="text" name="cvv_num" class="form-control" placeholder="Numéros CVV" required>
+                        <input class="form-control" placeholder="CVV" type="text" name="cardCvx" value="" />
                         </div>
                         
                         <div class="form-group">
