@@ -172,6 +172,12 @@ class LocationController extends AbstractController
                 $Transfer->DebitedWalletID = $walletId;
                 $Transfer->CreditedWalletId = $WIdproprietaire;
                 $result = $this->mangoPayApi->Transfers->Create($Transfer);
+                
+                //status
+                $statut    = $statutReposistory->find(2); // Statut en cours
+                $location->setStatutLocation( $statut );
+                $this->getDoctrine()->getManager()->flush();
+                
                 return $this->render('location/successLocation.html.twig', [
                     'reponse' => $result,
                     'proprio' => $this->getUser()->getNomComplet(),
@@ -182,17 +188,13 @@ class LocationController extends AbstractController
                 dd($createdPayIn->Status);
                 /*$createdPayIn->ResultCode;*/
             }
-            
-            //status
-            $statut    = $statutReposistory->find(2); // Statut en cours
-            $location->setStatutLocation( $statut );
         }
         else
         {
             $statut    = $statutReposistory->find(4); // Statut interrompue
             $location->setStatutLocation( $statut );
         }
-        $this->getDoctrine()->getManager()->flush();
+        
         return $this->redirectToRoute('location_en_cours');
     }
 

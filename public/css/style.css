@@ -39,6 +39,10 @@ header .dropdown-toggle::after {
 	min-width: 360px;;
 }
 
+.pagination {
+	justify-content: center !important;
+}
+
 label {
 	padding-left: .2rem;
 	margin: 0;

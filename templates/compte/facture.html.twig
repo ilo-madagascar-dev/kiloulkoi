@@ -21,6 +21,14 @@
                             <h1 class="mb-0" style="font-size: 1.4rem;"><strong>Mes factures</strong></h1>
                             <small class="text-muted">Liste des factures de tout les mois.</small>
                         </div>
+                        <div class="ml-auto mt-2">
+                            <select id="anne" class="custom-select">
+                                {% set current_year = "now"|date('Y') %}
+                                {% for year in 2017..current_year %}
+                                    <option value="{{ year }}">{{ year }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                     </div>
                     <div class="card-body">
                         

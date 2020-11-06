@@ -19,22 +19,21 @@ class AbonnementRepository extends ServiceEntityRepository
         parent::__construct($registry, Abonnement::class);
     }
 
-    // /**
-    //  * @return Abonnement[] Returns an array of Abonnement objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Query Returns an array of Abonnement objects
+     */
+    public function findLatest(int $user_id)
     {
         return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
+            ->select('a', 't')
+            ->join('a.user', 'user')
+            ->join('a.type', 't')
+            ->where('user = :user_id')
+            ->setParameter('user_id', $user_id)
             ->setMaxResults(10)
             ->getQuery()
-            ->getResult()
         ;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Abonnement

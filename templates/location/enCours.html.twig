@@ -60,28 +60,26 @@
                                         <td>{{ location.statutLocation.libelle }}</td>
                                         <td>
                                             {% if location.statutLocation.id != 4 %}
-                                                 
-                                                    <a href="{{ path('location_accept', {id: location.id, etat: 'accepter'}) }}" class="btn btn-sm btn-success" title="Accepter">
-                                                    <i class="fa fa-check"></i>
-                                                    </a>
-                                                
-                                                
-                                                <a href="{{ path('location_accept', {id: location.id, etat: 'refuser'}) }}" class="btn btn-sm btn-danger" title="Réfuser">
-                                                    <i class="fa fa-times-circle"></i>
-                                                </a>
                                                 {% if location.statutLocation.id == 2 %}
                                                     <button class="btn btn-info btn-sm btn-message" title="Envoyer un message" data-toggle="modal" data-target="#message-modal" data-user="{{ location.user.nomComplet }}" data-url="{{ path('conversation_messages_new', { annonce: location.annonce.id, destinataire: location.user.id, expediteur: app.user.id }) }}">
                                                         <i class="fa fa-comments"></i>
                                                     </button>
+                                                {% else %}
+                                                    <a href="{{ path('location_accept', {id: location.id, etat: 'accepter'}) }}" class="btn btn-sm btn-success" title="Accepter">
+                                                        <i class="fa fa-check"></i>
+                                                    </a>
+                                                    <a href="{{ path('location_accept', {id: location.id, etat: 'refuser'}) }}" class="btn btn-sm btn-danger" title="Réfuser">
+                                                        <i class="fa fa-times-circle"></i>
+                                                    </a>
                                                 {% endif %}
                                             {% endif %}
                                         </td>
                                     </tr>
-                                 {% endfor %}
-                              </tbody>
+                                {% endfor %}
+                                </tbody>
                             </table>
                         {% else %}
-                                <div class="mb-0 alert alert-warning text-center d-flex justify-content-center align-items-center" style="height: 120px;"><strong>Aucun résultat.</strong></div>
+                            <div class="mb-0 alert alert-warning text-center d-flex justify-content-center align-items-center" style="height: 120px;"><strong>Aucun résultat.</strong></div>
                         {% endif %}
                     </div>
                 </div>
@@ -196,6 +194,6 @@
                 $('#message-receiver').html(userName);
                 $('#message-modal form').attr('action', url);
             })
-        })
+        });
     </script>
 {% endblock %}

@@ -18,16 +18,97 @@
                     <div class="card-header d-flex align-items-top">
                         <i class="text-success fa fa-calendar-plus mr-3" style="font-size: 3rem;"></i>
                         <div class="d-inline">
-                            <h1 class="mb-0" style="font-size: 1.4rem;"><strong>Mon abonnement</strong></h1>
-                            <small class="text-muted">Liste des factures de tout les mois.</small>
+                            <h1 class="mb-0" style="font-size: 1.4rem;"><strong>Mon Abonnement</strong></h1>
+                            <small class="text-muted">Liste de vos abonnements.</small>
+                        </div>
+                        <div class="ml-auto">
+                            <button class="btn btn-primary"  data-toggle="modal" data-target="#modalAbonnement">Ajouter</button>
                         </div>
                     </div>
                     <div class="card-body p-0">
-						<div class="mb-0 alert alert-warning text-center d-flex justify-content-center align-items-center" style="height: 120px;"><strong>Aucun résultat.</strong></div>
+                        {% if abonnements|length > 0 %}
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Début</th>
+                                        <th>Fin</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for abonnement in abonnements %}
+                                    <tr>
+                                        <td>{{ abonnement.type.libelle }}</td>
+                                        <td>{{ abonnement.dateDebut|date('d-m-Y') }}</td>
+                                        <td>{{ abonnement.dateFin|date('d-m-Y') }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <div class="mb-0 alert alert-warning text-center d-flex justify-content-center align-items-center" style="height: 120px;"><strong>Aucun résultat.</strong></div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="modalAbonnement" tabindex="-1" role="dialog" aria-labelledby="modalAbonnementLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalAbonnementLabel">S'abonner</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="{{ path('abonnement_new') }}">
+                            <div class="form-group">
+                                <label for="type">Type de l'abonnement :</label>
+                                <select name="type" id="type" class="form-control">
+                                    {% for type in types %}
+                                        <option value="{{ type.id }}">{{ type.libelle }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="mois">Nombres de mois :</label>
+                                <input type="number" class="form-control" id="mois" name="mois" value="1" min="1">
+                            </div>
+                            <div class="form-group">
+                                <label for="debut">Début :</label>
+                                <input type="text" class="form-control" id="debut" data="{{ "now"|date('Y/m/d') }}" value="{{ "now"|date('d/m/Y') }}" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="fin">Fin :</label>
+                                <input type="text" class="form-control" id="fin" data="{{ "now"|date_modify("+30 days")|date('Y/m/d') }}" value="{{ "now"|date_modify("+30 days")|date('d/m/Y') }}" disabled>
+                            </div>
+                            <button class="btn btn-success btn-block" type="submit">Confirmer</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready( function () {
+            $('#mois').change( function ()
+            {
+                const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+                
+                var date = new Date( Date.parse($('#debut').attr('data')) );
+                var mois = parseInt($(this).val());
+                
+                date.setMonth( date.getMonth() + mois );
+                $('#fin').val( date.toLocaleDateString('fr-FR', options) );
+            })
+        })
+    </script>
 {% endblock %}

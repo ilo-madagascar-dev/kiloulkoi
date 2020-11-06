@@ -301,7 +301,7 @@ class AppFixtures implements FixtureInterface
         }
 
         // Type abonnement
-        $typeAbonnements = ["Free", "Professionnel", "Premium"];
+        $typeAbonnements = ["Basique", "Professionnel", "Premium"];
         for ($i = 0; $i < count($typeAbonnements); $i++) 
         {
             $type = new TypeAbonnement();

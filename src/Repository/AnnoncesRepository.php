@@ -29,17 +29,19 @@ class AnnoncesRepository extends ServiceEntityRepository
     {
         $user = $this->security->getUser();
         $query =  $this->createQueryBuilder('a')
-                        ->select('a', 'u', 'c', 'p')
+                        ->select('a', 'u', 'c', 'sc', 'p')
                         ->join('a.user', 'u')
                         ->leftJoin('a.categorie', 'c')
+                        ->leftJoin('a.sousCategorie', 'sc')
                         ->leftJoin('a.photo', 'p')
                         ->orderBy('a.id', 'DESC')
                         ->orderBy('p.id', 'ASC');
 
         if( $user )
         {
-            $query = $query->leftJoin('a.user_favoris', 'user_favoris', Expr\Join::WITH, 'user_favoris.id = :user_favoris_id')
-                            ->setParameter('user_favoris_id', $user->getId() );
+            $query = $query->addSelect('uf')
+                            ->leftJoin('a.user_favoris', 'uf', 'with', 'uf = :uf_id')
+                            ->setParameter('uf_id', $user->getId() );
         }
 
         return $query;
