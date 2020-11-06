@@ -24,13 +24,16 @@ class LocationController extends AbstractController
 
     private $mangoPayApi;
 
-    public function __construct()
+    public function __construct(LocationRepository $locationRepository)
     {
         $this->mangoPayApi = new MangoPay\MangoPayApi();
+
         $this->mangoPayApi->Config->ClientId = 'admin-kiloukoi';
         $this->mangoPayApi->Config->ClientPassword = 'MNHcmbW6FE5XMeG1M6KgzHZXfAUdAJdeZjmoNDOAQAoi6spMqF';
         $this->mangoPayApi->Config->TemporaryFolder = '/Temp/tmp';    
         $this->mangoPayApi->Config->BaseUrl = 'https://api.sandbox.mangopay.com';
+
+        $locationRepository->updateLocationStatus();
     }
     /**
      * @Route("/", name="location_index", methods={"GET"})

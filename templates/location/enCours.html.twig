@@ -38,6 +38,7 @@
                                 <tbody>
                                 {% for location in mesBiens %}
                                     {% set periodeTotal = date(location.dateDebut).diff(date(location.dateFin)) %}
+                                    {% set plusOneDay   = location.dateReservation|date_modify("+24 hour")|date > date() %}
 
                                     {% if location.annonce.type.id == 1 %}
                                         {% set difference = periodeTotal.hours + 1 %}
@@ -59,19 +60,19 @@
                                         <td>{{ (difference * location.annonce.prix) |round(2, 'floor') }}</td>
                                         <td>{{ location.statutLocation.libelle }}</td>
                                         <td>
-                                            {% if location.statutLocation.id != 4 %}
-                                                {% if location.statutLocation.id == 2 %}
-                                                    <button class="btn btn-info btn-sm btn-message" title="Envoyer un message" data-toggle="modal" data-target="#message-modal" data-user="{{ location.user.nomComplet }}" data-url="{{ path('conversation_messages_new', { annonce: location.annonce.id, destinataire: location.user.id, expediteur: app.user.id }) }}">
-                                                        <i class="fa fa-comments"></i>
-                                                    </button>
-                                                {% else %}
-                                                    <a href="{{ path('location_accept', {id: location.id, etat: 'accepter'}) }}" class="btn btn-sm btn-success" title="Accepter">
-                                                        <i class="fa fa-check"></i>
-                                                    </a>
-                                                    <a href="{{ path('location_accept', {id: location.id, etat: 'refuser'}) }}" class="btn btn-sm btn-danger" title="Réfuser">
-                                                        <i class="fa fa-times-circle"></i>
-                                                    </a>
-                                                {% endif %}
+                                            {% if location.statutLocation.id == 2 %} {# En Cours #}
+                                                <button class="btn btn-info btn-sm btn-message" title="Envoyer un message" data-toggle="modal" data-target="#message-modal" data-user="{{ location.user.nomComplet }}" data-url="{{ path('conversation_messages_new', { annonce: location.annonce.id, destinataire: location.user.id, expediteur: app.user.id }) }}">
+                                                    <i class="fa fa-comments"></i>
+                                                </button>
+                                            {% elseif location.statutLocation.id == 1 %} {# En attente #}
+                                                <a href="{{ path('location_accept', {id: location.id, etat: 'accepter'}) }}" class="btn btn-sm btn-success" title="Accepter">
+                                                    <i class="fa fa-check"></i>
+                                                </a>
+                                                <a href="{{ path('location_accept', {id: location.id, etat: 'refuser'}) }}" class="btn btn-sm btn-danger" title="Réfuser">
+                                                    <i class="fa fa-times-circle"></i>
+                                                </a>
+                                            {% else %}
+                                                -
                                             {% endif %}
                                         </td>
                                     </tr>
@@ -133,7 +134,8 @@
                                             <td>{{ (difference * location.annonce.prix) |round(2, 'floor') }}</td>
                                             <td>{{ location.statutLocation.libelle }}</td>
                                             <td>
-                                                {% if location.dateReservation|date_modify("+24 hour")|date < date() %}
+                                                {% set plusOneDay = location.dateReservation|date_modify("+24 hour")|date > date() %}
+                                                {% if plusOneDay %}
                                                     <a class="btn btn-sm btn-danger" href="{{ path('location_delete', { id: location.id}) }}" title="Annuler">
                                                         <i class="fa fa-times-circle"></i>
                                                     </a>

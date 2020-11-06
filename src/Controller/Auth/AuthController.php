@@ -18,6 +18,7 @@ use App\Form\ProfessionnelType;
 use App\Form\RegistrationFormType;
 use App\Security\UserAuthenticator;
 use App\Service\FileUploader;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 class AuthController extends AbstractController
 {
@@ -49,7 +50,7 @@ class AuthController extends AbstractController
     /**
      * @Route("/inscription/{type}", name="app_register")
      */
-    public function register(Request $request, string $type, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, UserAuthenticator $authenticator, FileUploader $uploader): Response
+    public function register(Request $request, string $type, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, UserAuthenticator $authenticator, FileUploader $uploader, KernelInterface $kernel): Response
     {
         if ($this->getUser())
         {
@@ -102,7 +103,7 @@ class AuthController extends AbstractController
             $user->setDateCreation();
             $user->setDateMiseAJour();
             $user->setActif(true);
-            $user->setMangoPay();
+            $user->setMangoPay( $kernel->getProjectDir() );
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);

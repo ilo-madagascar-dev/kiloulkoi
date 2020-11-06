@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Location;
+use App\Entity\StatutLocation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -78,6 +79,18 @@ class LocationRepository extends ServiceEntityRepository
                     ->getResult();
     }
     
+
+    public function updateLocationStatus()
+    {
+        return $this->createQueryBuilder('l')
+                    ->update(Location::class, 'l')
+                    ->set('l.statutLocation', 3)
+                    ->where('l.dateFin < :now and l.statutLocation = 2')
+                    ->setParameter('now', date('Y-m-d'))
+                    ->getQuery()
+                    ->execute()
+                    ;
+    }
 
     // /**
     //  * @return Location[] Returns an array of Location objects
