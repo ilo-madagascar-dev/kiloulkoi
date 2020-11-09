@@ -4,13 +4,7 @@
 
 {% block body %}
 
-    <div class="container-fluid" style="max-width: 1500px;">
-        <div id="bg" style="position:absolute;z-index:-1;left:0;height:375px;"></div>
-        
-        <center class="py-4">
-            <img src="{{ asset('image/logo.png') }}" class="mb-3" style="height: 120px;width: auto;" >
-            <p class="text-center text-white"><strong>N'achetez que le nécessaire, pour le reste il y a Kiloukoi!</strong></p>
-        </center>
+    <div class="container-fluid" >
 
         <div class="row mb-3">
             <div class="offset-lg-2 col-lg-8 offset-md-1 col-md-10">
@@ -113,6 +107,7 @@
                                 <tbody>
                                     {% for location in mesEmprunts %}
                                         {% set periodeTotal = date(location.dateDebut).diff(date(location.dateFin)) %}
+                                        {% set plusOneDay   = location.dateReservation|date_modify("+24 hour")|date > date() %}
 
                                         {% if location.annonce.type.id == 1 %}
                                             {% set difference = periodeTotal.hours + 1 %}
@@ -134,11 +129,12 @@
                                             <td>{{ (difference * location.annonce.prix) |round(2, 'floor') }}</td>
                                             <td>{{ location.statutLocation.libelle }}</td>
                                             <td>
-                                                {% set plusOneDay = location.dateReservation|date_modify("+24 hour")|date > date() %}
-                                                {% if plusOneDay %}
+                                                {% if not plusOneDay and location.statutLocation.id != 3 %}
                                                     <a class="btn btn-sm btn-danger" href="{{ path('location_delete', { id: location.id}) }}" title="Annuler">
                                                         <i class="fa fa-times-circle"></i>
                                                     </a>
+                                                {% else %}
+                                                    -
                                                 {% endif %}
                                                 {% if location.statutLocation.id == 2 %}
                                                     <button class="btn btn-info btn-sm btn-message" data-toggle="modal" data-target="#message-modal" data-user="{{ location.annonce.user.nomComplet }}" data-url="{{ path('conversation_messages_new', { annonce: location.annonce.id, destinataire: location.annonce.user.id, expediteur: app.user.id }) }}">

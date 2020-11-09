@@ -15,19 +15,19 @@
 <div class="container">
 	<div class="row card-deck">
 		{% for annonce in annonces %}
+			{% set slug = annonce.slug == '' ? 'annonces_' : annonce.slug %}
 			<div class="col-12 col-md-6 col-lg-4 mb-3">
 				<div class="card h-100 shadow m-auto" style="max-width: 300px;">
-					<div style="height: 165px;" class="text-center overflow-hidden d-flex justify-content-center bg-light">
+					<a href="{{ path('annonces_show', {id: annonce.id, slug: slug }) }}" style="height: 185px;" class="text-center overflow-hidden bg-light">
 						{% if annonce.photo|length > 0 %}
-							<img src="{{ asset("uploads/" ~ annonce.photo[0].url) }}" class="card-img-top h-100 w-auto m-auto" alt="...">
+							<img src="{{ asset("uploads/" ~ annonce.photo[0].url) }}" class="card-img-top w-100 m-auto" alt="...">
 						{% else %}
 							<img src="{{ asset('image/logo-fond-blanc.png') }}" class="card-img-top m-auto p-3" style="width: auto;height: 100%;" alt="...">
 						{% endif %}
-					</div>
+					</a>
 
 					<div class="card-body py-2 px-3">
 						<h3 class="card-title text-primary mb-2" style="font-size: 1.15rem;">
-							{% set slug = annonce.slug == '' ? 'annonces_' : annonce.slug %}
 							<strong><a href="{{ path('annonces_show', {id: annonce.id, slug: slug }) }}" >{{ annonce.titre }}</a></strong>
 						</h3>
 

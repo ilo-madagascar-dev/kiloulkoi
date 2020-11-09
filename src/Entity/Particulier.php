@@ -53,9 +53,4 @@ class Particulier extends User
         return $this;
     }
 
-    public function setMangoPay(string $appDirectory)
-    {
-        return $this->setUserMangoPay( $appDirectory, $this->getNom(), $this->getPrenom(), $this->getNomComplet() );
-    }
-
 }

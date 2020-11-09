@@ -8,6 +8,7 @@ use App\Form\LocationType;
 use App\Repository\AnnoncesRepository;
 use App\Repository\LocationRepository;
 use App\Repository\StatutLocationRepository;
+use App\Service\MangoPayService;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,17 +23,8 @@ use MangoPay;
 class LocationController extends AbstractController
 {
 
-    private $mangoPayApi;
-
     public function __construct(LocationRepository $locationRepository)
     {
-        $this->mangoPayApi = new MangoPay\MangoPayApi();
-
-        $this->mangoPayApi->Config->ClientId = 'admin-kiloukoi';
-        $this->mangoPayApi->Config->ClientPassword = 'MNHcmbW6FE5XMeG1M6KgzHZXfAUdAJdeZjmoNDOAQAoi6spMqF';
-        $this->mangoPayApi->Config->TemporaryFolder = '/Temp/tmp';    
-        $this->mangoPayApi->Config->BaseUrl = 'https://api.sandbox.mangopay.com';
-
         $locationRepository->updateLocationStatus();
     }
     /**
@@ -54,7 +46,6 @@ class LocationController extends AbstractController
             strstr(strstr(serialize($instance), '"'), ':')
         ));
     }
-
 
     /**
      * @Route("/en-cours", name="location_en_cours", methods={"GET"})
@@ -110,29 +101,46 @@ class LocationController extends AbstractController
     /**
      * @Route("/action/{id}/{etat}", name="location_accept", methods={"GET"})
      */
-    public function accept(Request $request, Location $location, string $etat, StatutLocationRepository $statutReposistory): Response
+    public function accept(Request $request, Location $location, string $etat, StatutLocationRepository $statutReposistory, MangoPayService $mangoPayService): Response
     {
         if( $etat == "accepter" )
         {
             $locataire = $location->getUser();
+
             /*dd($locataire->getMangoPayId());*/
             // create pay-in CARD DIRECT direct paying card
-            $waletUserId = $this->mangoPayApi->Users->GetWallets($locataire->getMangoPayId());
+            $mangoPayApi = $mangoPayService->getMangoPayApi();
+        
+            $waletUserId = $mangoPayApi->Users->GetWallets($locataire->getMangoPayId());
             $walletId;
             foreach ($waletUserId as $value) {
                 $walletId = $value->Id;
             }
-            $payIn = new \MangoPay\PayIn();
-            $payIn->CreditedWalletId = $walletId;
-            $payIn->AuthorId = $locataire->getMangoPayId();
-            $payIn->DebitedFunds = new \MangoPay\Money();
-            $payIn->DebitedFunds->Amount = 1000;
-            $payIn->DebitedFunds->Currency = "EUR";
-            $payIn->Fees = new \MangoPay\Money();
-            $payIn->Fees->Amount = 0;
-            $payIn->Fees->Currency = "EUR";
             
-            $cards = $this->mangoPayApi->Users->GetCards($locataire->getMangoPayId());
+            $periodeTotal = date_diff($location->getDateDebut(),$location->getDateFin());
+            
+            if ($location->getAnnonce()->getType()->getId() == 1) {
+                $difference = $periodeTotal->format('%h') + 1;
+            }elseif ($location->getAnnonce()->getType()->getId() == 2) {
+                $difference = $periodeTotal->format('%a') + 1;
+            }elseif ($location->getAnnonce()->getType()->getId() == 3) {
+                $difference = $periodeTotal->format('%a')/7 + 1;
+            }else{
+                $difference = $periodeTotal->format('%m') + 1;
+            }
+
+            $payIn = new \MangoPay\PayIn();
+
+            $payIn->CreditedWalletId = $walletId;
+            $payIn->AuthorId         = $locataire->getMangoPayId();
+            $payIn->DebitedFunds     = new \MangoPay\Money();
+            $payIn->Fees             = new \MangoPay\Money();
+            $payIn->Fees->Amount     = 0;
+            $payIn->Fees->Currency   = "EUR";
+            $payIn->DebitedFunds->Amount   = intval( $difference * $location->getAnnonce()->getPrix() ) * 100;
+            $payIn->DebitedFunds->Currency = "EUR";
+            
+            $cards  = $mangoPayApi->Users->GetCards($locataire->getMangoPayId());
             $cardId;
             $cardType;
             foreach ($cards as $value) {
@@ -143,7 +151,7 @@ class LocationController extends AbstractController
             /*$Card = new \MangoPay\Card();
             $Card->Id = $cardId;
             $Card->Active = true;
-            $this->mangoPayApi->Cards->Update($Card);*/
+            $mangoPayApi->Cards->Update($Card);*/
 
             // payment type as CARD
             $payIn->PaymentDetails = new \MangoPay\PayInPaymentDetailsCard();
@@ -155,11 +163,11 @@ class LocationController extends AbstractController
             $payIn->ExecutionDetails->SecureModeReturnURL = 'http://test.com';
 
             // create Pay-In
-            $createdPayIn = $this->mangoPayApi->PayIns->Create($payIn);
+            $createdPayIn = $mangoPayApi->PayIns->Create($payIn);
             if ($createdPayIn->Status == \MangoPay\PayInStatus::Succeeded) {
                 /*$createdPayIn->Id; 
                 $createdWallet->Id;*/
-                $waletproprietaire = $this->mangoPayApi->Users->GetWallets($this->getUser()->getMangoPayId());
+                $waletproprietaire = $mangoPayApi->Users->GetWallets($this->getUser()->getMangoPayId());
                 $WIdproprietaire;
                 foreach ($waletproprietaire as $value) {
                     $WIdproprietaire = $value->Id;
@@ -168,13 +176,13 @@ class LocationController extends AbstractController
                 $Transfer->AuthorId = $locataire->getMangoPayId();
                 $Transfer->DebitedFunds = new \MangoPay\Money();
                 $Transfer->DebitedFunds->Currency = "EUR";
-                $Transfer->DebitedFunds->Amount = 500;
+                $Transfer->DebitedFunds->Amount = intval( $difference * $location->getAnnonce()->getPrix() ) * 100;
                 $Transfer->Fees = new \MangoPay\Money();
                 $Transfer->Fees->Currency = "EUR";
                 $Transfer->Fees->Amount = 100;
                 $Transfer->DebitedWalletID = $walletId;
                 $Transfer->CreditedWalletId = $WIdproprietaire;
-                $result = $this->mangoPayApi->Transfers->Create($Transfer);
+                $result = $mangoPayApi->Transfers->Create($Transfer);
                 
                 //status
                 $statut    = $statutReposistory->find(2); // Statut en cours

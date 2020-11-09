@@ -183,7 +183,7 @@ class AnnoncesController extends AbstractController
         $formType   = 'App\Form\Category\\' . trim($nomClasse) . 'Type';
         $annonce    = new $class();
         $abonnement = $repoAbonnement->findOneBy( ['user' => $user->getId() ]);
-        $photoMax   = ($abonnement && $abonnement->getId()) == 2 ? 6 : 3;
+        $photoMax   = ($abonnement && $abonnement->getId() == 2) ? 6 : 3;
 
         $form = $this->createForm($formType, $annonce);
         $form->handleRequest($request);

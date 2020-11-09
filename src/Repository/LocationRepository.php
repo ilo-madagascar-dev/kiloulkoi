@@ -80,13 +80,17 @@ class LocationRepository extends ServiceEntityRepository
     }
     
 
+
+    /**
+     * @return boolean met à jours les annonces à éfféctuer pour les locations finis
+     */
     public function updateLocationStatus()
     {
         return $this->createQueryBuilder('l')
                     ->update(Location::class, 'l')
                     ->set('l.statutLocation', 3)
                     ->where('l.dateFin < :now and l.statutLocation = 2')
-                    ->setParameter('now', date('Y-m-d'))
+                    ->setParameter('now', date("Y-m-d", time() - 86400)) 
                     ->getQuery()
                     ->execute()
                     ;

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\MangoPayService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,13 +18,9 @@ class CompteController extends AbstractController
 
     private $mangoPayApi;
 
-    public function __construct()
+    public function __construct(MangoPayService $mangoPayService)
     {
-        $this->mangoPayApi = new MangoPay\MangoPayApi();
-        $this->mangoPayApi->Config->ClientId = 'admin-kiloukoi';
-        $this->mangoPayApi->Config->ClientPassword = 'MNHcmbW6FE5XMeG1M6KgzHZXfAUdAJdeZjmoNDOAQAoi6spMqF';
-        $this->mangoPayApi->Config->TemporaryFolder = '/Temp/tmp';    
-        $this->mangoPayApi->Config->BaseUrl = 'https://api.sandbox.mangopay.com';
+        $this->mangoPayApi = $mangoPayService->getMangoPayApi();
     }
 
     /**
