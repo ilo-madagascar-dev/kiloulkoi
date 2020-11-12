@@ -117,6 +117,8 @@ class AuthController extends AbstractController
             }
 
             $mangoPayUserId = $mangoPayService->setUserMangoPay($user->getEmail(), $nom, $prenom);
+            /*$mangoPayService->setUserMangoPayKYC($mangoPayUserId);*/
+
             $user->setMangoPayId( $mangoPayUserId );
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -142,5 +144,31 @@ class AuthController extends AbstractController
     public function logout()
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+    }
+
+    /**
+     * @Route("/testkyc", name="test_kYC")
+     */
+    public function tesK(MangoPayService $mangoPayService)
+    {
+        $mguId = '91860289';
+        
+        dd($mangoPayService->setUserMangoPayKYC($mguId));
+        return new Response('KYC');
+    }
+
+    /**
+     * @Route("/uploadkyc", name="uploadkyc")
+     */
+    public function uploadfileKYC(MangoPayService $mangoPayService, Request $request, FileUploader $uploader)
+    {
+        /*$filePath = filePath('\www\projetkiloukoi\Kiloukoi.WEBAPP\var\mangopay\FLYER_FR.pdf');*/
+        /*$file = base64_encode (file_get_contents($filePath));*/
+        $file = $_FILES['kycfile']['tmp_name'];/*$uploader->upload($request->files->get('kycfile'));*/
+
+        $mguId = '92309559';
+        
+        $mangoPayService->setUserMangoPayKYC($mguId,$file);
+        return new Response('KYC');
     }
 }
