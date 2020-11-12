@@ -23,7 +23,12 @@ class ModeHommeType extends AnnoncesType
         $builder
             ->add('marque')
             ->add('modele')
-            ->add('pointure', IntegerType::class)
+            ->add('pointure', 
+                IntegerType::class, 
+                array(
+                    'attr' => array('min' => 35, 'max' => 50)
+                )
+            )
             ->add('taille', EntityType::class, [
                 'class' => Taille::class,
                 'query_builder' => function (EntityRepository $er) 

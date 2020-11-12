@@ -22,12 +22,12 @@ class Abonnement
     /**
      * @ORM\Column(type="date")
      */
-    private $date_debut;
+    private $dateDebut;
 
     /**
      * @ORM\Column(type="date")
      */
-    private $date_fin;
+    private $dateFin;
 
     /**
      * @ORM\Column(type="boolean")
@@ -63,24 +63,24 @@ class Abonnement
 
     public function getDateDebut(): ?\DateTimeInterface
     {
-        return $this->date_debut;
+        return $this->dateDebut;
     }
 
-    public function setDateDebut(\DateTimeInterface $date_debut): self
+    public function setDateDebut(\DateTimeInterface $dateDebut): self
     {
-        $this->date_debut = $date_debut;
+        $this->dateDebut = $dateDebut;
 
         return $this;
     }
 
     public function getDateFin(): ?\DateTimeInterface
     {
-        return $this->date_fin;
+        return $this->dateFin;
     }
 
-    public function setDateFin(\DateTimeInterface $date_fin): self
+    public function setDateFin(\DateTimeInterface $dateFin): self
     {
-        $this->date_fin = $date_fin;
+        $this->dateFin = $dateFin;
 
         return $this;
     }

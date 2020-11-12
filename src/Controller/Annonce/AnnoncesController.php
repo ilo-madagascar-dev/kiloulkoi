@@ -2,10 +2,13 @@
 
 namespace App\Controller\Annonce;
 
+use App\Entity\Abonnement;
 use App\Entity\Annonces;
+use App\Entity\User;
 use App\Repository\AbonnementRepository;
 use App\Repository\AnnoncesRepository;
 use App\Repository\CategoriesRepository;
+use App\Repository\TypeAbonnementRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,11 +25,15 @@ class AnnoncesController extends AbstractController
 {
     private $repAnnonce;
     private $repCategorie;
+    private $repAbonnement;
+    private $repTypeAbonnement;
 
-    public function __construct(AnnoncesRepository $repAnnonce, CategoriesRepository $repCategorie)
+    public function __construct(AnnoncesRepository $repAnnonce, CategoriesRepository $repCategorie, AbonnementRepository $repAbonnement, TypeAbonnementRepository $repTypeAbonnement)
     {
         $this->repAnnonce = $repAnnonce;
         $this->repCategorie = $repCategorie;
+        $this->repAbonnement = $repAbonnement;
+        $this->repTypeAbonnement = $repTypeAbonnement;
     }
 
     /**
@@ -162,7 +169,7 @@ class AnnoncesController extends AbstractController
     /**
      * @Route("/creation", name="annonces_new", methods={"GET","POST"})
      */
-    public function new(Request $request, AbonnementRepository $repoAbonnement, FileUploader $fileUploader): Response
+    public function new(Request $request, TypeAbonnementRepository $repoTypeAbonnement, FileUploader $fileUploader): Response
     {
         $user = $this->getUser();
         if ($user == null) 
@@ -170,24 +177,51 @@ class AnnoncesController extends AbstractController
             return $this->redirectToRoute('securitylogin');
         }
 
+        $abonnement = $this->repAbonnement->findUserAbonnement( $user->getId() );
+        if( $abonnement == null )
+        {
+            if (strpos(get_class($user), 'Professionnel') !== false )
+            {
+                $this->addFlash('error', 'Pour pouvoir publier des annonces, veuillez vous abonner à l\'abonnement Professionnel ou Premium.');
+                return $this->redirectToRoute('abonnement_index');
+            }
+            else
+            {
+                $abonnement     = new Abonnement();
+                $debut          = new \Datetime();
+                $typeAbonnement = $this->repTypeAbonnement->find(1);
+
+                $abonnement->setDateDebut( $debut );
+                $abonnement->setDateFin( $debut->add(new \DateInterval('P1M')) );
+                $abonnement->setActif( 1 );
+                $abonnement->setType( $typeAbonnement );
+                $abonnement->setUser( $user );
+            }
+        }
+
         $nomClasse  = ucfirst($request->query->get('categorie'));
         $categorie  = $this->repCategorie->findOneBy(['className' => $nomClasse]);
 
+        // Category not found....
         if( $categorie == null)
-        {
-            // Category not found....
             return $this->redirectToRoute('annonces_index');
+
+        $photoMax    = $abonnement->getType()->getPhotoMax();
+        $annonceMax  = intval($abonnement->getType()->getAnnonceMax());
+        $annonceUser = intval($this->repAnnonce->countUserAnnonce( $user->getId(), $abonnement->getDateDebut(), $abonnement->getDateFin() ));
+
+        // Nombre d'annonce max atteint
+        if( $annonceMax <= $annonceUser )
+        {
+            $this->addFlash('error', 'Vous avez atteint le nombre maximum de poste cette mois');
+            return $this->redirectToRoute('mes_annonces_index');
         }
-  
-        $class      = 'App\Entity\Annonce' . $nomClasse;
-        $formType   = 'App\Form\Category\\' . trim($nomClasse) . 'Type';
-        $annonce    = new $class();
-        $abonnement = $repoAbonnement->findOneBy( ['user' => $user->getId() ]);
-        $photoMax   = ($abonnement && $abonnement->getId() == 2) ? 6 : 3;
 
-        $form = $this->createForm($formType, $annonce);
+        $class    = 'App\Entity\Annonce' . $nomClasse;
+        $formType = 'App\Form\Category\\' . trim($nomClasse) . 'Type';
+        $annonce  = new $class();
+        $form     = $this->createForm($formType, $annonce);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) 
         {
             $photos = $form->get('photo')->getData();
@@ -230,12 +264,12 @@ class AnnoncesController extends AbstractController
     /**
      * @Route("/details/{id}/{slug}", name="annonces_show", methods={"GET"})
      */
-    public function show(int $id, string $slug, AbonnementRepository $repoAbonnement, SerializerInterface $serializer): Response
+    public function show(int $id, string $slug, SerializerInterface $serializer): Response
     {
         $user    = $this->getUser();
         $annonce = $this->repAnnonce->findAnnonceById($id);
 
-        $abonnement = $repoAbonnement->findOneBy( ['user' => $annonce->getUser()->getId() ]);
+        $abonnement = $this->repAbonnement->findOneBy( ['user' => $annonce->getUser()->getId() ]);
         $photoMax   = ($abonnement && $abonnement->getId()) == 2 ? 6 : 3;
 
         if ($user == null || ($user !== null && $user->getId() !== $annonce->getUser()->getId()) ) 
@@ -262,7 +296,7 @@ class AnnoncesController extends AbstractController
     /**
      * @Route("/{id}/modification", name="annonces_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Annonces $annonce, AbonnementRepository $repoAbonnement, FileUploader $fileUploader): Response
+    public function edit(Request $request, Annonces $annonce, FileUploader $fileUploader): Response
     {
         $user = $this->getUser();
         if ( $user == null) 
@@ -274,9 +308,9 @@ class AnnoncesController extends AbstractController
         $class    = 'App\Form\Category\\' . $formType . 'Type';
         $form     = $this->createForm($class, $annonce);
         
-        $abonnement = $repoAbonnement->findOneBy( ['user' => $user->getId() ]);
+        $abonnement = $this->repAbonnement->findOneBy( ['user' => $user->getId() ]);
         $photoMax   = ($abonnement && $abonnement->getId() == 2) ? 6 : 3;
-        
+
         $form->handleRequest($request);
         if ( $form->isSubmitted() && $form->isValid() ) 
         {
@@ -333,6 +367,5 @@ class AnnoncesController extends AbstractController
 
         return $this->redirectToRoute('annonces_index');
     }
-
 
 }

@@ -301,11 +301,17 @@ class AppFixtures implements FixtureInterface
         }
 
         // Type abonnement
-        $typeAbonnements = ["Basique", "Professionnel", "Premium"];
+        $typeAbonnements = [
+            ["Basique"      , 3, 3],
+            ["Professionnel", 3, 3],
+            ["Premium"      , 6, 6],
+        ];
         for ($i = 0; $i < count($typeAbonnements); $i++) 
         {
             $type = new TypeAbonnement();
-            $type->setLibelle($typeAbonnements[$i]);
+            $type->setLibelle($typeAbonnements[$i][0]);
+            $type->setPhotoMax($typeAbonnements[$i][1]);
+            $type->setAnnonceMax($typeAbonnements[$i][2]);
             $manager->persist($type);
         }
 
