@@ -11,7 +11,12 @@
             <div class="card-title"><h3 class="text-success text-center">Déposer une annonce</h3></div>
             <div class="card-body pt-1">
                 <div class="row">
-                    <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+                    <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2">   
+                        {% for message in app.flashes('error') %}
+                            <div class="alert alert-danger">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
                         <form action="{{ path('annonces_new') }}" class="text-center">
                             <div class="form-group">
                                 <select class="form-control custom-select" name="categorie">

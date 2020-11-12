@@ -168,14 +168,26 @@ class AnnoncesRepository extends ServiceEntityRepository
                     ->leftJoin('a.locations', 'l', Expr\Join::WITH, 'l.statutLocation = 2')
                     ->where('a.id = :id')
                     ->setParameter('id', $id)
-                    // ->andWhere('l.dateFin >= :fin OR l.dateFin is null')
-                    // ->setParameter('fin', date('Y-m-d'))
+                    ->andWhere('l.dateFin >= :fin OR l.dateFin is null')
+                    ->setParameter('fin', date('Y-m-d'))
                     ->orderBy('l.dateDebut', 'ASC')
                     ->getQuery();
 
         return $query->getOneOrNullResult();
     }
 
+    public function countUserAnnonce(int $user, \DateTimeInterface $debut, \DateTimeInterface $fin)
+    {
+        return $this->createQueryBuilder('a')
+                    ->select('count(a.id)')
+                    ->where('a.user = :user_id')
+                    ->setParameter('user_id', $user)
+                    ->andWhere(':debut <= a.dateCreation and a.dateCreation >= :fin')
+                    ->setParameter('debut', $debut)
+                    ->setParameter('fin', $fin)
+                    ->getQuery()
+                    ->getSingleScalarResult();
+    }
 
     /**
      * @return \Doctrine\ORM\Query

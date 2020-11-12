@@ -3,6 +3,7 @@
 namespace App\Controller\Compte;
 
 use App\Entity\Abonnement;
+use App\Entity\User;
 use App\Form\AbonnementType;
 use App\Repository\AbonnementRepository;
 use App\Repository\TypeAbonnementRepository;
@@ -16,10 +17,19 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AbonnementController extends AbstractController
 {
+    private $repAbonnement;
+    private $repTypeAbonnement;
+
+    public function __construct(AbonnementRepository $repAbonnement, TypeAbonnementRepository $repTypeAbonnement)
+    {
+        $this->repAbonnement = $repAbonnement;
+        $this->repTypeAbonnement = $repTypeAbonnement;
+    }
+
     /**
      * @Route("/", name="abonnement_index", methods={"GET"})
      */
-    public function index(AbonnementRepository $abonnementRepository, TypeAbonnementRepository $typeAbRepo): Response
+    public function index(TypeAbonnementRepository $typeAbRepo): Response
     {
         $user  = $this->getUser();
 
@@ -33,9 +43,31 @@ class AbonnementController extends AbstractController
         }
 
         return $this->render('compte/abonnement.html.twig', [
-            'abonnements' => $abonnementRepository->findLatest( $user->getId() )->getResult(),
+            'abonnement' => $this->getUserAbonnement( $user ),
             'types' => $types
         ]);
+    }
+
+    /**
+     * @return Abonnement
+     */
+    private function getUserAbonnement(User $user): Abonnement
+    {
+        $abonnement     = $this->repAbonnement->findUserAbonnement( $user->getId() ); 
+        if( $abonnement == null )
+        {
+            $abonnement     = new Abonnement();
+            $typeAbonnement = $this->repTypeAbonnement->find(1);
+            $debut          = new \Datetime();
+
+            $abonnement->setDateDebut( $debut );
+            $abonnement->setDateFin( $debut->add(new \DateInterval('P1M')) );
+            $abonnement->setActif( 1 );
+            $abonnement->setType( $typeAbonnement );
+            $abonnement->setUser( $user );
+        }
+
+        return $abonnement;
     }
 
     /**
@@ -43,23 +75,21 @@ class AbonnementController extends AbstractController
      */
     public function new(Request $request, TypeAbonnementRepository $typeAbRepo): Response
     {
-        $mois = $request->request->getInt('mois', 1);
         $user = $this->getUser();
-
         if (strpos(get_class($user), 'Professionnel') !== false)
         {
-            $typeAbonnement = $typeAbRepo->find(2);
+            $typeAbonnement = $typeAbRepo->find(2); // Professionnel
         }
         else
         {
-            $typeAbonnement = $typeAbRepo->find(1);
+            $typeAbonnement = $typeAbRepo->find(3); // Premium
         }
 
         $abonnement = new Abonnement();
 
         $abonnement->setDateDebut( new \Datetime() );
-        $abonnement->setDateFin( (new \Datetime())->add(new \DateInterval('P'. $mois .'M')) );
-        $abonnement->setActif( 0 );
+        $abonnement->setDateFin( (new \Datetime())->add(new \DateInterval('P1M')) );
+        $abonnement->setActif( 1 );
         $abonnement->setType( $typeAbonnement );
         $abonnement->setUser( $user );
 

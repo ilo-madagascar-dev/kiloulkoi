@@ -35,6 +35,24 @@ class AbonnementRepository extends ServiceEntityRepository
         ;
     }
 
+
+    /**
+     * @return Abonnement
+     */
+    public function findUserAbonnement(int $user) : ?Abonnement
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a', 't')
+            ->join('a.type', 't')
+            ->where('a.user = :user_id')
+            ->setParameter('user_id', $user)
+            ->setParameter('now', date("Y-m-d"))
+            ->andWhere('a.dateFin >= :now')
+            ->orderBy('t.id', 'DESC')
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     /*
     public function findOneBySomeField($value): ?Abonnement
     {

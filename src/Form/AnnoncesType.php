@@ -24,7 +24,7 @@ class AnnoncesType extends AbstractType
     {
         $builder->add('titre', TextType::class);
 
-        if( isset($options['classe']) )
+        if( isset($options['classe']) && !in_array($options['classe'], ['Service', 'Divers']) )
         {
             $builder = $builder->add('sous_categorie', EntityType::class, [
                 'class' => Categories::class,

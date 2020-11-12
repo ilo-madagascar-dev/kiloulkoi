@@ -29,6 +29,16 @@ class TypeAbonnement
      */
     private $abonnements;
 
+    /**
+     * @ORM\Column(type="smallint")
+     */
+    private $photoMax;
+
+    /**
+     * @ORM\Column(type="smallint")
+     */
+    private $annonceMax;
+
     public function __construct()
     {
         $this->abonnements = new ArrayCollection();
@@ -78,6 +88,30 @@ class TypeAbonnement
                 $abonnement->setType(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPhotoMax(): ?int
+    {
+        return $this->photoMax;
+    }
+
+    public function setPhotoMax(int $photoMax): self
+    {
+        $this->photoMax = $photoMax;
+
+        return $this;
+    }
+
+    public function getAnnonceMax(): ?int
+    {
+        return $this->annonceMax;
+    }
+
+    public function setAnnonceMax(int $annonceMax): self
+    {
+        $this->annonceMax = $annonceMax;
 
         return $this;
     }

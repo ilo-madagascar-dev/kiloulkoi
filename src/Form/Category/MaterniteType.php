@@ -18,7 +18,12 @@ class MaterniteType extends AnnoncesType
 
         $builder
             ->add('marque')
-            ->add('pointure', IntegerType::class)
+            ->add('pointure',  
+                IntegerType::class, 
+                array(
+                    'attr' => array('min' => 5, 'max' => 20)
+                )
+            )
         ;
     }
 
