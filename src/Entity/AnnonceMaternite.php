@@ -17,9 +17,15 @@ class AnnonceMaternite extends Annonces
     private $marque;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Taille::class)
+     * @ORM\Column(type="smallint", nullable=true)
      */
     private $pointure;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=TailleMaternite::class)
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $taille;
 
 
     public function getMarque(): ?string
@@ -34,14 +40,26 @@ class AnnonceMaternite extends Annonces
         return $this;
     }
 
-    public function getPointure(): ?Taille
+    public function getPointure(): ?int
     {
         return $this->pointure;
     }
 
-    public function setPointure(?Taille $pointure): self
+    public function setPointure(?int $pointure): self
     {
         $this->pointure = $pointure;
+
+        return $this;
+    }
+
+    public function getTaille(): ?TailleMaternite
+    {
+        return $this->taille;
+    }
+
+    public function setTaille(?TailleMaternite $taille): self
+    {
+        $this->taille = $taille;
 
         return $this;
     }

@@ -40,13 +40,7 @@ class Conversation
      * @ORM\OneToMany(targetEntity=Message::class, mappedBy="conversation", orphanRemoval=true)
      */
     private $messages;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Annonces::class, inversedBy="conversations")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $annonce;
-
+    
     /**
      * @ORM\Column(type="boolean", options={"default" : false})
      */
@@ -57,10 +51,17 @@ class Conversation
      */
     private $lu_2;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Location::class, inversedBy="conversations")
+     */
+    private $locations;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
         $this->derniere_lecture = new \DateTime();
+        $this->annonces = new ArrayCollection();
+        $this->locations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -111,18 +112,6 @@ class Conversation
         return $this;
     }
 
-    public function getAnnonce(): ?Annonces
-    {
-        return $this->annonce;
-    }
-
-    public function setAnnonce(?Annonces $annonce): self
-    {
-        $this->annonce = $annonce;
-
-        return $this;
-    }
-
     public function getUser1(): ?User
     {
         return $this->user_1;
@@ -168,6 +157,37 @@ class Conversation
     public function setLu2(bool $lu_2): self
     {
         $this->lu_2 = $lu_2;
+
+        return $this;
+    }
+
+    public function removeAnnonce(Annonces $annonce): self
+    {
+        $this->annonces->removeElement($annonce);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Location[]
+     */
+    public function getLocations(): Collection
+    {
+        return $this->locations;
+    }
+
+    public function addLocation(Location $location): self
+    {
+        if (!$this->locations->contains($location)) {
+            $this->locations[] = $location;
+        }
+
+        return $this;
+    }
+
+    public function removeLocation(Location $location): self
+    {
+        $this->locations->removeElement($location);
 
         return $this;
     }

@@ -5,6 +5,7 @@ namespace App\Form\Category;
 use App\Entity\AnnonceModeEnfant;
 use App\Entity\Annonces;
 use App\Entity\Taille;
+use App\Entity\TailleEnfant;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Form\AnnoncesType;
@@ -25,17 +26,21 @@ class ModeEnfantType extends AnnoncesType
             ->add('pointure', 
                 IntegerType::class, 
                 array(
-                    'attr' => array('min' => 16, 'max' => 30)
+                    'attr' => array(
+                        'min' => 16, 
+                        'max' => 36,
+                        'class' => 'pointure'
+                    ),
                 )
             )
             ->add('taille', EntityType::class, [
-                'class' => Taille::class,
+                'class' => TailleEnfant::class,
                 'query_builder' => function (EntityRepository $er) 
                 {
-                    return $er->createQueryBuilder('p')
-                        ->orderBy('p.id');
+                    return $er->createQueryBuilder('t')
+                            ->orderBy('t.id');
                 },
-                'choice_label' => 'valeur'
+                'choice_label' => 'libelle'
             ])
         ;
     }

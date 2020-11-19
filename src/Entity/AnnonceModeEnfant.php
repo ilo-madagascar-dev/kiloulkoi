@@ -18,7 +18,7 @@ class AnnonceModeEnfant extends Annonces
     private $marque;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Taille::class)
+     * @ORM\ManyToOne(targetEntity=TailleEnfant::class)
      */
     private $taille;
 

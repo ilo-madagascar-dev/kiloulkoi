@@ -17,7 +17,6 @@ class MeubleDecoType extends AnnoncesType
 
         $builder
             ->add('marque')
-            ->add('modele')
         ;
     }
 

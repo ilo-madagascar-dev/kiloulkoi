@@ -1,0 +1,54 @@
+
+   <div class="container pt-3">
+      <div class="card py-3 shadow">
+            <div class="card-title"><h3 class="text-success text-center">Liste des catégries</h3></div>
+            <div class="card-body">
+               <div class="row">
+                  <div class="col-lg-4 col-md-6" id="list-1">
+                        <div class="list-group">
+                           {% for categorie in categories | slice(0, 5) %}
+                              <button class="list-group-item list-group-item-action border-0 py-1" style="cursor: pointer;" data-toggle="collapse" data-target="#collapse-{{ categorie.id }}" aria-expanded="true" aria-controls="collapse-{{ categorie.id }}">
+                                    <i style="width: 25px;" class="text-center mr-1 {{ categorie.icon }}"></i> {{ categorie.libelle }}
+                              </button>
+                              <ul id="collapse-{{ categorie.id }}" class="collapse" aria-labelledby="heading-{{ categorie.id }}" data-parent="#list-1">
+                                 {% for sous_cat in categorie.sousCategories %}
+                                    <li><a href="{{ path('annonces_categorie', {categorie_slug: categorie.className, sous_categorie_slug: sous_cat.slug}) }}">{{ sous_cat.libelle }}</a></li>
+                                 {% endfor %}
+                              </ul>
+                           {% endfor %}
+                        </div>
+                  </div>
+
+                  <div class="col-lg-4 col-md-6" id="list-2">
+                        <div class="list-group">
+                           {% for categorie in categories | slice(5, 5) %}
+                              <button class="list-group-item list-group-item-action border-0 py-1" style="cursor: pointer;" data-toggle="collapse" data-target="#collapse-{{ categorie.id }}" aria-expanded="true" aria-controls="collapse-{{ categorie.id }}">
+                                    <i style="width: 25px;" class="text-center mr-1 {{ categorie.icon }}"></i> {{ categorie.libelle }}
+                              </button>
+                              <ul id="collapse-{{ categorie.id }}" class="collapse" aria-labelledby="heading-{{ categorie.id }}" data-parent="#list-2">
+                                    {% for sous_cat in categorie.sousCategories %}
+                                       <li><a href="{{ path('annonces_categorie', {categorie_slug: categorie.className, sous_categorie_slug: sous_cat.slug}) }}">{{ sous_cat.libelle }}</a></li>
+                                    {% endfor %}
+                              </ul>   
+                           {% endfor %}
+                        </div>
+                  </div>
+
+                  <div class="col-lg-4 col-md-6" id="list-3">
+                        <div class="list-group">
+                           {% for categorie in categories | slice(10, 5) %}
+                              <button class="list-group-item list-group-item-action border-0 py-1" style="cursor: pointer;" data-toggle="collapse" data-target="#collapse-{{ categorie.id }}" aria-expanded="true" aria-controls="collapse-{{ categorie.id }}">
+                                    <i style="width: 25px;" class="text-center mr-1 {{ categorie.icon }}"></i> {{ categorie.libelle }}
+                              </button>
+                              <ul id="collapse-{{ categorie.id }}" class="collapse" aria-labelledby="heading-{{ categorie.id }}" data-parent="#list-3">
+                                    {% for sous_cat in categorie.sousCategories %}
+                                       <li><a href="{{ path('annonces_categorie', {categorie_slug: categorie.className, sous_categorie_slug: sous_cat.slug}) }}">{{ sous_cat.libelle }}</a></li>
+                                    {% endfor %}
+                              </ul>   
+                           {% endfor %}
+                        </div>
+                  </div>
+               </div>
+            </div>
+      </div>
+   </div>

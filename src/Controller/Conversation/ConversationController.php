@@ -2,7 +2,7 @@
 
 namespace App\Controller\Conversation;
 
-use App\Entity\Annonces;
+use App\Entity\Location;
 use App\Entity\Conversation;
 use App\Entity\Message;
 use App\Entity\User;
@@ -59,9 +59,9 @@ class ConversationController extends AbstractController
     }
 
     /**
-     * @Route("/messages/{annonce}/{destinataire}", name="conversation_messages_new", methods={"post"})
+     * @Route("/messages/{location}/{destinataire}", name="conversation_messages_new", methods={"post"})
      */
-    public function nouveauMessage(Annonces $annonce, User $destinataire, Request $request, PublisherInterface $publisher, SerializerInterface $serializer)
+    public function nouveauMessage(Location $location, User $destinataire, Request $request, PublisherInterface $publisher, SerializerInterface $serializer)
     {
         $expediteur = $this->getUser();
         if( $destinataire->getId() == $expediteur->getId() )
@@ -72,14 +72,21 @@ class ConversationController extends AbstractController
         }
 
         $message      = new Message();
-        $conversation = $this->conversationRepo->findOneWith($destinataire->getId(), $expediteur->getId(), $annonce->getId());
+        $conversation = $this->conversationRepo->findOneWith($destinataire->getId(), $expediteur->getId());
         if( $conversation == null )
         {
             $conversation = new Conversation();
 
             $conversation->setUser1($expediteur);
             $conversation->setUser2($destinataire);
-            $conversation->setAnnonce($annonce);
+            $conversation->addLocation($location);
+        }
+        else
+        {
+            if( !$conversation->getLocations()->contains($location) )
+            {
+                $conversation->addLocation($location);
+            }
         }
 
         // mark conversation as read by the sender and unread by the receiver
@@ -219,9 +226,9 @@ class ConversationController extends AbstractController
         return $this->render('conversation/index.html.twig', [
             'conversations'       => $conversations,
             'conversationEncours' => $conversationEncours,
-            'messages'            => $messages,                          // Messages de la conversation en cours
-            'annonce'             => $conversationEncours->getAnnonce(), // Annonce raccorder à la conversation en cours
-            'destinataire'        => $destinataire                       // Déstinataire des messages de la conversation en cours
+            'messages'            => $messages,                               // Messages de la conversation en cours
+            'location'            => $conversationEncours->getLocations()[0], // Location raccorder à la conversation en cours
+            'destinataire'        => $destinataire                            // Déstinataire des messages de la conversation en cours
         ]);
     }
 }

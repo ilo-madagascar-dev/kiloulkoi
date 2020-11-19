@@ -22,7 +22,7 @@ class AnnonceModeFemme extends Annonces
     private $modele;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Taille::class)
+     * @ORM\ManyToOne(targetEntity=Taille::class,)
      */
     private $taille;
 

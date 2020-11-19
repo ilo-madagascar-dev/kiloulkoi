@@ -17,7 +17,7 @@ class AccueilController extends AbstractController
      */
     public function index(Request $request, AnnoncesRepository $repAnnonce, CategoriesRepository $repCategorie, TypeLocationRepository $ReptypeLocation, PaginationService $paginator)
     {
-        $categories = $repCategorie->findParents();
+        $categories = $repCategorie->findAllWithSousCategorie();
         $types      = $ReptypeLocation->findAllOrd();
         $query      = $repAnnonce->findAllAnnonces();
         $annonces   = $paginator->paginate($query, $request->query->getInt('page', 1));
