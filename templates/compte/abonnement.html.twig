@@ -21,62 +21,111 @@
                             <small class="text-muted">Votre abonnement actuel.</small>
                         </div>
                         <div class="ml-auto pt-2">
-                            {% if abonnement.type.id == 1 or abonnement.actif == 0 %}
-                                <a class="btn btn-primary" href="{{ path('abonnement_new') }}">S'abonner</a>
-                                {# <button class="btn btn-primary"  data-toggle="modal" data-target="#modalAbonnement">S'abonner</button> #}
+                            {% if userType == 'Professionnel' %}
+                                {% if abonnement.type.id == 2 %}
+                                    <button class="btn btn-primary"  data-toggle="modal" data-target="#modalAbonnement">S'abonner</button>
+                                {% elseif abonnement.actif == 1 %}
+                                    <a href="{{ path('abonnement_stop') }}" class="btn btn-warning text-white">Désactiver le renouvelement</a>
+                                {% endif %}
                             {% else %}
-                                <button class="btn btn-warning text-white"  data-toggle="modal" data-target="#modalAbonnement">Se désabonner</button>
+                                {% if abonnement.type.id == 1 %}
+                                    <button class="btn btn-primary"  data-toggle="modal" data-target="#modalAbonnement">S'abonner</button>
+                                {% elseif abonnement.actif == 1 %}
+                                    <a href="{{ path('abonnement_stop') }}" class="btn btn-warning text-white">Désactiver le renouvelement</a>
+                                {% endif %}
                             {% endif %}
-                        </div> 
+                        </div>
                     </div>
                     <div class="card-body text-center">
-                        <h2 class="text-success">{{ abonnement.type.libelle }}</h2>
+                        <p>Vous disposez d'un compte: </p>
+                        <h2 class="text-success font-weight-bold">{{ abonnement.type.libelle }}</h2>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
-    {# 
-        <!-- Modal -->
-        <div class="modal fade" id="modalAbonnement" tabindex="-1" role="dialog" aria-labelledby="modalAbonnementLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalAbonnementLabel">S'abonner</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalAbonnement" tabindex="-1" role="dialog" aria-labelledby="modalAbonnementLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background: var(--teal);">
+                    <div class="m-auto text-center">
+                        <img src="{{ asset('image/logo-fond-blanc.png') }}" style="height: 80px;width: auto;padding: 5px;background: white;border-radius: 50%;" >
+                        <h5 class="modal-title text-white" id="modalAbonnementLabel"  >Abonnements</h5>
                     </div>
-                    <div class="modal-body">
-                        <form method="post" action="{{ path('abonnement_new') }}">
-                            <div class="form-group">
-                                <label for="type">Type de l'abonnement :</label>
-                                <select name="type" id="type" class="form-control">
-                                    {% for type in types %}
-                                        <option value="{{ type.id }}">{{ type.libelle }}</option>
-                                    {% endfor %}
-                                </select>
+                    <button type="button" class="close" style="position: absolute;right:25px;" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="card-deck mb-3 text-center">
+                        {% if userType == 'Professionnel' %}
+                            <div class="card mb-4 box-shadow">
+                                <div class="card-header">
+                                    <h4 class="my-0 font-weight-normal">Professionnel</h4>
+                                </div>
+                                <div class="card-body">
+                                    <h1 class="card-title pricing-card-title">0.4 €<small class="text-muted">/ mois</small></h1>
+                                    <ul class="list-unstyled mt-3 mb-4">
+                                        <li>3 photos</li>
+                                        <li>6 annonces</li>
+                                        <li>0 € de frais de transaction</li>
+                                        <li>A partir de 10% de frais de géstion</li>
+                                    </ul>
+                                </div>
+
+                                <div class="card-footer">
+                                    <a class="btn btn-lg btn-block btn-primary disabled" href="{{ path('abonnement_new') }}">S'abonner</a>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="mois">Nombres de mois :</label>
-                                <input type="number" class="form-control" id="mois" name="mois" value="1" min="1">
+                        {% else %}
+                            <div class="card mb-4 box-shadow">
+                                <div class="card-header">
+                                    <h4 class="my-0 font-weight-normal">Gratuit</h4>
+                                </div>
+                                <div class="card-body">
+                                    <h1 class="card-title pricing-card-title">0 €<small class="text-muted">/ mois</small></h1>
+                                    <ul class="list-unstyled mt-3 mb-4">
+                                        <li>3 photos</li>
+                                        <li>3 annonces</li>
+                                        <li>0.80 € de frais de transaction</li>
+                                        <li>A partir de 10% de frais de géstion</li>
+                                    </ul>
+                                </div>
+
+                                <div class="card-footer">
+                                    <a class="btn btn-lg btn-block btn-primary" href="{{ path('abonnement_new') }}">S'abonner</a>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="debut">Début :</label>
-                                <input type="text" class="form-control" id="debut" data="{{ "now"|date('Y/m/d') }}" value="{{ "now"|date('d/m/Y') }}" disabled>
+                        {% endif %}
+
+                        <div class="card mb-4 box-shadow">
+                            <div class="card-header">
+                                <h4 class="my-0 font-weight-normal">Prémium</h4>
                             </div>
-                            <div class="form-group">
-                                <label for="fin">Fin :</label>
-                                <input type="text" class="form-control" id="fin" data="{{ "now"|date_modify("+30 days")|date('Y/m/d') }}" value="{{ "now"|date_modify("+30 days")|date('d/m/Y') }}" disabled>
+                            <div class="card-body">
+                                <h1 class="card-title pricing-card-title">7.99 €<small class="text-muted">/ mois</small></h1>
+                                <ul class="list-unstyled mt-3 mb-4">
+                                    <li>5 photos</li>
+                                    <li>8 annonces</li>
+                                    <li>0€ de frais de transaction</li>
+                                    <li>A partir de 5% de frais de géstion</li>
+                                    <li>Visibilité en top recherche</li>
+                                </ul>
                             </div>
-                            <button class="btn btn-success btn-block" type="submit">Confirmer</button>
-                        </form>
+
+                            <div class="card-footer">
+                                <a class="btn btn-lg btn-block btn-primary" href="{{ path('abonnement_new') }}">S'abonner</a>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
-     #}
+    </div>
 {% endblock %}
 
 {# 

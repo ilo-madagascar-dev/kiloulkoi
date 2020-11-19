@@ -31,7 +31,7 @@
 							<strong><a href="{{ path('annonces_show', {id: annonce.id, slug: slug }) }}" >{{ annonce.titre }}</a></strong>
 						</h3>
 
-						<div class="details" style="font-size: .8rem;">
+						<div class="details" style="font-size: .8rem;position:relative;">
 							<p class="card-text mb-0"><strong class="text-success">Prix : </strong>{{ annonce.prix }}€ /{{ annonce.type ? annonce.type.libelle : "mois" }}</p>
 							<p class="card-text mb-0"><strong class="text-success">Catégorie : </strong>{{ annonce.categorie.libelle }} {% if annonce.sousCategorie is not null %}/ {{ annonce.sousCategorie.libelle }}{% endif %}</p>
 						</div>
@@ -45,22 +45,24 @@
 									{{ include('annonces/_delete_form.html.twig') }}
 								</div>
 							{% else %}
-								<div class="col text-left ml-3 py-2" title="Favoris">
-									{% if app.user %}
-										{% if annonce.userFavoris|length == 0 %}
-											<span class="btn-heart" data="{{ annonce.id }}">
-												<i class="far fa-heart mr-2"></i>
-											</span>
-										{% else %}
-											<span class="btn-heart" data="{{ annonce.id }}">
-												<i class="fa fa-heart mr-2 text-danger"></i>
-											</span>
-										{% endif %}
-									{% endif %}
+								<div class="col text-left ml-3 py-2">
 									<span><i class="fa fa-eye"></i> {{ annonce.visite | number_format }}</span>
 								</div>
 							{% endif %}
 
+							<div title="Favoris" class="favoris-heart" style="">
+								{% if app.user %}
+									{% if annonce.userFavoris|length == 0 %}
+										<span class="btn-heart" data="{{ annonce.id }}">
+											<i class="far fa-heart"></i>
+										</span>
+									{% else %}
+										<span class="btn-heart" data="{{ annonce.id }}">
+											<i class="fa fa-heart text-danger"></i>
+										</span>
+									{% endif %}
+								{% endif %}
+							</div>
 							<div class="col-4 py-2 text-center">
 								<small class="text-muted">{{ annonce.dateModification | date("d/m/Y") }}</small>
 							</div>

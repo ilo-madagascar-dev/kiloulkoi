@@ -35,7 +35,10 @@ class AnnoncesType extends AbstractType
                                     ->andWhere('c.className = :classe')
                                     ->setParameter('classe', $options['classe']);
                     },
-                'choice_label' => 'libelle'
+                'choice_label' => 'libelle',
+                'attr' => [
+                    'class' => 'sous-categorie'
+                ]
             ]);
         }
 
@@ -47,7 +50,9 @@ class AnnoncesType extends AbstractType
                     'allow_delete' => true,
                     'by_reference' => false,
                 ])
-                ->add('prix', IntegerType::class)
+                ->add('prix', IntegerType::class, [
+                    'attr' => array('min' => 0)
+                ])
                 ->add('type', EntityType::class, [
                     'label' => 'Location par ',
                     'class' => TypeLocation::class,

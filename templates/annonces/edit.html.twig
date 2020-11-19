@@ -154,4 +154,26 @@
             })
         });
     </script>
+
+    <script>
+        $(document).ready( function () 
+        {
+            $(".sous-categorie").change( function (e)
+            {
+                var selected = $(this).children(':selected').first().text();
+                if( selected.trim() == 'Chaussures' )
+                {
+                    $('.pointure').parent().removeClass('d-none');
+                    $('.pointure').attr('required', 'required');
+                }
+                else
+                {
+                    $('.pointure').val(null);
+                    $('.pointure').parent().addClass('d-none');
+                    $('.pointure').removeAttr('required');
+                }
+            })
+            $(".sous-categorie").trigger("change");
+        })
+    </script>
 {% endblock %}

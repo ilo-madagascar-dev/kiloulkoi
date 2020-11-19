@@ -16,16 +16,78 @@
         <div class="col-md-10 offset-md-1">
             <div class="card p-3 shadow">
                 <div class="card-body py-0 px-0 px-md-3">
-                    <form action="{{ path('annonces_filter') }}" class="">
+                    <form action="{{ path('annonces_filter') }}" method="post">
                         <h3 class="text-primary py-3 text-center" >Recherche d'annonces</h3>
 
                         <div class="row">
                             <div class="form-group col-12 col-md-6">
-                                <select id="categories" class="form-control custom-select" name="categorie">
+                                {# <select id="categories" class="form-control custom-select" name="categorie">
                                     {% for categorie in categories %}
                                         <option value="{{ categorie.className }}">{{ categorie.libelle }} </option>
                                     {% endfor %}
-                                </select>
+                                </select> #}
+                                <input type="hidden" id="input-categorie" name="categorie">
+                                <input type="hidden" id="input-sous-categorie" name="sousCategorie">
+                                <input type="text" class="input-show-categorie form-control" placeholder="Catégories">
+                                <div class="pt-1 categorie-container d-none">
+                                    <div class="card py-3 shadow">
+                                        <div class="card-title mb-0"><h3 class="text-success text-center">Liste des catégries</h3></div>
+                                        <div class="card-body pt-0">
+                                            <div class="row">
+                                                <div class="col-lg-4 col-md-6" id="list-1">
+                                                    <div class="list-group">
+                                                        {% for categorie in categories | slice(0, 5) %}
+                                                            <button type="button" data="{{ categorie.id }}" class="categorie-parent list-group-item list-group-item-action border-0 py-1" style="cursor: pointer;" data-toggle="collapse" data-target="#collapse-{{ categorie.id }}" aria-expanded="true" aria-controls="collapse-{{ categorie.id }}">
+                                                                <i style="width: 25px;" class="text-center mr-1 {{ categorie.icon }}"></i> {{ categorie.libelle }}
+                                                            </button>
+                                                            <ul id="collapse-{{ categorie.id }}" class="collapse" aria-labelledby="heading-{{ categorie.id }}" data-parent="#list-1">
+                                                                {% for sous_cat in categorie.categorieEnfant %}
+                                                                    <button type="button"  data="{{ sous_cat.id }}" class="categorie-enfant list-group-item list-group-item-action border-0 py-1">
+                                                                        {{ sous_cat.libelle }}
+                                                                    </button>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-4 col-md-6" id="list-2">
+                                                    <div class="list-group">
+                                                        {% for categorie in categories | slice(5, 5) %}
+                                                            <button type="button" data="{{ categorie.id }}" class="categorie-parent list-group-item list-group-item-action border-0 py-1" style="cursor: pointer;" data-toggle="collapse" data-target="#collapse-{{ categorie.id }}" aria-expanded="true" aria-controls="collapse-{{ categorie.id }}">
+                                                                <i style="width: 25px;" class="text-center mr-1 {{ categorie.icon }}"></i> {{ categorie.libelle }}
+                                                            </button>
+                                                            <ul id="collapse-{{ categorie.id }}" class="collapse" aria-labelledby="heading-{{ categorie.id }}" data-parent="#list-2">
+                                                                {% for sous_cat in categorie.categorieEnfant %}
+                                                                    <button type="button"  data="{{ sous_cat.id }}" class="categorie-enfant list-group-item list-group-item-action border-0 py-1">
+                                                                        {{ sous_cat.libelle }}
+                                                                    </button>
+                                                                {% endfor %}
+                                                            </ul>   
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-4 col-md-6" id="list-3">
+                                                    <div class="list-group">
+                                                        {% for categorie in categories | slice(10, 5) %}
+                                                            <button type="button" data="{{ categorie.id }}" data-class="{{ categorie.className }}" class="categorie-parent list-group-item list-group-item-action border-0 py-1" style="cursor: pointer;" data-toggle="collapse" data-target="#collapse-{{ categorie.id }}" aria-expanded="true" aria-controls="collapse-{{ categorie.id }}">
+                                                                <i style="width: 25px;" class="text-center mr-1 {{ categorie.icon }}"></i> {{ categorie.libelle }}
+                                                            </button>
+                                                            <ul id="collapse-{{ categorie.id }}" class="collapse" aria-labelledby="heading-{{ categorie.id }}" data-parent="#list-3">
+                                                                {% for sous_cat in categorie.categorieEnfant %}
+                                                                    <button type="button"  data="{{ sous_cat.id }}" class="categorie-enfant list-group-item list-group-item-action border-0 py-1">
+                                                                        {{ sous_cat.libelle }}
+                                                                    </button>
+                                                                {% endfor %}
+                                                            </ul>   
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group col-12 col-md-6">
                                 <div class="input-group">
@@ -65,7 +127,7 @@
                                 <div class="row">
                                     <div class="col-md-6 col-5">
                                         <div class="mt-2 text-center text-muted">
-                                            <input type="text" id="amount" name="prix" readonly style="border:0; color:#f6931f; font-weight:bold;" class="w-100 text-center">
+                                            <input type="text" id="amount" name="prix" readonly style="border:0; color:#007bff; font-weight:bold;" class="w-100 text-center">
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-7">
@@ -82,10 +144,17 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-6 offset-md-3">
+                            <div class="col-md-6 offset-md-3 mb-3">
                                 <button class="btn btn-success btn-block">
                                     <i class="fa fa-search"></i> Rechercher
                                 </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 offset-md-3">
+                                <a class="btn btn-success btn-block text-white" href="{{ path('mes_annonces_index') }}">
+                                    Déposer une annonce
+                                </a>
                             </div>
                         </div>
                     </form>
@@ -190,11 +259,27 @@
         });
         $( "#amount" ).val( $( "#slider-range" ).slider( "values", 0 ) + "€ - " + $( "#slider-range" ).slider( "values", 1 ) + "€" );
         
-        $('#categories').change( function()
+        $('.input-show-categorie').click( function()
         {
-            if( $(this).val() == 'Service' )
+            $('.categorie-container').toggleClass('d-none');
+        })
+
+        $('.categorie-enfant').click( function () {
+            $('.input-show-categorie').val( 'Catégorie: ' + $(this).text().trim() );
+            $('#input-sous-categorie').val( $(this).attr('data') )
+            $('.categorie-container').toggleClass('d-none');
+        })
+
+        $('.categorie-parent').click( function () {
+            $('#input-categorie').val( $(this).attr('data') );
+            
+            if( $(this).attr('data-class') == 'Service' || $(this).attr('data-class') == 'Divers' )
             {
                 $('#prix-unite option[value=1]').removeClass('d-none');
+                $('.input-show-categorie').val( 'Catégorie: ' + $(this).text().trim() );
+                $('#input-sous-categorie').val( $(this).attr('data') )
+                $('.categorie-container').toggleClass('d-none');
+                $('#input-sous-categorie').val( null );
             }
             else
             {
@@ -202,7 +287,7 @@
                 $('#prix-unite').val('2');
             }
         })
-        $('#categories').trigger('change');
+        $('.input-show-categorie').val(null);
     })
     </script>
 {% endblock %}

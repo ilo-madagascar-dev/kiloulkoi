@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\Annonces;
+use App\Entity\Location;
 use App\Entity\Conversation;
 use App\Entity\Message;
 use App\Entity\User;
@@ -24,15 +24,16 @@ class ConversationRepository extends ServiceEntityRepository
         parent::__construct($registry, Conversation::class);
     }
 
-    public function findOneWith($expediteur_id, $destinataire_id, $annonce_id)
+    public function findOneWith($expediteur_id, $destinataire_id)
     {
         return $this->createQueryBuilder('c')
-            ->where('c.user_1 = :user_1 AND c.user_2 = :user_2 AND c.annonce = :annonce')
-            ->orWhere('c.user_1 = :user_2 AND c.user_2 = :user_1 AND c.annonce = :annonce')
+            ->select('c', 'l')
+            ->leftJoin('c.locations', 'l')
+            ->where('c.user_1 = :user_1 AND c.user_2 = :user_2 ')
+            ->orWhere('c.user_1 = :user_2 AND c.user_2 = :user_1 ')
 
             ->setParameter('user_1', $expediteur_id)
             ->setParameter('user_2', $destinataire_id)
-            ->setParameter('annonce', $annonce_id)
 
             ->getQuery()
             ->getOneOrNullResult()
@@ -51,9 +52,9 @@ class ConversationRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('c')
             ->select('c', 'u1', 'u2', 'm', 'a')
             ->distinct()
+            ->join('c.locations', 'a', Expr\Join::WITH)
             ->join('c.user_1', 'u1', Expr\Join::WITH)
             ->join('c.user_2', 'u2', Expr\Join::WITH)
-            ->join('c.annonce', 'a', Expr\Join::WITH)
             ->join('c.messages', 'm', Expr\Join::WITH)
             ->andWhere('c.user_1 = :user_id OR c.user_2 = :user_id')
             ->setParameter('user_id', $user_id)

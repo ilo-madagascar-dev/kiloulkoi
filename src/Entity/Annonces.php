@@ -107,11 +107,6 @@ class Annonces
     private $visite;
 
     /**
-     * @ORM\OneToMany(targetEntity=Conversation::class, mappedBy="annonce", orphanRemoval=true)
-     */
-    private $conversations;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $slug;
@@ -140,7 +135,6 @@ class Annonces
     {
         $this->photo = new ArrayCollection();
         $this->dateCreation = new \Datetime();
-        $this->conversations = new ArrayCollection();
         $this->locations = new ArrayCollection();
         $this->user_favoris = new ArrayCollection();
     }
@@ -320,37 +314,6 @@ class Annonces
         return $this;
     }
 
-    /**
-     * @return Collection|Conversation[]
-     */
-    public function getConversations(): Collection
-    {
-        return $this->conversations;
-    }
-
-    public function addConversation(Conversation $conversation): self
-    {
-        if (!$this->conversations->contains($conversation)) {
-            $this->conversations[] = $conversation;
-            $conversation->setAnnonce($this);
-        }
-
-        return $this;
-    }
-
-    public function removeConversation(Conversation $conversation): self
-    {
-        if ($this->conversations->contains($conversation)) {
-            $this->conversations->removeElement($conversation);
-            // set the owning side to null (unless already changed)
-            if ($conversation->getAnnonce() === $this) {
-                $conversation->setAnnonce(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getSlug(): ?string
     {
         return $this->slug;
@@ -446,4 +409,5 @@ class Annonces
 
         return $this;
     }
+
 }

@@ -101,12 +101,12 @@ class AnnoncesController extends AbstractController
     }
     
     /**
-     * @Route("/filter", name="annonces_filter", methods={"GET"})
+     * @Route("/filter", name="annonces_filter", methods={"POST"})
      */
     public function filter(Request $request, PaginationService $paginator): Response
     {
         $categories    = $this->repCategorie->findParents();
-        $query         = $this->repAnnonce->findAnnonces($request->query->all());
+        $query         = $this->repAnnonce->findAnnonces($request->request->all());
         $annonces      = $paginator->paginate($query, $request->query->getInt('page', 1));
         $annonce_titre = "Résultats des recherches";
         

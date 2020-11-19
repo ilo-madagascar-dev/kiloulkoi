@@ -93,9 +93,9 @@
 				</div>
 
 				<!-- Typing area -->
-				<form id="message-form" method="POST" action="{{ path('conversation_messages_new', { annonce: annonce.id, destinataire: destinataire.id }) }}" class="bg-light border border-primary rounded-right w-100">
+				<form id="message-form" method="POST" action="{{ path('conversation_messages_new', { location: location.id, destinataire: destinataire.id }) }}" class="bg-light border border-primary rounded-right w-100">
 					<div class="input-group" >
-						<textarea type="text" placeholder="Type a message" name="contenue" aria-describedby="message-submit" rows="2" class="form-control rounded-0 border-0 py-2 bg-light"  style="height: 100px;"></textarea>
+						<textarea type="text" placeholder="Type a message" name="contenue" aria-describedby="message-submit" class="message-content form-control rounded-0 border-0 py-2 bg-light"  style="height: 100px;"></textarea>
 						<div class="input-group-append">
 							<button id="message-submit" type="submit" class="btn btn-primary">
 								<i class="fa fa-paper-plane"></i>

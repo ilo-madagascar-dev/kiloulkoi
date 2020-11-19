@@ -7,7 +7,7 @@ $(document).ready( function()
     $('#message-submit').click( function(event)
     {
         event.preventDefault();
-        var content = $('#message-form textarea').val();
+        var content = $('#message-form .message-content').val();
         var url     = $('#message-form').attr('action');
 
         $('#message-submit').attr('disabled', 'disabled');
@@ -38,8 +38,16 @@ $(document).ready( function()
             $("#messageBody").append( $(template) );
             $('#messageBody').animate({ scrollTop: $('#messageBody')[0].scrollHeight }, 1000);
             
-            $('#message-form textarea').val('');
+            $('#message-form .message-content').val('');
         })
+    })
+
+    $('.message-content').keydown( function(e)
+    {
+        if(event.which == 13 && !event.shiftKey)
+        {
+            $('#message-submit').trigger('click');
+        };
     })
     
     // URL is a built-in JavaScript class to manipulate URLs

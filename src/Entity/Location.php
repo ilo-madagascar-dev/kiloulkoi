@@ -45,12 +45,7 @@ class Location
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     private $user;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Conversation::class, mappedBy="location", orphanRemoval=true)
-     */
-    private $conversations;
-
+    
     /**
      * @ORM\ManyToMany(targetEntity=Facture::class, mappedBy="locations")
      */
@@ -61,6 +56,11 @@ class Location
      * @ORM\JoinColumn(nullable=false)
      */
     private $annonce;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Conversation::class, mappedBy="locations")
+     */
+    private $conversations;
 
     public function __construct()
     {
@@ -137,37 +137,6 @@ class Location
     }
 
     /**
-     * @return Collection|Conversation[]
-     */
-    public function getConversations(): Collection
-    {
-        return $this->conversations;
-    }
-
-    public function addConversation(Conversation $conversation): self
-    {
-        if (!$this->conversations->contains($conversation)) {
-            $this->conversations[] = $conversation;
-            $conversation->setLocation($this);
-        }
-
-        return $this;
-    }
-
-    public function removeConversation(Conversation $conversation): self
-    {
-        if ($this->conversations->contains($conversation)) {
-            $this->conversations->removeElement($conversation);
-            // set the owning side to null (unless already changed)
-            if ($conversation->getLocation() === $this) {
-                $conversation->setLocation(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Facture[]
      */
     public function getFactures(): Collection
@@ -203,6 +172,33 @@ class Location
     public function setAnnonce(?Annonces $annonce): self
     {
         $this->annonce = $annonce;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Conversation[]
+     */
+    public function getConversations(): Collection
+    {
+        return $this->conversations;
+    }
+
+    public function addConversation(Conversation $conversation): self
+    {
+        if (!$this->conversations->contains($conversation)) {
+            $this->conversations[] = $conversation;
+            $conversation->addLocation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConversation(Conversation $conversation): self
+    {
+        if ($this->conversations->removeElement($conversation)) {
+            $conversation->removeLocation($this);
+        }
 
         return $this;
     }

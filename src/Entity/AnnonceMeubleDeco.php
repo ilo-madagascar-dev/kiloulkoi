@@ -11,14 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
 class AnnonceMeubleDeco extends Annonces
 {
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $marque;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $modele;
+    private $marque;
 
 
     public function getMarque(): ?string
@@ -33,15 +28,4 @@ class AnnonceMeubleDeco extends Annonces
         return $this;
     }
 
-    public function getModele(): ?string
-    {
-        return $this->modele;
-    }
-
-    public function setModele(?string $modele): self
-    {
-        $this->modele = $modele;
-
-        return $this;
-    }
 }

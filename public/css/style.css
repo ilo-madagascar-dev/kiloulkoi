@@ -6,11 +6,17 @@ header .dropdown-toggle::after {
 	margin-left: 0;
 }
 
-.messages {
+.left-menu {
+	position: absolute;
+	top: 10px;
+	right: 20px;
+}
+
+.nav-icon {
 	position: relative;
 }
 
-.messages i {
+.nav-icon i {
 	font-size: 2rem;
 }
 
@@ -76,6 +82,22 @@ label.required::before {
 
 .form-group {
 	position: relative;
+}
+
+.favoris-heart {
+	position: absolute;
+	right:8px;
+	bottom:30px;
+	background:white;
+	border-radius:50%;
+	padding:6px;
+	padding-top: 2px;
+	padding-left: 5px;
+	border:lightgrey .2px solid;
+	width:35px;
+	height:35px;
+	text-align:center !important;
+	font-size: 1.5rem;
 }
 
 .calendar span {
@@ -152,6 +174,30 @@ label.required::before {
 	-ms-transform-origin: 50% 50%;
 }
 
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default, .ui-button, html .ui-button.ui-state-disabled:hover, html .ui-button.ui-state-disabled:active {
+	background: var(--success) !important;
+}
+.ui-widget-header {
+	background:  var(--teal) !important;
+}
+
+.categorie-container {
+	position: absolute;
+	z-index: 10;
+	width: 850px !important;
+}
+
+@media (max-width: 992px) {
+  .categorie-container {
+	width: 550px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .categorie-container {
+	width: 320px !important;
+  }
+}
 @keyframes animationFrames{
 	0% {
 		transform:  rotate(0deg) scaleX(1.00) scaleY(1.00) ;

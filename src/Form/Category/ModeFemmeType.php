@@ -25,7 +25,11 @@ class ModeFemmeType extends AnnoncesType
             ->add('pointure', 
                 IntegerType::class, 
                 array(
-                    'attr' => array('min' => 35, 'max' => 40)
+                    'attr' => array(
+                        'min' => 35, 
+                        'max' => 40,
+                        'class' => 'pointure'
+                    ),
                 )
             )
             ->add('taille', EntityType::class, [

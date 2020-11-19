@@ -168,8 +168,8 @@ class AnnoncesRepository extends ServiceEntityRepository
                     ->leftJoin('a.locations', 'l', Expr\Join::WITH, 'l.statutLocation = 2')
                     ->where('a.id = :id')
                     ->setParameter('id', $id)
-                    ->andWhere('l.dateFin >= :fin OR l.dateFin is null')
-                    ->setParameter('fin', date('Y-m-d'))
+                    // ->andWhere('l.dateFin >= :fin OR l.dateFin is null')
+                    // ->setParameter('fin', date('Y-m-d'))
                     ->orderBy('l.dateDebut', 'ASC')
                     ->getQuery();
 
@@ -197,9 +197,14 @@ class AnnoncesRepository extends ServiceEntityRepository
     {
         $query = $this->getAllQuery();
 
-        if( !empty($criteria['categorie']) )
+        if( !empty($criteria['categorie']) && empty($criteria['sousCategorie']))
         {
-            $query->andWhere('c.className = :class_name')->setParameter('class_name', $criteria['categorie']);
+            $query->andWhere('c.id = :id')->setParameter('id', $criteria['categorie']);
+        }
+
+        if( !empty($criteria['sousCategorie']) )
+        {
+            $query->andWhere('sc.id = :id')->setParameter('id', $criteria['sousCategorie']);
         }
 
         if( !empty($criteria['titre']) )

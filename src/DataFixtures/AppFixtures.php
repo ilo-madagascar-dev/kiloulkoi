@@ -7,6 +7,8 @@ use App\Entity\Propriete;
 use App\Entity\Energie;
 use App\Entity\Taille;
 use App\Entity\StatutLocation;
+use App\Entity\TailleEnfant;
+use App\Entity\TailleMaternite;
 use App\Entity\TypeAbonnement;
 use App\Entity\TypeLocation;
 use Doctrine\Common\DataFixtures\FixtureInterface;
@@ -165,7 +167,8 @@ class AppFixtures implements FixtureInterface
                     "Balade",
                     "Vêtements ",
                     "Accessoires ",
-                    "Jeux"
+                    "Jeux",
+                    "Chaussures"
                 ]
             ],
             "ModeHomme" => [
@@ -302,7 +305,7 @@ class AppFixtures implements FixtureInterface
 
         // Type abonnement
         $typeAbonnements = [
-            ["Basique"      , 3, 3],
+            ["Gratuit"      , 3, 3],
             ["Professionnel", 3, 3],
             ["Premium"      , 6, 6],
         ];
@@ -312,6 +315,50 @@ class AppFixtures implements FixtureInterface
             $type->setLibelle($typeAbonnements[$i][0]);
             $type->setPhotoMax($typeAbonnements[$i][1]);
             $type->setAnnonceMax($typeAbonnements[$i][2]);
+            $manager->persist($type);
+        }
+
+        // Taille enfant
+        $tailles = [
+            "2 ans",
+            "3 ans",
+            "4 ans",
+            "5 ans",
+            "6 ans",
+            "8 ans",
+            "10 ans",
+            "12 ans",
+            "14 ans",
+            "16 ans",
+            "18 ans",
+        ];
+        for ($i = 0; $i < count($tailles); $i++) 
+        {
+            $type = new TailleEnfant();
+            $type->setLibelle($tailles[$i]);
+            $manager->persist($type);
+        }
+
+
+        // Taille matérinté
+        $tailles = [
+            "Prématuré",
+            "Naissance",
+            "1 mois",
+            "3 mois",
+            "6 mois",
+            "9 mois",
+            "12 mois",
+            "15 mois",
+            "18 mois",
+            "21 mois",
+            "24 mois",
+            "36 mois",
+        ];
+        for ($i = 0; $i < count($tailles); $i++) 
+        {
+            $type = new TailleMaternite();
+            $type->setLibelle($tailles[$i]);
             $manager->persist($type);
         }
 

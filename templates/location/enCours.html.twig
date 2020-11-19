@@ -41,7 +41,7 @@
                                     {% elseif location.annonce.type.id == 3 %}
                                         {% set difference = periodeTotal.days/7 + 1 %}
                                     {% else %}
-                                        {% set difference = periodeTotal.months + 1 %}
+                                        {% set difference = (periodeTotal.days/30)|round() + 1 %}
                                     {% endif %}
 
                                     <tr>
@@ -55,7 +55,7 @@
                                         <td>{{ location.statutLocation.libelle }}</td>
                                         <td>
                                             {% if location.statutLocation.id == 2 %} {# En Cours #}
-                                                <button class="btn btn-info btn-sm btn-message" title="Envoyer un message" data-toggle="modal" data-target="#message-modal" data-user="{{ location.user.nomComplet }}" data-url="{{ path('conversation_messages_new', { annonce: location.annonce.id, destinataire: location.user.id, expediteur: app.user.id }) }}">
+                                                <button class="btn btn-info btn-sm btn-message" title="Envoyer un message" data-toggle="modal" data-target="#message-modal" data-user="{{ location.user.nomComplet }}" data-url="{{ path('conversation_messages_new', { location: location.id, destinataire: location.user.id, expediteur: app.user.id }) }}">
                                                     <i class="fa fa-comments"></i>
                                                 </button>
                                             {% elseif location.statutLocation.id == 1 %} {# En attente #}
@@ -116,7 +116,7 @@
                                         {% elseif location.annonce.type.id == 3 %}
                                             {% set difference = periodeTotal.days/7 + 1 %}
                                         {% else %}
-                                            {% set difference = periodeTotal.months + 1 %}
+                                            {% set difference = (periodeTotal.days/30)|round() + 1 %}
                                         {% endif %}
 
                                         <tr>
@@ -137,7 +137,7 @@
                                                     -
                                                 {% endif %}
                                                 {% if location.statutLocation.id == 2 %}
-                                                    <button class="btn btn-info btn-sm btn-message" data-toggle="modal" data-target="#message-modal" data-user="{{ location.annonce.user.nomComplet }}" data-url="{{ path('conversation_messages_new', { annonce: location.annonce.id, destinataire: location.annonce.user.id, expediteur: app.user.id }) }}">
+                                                    <button class="btn btn-info btn-sm btn-message" data-toggle="modal" data-target="#message-modal" data-user="{{ location.annonce.user.nomComplet }}" data-url="{{ path('conversation_messages_new', { location: location.id, destinataire: location.annonce.user.id, expediteur: app.user.id }) }}">
                                                         <i class="fa fa-comments"></i>
                                                     </button>
                                                 {% endif %}

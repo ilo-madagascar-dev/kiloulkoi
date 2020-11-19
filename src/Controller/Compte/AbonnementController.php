@@ -31,34 +31,23 @@ class AbonnementController extends AbstractController
      */
     public function index(TypeAbonnementRepository $typeAbRepo): Response
     {
-        $user  = $this->getUser();
+        $user       = $this->getUser();
+        $abonnement = $this->repAbonnement->findUserAbonnement( $user->getId() );
+        $userType   = strpos(get_class($user), 'Professionnel') !== false ? 'Professionnel' : 'Particulier';
 
-        if (strpos(get_class($user), 'Professionnel') !== false)
-        {
-            $types = $typeAbRepo->findParticulierType();
-        }
-        else
-        {
-            $types = $typeAbRepo->findProType();
-        }
-
-        return $this->render('compte/abonnement.html.twig', [
-            'abonnement' => $this->getUserAbonnement( $user ),
-            'types' => $types
-        ]);
-    }
-
-    /**
-     * @return Abonnement
-     */
-    private function getUserAbonnement(User $user): Abonnement
-    {
-        $abonnement     = $this->repAbonnement->findUserAbonnement( $user->getId() ); 
         if( $abonnement == null )
         {
             $abonnement     = new Abonnement();
-            $typeAbonnement = $this->repTypeAbonnement->find(1);
             $debut          = new \Datetime();
+            
+            if ($userType == 'Professionnel')
+            {
+                $typeAbonnement = $this->repTypeAbonnement->find(2); // Professionnel
+            }
+            else
+            {
+                $typeAbonnement = $this->repTypeAbonnement->find(1); // Gratuit
+            }
 
             $abonnement->setDateDebut( $debut );
             $abonnement->setDateFin( $debut->add(new \DateInterval('P1M')) );
@@ -67,25 +56,20 @@ class AbonnementController extends AbstractController
             $abonnement->setUser( $user );
         }
 
-        return $abonnement;
+        return $this->render('compte/abonnement.html.twig', [
+            'abonnement' => $abonnement,
+            'userType' => $userType
+        ]);
     }
 
     /**
      * @Route("/new", name="abonnement_new", methods={"GET","POST"})
      */
-    public function new(Request $request, TypeAbonnementRepository $typeAbRepo): Response
+    public function sAbonner(Request $request, TypeAbonnementRepository $typeAbRepo): Response
     {
-        $user = $this->getUser();
-        if (strpos(get_class($user), 'Professionnel') !== false)
-        {
-            $typeAbonnement = $typeAbRepo->find(2); // Professionnel
-        }
-        else
-        {
-            $typeAbonnement = $typeAbRepo->find(3); // Premium
-        }
-
-        $abonnement = new Abonnement();
+        $user           = $this->getUser();
+        $typeAbonnement = $typeAbRepo->find(3); // Premium
+        $abonnement     = new Abonnement();
 
         $abonnement->setDateDebut( new \Datetime() );
         $abonnement->setDateFin( (new \Datetime())->add(new \DateInterval('P1M')) );
@@ -100,4 +84,21 @@ class AbonnementController extends AbstractController
         return $this->redirectToRoute('abonnement_index');
     }
 
+
+    /**
+     * @Route("/stop", name="abonnement_stop", methods={"GET","POST"})
+     */
+    public function seDesabonner(TypeAbonnementRepository $typeAbRepo): Response
+    {
+        $user       = $this->getUser();
+        $abonnement = $this->repAbonnement->findUserAbonnement( $user->getId() );
+        $em         = $this->getDoctrine()->getManager();
+        
+        $abonnement->setActif(0);
+        
+        $em->persist($abonnement);
+        $em->flush();
+
+        return $this->redirectToRoute('abonnement_index');
+    }
 }
