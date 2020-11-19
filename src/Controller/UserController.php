@@ -45,13 +45,32 @@ class UserController extends AbstractController
         $getkycdoc = $mangoPayService->getKYCDocs($userMangoId);
         $etat      = 'EMPTY';
 
-        if ($getkycdoc !== null) {
-            $etat = $usersmango->KYCLevel;
+        if( $getkycdoc == null )
+        {
+            $reponse = [
+                'titre' => 'KYC Document',
+                'message' => 'Uploader votre KYC document',
+                'lien' => $this->generateUrl('user_profil')
+            ];
+        }
+        elseif( $usersmango->KYCLevel == 'LIGHT' )
+        {
+            $reponse = [
+                'titre' => 'KYC Document',
+                'message' => 'La validation de votre KYC est en attente',
+                'lien' => $this->generateUrl('user_profil')
+            ];
+        }
+        else
+        {
+            $reponse = [
+                'titre' => 'KYC Document',
+                'message' => 'KYC Document validé(s)',
+                'lien' => $this->generateUrl('user_profil')
+            ];
         }
         
-        return $this->render('user/popup.html.twig', [
-            'etat' => $etat,
-        ]);
+        return new Response( json_encode($reponse) );
     }
 
     /**

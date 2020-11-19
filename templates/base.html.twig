@@ -108,7 +108,9 @@
                         </li>
                     </ul>
                 {% endif %}
+
             </nav>
+
         </header>
 
         <main class="mb-4">
@@ -125,6 +127,7 @@
 
             {% block body %}{% endblock %}
         </main>
+
 
         <footer class="align-items-end">
             <div class="container-fluid">
@@ -311,6 +314,29 @@
                                     heart.addClass('far fa-heart');
                                 }
                             })
+                        })
+
+                        $.get("{{ path('user_popkyc') }}", function (data) {
+                            var reponse = $.parseJSON(data);
+                            var html    = `
+                                <div class="w-100" aria-live="polite" aria-atomic="true" style="position: absolute;">
+                                    <div id="pop-up-kyc" data-autohide="false" class="toast" style="position: absolute; top: 50px; right: 30px;">
+                                        <div class="toast-header">
+                                            <i class="fa fa-envelop"></i>
+                                            <strong class="mr-auto">${ reponse.titre }</strong>
+                                            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="toast-body">
+                                            ${ reponse.message }, <a href="${ reponse.lien }">vérifier mon compte</a>!
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+
+                            $('header nav').append(html);
+                            $('#pop-up-kyc').toast('show');
                         })
                     });
                 </script>
