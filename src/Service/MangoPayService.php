@@ -110,4 +110,22 @@ class MangoPayService
 		}
 		return $Result;
 	}
+
+	public function getKYCDocs(string $idUser)
+	{
+		$mangoPayApi = $this->getMangoPayApi();
+		
+		$kyc = $mangoPayApi->Users->GetKycDocuments($idUser);
+		return $kyc;
+	}
+
+	public function getUser(string $idUser)
+	{
+		$mangoPayApi = $this->getMangoPayApi();
+		
+		$users = $mangoPayApi->Users->Get($idUser);
+		return $users;
+	}
+
+
 }

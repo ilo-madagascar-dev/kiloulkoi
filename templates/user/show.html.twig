@@ -2,9 +2,15 @@
 
 {% block title %}Profil{% endblock %}
 
+{% block stylesheets %}
+<style type="text/css">
+
+</style>
+{% endblock %}
+
 {% block body %}
 
-    <div class="container-fluid" >
+    <div class="container-fluid" id="tab">
         
         <div class="row">
             <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2 col-sm-12 bg-white rounded pb-3" style="margin-top: 50px;;">
@@ -20,6 +26,11 @@
                         <hr>
                         <div class="row">
                             <div class="col-lg-6 col-md-12">
+                                {% for message in app.flashes('addKYC') %}
+                                    <div class="alert alert-success">
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
                                 <table class="table table-borderless table-sm">
                                     {% if app.user.nom is defined %}
                                         <tr>
@@ -64,11 +75,26 @@
                                         <td><strong>Pseudo :</strong></td>
                                         <td>{{ app.user.pseudo }}</td>
                                     </tr>
+                                    <tr>
+                                        <td><strong>Verification de mon compte:</strong></td>
+                                            {% if usersmango.KYCLevel == 'REGULAR' %}
+                                                <td>Effectué</td>
+                                            {% elseif usersmango.KYCLevel == 'LIGHT' %}
+                                                <td>En attente</td>
+                                            {% endif %}
+                                    </tr>
                                 </table>
                             </div>
-                            <div class="ml-auto">
-                                <button class="btn btn-primary"  data-toggle="modal" data-target="#modalKYC">Ajouter Document KYC</button>
-                            </div>
+                            {% if discr == false %}
+                                <div class="ml-auto">
+                                    <button class="btn btn-primary"  data-toggle="modal" data-target="#modalKYC">Vérifier mon Compte</button>
+                                </div>
+                            {% else %}
+                                <div class="ml-auto">
+                                    <button class="btn btn-primary"  data-toggle="modal" data-target="#modalKYCpro">Vérifier mon Compte</button>
+                                </div>
+                            {% endif %}
+
                             <div class="col-12 my-3 d-flex justify-content-center">
                                 <a href="{{ path('user_edit', { id: app.user.id }) }}" class="btn btn-primary btn-block w-md-50">Modifier votre compte</a>
                             </div>
@@ -116,10 +142,16 @@
 
                     <form action="{{path('uploadkyc')}}"  enctype="multipart/form-data" method="post" class="card-body">
 
-                        <input type="file" name="kycfile">
+                          <label class='__lk-fileInput my-1'>
+                            <span data-default='Choose file' class="btn btn-info btn-block">TELECHARGER MA PIECE D’IDENTITE RECTO\VERSO</span>
+                            
+                            <input type="file" style="display: none;" name="kycfile">
+                            
+                          </label>
+                          
                         
-                        <div class="form-group">
-                            <button class="btn btn-success btn-block" style="background-color: #FF4500;border-color: #FF4500;" type="submit"><img src="{{ asset('image/mangopay.png') }}" class="mr-2 float-left" style="height: 25px">Valider
+                        <div class="form-group my-1">
+                            <button class="btn btn-success btn-block" style="background-color: #FF4500;border-color: #FF4500;" type="submit"><img src="{{ asset('image/mangopay.png') }}" class="mr-2 float-left" style="height: 25px">Envoyer
                             </button>
                         </div>
         
@@ -128,4 +160,63 @@
             </div>
         </div>
     </div>
+    <!-- Modal kyc pro-->
+    <div class="modal fade" id="modalKYCpro" tabindex="-1" role="dialog" aria-labelledby="modalUserLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalUserLabel">Ajouter document KYC</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <form action="{{path('uploadkyc')}}"  enctype="multipart/form-data" method="post" class="card-body">
+
+                          <label class='__lk-fileInput my-1'>
+                            <span data-default='Choose file' class="btn btn-info btn-block">TELECHARGER KBIS</span>
+                            
+                            <input type="file" style="display: none;" name="kycfile">
+                            
+                          </label>
+                          
+                        
+                        <div class="form-group my-1">
+                            <button class="btn btn-success btn-block" style="background-color: #FF4500;border-color: #FF4500;" type="submit"><img src="{{ asset('image/mangopay.png') }}" class="mr-2 float-left" style="height: 25px">Envoyer
+                            </button>
+                        </div>
+        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+            <script src="{{ asset('/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript">
+    $(function(){  
+  $('input').change(function(){
+    var label = $(this).parent().find('span'); 
+    if(typeof(this.files) !='undefined'){ // fucking IE      
+      if(this.files.length == 0){
+        label.removeClass('withFile').text(label.data('default'));
+      }
+      else{
+        var file = this.files[0]; 
+        var name = file.name;
+        var size = (file.size / 1048576).toFixed(3); //size in mb 
+        label.addClass('withFile').text(name + ' (' + size + 'mb)');
+      }
+    }
+    else{
+      var name = this.value.split("\\");
+          label.addClass('withFile').text(name[name.length-1]);
+    }
+    return false;
+  });  
+});
+</script>
 {% endblock %}
