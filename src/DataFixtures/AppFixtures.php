@@ -305,9 +305,9 @@ class AppFixtures implements FixtureInterface
 
         // Type abonnement
         $typeAbonnements = [
-            ["Gratuit"      , 3, 3],
-            ["Professionnel", 3, 3],
-            ["Premium"      , 6, 6],
+            ["Gratuit"      , 3, 3, 0],
+            ["Professionnel", 3, 3, 5],
+            ["Premium"      , 6, 6, 7.99],
         ];
         for ($i = 0; $i < count($typeAbonnements); $i++) 
         {
@@ -315,6 +315,7 @@ class AppFixtures implements FixtureInterface
             $type->setLibelle($typeAbonnements[$i][0]);
             $type->setPhotoMax($typeAbonnements[$i][1]);
             $type->setAnnonceMax($typeAbonnements[$i][2]);
+            $type->setPrix($typeAbonnements[$i][3]);
             $manager->persist($type);
         }
 

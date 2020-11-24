@@ -39,6 +39,11 @@ class TypeAbonnement
      */
     private $annonceMax;
 
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $prix;
+
     public function __construct()
     {
         $this->abonnements = new ArrayCollection();
@@ -112,6 +117,18 @@ class TypeAbonnement
     public function setAnnonceMax(int $annonceMax): self
     {
         $this->annonceMax = $annonceMax;
+
+        return $this;
+    }
+
+    public function getPrix(): ?float
+    {
+        return $this->prix;
+    }
+
+    public function setPrix(float $prix): self
+    {
+        $this->prix = $prix;
 
         return $this;
     }

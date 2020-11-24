@@ -51,6 +51,7 @@ class Abonnement
      */
     private $user;
 
+
     public function __construct()
     {
         $this->factures = new ArrayCollection();
@@ -146,4 +147,5 @@ class Abonnement
 
         return $this;
     }
+
 }
