@@ -17,20 +17,20 @@ header .dropdown-toggle::after {
 }
 
 .nav-icon i {
-	font-size: 2rem;
+	font-size: 1.5rem;
 }
 
-.messages .unread {
+.messages .unread {    
 	position: absolute;
 	color:white;
-	right: -1rem;
-	top: 0;
+	right: 0.5rem;
+	top: -.7rem;
 	border:white;
 	background:red;
-	padding: 2px;
+	padding: 1px;
 	border-radius: 50%;
-	width: 25px;
-	height: 25px;
+	width: 20px;
+	height: 20px;
 	text-align: center;
 	font-size: smaller;
 	font-weight: bolder;
@@ -38,7 +38,7 @@ header .dropdown-toggle::after {
 
 #bg{
 	width: 100%;
-	background: linear-gradient(#004E5B, #3FB5C8 60% );
+	background: linear-gradient(#009CB5, #00CD9C 60% );
 	position:absolute;
 	left:0;
 	z-index: -1;
@@ -56,8 +56,7 @@ label {
 
 label.required::before {
 	content: "* ";
-	color: 
-	red;
+	color: red;
 }
 
 .btn:disabled {
@@ -85,15 +84,15 @@ label.required::before {
 }
 
 .favoris-heart {
+	cursor: pointer;
 	position: absolute;
 	right:8px;
-	bottom:30px;
+	bottom: 40px;
 	background:white;
 	border-radius:50%;
 	padding:6px;
 	padding-top: 2px;
 	padding-left: 5px;
-	border:lightgrey .2px solid;
 	width:35px;
 	height:35px;
 	text-align:center !important;
@@ -174,11 +173,26 @@ label.required::before {
 	-ms-transform-origin: 50% 50%;
 }
 
-.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default, .ui-button, html .ui-button.ui-state-disabled:hover, html .ui-button.ui-state-disabled:active {
-	background: var(--success) !important;
+.ui-slider-handle {
+	background: #06e070 !important;
+	border-radius: 50% !important;
 }
 .ui-widget-header {
-	background:  var(--teal) !important;
+	background:  #00cd9c !important;
+}
+.ui-slider-horizontal .ui-slider-handle {
+	top: -.4em;
+	margin-left: -.6em;
+}
+.ui-slider-horizontal {
+	height: .5em !important;
+}
+.ui-slider-horizontal .ui-slider-handle {
+	top: -.4em !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__display {
+	font-size: .8rem !important;
 }
 
 .categorie-container {

@@ -52,7 +52,6 @@ class AnnoncesRepository extends ServiceEntityRepository
      * 
      * @return Annonces[] Returns an array of Annonces objects
      */
-
     public function findOtherAnnonceById($id)
     {
         return $this->createQueryBuilder('a')
@@ -65,12 +64,12 @@ class AnnoncesRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
     /**
      * favoris des utilisateurs
      * 
      * @return Annonces[] Returns an array of Annonces objects
      */
-
     public function findFavoris($user_id)
     {
         $query = $this->getAllQuery()
@@ -85,7 +84,6 @@ class AnnoncesRepository extends ServiceEntityRepository
      * 
      * @return int
      */
-
     public function checkFavoris($user_id, $annonce_id)
     {
         return $this->createQueryBuilder('a')
@@ -142,7 +140,6 @@ class AnnoncesRepository extends ServiceEntityRepository
     /**
      * @return \Doctrine\ORM\Query
      */
-
     public function findAllAnnonces($limit = 0)
     {
         $query = $this->getAllQuery();
@@ -192,7 +189,6 @@ class AnnoncesRepository extends ServiceEntityRepository
     /**
      * @return \Doctrine\ORM\Query
      */
-
     public function findAnnonces(Array $criteria)
     {
         $query = $this->getAllQuery();

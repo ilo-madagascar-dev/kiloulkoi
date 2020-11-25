@@ -49,9 +49,9 @@
 									<span><i class="fa fa-eye"></i> {{ annonce.visite | number_format }}</span>
 								</div>
 							{% endif %}
-
-							<div title="Favoris" class="favoris-heart" style="">
-								{% if app.user %}
+							
+							{% if app.user and app.user.id != annonce.user.id %}
+								<div title="Favoris" class="favoris-heart" >
 									{% if annonce.userFavoris|length == 0 %}
 										<span class="btn-heart" data="{{ annonce.id }}">
 											<i class="far fa-heart"></i>
@@ -61,8 +61,9 @@
 											<i class="fa fa-heart text-danger"></i>
 										</span>
 									{% endif %}
-								{% endif %}
-							</div>
+								</div>
+							{% endif %}
+	
 							<div class="col-4 py-2 text-center">
 								<small class="text-muted">{{ annonce.dateModification | date("d/m/Y") }}</small>
 							</div>

@@ -5,6 +5,7 @@
 {% block stylesheets %}
     <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 {% endblock %}
 
 {% set annonce_titre = annonce_titre is defined ? annonce_titre : "Annonces" %}
@@ -13,7 +14,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-10 offset-md-1">
+        <div class="col-lg-10 offset-lg-1 col-md-12">
             <div class="card p-3 shadow">
                 <div class="card-body py-0 px-0 px-md-3">
                     <form action="{{ path('annonces_filter') }}" method="post">
@@ -99,7 +100,7 @@
                             </div>
                             <div class="form-group col-12 col-md-6">
                                 <div class="input-group">
-                                    <input id="city" type="text" class="form-control" placeholder="Choisissez une ville" aria-describedby="ville-addon" name="ville">
+                                    <select id="city"  name="ville[]" type="text" class="form-control" multiple="multiple" placeholder="Choisissez une ville" aria-describedby="ville-addon"></select>
                                     <div class="input-group-append">
                                         <span class="input-group-text bg-white" id="ville-addon"><i class="fa fa-city"></i></span>
                                     </div>
@@ -108,7 +109,7 @@
 
                             <div class="form-group col-md-6 col-12">
                                 <div class="input-group">
-                                    <input id="datepicker" class="form-control" placeholder="Disponibilité" name="date">
+                                    <input id="datepicker" class="form-control" placeholder="Disponibilité" name="date" readonly="true">
                                     <div class="input-group-append">
                                         <span class="input-group-text bg-white" id="ville-addon"><i class="fa fa-calendar"></i></span>
                                     </div>
@@ -117,8 +118,8 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-sm-6 col-12">
-                                <div class="form-group mt-2" data-toggle="tooltip" data-placement="top" title="Prix">
+                            <div class="col-sm-6 col-12 slider">
+                                <div class="form-group m-2" data-toggle="tooltip" data-placement="top" title="Prix">
                                     <div id="slider-range" class="mt-3"></div>
                                 </div>
                             </div>
@@ -202,50 +203,30 @@
     {{ parent() }}
     <script src="{{ asset('js/datepicker.min.js') }}" type="text/javascript"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/i18n/fr.js"></script>
+
     <script>
     $(document).ready( function () 
-    {        
-        $(`<ul id="city-list" class="d-none"></ul>`).insertAfter( $('#city').parent() );
-        $('#city').keyup(function(event)
-        {
-            var url = "https://datanova.legroupe.laposte.fr/api/records/1.0/search/?dataset=laposte_hexasmal&facet=nom_de_la_commune&facet=code_postal&q=" + $(this).val().trim();
-            $.get(url, function(data)
-            {
-                $('#city-list li').remove();
-                data.records.forEach( function(element, i)
-                {
-                    $('#city-list').append(`
-                        <li class="px-2 py-1" data-cp="${ element.fields.code_postal }" data-city="${ element.fields.nom_de_la_commune }">${ element.fields.code_postal } - ${ element.fields.nom_de_la_commune }</li>
-                    `);
-                });
-            })
-        });
-
-        $('#city').focusin( function()
-        {
-            $('#city-list').removeClass('d-none');
-        })
-
-        $('#city').focusout( function()
-        {
-            setTimeout( function()
-            {
-                $('#city-list').addClass('d-none');
-            }, 300)
-        })
-
-        $(document).on('click', '#city-list li', function()
-        {
-            $('#code_postal').removeClass('is-invalid');
-            var city = $(this).attr('data-city');
-            var cp   = $(this).attr('data-cp');
-            $('#city').val(city);
-        })
+    {
         
         $('#datepicker').datepicker({
             format: 'dd/mm/yyyy',
             uiLibrary: 'bootstrap4',
+            altField: "#datepicker",
+            closeText: 'Fermer',
+            prevText: 'Précédent',
+            nextText: 'Suivant',
+            currentText: 'Aujourd\'hui',
+            monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+            monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
+            dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+            dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
+            dayNamesMin: ['Di', 'Lu', 'Ma', 'Mer', 'Je', 'Ve', 'Sa'],
+            weekHeader: 'Sem.',
+            firstDay: 1
         });
+
         
         $( "#slider-range" ).slider({
             range: true,
@@ -265,7 +246,7 @@
         })
 
         $('.categorie-enfant').click( function () {
-            $('.input-show-categorie').val( 'Catégorie: ' + $(this).text().trim() );
+            $('.input-show-categorie').val( $(this).text().trim() );
             $('#input-sous-categorie').val( $(this).attr('data') )
             $('.categorie-container').toggleClass('d-none');
         })
@@ -276,7 +257,7 @@
             if( $(this).attr('data-class') == 'Service' || $(this).attr('data-class') == 'Divers' )
             {
                 $('#prix-unite option[value=1]').removeClass('d-none');
-                $('.input-show-categorie').val( 'Catégorie: ' + $(this).text().trim() );
+                $('.input-show-categorie').val( $(this).text().trim() );
                 $('#input-sous-categorie').val( $(this).attr('data') )
                 $('.categorie-container').toggleClass('d-none');
                 $('#input-sous-categorie').val( null );
@@ -288,6 +269,37 @@
             }
         })
         $('.input-show-categorie').val(null);
+
+        var written = "";
+        $('#city').select2({
+            language: 'fr',
+            placeholder: 'Séléctionner une ville',
+            templateSelection: function (params) {
+                return params.text;
+            },
+            ajax: {
+                url: function (params) {
+                    written = params.term;
+                    return "https://datanova.legroupe.laposte.fr/api/records/1.0/search/?dataset=laposte_hexasmal&facet=nom_de_la_commune&facet=code_postal&q=" + params.term;
+                },
+                processResults: function (data) {
+                    // Transforms the top-level key of the response object from 'items' to 'results'
+                    var response = data.records;
+                    var options  = $.map(response, function (obj) {
+                        return {
+                            text: obj.fields.code_postal + ' - ' + obj.fields.nom_de_la_commune,
+                            id:  obj.fields.code_postal + ' - ' + obj.fields.nom_de_la_commune,
+                        };
+                    });
+
+                    return { results: options };
+                }
+            }
+        });
+
+        $('#categorie-select').select2({
+            dropdownAutoWidth: false,
+        });
     })
     </script>
 {% endblock %}
