@@ -145,8 +145,13 @@
                     <form action="{{path('uploadkyc')}}"  enctype="multipart/form-data" method="post" class="card-body">
 
                           <label class='w-100 __lk-fileInput mb-3'>
-                            <span data-default='Choose file' class="btn btn-info btn-block">TELECHARGER MA PIECE D’IDENTITE RECTO\VERSO</span>
-                            <input type="file" style="display: none;" name="kycfile">
+                            <span data-default='Choose file' class="btn btn-info btn-block">TELECHARGER MA PIECE D’IDENTITE RECTO</span>
+                            <input type="file" style="display: none;" name="kycfile[]">
+                          </label>
+
+                          <label class='w-100 __lk-fileInput mb-3'>
+                            <span data-default='Choose file' class="btn btn-info btn-block">TELECHARGER MA PIECE D’IDENTITE VERSO</span>
+                            <input type="file" style="display: none;" name="kycfile[]">
                           </label>
                           
                         
@@ -174,10 +179,20 @@
 
                     <form action="{{path('uploadkyc')}}"  enctype="multipart/form-data" method="post" class="card-body">
 
-                          <label class='w-100 __lk-fileInput mb-3'>
+                        <label class='w-100 __lk-fileInput mb-3'>
+                            <span data-default='Choose file' class="btn btn-info btn-block">TELECHARGER MA PIECE D’IDENTITE RECTO</span>
+                            <input type="file" style="display: none;" name="kycfile[]">
+                        </label>
+
+                        <label class='w-100 __lk-fileInput mb-3'>
+                            <span data-default='Choose file' class="btn btn-info btn-block">TELECHARGER MA PIECE D’IDENTITE VERSO</span>
+                            <input type="file" style="display: none;" name="kycfile[]">
+                        </label>
+
+                        <label class='w-100 __lk-fileInput mb-3'>
                             <span data-default='Choose file' class="btn btn-info btn-block">TELECHARGER KBIS</span>
-                            <input type="file" style="display: none;" name="kycfile">
-                          </label>
+                            <input type="file" style="display: none;" name="kycfile[]">
+                        </label>
                           
                         
                         <div class="form-group">

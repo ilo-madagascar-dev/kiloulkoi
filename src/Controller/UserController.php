@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Mailer\MailerInterface;
 use App\Service\MangoPayService;
 
 /**
@@ -37,7 +38,7 @@ class UserController extends AbstractController
     /**
      * @Route("/popupkayc", name="user_popkyc", methods={"GET"})
      */
-    public function popupKyc(MangoPayService $mangoPayService): Response
+    public function popupKyc(MangoPayService $mangoPayService,MailerInterface $mailer): Response
     {
         $user = $this->getUser();
         $userMangoId = $this->getUser()->getMangoPayId();
@@ -63,6 +64,18 @@ class UserController extends AbstractController
         }
         else
         {
+            $messages = 'KYC Document validé(s)';
+            $email = (new TemplatedEmail())
+            ->from(new Address('njanahary46@gmail.com', 'Kiloukoi'))
+            ->to($this->getUser()->getEmail())
+            ->subject('Validation KYC')
+            ->htmlTemplate('user/email.html.twig')
+            ->context([
+                'messages' => $messages,
+            ])
+            ;
+
+            $mailer->send($email);
             $reponse = [
                 'titre' => 'KYC Document',
                 'message' => 'KYC Document validé(s)',
@@ -126,7 +139,7 @@ class UserController extends AbstractController
         /*$file = base64_encode (file_get_contents($filePath));*/
         
         $file = $_FILES['kycfile']['tmp_name'];/*$uploader->upload($request->files->get('kycfile'));*/
-
+        
         $mguId = $this->getUser()->getMangoPayId();
         
         $mangoPayService->setUserMangoPayKYC($mguId,$file);

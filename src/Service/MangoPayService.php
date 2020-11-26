@@ -52,32 +52,34 @@ class MangoPayService
 		return $mangoUser->Id ;
 	}
 
-	public function setUserMangoPayKYC(string $idUser,string $upf)
+	public function setUserMangoPayKYC(string $idUser,$upf)
 	{
 	
 		$mangoPayApi = $this->getMangoPayApi();
 
 
-		
-			$UserId = $idUser;
-			$upfile = $upf;/*$this->rootDirectory . '/var/mangopay/FLYER_FR.pdf';*/
-			$KycDocument = new \MangoPay\KycDocument();
-			$KycDocument->Type = "IDENTITY_PROOF";
-			$Result = $mangoPayApi->Users->CreateKycDocument($UserId, $KycDocument);
+			$result3;
+			foreach ($upf as $key => $value) {
+				$UserId = $idUser;
+				$upfile = $upf;/*$this->rootDirectory . '/var/mangopay/FLYER_FR.pdf';*/
+				$KycDocument = new \MangoPay\KycDocument();
+				$KycDocument->Type = "IDENTITY_PROOF";
+				$Result = $mangoPayApi->Users->CreateKycDocument($UserId, $KycDocument);
+				
+				
+				$KycDocumentId = $Result->Id;
+				
+				//create pages kyc
+				$mangoPayApi->Users->CreateKycPageFromFile($UserId, $KycDocumentId, $upf[$key]);
+				//submit all pages kyc
+				$KycDocument = new MangoPay\KycDocument();
+				$KycDocument->Id = $KycDocumentId;
+				$KycDocument->Status = "VALIDATION_ASKED";
+				$result3 = $mangoPayApi->Users->UpdateKycDocument($UserId, $KycDocument);
+			
+			}
 			
 			
-			$KycDocumentId = $Result->Id;
-			 
-			/*dd($upfile);*/
-			$result2 = $mangoPayApi->Users->CreateKycPageFromFile($UserId, $KycDocumentId, $upfile);
-			
-			
-			$KycDocument = new MangoPay\KycDocument();
-			$KycDocument->Id = $KycDocumentId;
-			$KycDocument->Status = "VALIDATION_ASKED";
-			$result3 = $mangoPayApi->Users->UpdateKycDocument($UserId, $KycDocument);
-
-		
 		return $result3;
 	}
 
