@@ -52,11 +52,11 @@
 
                 <div class="collapse navbar-collapse" id="navbarToggler">
                     <div class="m-auto row">
-                        <form class="col-md-6 pt-3 py-lg-0">
+                        <form action="{{ path('annonces_filter') }}">
                             <div class="input-group">
-                                <input class="form-control" type="search" placeholder="Recherche" aria-label="Recherche">
+                                <input class="form-control" type="search" name="titre" placeholder="Recherche" aria-label="Recherche">
                                 <div class="input-group-append">
-                                    <button class="btn btn-success" type="button" id="button-addon1">
+                                    <button type="submit" class="btn btn-success" >
                                         <i class="fa fa-search"></i>
                                     </button>
                                 </div>
