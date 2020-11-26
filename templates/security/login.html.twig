@@ -5,57 +5,57 @@
 {% block body %}
 
 <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-4 col-md-6 offset-lg-4 offset-md-3">
-                <div class="card p-3">
-                    {% if error %}
-                        <div class="alert alert-danger text-center">{{ error.messageKey|trans(error.messageData, 'security', 'fr') }}</div>
-                    {% endif %}
-        
-                    <form method="post" class="card-body">
-                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" >
-                        
-                        <div class="form-group">
-                            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" placeholder="Adresse Email" class="form-control e-mai" required autofocus>
-                        </div>
-        
-                        <div class="form-group">
-                            <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Mots de Passe" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <button class="btn btn-success btn-block" type="submit">Connexion</button>
-                        </div>
-        
-                        <div class="form-group text-center">
-                            <a href="{{ path('connect_facebook') }}" class="btn btn-block btn-primary" >
-                                <img src="{{ asset('image/facebook.png') }}" class="mr-2 float-left" style="height: 25px"><span>Se connecter avec facebook</span>
-                            </a>
-                        </div>
+    <div class="row">
+        <div class="col-lg-4 col-md-6 offset-lg-4 offset-md-3">
+            <div class="card p-3">
+                {% if error %}
+                    <div class="alert alert-danger text-center">{{ error.messageKey|trans(error.messageData, 'security', 'fr') }}</div>
+                {% endif %}
     
-                        <div class="form-group text-center">
-                            <a href="{{ path('connect_google') }}" class="btn btn-block btn-danger" >
-                                <img src="{{ asset('image/google.png') }}" class="float-left" style="height: 25px"><span>Se connecter avec google</span>
-                            </a>
-                        </div>
-                    </form>
-                </div>
+                <form method="post" class="card-body">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" >
+                    
+                    <div class="form-group">
+                        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" placeholder="Adresse Mail" class="form-control e-mai" required autofocus>
+                    </div>
+    
+                    <div class="form-group">
+                        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Mot de Passe" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button class="btn btn-success btn-block" type="submit">Connexion</button>
+                    </div>
+    
+                    <div class="form-group text-center">
+                        <a href="{{ path('connect_facebook') }}" class="btn btn-block btn-primary" >
+                            <img src="{{ asset('image/facebook.png') }}" class="mr-2 float-left" style="height: 25px"><span>Se connecter avec facebook</span>
+                        </a>
+                    </div>
+
+                    <div class="form-group text-center">
+                        <a href="{{ path('connect_google') }}" class="btn btn-block btn-danger" >
+                            <img src="{{ asset('image/google.png') }}" class="float-left" style="height: 25px"><span>Se connecter avec google</span>
+                        </a>
+                    </div>
+                </form>
             </div>
         </div>
-        
-        <div class="my-3 text-center">
-            <p>
-                <strong><a class="text-dark" style="text-decoration: underline" href="{{ path('app_forgot_password_request') }}">Mot de passe oublier?</a></strong>
-            </p>
-                
-            <p>
-                <span>Nouveau sur kiloukoi ?</span>
-                <strong>
-                    <a class="text-dark" style="text-decoration: underline"></a>
-                    <button class="btn btn-link"  data-toggle="modal" data-target="#modalUser">Créez votre compte</button>
-                </strong>
-            </p>
-        </div>
+    </div>
+    
+    <div class="my-3 text-center">
+        <p>
+            <strong><a class="text-dark" style="text-decoration: underline" href="{{ path('app_forgot_password_request') }}">Mot de passe oublié?</a></strong>
+        </p>
+            
+        <p>
+            <span>Nouveau sur kiloukoi ?</span>
+            <strong>
+                <a class="text-dark" style="text-decoration: underline"></a>
+                <button class="btn btn-link"  data-toggle="modal" data-target="#modalUser">Créez votre compte</button>
+            </strong>
+        </p>
+    </div>
 </div>
 
 

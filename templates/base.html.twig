@@ -135,7 +135,7 @@
                     <a href="{{ path('accueil') }}">
                         <img src="{{ asset('image/logo.png') }}" class="mb-3" style="height: 120px;width: auto;" >
                     </a>
-                    <p class="text-center text-white"><strong>N'achetez que le nécessaire, pour le reste il y a Kiloukoi!</strong></p>
+                    <p class="text-center text-white"><strong>N'achetez que le nécessaire, pour <span class="slogan-animation">le reste</span> il y a Kiloukoi!</strong></p>
                 </center>
             </div>
 
@@ -355,6 +355,32 @@
                     });
                 </script>
             {% endif %}
+
+            <script>
+                $(document).ready( function () 
+                {
+                    var words = [
+                        'ps4',
+                        'ps2',
+                        'oui',
+                        'non'
+                    ];
+                    var index = 0;
+
+                    var show = function() 
+                    {
+                        $('.slogan-animation').fadeOut(2000, function() 
+                        {
+                            $('.slogan-animation').text(words[index]);
+                            index++;
+                            if( !words[index] )
+                                index = 0;
+                            $('.slogan-animation').fadeIn(2000, show);
+                        });
+                    }
+                    show();
+                })
+            </script>
 
         {% endblock %}
     </body>
