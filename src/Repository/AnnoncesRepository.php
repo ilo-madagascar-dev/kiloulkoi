@@ -193,19 +193,31 @@ class AnnoncesRepository extends ServiceEntityRepository
     {
         $query = $this->getAllQuery();
 
-        if( !empty($criteria['categorie']) && empty($criteria['sousCategorie']))
-        {
-            $query->andWhere('c.id = :id')->setParameter('id', $criteria['categorie']);
-        }
+        // dd( $criteria );
 
-        if( !empty($criteria['sousCategorie']) )
+        if( !empty($criteria['categories']) )
         {
-            $query->andWhere('sc.id = :id')->setParameter('id', $criteria['sousCategorie']);
+            $categories = json_decode($criteria['categories']);
+            $query->andWhere('c.id in (:ids) or sc.id in (:ids)')->setParameter('ids', $categories);
         }
 
         if( !empty($criteria['titre']) )
         {
             $query->andWhere('a.titre LIKE :titre')->setParameter('titre', '%' . $criteria['titre'] . '%');
+        }
+
+        if( !empty($criteria['ville']) )
+        {
+            $villes = [];
+            $codes  = [];
+            foreach( $criteria['ville'] as $address )
+            {
+                $villes[] = trim( explode('-', $address)[0] );
+                $codes[]  = trim( explode('-', $address)[1] );
+            }
+            $query->andWhere('u.ville in (:cities) or u.ville in (:codes)')
+                    ->setParameter('cities', $villes)
+                    ->setParameter('codes' , $codes);
         }
 
         if( !empty($criteria['prix']) )
@@ -217,7 +229,16 @@ class AnnoncesRepository extends ServiceEntityRepository
             $query->andWhere('a.prix <= :max_prix')->setParameter('max_prix', $max_prix);
         }
 
+        if( !empty($criteria['date']) )
+        {
+            $query->leftJoin('a.locations', 'l')
+                ->andWhere('l.dateDebut >= :date or l.dateFin <= :date or l.id is null')->setParameter('date', $criteria['date']);
+        }
+
+        // dd( $query->getQuery()->getSQL() );
+
         return $query->getQuery();
+
     }
 
 }
