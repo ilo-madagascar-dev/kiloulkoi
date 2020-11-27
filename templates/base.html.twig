@@ -52,7 +52,7 @@
 
                 <div class="collapse navbar-collapse" id="navbarToggler">
                     <div class="m-auto row">
-                        <form action="{{ path('annonces_filter') }}">
+                        <form class="d-inline col py-4 py-lg-0" action="{{ path('annonces_filter') }}" method="POST" >
                             <div class="input-group">
                                 <input class="form-control" type="search" name="titre" placeholder="Recherche" aria-label="Recherche">
                                 <div class="input-group-append">
@@ -62,7 +62,7 @@
                                 </div>
                             </div>
                         </form>
-                        <div class="d-inline col-md-6 py-3 py-lg-0">
+                        <div class="d-inline col-6 py-4 py-lg-0">
                             <a class="btn btn-block btn-success" href="{{ path('annonces_new') }}">Déposer une annonce</a>
                         </div>
                     </div>
@@ -246,6 +246,7 @@
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
             <script src="{{ asset('/bootstrap/js/bootstrap.min.js') }}"></script>
+            <script src="{{ asset('/js/base.js') }}"></script>
             
             {% if app.user and app.request.cookies.get('mercureAuthorization') is null %}
                 {# Set mercure cookies #}
@@ -355,33 +356,6 @@
                     });
                 </script>
             {% endif %}
-
-            <script>
-                $(document).ready( function () 
-                {
-                    var words = [
-                        'ps4',
-                        'ps2',
-                        'oui',
-                        'non'
-                    ];
-                    var index = 0;
-
-                    var show = function() 
-                    {
-                        $('.slogan-animation').fadeOut(2000, function() 
-                        {
-                            $('.slogan-animation').text(words[index]);
-                            index++;
-                            if( !words[index] )
-                                index = 0;
-                            $('.slogan-animation').fadeIn(2000, show);
-                        });
-                    }
-                    show();
-                })
-            </script>
-
         {% endblock %}
     </body>
 </html>

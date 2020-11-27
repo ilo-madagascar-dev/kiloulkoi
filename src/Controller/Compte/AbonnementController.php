@@ -3,6 +3,7 @@
 namespace App\Controller\Compte;
 
 use App\Entity\Abonnement;
+use App\Entity\TypeAbonnement;
 use App\Entity\User;
 use App\Form\AbonnementType;
 use App\Repository\AbonnementRepository;
@@ -39,15 +40,17 @@ class AbonnementController extends AbstractController
         {
             $abonnement     = new Abonnement();
             $debut          = new \Datetime();
-            
-            if ($userType == 'Professionnel')
-            {
-                $typeAbonnement = $this->repTypeAbonnement->find(2); // Professionnel
-            }
-            else
-            {
-                $typeAbonnement = $this->repTypeAbonnement->find(1); // Gratuit
-            }
+
+            // if ($userType == 'Professionnel')
+            // {
+            //     $typeAbonnement = $this->repTypeAbonnement->find(2); // Professionnel
+            // }
+            // else
+            // {
+            //     $typeAbonnement = $this->repTypeAbonnement->find(1); // Gratuit
+            // }
+
+            $typeAbonnement = $this->repTypeAbonnement->find(1); // Gratuit
 
             $abonnement->setDateDebut( $debut );
             $abonnement->setDateFin( $debut->add(new \DateInterval('P1M')) );
@@ -63,18 +66,23 @@ class AbonnementController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="abonnement_new", methods={"GET","POST"})
+     * @Route("/new/{type}", name="abonnement_new", methods={"GET","POST"})
      */
-    public function sAbonner(Request $request, TypeAbonnementRepository $typeAbRepo): Response
+    public function sAbonner(TypeAbonnement $type, TypeAbonnementRepository $typeAbRepo): Response
     {
-        $user           = $this->getUser();
-        $typeAbonnement = $typeAbRepo->find(3); // Premium
-        $abonnement     = new Abonnement();
+        if( !$type )
+        {
+            $this->addFlash('error', 'Une erreur est survenue lors de votre souscription!');
+            return $this->redirectToRoute('abonnement_index');
+        }
+
+        $user       = $this->getUser();
+        $abonnement = new Abonnement();
 
         $abonnement->setDateDebut( new \Datetime() );
         $abonnement->setDateFin( (new \Datetime())->add(new \DateInterval('P1M')) );
         $abonnement->setActif( 1 );
-        $abonnement->setType( $typeAbonnement );
+        $abonnement->setType( $type );
         $abonnement->setUser( $user );
 
         $entityManager = $this->getDoctrine()->getManager();
