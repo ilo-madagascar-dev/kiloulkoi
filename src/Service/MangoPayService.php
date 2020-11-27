@@ -129,5 +129,44 @@ class MangoPayService
 		return $users;
 	}
 
+	public function getWalet(string $locatairemangoId)
+	{
+		$mangoPayApi = $this->getMangoPayApi();
+        
+            $waletUserId = $mangoPayApi->Users->GetWallets($locatairemangoId);
+            $walletId;
+            foreach ($waletUserId as $value) {
+                $walletId = $value->Id;
+            }
+        return $walletId;
+	}
+
+	public function Payin (string $locatairemangoId, int $feesAmount,string $currency,int $debitedFundsAmount)
+	{
+		$walletId = $this->getWalet($locatairemangoId);
+		$payIn = new \MangoPay\PayIn();
+
+        	$payIn->CreditedWalletId = $walletId;
+            $payIn->AuthorId         = $locatairemangoId;
+            $payIn->DebitedFunds     = new \MangoPay\Money();
+            $payIn->Fees             = new \MangoPay\Money();
+            $payIn->Fees->Amount     = $feesAmount;
+            $payIn->Fees->Currency   = $currency;
+            $payIn->DebitedFunds->Amount   = $debitedFundsAmount;
+            $payIn->DebitedFunds->Currency = $currency;
+	}
+
+	public function getCards(string $locatairemangoId)
+	{
+		$mangoPayApi = $this->getMangoPayApi();
+		$cards  = $mangoPayApi->Users->GetCards($locatairemangoId);
+            $cardId;
+            $cardType;
+            foreach ($cards as $value) {
+                $cardId = $value->Id;
+                $cardType = $value->CardType;
+            }
+        return array ($cardId, $cardType);
+	}
 
 }

@@ -107,15 +107,15 @@ class LocationController extends AbstractController
         {
             $locataire = $location->getUser();
 
-            /*dd($locataire->getMangoPayId());*/
+            
             // create pay-in CARD DIRECT direct paying card
-            $mangoPayApi = $mangoPayService->getMangoPayApi();
+            /*$mangoPayApi = $mangoPayService->getMangoPayApi();
         
             $waletUserId = $mangoPayApi->Users->GetWallets($locataire->getMangoPayId());
             $walletId;
             foreach ($waletUserId as $value) {
                 $walletId = $value->Id;
-            }
+            }*/
             
             $periodeTotal = date_diff($location->getDateDebut(),$location->getDateFin());
             
@@ -129,7 +129,10 @@ class LocationController extends AbstractController
                 $difference = $periodeTotal->format('%m') + 1;
             }
 
-            $payIn = new \MangoPay\PayIn();
+            $prix = intval( $difference * $location->getAnnonce()->getPrix() ) * 100;
+            $mangoPayService->Payin($locataire->getMangoPayId(),0,"EUR",$prix);
+
+            /*$payIn = new \MangoPay\PayIn();
 
             $payIn->CreditedWalletId = $walletId;
             $payIn->AuthorId         = $locataire->getMangoPayId();
@@ -137,22 +140,21 @@ class LocationController extends AbstractController
             $payIn->Fees             = new \MangoPay\Money();
             $payIn->Fees->Amount     = 0;
             $payIn->Fees->Currency   = "EUR";
-            $payIn->DebitedFunds->Amount   = intval( $difference * $location->getAnnonce()->getPrix() ) * 100;
-            $payIn->DebitedFunds->Currency = "EUR";
+            $payIn->DebitedFunds->Amount   = 
+            $payIn->DebitedFunds->Currency = "EUR";*/
             
-            $cards  = $mangoPayApi->Users->GetCards($locataire->getMangoPayId());
+            /*$cards  = $mangoPayApi->Users->GetCards($locataire->getMangoPayId());
             $cardId;
             $cardType;
             foreach ($cards as $value) {
                 $cardId = $value->Id;
                 $cardType = $value->CardType;
-            }
-            //active card
-            /*$Card = new \MangoPay\Card();
-            $Card->Id = $cardId;
-            $Card->Active = true;
-            $mangoPayApi->Cards->Update($Card);*/
+            }*/
 
+            //get carte banquaire
+            list ($cardId, $cardType) = $mangoPayService->getCards($locataire->getMangoPayId());
+            /*Dump($cardId);
+            dd($cardType);*/
             // payment type as CARD
             $payIn->PaymentDetails = new \MangoPay\PayInPaymentDetailsCard();
             $payIn->PaymentDetails->CardType = $cardType;
