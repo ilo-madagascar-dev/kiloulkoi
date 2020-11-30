@@ -129,11 +129,11 @@ class MangoPayService
 		return $users;
 	}
 
-	public function getWalet(string $locatairemangoId)
+	public function getWalet(string $userMangoId)
 	{
 		$mangoPayApi = $this->getMangoPayApi();
         
-            $waletUserId = $mangoPayApi->Users->GetWallets($locatairemangoId);
+            $waletUserId = $mangoPayApi->Users->GetWallets($userMangoId);
             $walletId;
             foreach ($waletUserId as $value) {
                 $walletId = $value->Id;
@@ -143,7 +143,12 @@ class MangoPayService
 
 	public function Payin (string $locatairemangoId, int $feesAmount,string $currency,int $debitedFundsAmount)
 	{
+		$mangoPayApi = $this->getMangoPayApi();
+
+		//get walet
 		$walletId = $this->getWalet($locatairemangoId);
+
+		//payin processe
 		$payIn = new \MangoPay\PayIn();
 
         	$payIn->CreditedWalletId = $walletId;
@@ -154,6 +159,24 @@ class MangoPayService
             $payIn->Fees->Currency   = $currency;
             $payIn->DebitedFunds->Amount   = $debitedFundsAmount;
             $payIn->DebitedFunds->Currency = $currency;
+
+        //get card 
+        list ($cardId, $cardType) = $this->getCards($locatairemangoId);
+
+            // payment type as CARD
+            $payIn->PaymentDetails = new \MangoPay\PayInPaymentDetailsCard();
+            $payIn->PaymentDetails->CardType = $cardType;
+            $payIn->PaymentDetails->CardId = $cardId;
+            
+            // execution type as DIRECT
+            $payIn->ExecutionDetails = new \MangoPay\PayInExecutionDetailsDirect();
+            $payIn->ExecutionDetails->SecureModeReturnURL = 'http://test.com';
+
+            // create Pay-In
+            $createdPayIn = $mangoPayApi->PayIns->Create($payIn);
+
+         return $createdPayIn->Status;
+
 	}
 
 	public function getCards(string $locatairemangoId)
@@ -168,5 +191,24 @@ class MangoPayService
             }
         return array ($cardId, $cardType);
 	}
+
+	public function doTransferWalet(string $authorId, string $currency, int $debitedFundsAmount , int $transferFeesAmount , string $debitedWalletId , string $creditedWalletId )
+	{
+		$mangoPayApi = $this->getMangoPayApi();
+		$Transfer = new \MangoPay\Transfer();
+                $Transfer->AuthorId = $authorId;
+                $Transfer->DebitedFunds = new \MangoPay\Money();
+                $Transfer->DebitedFunds->Currency = $currency;
+                $Transfer->DebitedFunds->Amount = $debitedFundsAmount;
+                $Transfer->Fees = new \MangoPay\Money();
+                $Transfer->Fees->Currency = $currency;
+                $Transfer->Fees->Amount = $transferFeesAmount;
+                $Transfer->DebitedWalletID = $debitedWalletId;
+                $Transfer->CreditedWalletId = $creditedWalletId;
+                $result = $mangoPayApi->Transfers->Create($Transfer);
+        return $result;
+	}
+
+
 
 }
