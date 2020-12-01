@@ -12,7 +12,7 @@
                         <i class="text-success fa fa-wallet mr-3" style="font-size: 3rem;"></i>
                         <div class="d-inline">
                             <h1 class="mb-0" style="font-size: 1.4rem;"><strong>Mes Moyens de Paiements</strong></h1>
-                            <small class="text-muted">Lorem upsum</small>
+                            <small class="text-muted">Listes des cartes bancaires</small>
                         </div>
                         <div class="ml-auto">
                             <button class="btn btn-primary"  data-toggle="modal" data-target="#modalUser">Ajouter</button>
@@ -76,7 +76,7 @@
                                     <tr>
                                         <td>{{ proprietaire }}</td>
                                         <td>{{ portfelle.Description }}</td>
-                                        <td>{{ portfelle.Balance.Amount }}</td>
+                                        <td>{{ portfelle.Balance.Amount/100 }}.00</td>
                                         <td>{{portfelle.Currency}}</td>
                                         
                                     </tr>

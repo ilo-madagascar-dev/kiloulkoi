@@ -129,7 +129,7 @@ class MangoPayService
 		return $users;
 	}
 
-	public function getWalet(string $userMangoId)
+	public function getWalletId(string $userMangoId)
 	{
 		$mangoPayApi = $this->getMangoPayApi();
         
@@ -141,12 +141,20 @@ class MangoPayService
         return $walletId;
 	}
 
+	public function getWallet(string $userMangoId)
+	{
+		$mangoPayApi = $this->getMangoPayApi();
+		$wallet = $mangoPayApi->Users->GetWallets($userMangoId);
+
+		return $wallet;
+	}
+
 	public function Payin (string $locatairemangoId, int $feesAmount,string $currency,int $debitedFundsAmount)
 	{
 		$mangoPayApi = $this->getMangoPayApi();
 
 		//get walet
-		$walletId = $this->getWalet($locatairemangoId);
+		$walletId = $this->getWalletId($locatairemangoId);
 
 		//payin processe
 		$payIn = new \MangoPay\PayIn();
@@ -161,7 +169,7 @@ class MangoPayService
             $payIn->DebitedFunds->Currency = $currency;
 
         //get card 
-        list ($cardId, $cardType) = $this->getCards($locatairemangoId);
+        list ($cardId, $cardType , $cardObjet) = $this->getCards($locatairemangoId);
 
             // payment type as CARD
             $payIn->PaymentDetails = new \MangoPay\PayInPaymentDetailsCard();
@@ -189,7 +197,7 @@ class MangoPayService
                 $cardId = $value->Id;
                 $cardType = $value->CardType;
             }
-        return array ($cardId, $cardType);
+        return array ($cardId, $cardType, $cards);
 	}
 
 	public function doTransferWalet(string $authorId, string $currency, int $debitedFundsAmount , int $transferFeesAmount , string $debitedWalletId , string $creditedWalletId )
@@ -209,6 +217,33 @@ class MangoPayService
         return $result;
 	}
 
+	public function creatCardRegistration(string $userId , string $currency , string $cardType)
+	{
+		$mangoPayApi = $this->getMangoPayApi();
 
+		$cardRegister = new \MangoPay\CardRegistration();
+        $cardRegister->UserId = $userId;
+        $cardRegister->Currency = $currency;
+        $cardRegister->CardType = $cardType;
+        $createdCardRegister = $mangoPayApi->CardRegistrations->Create($cardRegister);
+
+        return $createdCardRegister;
+	}
+
+	public function getCrdWithId(string $cardId)
+	{
+		$mangoPayApi = $this->getMangoPayApi();
+		$cardRegister = $mangoPayApi->CardRegistrations->Get($cardId);
+
+		return $cardRegister;
+	}
+
+	public function updateCardRegister($cardRegister)
+	{
+		$mangoPayApi = $this->getMangoPayApi();
+		$updatedCardRegister = $mangoPayApi->CardRegistrations->Update($cardRegister);
+
+		return $updatedCardRegister;
+	}
 
 }

@@ -127,8 +127,8 @@ class LocationController extends AbstractController
 
             if ($reponsePaieCards == \MangoPay\PayInStatus::Succeeded) {
                 
-                $WIdproprietaire = $mangoPayService->getWalet($this->getUser()->getMangoPayId());
-                $WIdlocataire = $mangoPayService->getWalet($locataire->getMangoPayId());
+                $WIdproprietaire = $mangoPayService->getWalletId($this->getUser()->getMangoPayId());
+                $WIdlocataire = $mangoPayService->getWalletId($locataire->getMangoPayId());
                 $prixAnnonce = intval( $difference * $location->getAnnonce()->getPrix() ) * 100;
 
                 //Do transfert
