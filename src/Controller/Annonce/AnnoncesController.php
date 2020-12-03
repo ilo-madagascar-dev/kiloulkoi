@@ -88,13 +88,11 @@ class AnnoncesController extends AbstractController
             return $this->redirectToRoute('securitylogin');
         }
 
-        $categories = $this->repCategorie->findParents();
         $query      = $this->repAnnonce->findMesAnnonces($user->getId());
         $annonces   = $paginator->paginate($query, $request->query->getInt('page', 1));
         $annonce_titre = "Mes annonces";
 
-        return $this->render('annonces/index.html.twig', [
-            'categories' => $categories,
+        return $this->render('annonces/list-base.html.twig', [
             'annonces' => $annonces,
             'annonce_titre' => $annonce_titre
         ]);
@@ -110,7 +108,7 @@ class AnnoncesController extends AbstractController
         $annonces      = $paginator->paginate($query, $request->query->getInt('page', 1));
         $annonce_titre = "Résultats des recherches";
         
-        return $this->render('annonces/mesAnnonces.html.twig', [
+        return $this->render('annonces/list-base.html.twig', [
             'categories' => $categories,
             'annonces' => $annonces,
             'annonce_titre' => $annonce_titre
@@ -128,7 +126,7 @@ class AnnoncesController extends AbstractController
         $annonces      = $paginator->paginate($query, $request->query->getInt('page', 1));
         $annonce_titre = "Mes Favoris";
 
-        return $this->render('annonces/mesAnnonces.html.twig', [
+        return $this->render('annonces/list-base.html.twig', [
             'categories' => $categories,
             'annonces' => $annonces,
             'annonce_titre' => $annonce_titre
@@ -159,7 +157,7 @@ class AnnoncesController extends AbstractController
 
         $annonce_titre = empty($annonce_titre) ? "Résultats des recherches" : $annonce_titre;
         
-        return $this->render('annonces/mesAnnonces.html.twig', [
+        return $this->render('annonces/list-base.html.twig', [
             'categories' => $categories,
             'annonces' => $annonces,
             'annonce_titre' => $annonce_titre
@@ -167,9 +165,21 @@ class AnnoncesController extends AbstractController
     }
 
     /**
+     * @Route("/deposer", name="annonces_depos", methods={"GET"})
+     */
+    public function deposer()
+    {
+        $categories = $this->repCategorie->findParents();
+        
+        return $this->render('annonces/depos.html.twig', [
+            'categories' => $categories,
+        ]);
+    }
+
+    /**
      * @Route("/creation", name="annonces_new", methods={"GET","POST"})
      */
-    public function new(Request $request, TypeAbonnementRepository $repoTypeAbonnement, FileUploader $fileUploader): Response
+    public function new(Request $request, FileUploader $fileUploader): Response
     {
         $user = $this->getUser();
         if ($user == null) 
@@ -204,7 +214,7 @@ class AnnoncesController extends AbstractController
 
         // Category not found....
         if( $categorie == null)
-            return $this->redirectToRoute('annonces_index');
+            return $this->redirectToRoute('annonces_depos');
 
         $photoMax    = $abonnement->getType()->getPhotoMax();
         $annonceMax  = intval($abonnement->getType()->getAnnonceMax());

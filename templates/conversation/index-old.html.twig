@@ -1,0 +1,117 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Messages{% endblock %}
+
+{% block body %}
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+	<div class="row rounded-lg overflow-hidden shadow pt-3 mx-2">
+		<!-- Users box-->
+		<div class="col-12 col-md-5 col-lg-4 px-0">
+			<div class="bg-white">
+				<div class="p-4 bg-primary text-white">
+					<h2 class="h5 mb-0 py-1">Messages</2>
+				</div>
+
+				<div class="messages-box border-right border-primary" style="height: calc(100vh - 200px);overflow-y:auto;">
+					<div id="conversations" class="list-group rounded-0">
+
+						{% for conversation in conversations %}
+							{% set active = (conversationEncours.id == conversation.id) %}
+							{% set read   = (app.user.id == conversation.user1.id and conversation.lu1) or (app.user.id == conversation.user2.id and conversation.lu2) %}
+
+							<a id="conversation-{{ conversation.id }}" href="{{ path('conversation_show', {'id': conversation.id}) }}" class="list-group-item list-group-item-action rounded-0 {{ active ? 'list-group-item-primary' : (read ? 'list-group-item-light text-muted ' : 'list-group-item-info text-muted ') }}">
+								<div class="media">
+									{% if conversation.user1.id == app.user.id %}
+										<img src="{{ asset('uploads/avatar/') ~ conversation.user2.avatar }}" alt="user" width="50" height="50" class="rounded-circle">
+									{% else %}
+										<img src="{{ asset('uploads/avatar/') ~ conversation.user1.avatar }}" alt="user" width="50" height="50" class="rounded-circle">
+									{% endif %}
+									
+									<div class="media-body ml-3">
+										<div class="d-flex align-items-center justify-content-between mb-0">
+											{% if conversation.user1.id == app.user.id %}
+												<h6 class="mb-0" style="font-weight: bold;">{{ conversation.user2.nomComplet }}</h6>
+											{% else %}
+												<h6 class="mb-0" style="font-weight: bold;">{{ conversation.user1.nomComplet }}</h6>
+											{% endif %}
+											<small style="font-size: 60%;" class="conversation-date">{{ conversation.messages[0].date | date("d/m/Y | H:m") }}</small>
+										</div>
+										<p class="font-italic mb-0 text-small conversation-content">
+											{% if conversation.messages[0].user.id == app.user.id %}
+												<small style="font-weight: bold;">Moi: </small>
+											{% endif %}
+											<small>{{ conversation.messages[0].contenue }}</small>
+										</p>
+									</div>
+								</div>
+							</a>
+							
+							{% set i = 1 %}
+						{% endfor %}
+						
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Chat Box-->
+		<div class="col-12 col-md-7 col-lg-8 px-0 bg-white">
+			{# Reciever name #}
+			<div class="p-4 bg-primary text-white border-left border-white">
+				<h2 class="h5 mb-0 py-1">{{ destinataire.nomComplet }}</h2>
+			</div>
+
+			<div class="chat-box w-100" >
+				<div id="messageBody" data="chat-{{ conversationEncours.id }}" class="px-4 py-2" style="height: calc(100vh - 300px);overflow-y:auto;">
+					{% for message in messages %}
+						{% if message.user.id == app.user.id %}
+							<!-- Reciever Message-->
+							<div class="media w-50 ml-auto">
+								<div class="media-body mb-2">
+									<div class="bg-primary rounded py-2 px-3">
+										<p class="text-small mb-0 text-white">{{ message.contenue }}</p>
+									</div>
+									<small class="small text-muted">{{ message.date | date("d/m/Y | H:m") }}</small>
+								</div>
+							</div>
+						{% else %}
+							<!-- Sender Message-->
+							<div class="media w-50">
+								<img src="{{ asset('uploads/avatar/') ~ message.user.avatar }}" alt="user" width="50" height="50" class="rounded-circle">
+								<div class="media-body mb-2 ml-3">
+									<div class="bg-light rounded py-2 px-3">
+										<p class="text-small mb-0 text-muted">{{ message.contenue }}</p>
+									</div>
+									<small class="small text-muted">{{ message.date | date("d/m/Y | H:m") }}</small>
+								</div>
+							</div>
+						{% endif %}
+					{% endfor %}
+				</div>
+
+				<!-- Typing area -->
+				<form id="message-form" method="POST" action="{{ path('conversation_messages_new', { location: location.id, destinataire: destinataire.id }) }}" class="bg-light border border-primary rounded-right w-100">
+					<div class="input-group" >
+						<textarea type="text" placeholder="Type a message" name="contenue" aria-describedby="message-submit" class="message-content form-control rounded-0 border-0 py-2 bg-light"  style="height: 100px;"></textarea>
+						<div class="input-group-append">
+							<button id="message-submit" type="submit" class="btn btn-primary">
+								<i class="fa fa-paper-plane"></i>
+								<span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+	 {{ parent() }}
+	 <script src="{{ asset('/js/message.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,62 @@
+
+.calendar span {
+	width: 2.6rem;
+	height: 2rem;
+	display: inline-block;
+	text-align: center;
+	padding-top: .3rem;
+}
+
+.calendar .month i:hover {
+	cursor: pointer;
+	opacity: .5;
+}
+
+.calendar .days span:hover {
+	cursor: pointer;
+	background: var(--success);
+}
+
+.calendar .days span.selected {
+	cursor: pointer;
+	background: var(--success);
+}
+
+.calendar .days span.selected-middle {
+	cursor: pointer;
+	background: var(--success);
+}
+
+.calendar .days span.enAttente, span.enCours, span.effectue, span.interrompu {
+	cursor: no-drop;
+	color: white;
+}
+
+.calendar .days span.enCours {
+	background-color: orange;
+}
+
+.calendar .days span.enAttente {
+	background-color: orchid;
+}
+
+.calendar .days span.interrompu {
+	background-color: steelblue;
+}
+
+.calendar .days span.effectue {
+	background-color: darkblue;
+}
+
+.calendar .weekdays, h3 {
+	font-weight: bold;
+}
+
+.calendar .month, .weekdays, .days {
+	width: 295px;
+	margin: auto;
+}
+
+.calendar .today {
+	border: 1px solid lightseagreen;
+}

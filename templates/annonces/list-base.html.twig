@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% set annonce_title = annonce_title is defined ? annonce_title : "Mes annonces" %}
+{% block title %}{{ annonce_title }}{% endblock %}
+
+{% block body %}
+
+   {% include "annonces/list.html.twig" %}
+
+{% endblock %}

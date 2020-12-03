@@ -1,7 +1,14 @@
 $(document).ready( function()
 {
+    moment.locale('fr');
+
+    var input_debut = "";
+    var input_fin   = "";
+
     var date = new Date();
-    
+    var selected1 = '';
+    var selected2 = '';
+
     const monthDiff = function(d1, d2) {
         var months;
         months = (d2.getFullYear() - d1.getFullYear()) * 12;
@@ -48,10 +55,13 @@ $(document).ready( function()
 
         let days = "";
 
+        let yearPrev = ( date.getMonth() == 0 ) ? date.getFullYear() - 1 : date.getFullYear();
+        let monPrev  = ( date.getMonth() == 0 ) ? 12                     : date.getMonth();
+
         for (let x = firstDayIndex; x > 0; x--)
         {
             let day        = n_(prevLastDay - x + 1);
-            let span_date  = `${ date.getFullYear() }-${ n_(date.getMonth()) }-${ day }`;
+            let span_date  = `${ yearPrev }-${ n_(monPrev) }-${ day }`;
             days += `<span data="${span_date}" class="prev-date text-muted">${day}</span>`;
         }
 
@@ -68,10 +78,12 @@ $(document).ready( function()
             }
         }
 
+        let yearNext = ( date.getMonth() == 11 ) ? date.getFullYear() + 1 : date.getFullYear();
+        let monNext  = ( date.getMonth() == 11 ) ? 1                      : date.getMonth() + 2;
         for (let j = 1; j <= nextDays; j++)
         {
             let day        = n_(j);
-            let span_date  = `${ date.getFullYear() }-${ n_(date.getMonth() + 2) }-${ day }`;
+            let span_date  = `${ yearNext }-${ n_(monNext) }-${ day }`;
     
             days += `<span data="${span_date}" class="next-date  text-muted">${j}</span>`;
         }
@@ -103,8 +115,169 @@ $(document).ready( function()
                 });
             }
         });
+
+        try {
+            $(`.calendar .days span[data=${selected1}]`).addClass('selected');
+        } catch(e) {}
+
+        try {
+            $(`.calendar .days span[data=${selected2}]`).addClass('selected');
+        } catch(e) {}
+
+        if( selected1 != '' && selected2 != '' )
+        {
+            $('.calendar .days span').each( function(i, span)
+            {
+                if( (selected1 > $(span).attr('data') && $(span).attr('data') > selected2) || (selected1 < $(span).attr('data') && $(span).attr('data') < selected2) )
+                {
+                    if( !$(span).hasClass('enCours') )
+                        $(span).addClass('bg-secondary');
+                }
+            })
+        }
     }; // render calendar end
+
+    document.querySelector(".prev").addEventListener("click", () => 
+    {
+        date.setMonth(date.getMonth() - 1);
+        renderCalendar();
+
+        if( monthDiff((new Date()), date) == 0 )
+        {
+            $('.prev').addClass('d-none');
+        }
+        $('.next').removeClass('d-none');
+    });
+
+    document.querySelector(".next").addEventListener("click", () => 
+    {
+        date.setMonth(date.getMonth() + 1);
+        renderCalendar();
+        
+        if( monthDiff((new Date()), date) > 2 )
+        {
+            $('.next').addClass('d-none');
+        }
+        
+        $('.prev').removeClass('d-none');
+    });
+
+    $(document).on('click', '.days span', function()
+    {
+        if( selected1 !== '' && selected2 == '' )
+        {
+            selected2  = $(this).attr('data');
+            var before = $('.calendar span.selected').attr('data');
+            var after  = $(this).attr('data');
+            $(this).addClass('selected');
+
+            if( before > after )
+            {
+                input_debut = after;
+                input_fin   = before;
+
+                $('#date-debut').val( moment(after).format("Do MMMM YYYY") );
+                $('#date-fin').val( moment(before).format("Do MMMM YYYY") );
+
+                var toColor = $(this).next();
+                while( !toColor.hasClass('selected') && toColor.length > 0 )
+                {
+                    if( !toColor.hasClass('enCours') )
+                    {
+                        toColor.addClass('bg-secondary');
+                    }
+                    toColor = toColor.next();
+                }
+            }
+            else
+            {
+                input_debut = before;
+                input_fin   = after;
+
+                $('#date-debut').val( moment(before).format("Do MMMM YYYY") );
+                $('#date-fin').val( moment(after).format("Do MMMM YYYY") );
+                
+                var toColor = $(this).prev();
+                while( !toColor.hasClass('selected') && toColor.length > 0 )
+                {
+                    if( !toColor.hasClass('enCours') )
+                    {
+                        toColor.addClass('bg-secondary');
+                    }
+                    toColor = toColor.prev();
+                }
+            }
+        }
+        else if( selected1 !== '' && selected2 !== '' )
+        {
+            selected1 = $(this).attr('data');;
+            selected2 = '';
+            $('.calendar span.selected').removeClass('selected');
+            $('.calendar span.bg-secondary').removeClass('bg-secondary');
+            $(this).addClass('selected');
+        }
+        else
+        {
+            selected1 = $(this).attr('data');
+            $(this).addClass('selected');
+        }
+        
+    });
+
+    $('#reserver').click( function()
+    {
+        // Demande de reservation de l'utilisateur
+        let demande_debut = input_debut;
+        let demande_fin   = input_fin;
+
+        if( demande_debut == "" || demande_fin == "" )
+        {
+            $('#reservationModal .liste-reservation' ).addClass("d-none");
+            $('#reservationModal .alert-indisponible').addClass("d-none");
+            $('#reservationModal .alert-selection'   ).removeClass("d-none");
+            $('#reservationModal .modal-footer'      ).addClass("d-none");
+        }
+        else
+        {
+            let demandes = getFreeDates(demande_debut, demande_fin, locations);
     
+            if( demandes.length == 0 )
+            {
+                $('#reservationModal .liste-reservation' ).addClass("d-none");
+                $('#reservationModal .alert-selection'   ).addClass("d-none");
+                $('#reservationModal .modal-footer'      ).addClass("d-none");
+                $('#reservationModal .alert-indisponible').removeClass("d-none");
+            }
+            else
+            {
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                let listes = '';
+                for (const demande of demandes)
+                {
+                    if( demande.debut == demande.fin )
+                    {
+                        let fin   = (new Date(demande.fin)).toLocaleDateString('fr-FR', options);
+
+                        listes += `<li class="list-group-item py-1 border-0">Le <strong>${ fin }</strong></li>`
+                    }
+                    else
+                    {
+                        let debut = (new Date(demande.debut)).toLocaleDateString('fr-FR', options);
+                        let fin   = (new Date(demande.fin)).toLocaleDateString('fr-FR', options);
+
+                        listes += `<li class="list-group-item py-1 border-0">Le <strong>${ debut }</strong> jusqu'au <strong>${ fin }</strong></li>`
+                    }
+                }
+                $('#reservationModal .liste-reservation .list-group').html(listes);
+                $('#reservationModal .liste-reservation').removeClass("d-none");
+                $('#reservationModal .modal-footer').removeClass("d-none");
+                $('#reservationModal .alert').addClass("d-none");
+
+                $('#input-reservation').val( JSON.stringify(demandes) );
+            }
+        }
+    });
+
     const getFreeDates = (demande_debut, demande_fin, locations) => 
     {
         let demandes = [];
@@ -177,108 +350,6 @@ $(document).ready( function()
 
         return demandes;
     }
-
-    document.querySelector(".prev").addEventListener("click", () => 
-    {
-        date.setMonth(date.getMonth() - 1);
-        renderCalendar();
-
-        if( monthDiff((new Date()), date) == 0 )
-        {
-            $('.prev').addClass('d-none');
-        }
-        $('.next').removeClass('d-none');
-    });
-
-    document.querySelector(".next").addEventListener("click", () => 
-    {
-        date.setMonth(date.getMonth() + 1);
-        renderCalendar();
-        
-        if( monthDiff((new Date()), date) > 2 )
-        {
-            $('.next').addClass('d-none');
-        }
-        
-        $('.prev').removeClass('d-none');
-    });
-
-    // $(document).on('click', '.days span', function()
-    // {
-    //     var data = $(this).attr('data');
-
-    //     if( $(this).hasClass('selected') )
-    //     {
-    //         $(this).removeClass('selected');
-
-    //         const index = reservations.indexOf(data);
-    //         if (index > -1)
-    //             reservations.splice(index, 1);
-    //     }
-    //     else
-    //     {
-    //         $(this).addClass('selected');
-    //         reservations.push(data);
-    //         reservations.sort()
-    //     }
-
-    //     console.log(reservations);
-    // });
-
-
-    $('#reserver').click( function()
-    {
-        // Demande de reservation de l'utilisateur
-        let demande_debut = $('#date-debut').val();
-        let demande_fin   = $('#date-fin  ').val();
-
-        if( demande_debut == "" || demande_fin == "" )
-        {
-            $('#reservationModal .liste-reservation' ).addClass("d-none");
-            $('#reservationModal .alert-indisponible').addClass("d-none");
-            $('#reservationModal .alert-selection'   ).removeClass("d-none");
-            $('#reservationModal .modal-footer'      ).addClass("d-none");
-        }
-        else
-        {
-            let demandes = getFreeDates(demande_debut, demande_fin, locations);
     
-            if( demandes.length == 0 )
-            {
-                $('#reservationModal .liste-reservation' ).addClass("d-none");
-                $('#reservationModal .alert-selection'   ).addClass("d-none");
-                $('#reservationModal .modal-footer'      ).addClass("d-none");
-                $('#reservationModal .alert-indisponible').removeClass("d-none");
-            }
-            else
-            {
-                const options = { year: 'numeric', month: 'long', day: 'numeric' };
-                let listes = '';
-                for (const demande of demandes)
-                {
-                    if( demande.debut == demande.fin )
-                    {
-                        let fin   = (new Date(demande.fin)).toLocaleDateString('fr-FR', options);
-
-                        listes += `<li class="list-group-item py-1 border-0">Le <strong>${ fin }</strong></li>`
-                    }
-                    else
-                    {
-                        let debut = (new Date(demande.debut)).toLocaleDateString('fr-FR', options);
-                        let fin   = (new Date(demande.fin)).toLocaleDateString('fr-FR', options);
-
-                        listes += `<li class="list-group-item py-1 border-0">Le <strong>${ debut }</strong> jusqu'au <strong>${ fin }</strong></li>`
-                    }
-                }
-                $('#reservationModal .liste-reservation .list-group').html(listes);
-                $('#reservationModal .liste-reservation').removeClass("d-none");
-                $('#reservationModal .modal-footer').removeClass("d-none");
-                $('#reservationModal .alert').addClass("d-none");
-
-                $('#input-reservation').val( JSON.stringify(demandes) );
-            }
-        }
-    });
-
     renderCalendar();
 });

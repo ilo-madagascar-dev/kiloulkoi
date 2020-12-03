@@ -2,6 +2,8 @@
 
 namespace App\Controller\Auth;
 
+use App\Entity\Particulier;
+use App\Entity\Professionnel;
 use App\Entity\User;
 
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
@@ -14,9 +16,11 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use App\Security\UserAuthenticator;
 use App\Service\FileUploader;
+use App\Service\MangoPayService;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 Use KnpU\OAuth2ClientBundle\Exception\InvalidStateException;
 use League\OAuth2\Client\Provider\GoogleUser;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class GoogleController extends AbstractController
 {
@@ -31,12 +35,22 @@ class GoogleController extends AbstractController
     /**
      * Link to this controller to start the "connect" process
      *
-     * @Route("/connect/google", name="connect_google")
+     * @Route("/connect/google/", name="connect_google")
      * @param ClientRegistry $clientRegistry
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function connectAction(ClientRegistry $clientRegistry)
+    public function connectAction(Request $request, ClientRegistry $clientRegistry, SessionInterface $session)
     {
+        $type = $request->get('type');
+        if( $type == 'professionnel' )
+        {
+            $session->set('userType', 'professionnel');
+        }
+        else
+        {
+            $session->set('userType', 'particulier');
+        }
+
         return $clientRegistry->getClient('google')
                               ->redirect();
     }
@@ -54,7 +68,9 @@ class GoogleController extends AbstractController
         UserPasswordEncoderInterface $passwordEncoder, 
         GuardAuthenticatorHandler $guardHandler, 
         UserAuthenticator $authenticator,
-        FileUploader $uploader
+        FileUploader $uploader, 
+        SessionInterface $session,
+        MangoPayService $mangoPayService
     ) 
     {
         $client = $clientRegistry->getClient('google');
@@ -80,7 +96,18 @@ class GoogleController extends AbstractController
         
         if( !$user ) 
         {
-            $user = new User();
+            if( $session->get('userType') == 'professionnel' )
+            {
+                $user = new Professionnel();
+                $user->setRaisonSocial($googleUser->getName() . ' - ' . $googleUser->getFirstName());
+                $user->setSiret('00000000000000');
+            }
+            else
+            {
+                $user = new Particulier();
+                $user->setNom($googleUser->getName());
+                $user->setPrenom($googleUser->getFirstName());
+            }
             
             $directory   = $this->getParameter('avatar_directory') . '/';
             $avatar_url  = md5(uniqid()) . '.png';
@@ -97,14 +124,17 @@ class GoogleController extends AbstractController
             $user->setDateCreation();
             $user->setDateMiseAJour();
             $user->setVille('-');
-            $user->setRue('-');
             $user->setAdresse('-');
             $user->setCp('-');
             $user->setTelephone('-');
+            $user->setGenre(1);
             $user->setDateMiseAJour();
             $user->setDateMiseAJour();
             $user->setActif(true);
             
+            $mangoPayUserId = $mangoPayService->setUserMangoPay($user->getEmail(), $googleUser->getName(), $googleUser->getFirstName());
+            $user->setMangoPayId( $mangoPayUserId );
+
             // encode the plain password
             $user->setPassword(
                 $passwordEncoder->encodePassword(

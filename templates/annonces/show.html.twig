@@ -1,167 +1,178 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.css">
-   <link href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.css">
+    <link rel="stylesheet" href="{{ asset('/css/calendrier.css') }}">
+    <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 {% endblock %}
 
 {% block title %}Details annonces{% endblock %}
 
 {% block body %}
 
-    <div class="container px-4">
-        <div class=" pt-3">
-            {# Détail de l'annonce #}
-            <div class="card shadow mb-3">
-                <div class="card-header d-flex align-items-top">
-                    <i class="text-muted fa fa-list mr-3" style="font-size: 3rem;"></i>
-                    {# {% set detail_type = annonce.type == 'offre' ? 'de l\'offre' : 'de la demande'  %} #}
-                    <div class="d-inline">
-                        <h2 class="mb-0" style="font-size: 1.4rem;"><strong>Détails</strong></h2>
-                        <small class="text-muted mb-0">Publier le {{ annonce.dateModification | date("d/m/Y à H:m") }}</small>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div>
-                        <h3 class="text-success" style="font-size: 1.3rem;"><strong>{{ annonce.titre }}</strong></h3>
-                        <p class="mb-0"><strong>Prix: </strong>{{ annonce.prix }} €/{{ annonce.type ? annonce.type.libelle : 'mois' }}</p>
-                    </div>
-                    <hr>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 offset-lg-1 col-md-12">
+                <div class=" pt-3">
+                    {# Détail de l'annonce #}
+                    <div class="card shadow mb-3">
+                        <div class="card-header text-center">
+                            {#
+                                <i class="text-muted fa fa-list mr-3" style="font-size: 3rem;"></i>
+                                {% set detail_type = annonce.type == 'offre' ? 'de l\'offre' : 'de la demande'  %} 
+                            #}
+                            <h2 class="mb-0 " ><strong>Détails</strong></h2>
+                            {#
+                                <small class="text-muted mb-0">Publier le {{ annonce.dateModification | date("d/m/Y à H:m") }}</small>
+                            #}
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                <h3 class="text-center text-success" style="font-size: 1.3rem;"><strong>{{ annonce.titre }}</strong></h3>
+                                <p class="mb-0"><strong>Prix: </strong>{{ annonce.prix }} €/{{ annonce.type ? annonce.type.libelle : 'mois' }}</p>
+                            </div>
+                            <hr>
 
-                    {% if annonce_serialized|length > 1 %}
-                        <div>
-                            {% set separateur = annonce_serialized | length / 2 | round %}
+                            {% if annonce_serialized|length > 1 %}
+                                <div>
+                                    {% set separateur = annonce_serialized | length / 2 | round %}
+                                    <div class="row">
+                                        <div class="col-6">
+                                            {% for key, value in annonce_serialized | slice(0, separateur) %}
+                                                <div class="mb-2">
+                                                    <h4 class="mb-0" style="font-size: 1.2rem;"><strong>{{ key | capitalize }}</strong></h4>
+                                                    {% if value is iterable %}
+                                                        <p>{{ value.valeur }}</p>
+                                                    {% else %}
+                                                        <p>{{ value == '' ? ' -- ' : value }}</p>
+                                                    {% endif %}
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+
+                                        <div class="col-6">
+                                            {% for key, value in annonce_serialized | slice(separateur, separateur) %}
+                                                <div class="mb-2">
+                                                    <h4 class="mb-0" style="font-size: 1.2rem;"><strong>{{ key | capitalize }}</strong></h4>
+                                                    {% if value is iterable %}
+                                                        <p>{{ value.valeur }}</p>
+                                                    {% else %}
+                                                        <p>{{ value == '' ? ' -- ' : value }}</p>
+                                                    {% endif %}
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                            {% endif %}
+
+                            <div>
+                                <h3 style="font-size: 1.2rem;"><strong>Description :</strong></h3>
+                                <p class="mb-0">{{ annonce.description | nl2br }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {# Fin - Détail de l'annonce #}
+
+                    {# photos #}
+                        <div class="card shadow mb-3">
+                            <div class="card-header">
+                                {#
+                                    <i class="text-muted fa fa-image mr-3" style="font-size: 3rem;"></i>
+                                #}
+                                <h2 class="mb-0 text-center" ><strong>Photos</strong></h2>
+                            </div>
+                            <div class="card-body">
+                                {% if annonce.photo | length == 0 %}
+                                    <div class="text-center py-4">
+                                        <span class="">Aucune photo disponible.</span>
+                                    </div>
+                                {% else %}
+                                    <div class="tz-gallery">
+                                        <div class="row">
+                                            {% for photo in annonce.photo %}
+                                                <div class="p-1 m-auto overflow-hidden" data-toggle="tooltip" data-placement="top" title="{{ photo.description }}">
+                                                    <a href="{{ asset('uploads/') ~ photo.url }}" class="lightbox">
+                                                        <img id="photo-{{ photo.id }}" src="{{ asset('uploads/') ~ photo.url }}" class="" style="height: 160px;width: auto" alt="{{ photo.description }}">
+                                                    </a>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {#Fin - photos #}
+
+                    {# Calendrier #}
+                    <div class="card shadow mb-3">
+                        <div class="card-header">
+                            {#
+                                <i class="text-muted fa fa-calendar mr-3" style="font-size: 3rem;"></i>
+                            #}
+                            <h2 class="mb-0 text-center" ><strong>Disponibilités</strong></h2>
+                        </div>
+                        <div class="card-body px-0 py-3">
                             <div class="row">
-                                <div class="col-6">
-                                    {% for key, value in annonce_serialized | slice(0, separateur) %}
-                                        <div class="mb-2">
-                                            <h4 class="mb-0" style="font-size: 1.2rem;"><strong>{{ key | capitalize }}</strong></h4>
-                                            {% if value is iterable %}
-                                                <p>{{ value.valeur }}</p>
-                                            {% else %}
-                                                <p>{{ value == '' ? ' -- ' : value }}</p>
-                                            {% endif %}
+                                <div class="col-lg-6 {% if app.user and app.user.id == annonce.user.id %} offset-lg-3 {% endif %}">
+                                    <div class="calendar mb-3">
+                                        <div class="month row py-3 bg-success text-white border border-success">
+                                            <div class="col-2 m-auto p-0 text-right">
+                                                <i class=" display-4 fas fa-angle-left prev"></i>
+                                            </div>
+                                            <div class="col-8">
+                                                <div class="date">
+                                                    <h3 class="text-center"></h3>
+                                                    <p class="text-center m-0"></p>
+                                                </div>
+                                            </div>
+                                            <div class="col-2 m-auto p-0 text-left">
+                                                <i class=" display-4 fas fa-angle-right next"></i>
+                                            </div>
                                         </div>
-                                    {% endfor %}
+                                        <div class="weekdays border border-success  border-bottom-0">
+                                            <span>Dim</span><span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span>
+                                        </div>
+                                        <div class="days border border-success"></div>
+                                    </div>
                                 </div>
+                                
+                                {% if not (app.user and app.user.id == annonce.user.id) %}
+                                    <div class="col-lg-6">
+                                        <div class="p-3">
+                                            <div class="form-group">
+                                                <label for="date-debut">Date du début:</label>
+                                                <input readonly id="date-debut" min="{{ date() | date('Y-m-d') }}" class="form-control" name="debut" placeholder="dd-mm-yyyy">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="date-fin">Date du fin:</label>
+                                                <input readonly id="date-fin" min="{{ date() | date('Y-m-d') }}" class="form-control" name="fin">
+                                            </div>
+                                            <div class="calendar-action text-center">
+                                                <button id="reserver" class="btn btn-block btn-success" type="button" data-toggle="modal" data-target="#reservationModal">Vérifier la disponibilité</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
 
-                                <div class="col-6">
-                                    {% for key, value in annonce_serialized | slice(separateur, separateur) %}
-                                        <div class="mb-2">
-                                            <h4 class="mb-0" style="font-size: 1.2rem;"><strong>{{ key | capitalize }}</strong></h4>
-                                            {% if value is iterable %}
-                                                <p>{{ value.valeur }}</p>
-                                            {% else %}
-                                                <p>{{ value == '' ? ' -- ' : value }}</p>
-                                            {% endif %}
-                                        </div>
-                                    {% endfor %}
-                                </div>
+                                {% if app.user and app.user.id != annonce.user.id %}
+                                {% endif %}
                             </div>
                         </div>
-                        <hr>
-                    {% endif %}
-
-                    <div>
-                        <h3 style="font-size: 1.2rem;"><strong>Description :</strong></h3>
-                        <p class="mb-0">{{ annonce.description | nl2br }}</p>
                     </div>
+                    {# Fin - Calendrier #}
+                
+                    {# Premiere colonne #}
+                    <div class="col-md-6">
+                    </div>
+                    {# Fin - Premiere colonne #}
+                    {# Deuxieme colonne #}
+                    <div class="col-md-6">
+                    </div>
+                    {# Fin - Deuxieme colonne #}
                 </div>
             </div>
-            {# Fin - Détail de l'annonce #}
-
-            {# photos #}
-                <div class="card shadow mb-3">
-                    <div class="card-header d-flex align-items-center">
-                        <i class="text-muted fa fa-image mr-3" style="font-size: 3rem;"></i>
-                        <h2 class="mb-0 d-inline" style="font-size: 1.4rem;"><strong>Photos</strong></h2>
-                    </div>
-                    <div class="card-body">
-                        {% if annonce.photo | length == 0 %}
-                            <div class="text-center py-4">
-                                <span class="">Aucune photo disponible.</span>
-                            </div>
-                        {% else %}
-                            <div class="tz-gallery">
-                                <div class="row">
-                                    {% for photo in annonce.photo %}
-                                        <div class="p-1 m-auto overflow-hidden" data-toggle="tooltip" data-placement="top" title="{{ photo.description }}">
-                                            <a href="{{ asset('uploads/') ~ photo.url }}" class="lightbox">
-                                                <img id="photo-{{ photo.id }}" src="{{ asset('uploads/') ~ photo.url }}" class="" style="height: 160px;width: auto" alt="{{ photo.description }}">
-                                            </a>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
-            {#Fin - photos #}
-
-            {# Calendrier #}
-            <div class="card shadow mb-3">
-                <div class="card-header d-flex align-items-top">
-                    <i class="text-muted fa fa-calendar mr-3" style="font-size: 3rem;"></i>
-                    <h2 class="mb-0" style="font-size: 1.4rem;"><strong>Disponibilités</strong></h2>
-                </div>
-                <div class="card-body px-0 py-3">
-                    <div class="row">
-                        <div class="col-lg-6 {% if app.user and app.user.id == annonce.user.id %} offset-lg-3 {% endif %}">
-                            <div class="calendar mb-3">
-                                <div class="month row py-3 bg-success text-white border border-success">
-                                    <div class="col-2 m-auto p-0 text-right">
-                                        <i class=" display-4 fas fa-angle-left prev"></i>
-                                    </div>
-                                    <div class="col-8">
-                                        <div class="date">
-                                            <h3 class="text-center"></h3>
-                                            <p class="text-center m-0"></p>
-                                        </div>
-                                    </div>
-                                    <div class="col-2 m-auto p-0 text-left">
-                                        <i class=" display-4 fas fa-angle-right next"></i>
-                                    </div>
-                                </div>
-                                <div class="weekdays border border-success  border-bottom-0">
-                                    <span>Dim</span><span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span>
-                                </div>
-                                <div class="days border border-success"></div>
-                            </div>
-                        </div>
-                        
-                        {% if not (app.user and app.user.id == annonce.user.id) %}
-                            <div class="col-lg-6">
-                                <div class="p-3">
-                                    <div class="form-group">
-                                        <label for="date-debut">Date du début:</label>
-                                        <input type="date" id="date-debut" min="{{ date() | date('Y-m-d') }}" class="form-control" name="debut" placeholder="dd-mm-yyyy">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="date-fin">Date du fin:</label>
-                                        <input type="date" id="date-fin" min="{{ date() | date('Y-m-d') }}" class="form-control" name="fin">
-                                    </div>
-                                    <div class="calendar-action text-center">
-                                        <button id="reserver" class="btn btn-block btn-success" type="button" data-toggle="modal" data-target="#reservationModal">Vérifier la disponibilité</button>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endif %}
-
-                        {% if app.user and app.user.id != annonce.user.id %}
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-            {# Fin - Calendrier #}
-        
-            {# Premiere colonne #}
-            <div class="col-md-6">
-            </div>
-            {# Fin - Premiere colonne #}
-            {# Deuxieme colonne #}
-            <div class="col-md-6">
-            </div>
-            {# Fin - Deuxieme colonne #}
         </div>
     </div>
 
@@ -212,6 +223,7 @@
         {% set locations = locations|merge([{debut: location.dateDebut, fin: location.dateFin, statut: location.statutLocation.id }]) %}
     {% endfor %}
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.js"></script>
     <script>
         var locations = {{ locations|json_encode|raw }};

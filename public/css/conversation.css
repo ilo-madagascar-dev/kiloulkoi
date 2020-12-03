@@ -1,0 +1,33 @@
+body {
+   overflow-y: hidden;
+}
+center {
+   display: none;
+}
+#bg {
+   display: none;
+}
+.conversation-conatainer {
+   background: #fff;
+   border-radius: 12px;
+   background: linear-gradient(#009CB5, #00CD9C 60% );
+   overflow: hidden;
+   font-size: 80%;
+}
+#messageBody {
+   height: calc(100vh - 200px);
+   overflow-y:auto;
+}
+.messages-box {
+   height: calc(100vh - 150px);
+   overflow-y:auto;
+}
+#message-form textarea {
+   height: 50px;
+   border-radius: 12px;
+   font-size: 95%;
+}
+#message-form  {
+   border-radius: 0 12px;
+   overflow: hidden;
+}

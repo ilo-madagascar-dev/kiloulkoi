@@ -1,6 +1,16 @@
 
 $(document).ready( function()
 {
+    var nl2br = function (str, isXhtml) {
+        if (typeof str === 'undefined' || str === null) {
+            return ''
+        }
+        // Adjust comment to avoid issue on locutus.io display
+        const breakTag = (isXhtml || typeof isXhtml === 'undefined') ? '<br ' + '/>' : '<br>'
+        return (str + '')
+        .replace(/(\r\n|\n\r|\r|\n)/g, breakTag + '$1')
+    }
+
     if( $('#messageBody').length )
         $('#messageBody').animate({ scrollTop: $('#messageBody')[0].scrollHeight }, 0);
 
@@ -16,14 +26,15 @@ $(document).ready( function()
 
         $.post( url, { contenue: content }, function(response)
         {
-            var message = JSON.parse(response);
-            var template = `
+            var message   = JSON.parse(response);
+            var content_m = message.content.substring(0, 30) + ((message.content.length > 30) ? '...' : '');
+            var template  = `
                 <div class="media w-50 ml-auto">
                     <div class="media-body mb-2">
-                        <div class="bg-primary rounded py-2 px-3">
-                            <p class="text-small mb-0 text-white">${ message.content }</p>
+                        <div class="bg-primary rounded py-2 px-3 shadow">
+                            <p class="text-small mb-0 text-white">${ nl2br(message.content) }</p>
                         </div>
-                        <small class="small text-muted">${ message.date }</small>
+                        <small class="small">${ message.date }</small>
                     </div>
                 </div>
             `;
@@ -33,7 +44,7 @@ $(document).ready( function()
             $('#message-submit'     ).removeAttr('disabled');
 
             $(`#conversation-${ message.conversation } .conversation-date`).html(message.date);
-            $(`#conversation-${ message.conversation } .conversation-content`).html(`<small style="font-weight: bold;">Moi: </small><small>${ message.content }</small>`);
+            $(`#conversation-${ message.conversation } .conversation-content`).html(`<small style="font-weight: bold;">Moi: </small><small>${ content_m }</small>`);
 
             $("#messageBody").append( $(template) );
             $('#messageBody').animate({ scrollTop: $('#messageBody')[0].scrollHeight }, 1000);
@@ -46,6 +57,7 @@ $(document).ready( function()
     {
         if(event.which == 13 && !event.shiftKey)
         {
+            e.preventDefault();
             $('#message-submit').trigger('click');
         };
     })
@@ -61,29 +73,30 @@ $(document).ready( function()
     
         var template = `
             <div class="media w-50">
-                <img src="${ message.user.avatar }" alt="user" width="50" height="50" class="rounded-circle">
+                <img src="${ message.user.avatar }" alt="user" width="40" height="40" class="rounded-circle">
                 <div class="media-body mb-2 ml-3">
-                    <div class="bg-light rounded py-2 px-3">
-                        <p class="text-small mb-0 text-muted">${ message.content }</p>
+                    <div class="bg-light rounded py-2 px-3 shadow">
+                        <p class="text-small mb-0 text-muted">${ nl2br(message.content) }</p>
                     </div>
-                    <small class="small text-muted">${ message.date }</small>
+                    <small class="small">${ message.date }</small>
                 </div>
             </div>
         `;
 
         if( $(`#conversation-${ message.conversation }`).length == 0 )
         {
+            var content_m    = message.content.substring(0, 30) + (message.content.length > 30) ? '...' : '';
             var conversation = `
                 <a id="conversation-${ message.conversation }" href="${ message.path }" class="list-group-item list-group-item-action text-muted rounded-0 list-group-item-info'">
                     <div class="media">
-                        <img src="${ message.user.avatar }" alt="user" width="50" height="50" class="rounded-circle">
+                        <img src="${ message.user.avatar }" alt="user" width="40" height="40" class="rounded-circle">
                         <div class="media-body ml-3">
                             <div class="d-flex align-items-center justify-content-between mb-0">
                                 <h6 class="mb-0" style="font-weight: bold;">${ message.user.fullName }</h6>
                                 <small class="conversation-date" style="font-size: 60%;">${ message.date }</small>
                             </div>
                             <p class="font-italic mb-0 text-small conversation-content">
-                                <small>${ message.content }</small>
+                                <small>${ content_m }</small>
                             </p>
                         </div>
                     </div>
@@ -97,7 +110,7 @@ $(document).ready( function()
             $(`#conversation-${ message.conversation }`).removeClass('text-muted list-group-item-light');
             $(`#conversation-${ message.conversation }`).addClass('list-group-item-info');
             $(`#conversation-${ message.conversation } .conversation-date`).html(message.date);
-            $(`#conversation-${ message.conversation } .conversation-content`).html(message.content);
+            $(`#conversation-${ message.conversation } .conversation-content`).html(nl2br(message.content));
 
             $('#conversations').prepend( $(`#conversation-${ message.conversation }`) );
             if( $('#messageBody').attr('data') == `chat-${ message.conversation }` )
