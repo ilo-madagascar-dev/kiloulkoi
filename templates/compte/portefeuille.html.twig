@@ -2,17 +2,28 @@
 
 {% block title %}Portefeuille{% endblock %}
 
+{% block stylesheets %}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  
+{% endblock %}
+
 {% block body %}
 
     <div class="container-fluid">
         <div class="row mb-3">
             <div class="offset-lg-2 col-lg-8 offset-md-1 col-md-10">
                 <div class="card shadow mb-3">
+                    {% for message in app.flashes('compteIBAN') %}
+                                    <div class="alert alert-danger">
+                                        {{ message }}
+                                    </div>
+                    {% endfor %}
                     <div class="card-header d-flex align-items-top">
                         <i class="text-success fa fa-wallet mr-3" style="font-size: 3rem;"></i>
                         <div class="d-inline">
                             <h1 class="mb-0" style="font-size: 1.4rem;"><strong>Mes Moyens de Paiements</strong></h1>
-                            <small class="text-muted">Lorem upsum</small>
+                            <small class="text-muted">Listes des cartes bancaires</small>
                         </div>
                         <div class="ml-auto">
                             <button class="btn btn-primary"  data-toggle="modal" data-target="#modalUser">Ajouter</button>
@@ -41,7 +52,7 @@
                                         <td>{{cartes.BankCode}}</td>
                                         <td>{{cartes.Country}}</td>
                                         <td>{{cartes.Currency}}</td>
-                                        
+                                                                                
                                     </tr>
                                  {% endfor %}
                               </tbody>
@@ -69,6 +80,7 @@
                                         <th>Description</th>
                                         <th>Balance</th>
                                         <th>Devise</th>
+                                        <th>Transférer</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -76,8 +88,74 @@
                                     <tr>
                                         <td>{{ proprietaire }}</td>
                                         <td>{{ portfelle.Description }}</td>
-                                        <td>{{ portfelle.Balance.Amount }}</td>
+                                        <td>{{ portfelle.Balance.Amount/100 }}.00</td>
                                         <td>{{portfelle.Currency}}</td>
+                                        <td>
+                                            {% if app.session.get('type') == "PAYOUT" %}
+                                                <button class="btn btn-sm btn-success" title="Accepter" disabled>
+                                                        <i class="fa fa-bank"></i>Réussit
+                                                </button>
+                                            {% else %}
+                                                <a href="{{path('portefeuille_transfer')}}" class="btn btn-sm btn-success" title="Accepter">
+                                                        <i class="fa fa-bank"></i>Transférer
+                                                </a>
+                                            {% endif %}
+                                        </td>
+                                        
+                                    </tr>
+                                 {% endfor %}
+                              </tbody>
+                            </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {# table transaction #}
+        <div class="row mb-3">
+            <div class="offset-lg-2 col-lg-8 offset-md-1 col-md-10">
+                <div class="card shadow mb-3">
+                    <div class="card-header d-flex align-items-top">
+                        <i class="text-success fa fa-wallet mr-3" style="font-size: 3rem;"></i>
+                        <div class="d-inline">
+                            <h1 class="mb-0" style="font-size: 1.4rem;"><strong>Transactions récentes</strong></h1>
+                            <small class="text-muted">Listes de vos transactions récentes.</small>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Id transaction</th>
+                                        <th>Locataire</th>
+                                        <th>Date de transaction</th>
+                                        <th>Type</th>
+                                        <th>Montant</th>
+                                        <th>Statut</th>
+                                        <th>Résultat</th>
+                                        <th>Transfère</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for res in transaction %}
+                                    <tr>
+                                        <td>{{ res.Id }}</td>
+                                        <td>{{ res.DebitedWalletId }}</td>
+                                        <td>{{ res.CreationDate }}</td>
+                                        <td>{{ res.Type }}</td>
+                                        <td>{{ res.DebitedFunds.Amount/100 }}.00 {{ res.DebitedFunds.Currency }}</td>
+                                        <td>{{ res.Status }}</td>
+                                        <td>{{ res.ResultMessage }}</td>
+                                        <td>
+                                            {% if app.session.get('type') == "PAYOUT" %}
+                                                <button class="btn btn-sm btn-success" title="Accepter" disabled>
+                                                        <i class="fa fa-bank"></i>Réussit
+                                                </button>
+                                            {% else %}
+                                                <a href="{{path('portefeuille_transfer')}}" class="btn btn-sm btn-success" title="Accepter">
+                                                        <i class="fa fa-bank"></i>Transférer
+                                                </a>
+                                            {% endif %}
+                                        </td>
                                         
                                     </tr>
                                  {% endfor %}
@@ -108,14 +186,21 @@
 
                          <input type="hidden" name="returnURL" value="{{ absolute_url (path('portefeuille_creat')) }}" />
                         
-                        <div class="form-group">
+                        <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1"><i class="fa fa-credit-card"></i></span>
+                        </div>
                         <input class="form-control" placeholder="Numeros de cart" type="text" name="cardNumber" value="" />
                         </div>
-
-                        <div class="form-group">
-                        <input class="form-control" placeholder="Date d' expiration" type="text" name="cardExpirationDate" value="" />
+                        
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="fa fa-calendar"></i></span>
+                            </div>
+                            <input id="datepicker" style="z-index: 1100 !important;" class="form-control" placeholder="Disponibilité MM/YY" name="cardExpirationDate" readonly="true">
                         </div>
 
+                        
                         <div class="form-group">
                         <input class="form-control" placeholder="CVV" type="text" name="cardCvx" value="" />
                         </div>
@@ -134,4 +219,29 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+        $(document).ready( function () 
+        {
+            
+            /*$("#datepicker").datepicker( "option", "dateFormat", 'mmy' );*/
+            $( "#datepicker" ).datepicker({
+              dateFormat: "mmy",
+              monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+              monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
+              dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+              dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
+              dayNamesMin: ['Di', 'Lu', 'Ma', 'Mer', 'Je', 'Ve', 'Sa'],
+            });
+            
+        });
+        
+    </script>
+    
 {% endblock %}

@@ -9,6 +9,8 @@ use App\Repository\CategoriesRepository;
 use App\Repository\TypeLocationRepository;
 use App\Service\PaginationService;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use App\Service\MangoPayService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
@@ -19,12 +21,21 @@ class AccueilController extends AbstractController
     /**
      * @Route("/", name="accueil")
      */
-    public function index(Request $request, AnnoncesRepository $repAnnonce, CategoriesRepository $repCategorie, TypeLocationRepository $reptypeLocation, PaginationService $paginator)
+    public function index(Request $request, AnnoncesRepository $repAnnonce, CategoriesRepository $repCategorie, TypeLocationRepository $ReptypeLocation, PaginationService $paginator,SessionInterface $session,MangoPayService $mangoPayService)
     {
         $categories = $repCategorie->findAllWithSousCategorie();
-        $types      = $reptypeLocation->findAllOrd();
+        $types      = $ReptypeLocation->findAllOrd();
         $query      = $repAnnonce->findAllAnnonces();
         $annonces   = $paginator->paginate($query, $request->query->getInt('page', 1));
+
+        if ($this->getUser()) 
+        {
+            //portefeuille 
+            $portFeuil = $mangoPayService->getWallet($this->getUser()->getMangoPayId());
+            $wallet    = $portFeuil;
+            $session->set('wallet', $wallet);
+        }
+        
 
         return $this->render('accueil/index.html.twig', [
             'categories' => $categories,
