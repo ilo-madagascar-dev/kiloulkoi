@@ -106,4 +106,50 @@ class CompteController extends AbstractController
         /*return new Response('create card');*/
         return $this->redirectToRoute('compte_portefeuille');
     }
+
+    /**
+     * @Route("/portefeuille/transfere", name="portefeuille_transfer")
+     */
+    public function transfereBank(SessionInterface $session, Request $request,MangoPayService $mangoPayService): Response
+    {
+        
+        
+         $walletUser = $mangoPayService->getWallet($this->getUser()->getMangoPayId());
+         $walletId;$currency;$amountDebited;
+         foreach ($walletUser as $value) {
+                $walletId = $value->Id;
+                $currency = $value->Currency;
+                $amountDebited = $value->Balance->Amount;
+          }
+
+        // get bank count IBAN user
+        $bankUser = $mangoPayService->getBankCountUser($this->getUser()->getMangoPayId());
+        $bankAccountId;
+        foreach ($bankUser as $value) {
+                $bankAccountId = $value->Id;
+          }
+
+         if ($bankUser) {
+             //do paying transfer
+            $responseTransfer = $mangoPayService->doPayoutIBAN($this->getUser()->getMangoPayId(),$walletId,$currency,$amountDebited,0,"BANK_WIRE",$bankAccountId);
+         }else{
+            $this->addFlash('compteIBAN', '!Vous n avez pas enconre de compte bancaire IBAN sur votre compte mangopay.');
+         }
+         
+         //check transaction
+         $transaction = $mangoPayService->getTransactionUser($this->getUser()->getMangoPayId());
+         
+         $typetransation;
+         foreach ($transaction as $value) {
+                $typetransation = $value->Type;
+          }
+          $type = $session->get('type');
+       
+            $type = $typetransation;
+       
+          $session->set('type', $type);
+
+         return $this->redirectToRoute('compte_portefeuille');
+
+    }
 }

@@ -111,9 +111,14 @@
 
                                 <a class="dropdown-item" href="{{ path('abonnement_index') }}">Abonnements</a>
                                 <a class="dropdown-item" href="{{ path('compte_facture') }}">Mes Factures</a>
-                                {% for portfelle in app.session.get('wallet') %}
-                                    <a class="dropdown-item" href="{{ path('compte_portefeuille') }}">Mon Portefeuille {{ portfelle.Balance.Amount/100 }}.00 €</a>
-                                {% endfor %}
+                                {% if app.session.get('wallet') %}
+                                    {% for portfelle in app.session.get('wallet') %}
+                                        <a class="dropdown-item" href="{{ path('compte_portefeuille') }}">Mon Portefeuille {{ portfelle.Balance.Amount/100 }}.00 €</a>
+                                    {% endfor %}
+                                {% else %}
+                                    <a class="dropdown-item" href="{{ path('compte_portefeuille') }}">Mon Portefeuille 00.00 €</a>
+                                {% endif %}
+                                
                                 <div class="dropdown-divider"></div>
 
                                 <a class="dropdown-item"  href="{{ path('security_logout') }}">

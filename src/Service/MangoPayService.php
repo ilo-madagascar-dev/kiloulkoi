@@ -246,4 +246,40 @@ class MangoPayService
 		return $updatedCardRegister;
 	}
 
+	public function getBankCountUser(string $userMangoId)
+	{
+		$mangoPayApi = $this->getMangoPayApi();
+		$bankUser = $mangoPayApi->Users->GetBankAccounts($userMangoId);
+		return $bankUser;
+
+	}
+
+	public function doPayoutIBAN (string $authorId,string $debitedWalletID,string $currency, int $amountDebited,int $amountFees,string $paymentType, string $bankAccountId )
+	{
+		$mangoPayApi = $this->getMangoPayApi();
+
+		$PayOut = new \MangoPay\PayOut();
+		$PayOut->AuthorId = $authorId;
+		$PayOut->DebitedWalletID = $debitedWalletID;
+		$PayOut->DebitedFunds = new \MangoPay\Money();
+		$PayOut->DebitedFunds->Currency = $currency;
+		$PayOut->DebitedFunds->Amount = $amountDebited;
+		$PayOut->Fees = new \MangoPay\Money();
+		$PayOut->Fees->Currency = $currency;
+		$PayOut->Fees->Amount = $amountFees;
+		$PayOut->PaymentType = $paymentType;
+		$PayOut->MeanOfPaymentDetails = new \MangoPay\PayOutPaymentDetailsBankWire();
+		$PayOut->MeanOfPaymentDetails->BankAccountId = $bankAccountId;
+		$result = $mangoPayApi->PayOuts->Create($PayOut);
+
+		return $result;
+	}
+
+	public function getTransactionUser (string $userMangoId)
+	{
+		$mangoPayApi = $this->getMangoPayApi();
+		$transactionUser = $mangoPayApi->Users->GetTransactions($userMangoId);
+		return $transactionUser;
+	}
+	
 }
