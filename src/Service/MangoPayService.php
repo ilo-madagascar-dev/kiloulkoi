@@ -281,5 +281,12 @@ class MangoPayService
 		$transactionUser = $mangoPayApi->Users->GetTransactions($userMangoId);
 		return $transactionUser;
 	}
+
+	public function getUserMango (string $userMangoId)
+	{
+		$mangoPayApi = $this->getMangoPayApi();
+		$User = $mangoPayApi->Users->Get($userMangoId);
+		return $User;
+	}
 	
 }

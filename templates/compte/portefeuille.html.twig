@@ -110,6 +110,61 @@
                 </div>
             </div>
         </div>
+        {# table transaction #}
+        <div class="row mb-3">
+            <div class="offset-lg-2 col-lg-8 offset-md-1 col-md-10">
+                <div class="card shadow mb-3">
+                    <div class="card-header d-flex align-items-top">
+                        <i class="text-success fa fa-wallet mr-3" style="font-size: 3rem;"></i>
+                        <div class="d-inline">
+                            <h1 class="mb-0" style="font-size: 1.4rem;"><strong>Transactions récentes</strong></h1>
+                            <small class="text-muted">Listes de vos transactions récentes.</small>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Id transaction</th>
+                                        <th>Locataire</th>
+                                        <th>Date de transaction</th>
+                                        <th>Type</th>
+                                        <th>Montant</th>
+                                        <th>Statut</th>
+                                        <th>Résultat</th>
+                                        <th>Transfère</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for res in transaction %}
+                                    <tr>
+                                        <td>{{ res.Id }}</td>
+                                        <td>{{ res.DebitedWalletId }}</td>
+                                        <td>{{ res.CreationDate }}</td>
+                                        <td>{{ res.Type }}</td>
+                                        <td>{{ res.DebitedFunds.Amount/100 }}.00 {{ res.DebitedFunds.Currency }}</td>
+                                        <td>{{ res.Status }}</td>
+                                        <td>{{ res.ResultMessage }}</td>
+                                        <td>
+                                            {% if app.session.get('type') == "PAYOUT" %}
+                                                <button class="btn btn-sm btn-success" title="Accepter" disabled>
+                                                        <i class="fa fa-bank"></i>Réussit
+                                                </button>
+                                            {% else %}
+                                                <a href="{{path('portefeuille_transfer')}}" class="btn btn-sm btn-success" title="Accepter">
+                                                        <i class="fa fa-bank"></i>Transférer
+                                                </a>
+                                            {% endif %}
+                                        </td>
+                                        
+                                    </tr>
+                                 {% endfor %}
+                              </tbody>
+                            </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Modal -->

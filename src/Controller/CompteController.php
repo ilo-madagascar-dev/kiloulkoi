@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 
 /**
@@ -61,10 +62,29 @@ class CompteController extends AbstractController
             $wallet = $portFeuil;
        
        $session->set('wallet', $wallet);
+
+       //transaction get
+       $transactionUser= $mangoPayService->getTransactionUser($this->getUser()->getMangoPayId());
+       $walletSeller;$walletBuyer;$date;
+       foreach ($transactionUser as $value) {
+            $walletSeller = $value->CreditedWalletId;
+            $walletBuyer = $value->DebitedWalletId;
+            $date = $value->CreationDate;
+       }
+
+       $seller = (object)[];$buyer=  (object)[];;
+       if ($walletSeller && $walletBuyer) {
+         $seller = $mangoPayService->getWallet($walletSeller);
+         $buyer = $mangoPayService->getWallet($walletBuyer);  
+       }
+       
         return $this->render('compte/portefeuille.html.twig',[
             'dataform' => $arrayName,
             'cards' => $cards,
             'walet' => $portFeuil,
+            'transaction' => $transactionUser,
+            'seller' => $seller,
+            'buyer' => $buyer,
             'proprietaire' => $this->getUser()->getNomComplet()
         ]);
     }
