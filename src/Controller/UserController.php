@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Mailer\MailerInterface;
 use App\Service\MangoPayService;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mime\Address;
 
 /**
  * @Route("/profil")
@@ -49,6 +51,7 @@ class UserController extends AbstractController
         if( $getkycdoc == null )
         {
             $reponse = [
+                'status' => 0,
                 'titre' => 'KYC Document',
                 'message' => 'Uploader votre KYC document',
                 'lien' => $this->generateUrl('user_profil')
@@ -57,6 +60,7 @@ class UserController extends AbstractController
         elseif( $usersmango->KYCLevel == 'LIGHT' )
         {
             $reponse = [
+                'status' => $usersmango->KYCLevel,
                 'titre' => 'KYC Document',
                 'message' => 'La validation de votre KYC est en attente',
                 'lien' => $this->generateUrl('user_profil')
@@ -66,17 +70,18 @@ class UserController extends AbstractController
         {
             $messages = 'KYC Document validé(s)';
             $email = (new TemplatedEmail())
-            ->from(new Address('njanahary46@gmail.com', 'Kiloukoi'))
-            ->to($this->getUser()->getEmail())
-            ->subject('Validation KYC')
-            ->htmlTemplate('user/email.html.twig')
-            ->context([
-                'messages' => $messages,
-            ])
+                        ->from(new Address('njanahary46@gmail.com', 'Kiloukoi'))
+                        ->to($this->getUser()->getEmail())
+                        ->subject('Validation KYC')
+                        ->htmlTemplate('user/email.html.twig')
+                        ->context([
+                            'messages' => $messages,
+                        ])
             ;
 
             $mailer->send($email);
             $reponse = [
+                'status' => 'SUCCESS',
                 'titre' => 'KYC Document',
                 'message' => 'KYC Document validé(s)',
                 'lien' => $this->generateUrl('user_profil')

@@ -87,7 +87,10 @@ $(document).ready( function ()
 		}
 
 		$('.categorie-placeholder').addClass('d-none');
-		var val = categorie.attr('data');
+
+		var forChild = categorie.parent().prev().children('i').attr('class');
+		var icon = forChild ? forChild : categorie.children('i').attr('class');
+		var val  = categorie.attr('data');
 		if( !values.includes(val) )
 		{
 			values.push(val);
@@ -95,7 +98,8 @@ $(document).ready( function ()
 
 			var selected = `
 				<span data="${ categorie.attr('data') }">
-					<i>x</i>
+					<i class="delete">x</i>
+					<i class="mt-1 ml-1 ${ icon }"></i>
 					<em>${ categorie.text().trim() }</em>
 				</span>
 			`;
