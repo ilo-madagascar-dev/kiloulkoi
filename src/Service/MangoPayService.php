@@ -200,6 +200,14 @@ class MangoPayService
         return array ($cardId, $cardType, $cards);
 	}
 
+	public function getCard(string $locatairemangoId)
+	{
+		$mangoPayApi = $this->getMangoPayApi();
+		$cards  = $mangoPayApi->Users->GetCards($locatairemangoId);
+            
+        return $cards;
+	}
+
 	public function doTransferWalet(string $authorId, string $currency, int $debitedFundsAmount , int $transferFeesAmount , string $debitedWalletId , string $creditedWalletId )
 	{
 		$mangoPayApi = $this->getMangoPayApi();

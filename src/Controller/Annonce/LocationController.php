@@ -122,8 +122,15 @@ class LocationController extends AbstractController
 
             $prix = intval( $difference * $location->getAnnonce()->getPrix() ) * 100;
             
-            //do paying cards
-            $reponsePaieCards = $mangoPayService->Payin($locataire->getMangoPayId(),0,"EUR",$prix);
+            //vérify cards user
+            $cards = $mangoPayService->getCard($this->getUser()->getMangoPayId());
+            if ($cards) {
+                //do paying cards
+                $reponsePaieCards = $mangoPayService->Payin($locataire->getMangoPayId(),0,"EUR",$prix);
+            }else{
+                /*return $this->redirectToRoute();*/
+            }
+            
 
             if ($reponsePaieCards == \MangoPay\PayInStatus::Succeeded) {
                 

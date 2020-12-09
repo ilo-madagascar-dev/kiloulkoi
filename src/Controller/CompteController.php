@@ -51,9 +51,9 @@ class CompteController extends AbstractController
        
        $session->set('cardId', $cardId);
 
-       //get card 
-       list ($cardId, $cardType , $cards) = $mangoPayService->getCards($createdCardRegister->UserId);
-       
+
+       //get card
+       $cards = $mangoPayService->getCard($this->getUser()->getMangoPayId());
        
        $portFeuil = $waletUserId = $mangoPayService->getWallet($this->getUser()->getMangoPayId());
 
@@ -65,18 +65,22 @@ class CompteController extends AbstractController
 
        //transaction get
        $transactionUser= $mangoPayService->getTransactionUser($this->getUser()->getMangoPayId());
-       $walletSeller;$walletBuyer;$date;
-       foreach ($transactionUser as $value) {
-            $walletSeller = $value->CreditedWalletId;
-            $walletBuyer = $value->DebitedWalletId;
-            $date = $value->CreationDate;
-       }
+       $seller = (object)[];$buyer=  (object)[];
+       if ($transactionUser) {
+           $walletSeller;$walletBuyer;$date;
+           foreach ($transactionUser as $value) {
+                $walletSeller = $value->CreditedWalletId;
+                $walletBuyer = $value->DebitedWalletId;
+                $date = $value->CreationDate;
+           }
 
-       $seller = (object)[];$buyer=  (object)[];;
-       if ($walletSeller && $walletBuyer) {
-         $seller = $mangoPayService->getWallet($walletSeller);
-         $buyer = $mangoPayService->getWallet($walletBuyer);  
+           
+           if ($walletSeller && $walletBuyer) {
+             $seller = $mangoPayService->getWallet($walletSeller);
+             $buyer = $mangoPayService->getWallet($walletBuyer);  
+           }
        }
+       
        
         return $this->render('compte/portefeuille.html.twig',[
             'dataform' => $arrayName,
