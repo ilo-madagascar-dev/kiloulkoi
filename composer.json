@@ -14,6 +14,7 @@
         "ninsuo/symfony-collection": "^2.1",
         "phpdocumentor/reflection-docblock": "^5.2",
         "pmill/doctrine-array-hydrator": "^0.1.7",
+        "rewieer/taskschedulerbundle": "^0.7.1",
         "sensio/framework-extra-bundle": "^5.5",
         "shapecode/hidden-entity-type-bundle": "^4.1",
         "symfony/apache-pack": "^1.0",

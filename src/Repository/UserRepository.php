@@ -106,4 +106,39 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getQuery()
             ->getResult();
     }
+
+    public function countKilouwers( User $user )
+    {
+        return $this->createQueryBuilder('u')
+            ->select('count(u.id)')
+            ->join('u.kilouwers', 'k')
+            ->where('u.id = :id')
+            ->setParameter('id', $user->getId())
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function countAnnonces( User $user )
+    {
+        return $this->createQueryBuilder('u')
+            ->select('count(u.id)')
+            ->join('u.annonces', 'a')
+            ->where('u.id = :id')
+            ->setParameter('id', $user->getId())
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function isFollowedBy( User $proprietaire, User $follower )
+    {
+        return $this->createQueryBuilder('u')
+            ->select('count(u.id)')
+            ->join('u.kilouwers', 'k')
+            ->where('u.id = :proprietaire_id')
+            ->setParameter('proprietaire_id', $proprietaire->getId())
+            ->andWhere('k.id = :follower_id')
+            ->setParameter('follower_id', $follower->getId())
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

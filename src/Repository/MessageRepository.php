@@ -20,7 +20,7 @@ class MessageRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Message[] Returns an array of Message objects
+     * @return Query Returns an array of Message objects
      */
     public function findByConversation(int $conversation)
     {

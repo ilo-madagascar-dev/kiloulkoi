@@ -39,6 +39,7 @@
 									<div class="details" style="font-size: .8rem;position:relative;">
 										<p class="card-text mb-0"><strong class="text-success">Prix : </strong>{{ annonce.prix }}€ /{{ annonce.type ? annonce.type.libelle : "mois" }}</p>
 										<p class="card-text mb-0"><strong class="text-success">Catégorie : </strong>{{ annonce.categorie.libelle }} {% if annonce.sousCategorie is not null %}/ {{ annonce.sousCategorie.libelle }}{% endif %}</p>
+										<p class="card-text mb-0"><strong class="text-success">Propriétaire : </strong><a href="{{ path('proprietaire_annonce', {proprietaire: annonce.user.id, pseudo: annonce.user.pseudo}) }}">@{{ annonce.user.pseudo }}</a></p>
 									</div>
 								</div>
 

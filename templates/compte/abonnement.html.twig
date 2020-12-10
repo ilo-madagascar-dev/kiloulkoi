@@ -21,22 +21,14 @@
                             <small class="text-muted">Votre abonnement actuel.</small>
                         </div>
                         <div class="ml-auto pt-2">
-                            {% if userType == 'Professionnel' %}
-
-                                {% if abonnement.type.id == 3 and abonnement.actif == 1 %}
-                                    <a href="{{ path('abonnement_stop') }}" class="btn btn-warning text-white">Désactiver le renouvelement</a>
-                                {% else %}
-                                    <button class="btn btn-primary"  data-toggle="modal" data-target="#modalAbonnement">S'abonner</button>
-                                {% endif %}
-
+                            {% if abonnement.actif == 1 and abonnement.type.id != 1 %}
+                                <a href="{{ path('abonnement_renouvelement') }}" class="btn btn-warning text-white">Désactiver le renouvelement</a>
                             {% else %}
-
                                 {% if abonnement.type.id == 1 %}
                                     <button class="btn btn-primary"  data-toggle="modal" data-target="#modalAbonnement">S'abonner</button>
-                                {% elseif abonnement.actif == 1 %}
-                                    <a href="{{ path('abonnement_stop') }}" class="btn btn-warning text-white">Désactiver le renouvelement</a>
+                                {% else %}
+                                    <a href="{{ path('abonnement_renouvelement') }}" class="btn btn-success">Activer le renouvelement</a>
                                 {% endif %}
-
                             {% endif %}
                         </div>
                     </div>

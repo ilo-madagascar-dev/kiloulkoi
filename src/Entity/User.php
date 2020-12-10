@@ -50,7 +50,7 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $pseudo;
 
@@ -134,6 +134,12 @@ class User implements UserInterface
      */
     private $mangoPayId;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class)
+     */
+    private $kilouwers;
+
+    
     public function __construct()
     {
         $this->location = new ArrayCollection();
@@ -142,6 +148,7 @@ class User implements UserInterface
         $this->annonces = new ArrayCollection();
         $this->favoris = new ArrayCollection();
         $this->abonnement = new ArrayCollection();
+        $this->kilouwers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -533,4 +540,29 @@ class User implements UserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getKilouwers(): Collection
+    {
+        return $this->kilouwers;
+    }
+
+    public function addKilouwer(self $kilouwer): self
+    {
+        if (!$this->kilouwers->contains($kilouwer)) {
+            $this->kilouwers[] = $kilouwer;
+        }
+
+        return $this;
+    }
+
+    public function removeKilouwer(self $kilouwer): self
+    {
+        $this->kilouwers->removeElement($kilouwer);
+
+        return $this;
+    }
+
 }

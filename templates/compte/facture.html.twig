@@ -19,7 +19,9 @@
                             <select id="anne" class="custom-select">
                                 {% set current_year = "now"|date('Y') %}
                                 {% for year in 2017..current_year %}
-                                    <option value="{{ year }}">{{ year }}</option>
+                                    <option value="{{ year }}" {% if current_year == year %} selected {% endif %}>
+                                        {{ year }}
+                                    </option>
                                 {% endfor %}
                             </select>
                         </div>

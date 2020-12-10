@@ -1,0 +1,136 @@
+{% extends 'base.html.twig' %}
+
+{% set annonce_title = annonce_title is defined ? annonce_title : "Mes annonces" %}
+{% block title %}{{ annonce_title }}{% endblock %}
+
+{% block stylesheets %}
+	<style>
+		.list-group-item {
+			border: 0;
+		} 
+		.list-group-item i.fa {
+			margin-right: 10px;
+			font-size: 1.5rem;
+			display: inline-block;
+			width: 2rem;
+			text-align: center;
+		}
+		.btn-follow {
+			position: absolute;
+			right: 2rem;
+			top: .85rem;
+			z-index: 2;
+		}
+	</style>
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+	<div class="row">
+		<div class="col-lg-10 offset-lg-1 col-md-12">
+			<div class="row bg-white mx-1 py-2 shadow rounded">
+				{% if app.user %}
+					{% if followed %}
+						<button class="btn-follow btn btn-success">
+							<span class="spinner-border spinner-border-sm d-none"></span>
+							<span class="text-follow">Ne plus suivre</span>
+						</button>
+					{% else %}
+						<button class="btn-follow btn btn-primary">
+							<span class="spinner-border spinner-border-sm d-none"></span>
+							<span class="text-follow">Suivre</span>
+						</button>
+					{% endif %}
+				{% endif %}
+				<div class="col-sm-4 text-center">
+					<img src="{{ asset('uploads/avatar/') ~ proprietaire.avatar }}" class="my-2 rounded-circle img-fluid bg-primary" width="175px" height="175px">
+					<div class="text-center text-warning mb-1">
+						<i class="fas fa-star"></i>
+						<i class="fas fa-star"></i>
+						<i class="fas fa-star"></i>
+						<i class="far fa-star"></i>
+						<i class="far fa-star"></i>
+					</div>
+					<div class="text-center text-secondary">
+						<strong>{{ kilouwersCount }}</strong> Kilouwers
+					</div>
+					<div class="text-center text-primary">
+						<strong>{{ annoncesCount }}</strong> annonces en ligne
+					</div>
+				</div>
+				<div class="col-sm-8 d-flex align-items-center">
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item py-2">
+							<i class="fa fa-user text-secondary"></i>
+							<strong>{{ proprietaire.nomComplet }}</strong>
+						</li>
+						<li class="list-group-item py-2">
+							<i class="fa fa-phone text-secondary"></i>
+							<span>{{ proprietaire.telephone }}</span>
+						</li>
+						<li class="list-group-item py-2">
+							<i class="fa fa-envelope text-secondary"></i>
+							<span>{{ proprietaire.email }}</span>
+						</li>
+						<li class="list-group-item py-2">
+							<i class="fa fa-city text-secondary"></i>
+							<span>{{ proprietaire.ville }}</span> 
+						</li>
+						<li class="list-group-item py-2">
+							<i class="fa fa-map-marker-alt text-secondary"></i>
+							<span>{{ proprietaire.adresse }}</span>
+						</li>
+
+						{% if app.user.raisonSocial is defined %}
+							<li class="list-group-item py-2">
+								<i class="fa fa-archway text-secondary"></i>
+								<span>{{ proprietaire.Siret }}</span>
+							</li>
+						{% endif %}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% include "annonces/list.html.twig" %}
+
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+
+	<script>
+
+		$(document).ready( function ()
+		{
+			var url = "{{ path('proprietaire_follow', { proprietaire: proprietaire.id }) }}";
+
+			$('.btn-follow').click( function () 
+			{
+				var that = this;
+				$('.btn-follow .spinner-border').removeClass('d-none');
+				$.get( url, function (reponse) 
+				{
+					if( parseInt(reponse) == 0 )
+					{
+						$(that).addClass('btn-primary');
+						$(that).removeClass('btn-success');
+						$('.btn-follow .text-follow').text('Suivre');
+					}
+					else
+					{
+						$(that).addClass('btn-success');
+						$(that).removeClass('btn-primary');
+						$('.btn-follow .text-follow').text('Ne plus suivre');
+					}
+
+					$('.btn-follow .spinner-border').addClass('d-none');
+				});
+			});
+		});
+	
+	</script>
+{% endblock %}

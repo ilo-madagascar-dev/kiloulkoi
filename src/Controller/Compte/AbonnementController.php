@@ -38,8 +38,8 @@ class AbonnementController extends AbstractController
 
         if( $abonnement == null )
         {
-            $abonnement     = new Abonnement();
-            $debut          = new \Datetime();
+            $abonnement = new Abonnement();
+            $debut      = new \Datetime();
 
             // if ($userType == 'Professionnel')
             // {
@@ -54,7 +54,7 @@ class AbonnementController extends AbstractController
 
             $abonnement->setDateDebut( $debut );
             $abonnement->setDateFin( $debut->add(new \DateInterval('P1M')) );
-            $abonnement->setActif( 1 );
+            $abonnement->setActif( 0 );
             $abonnement->setType( $typeAbonnement );
             $abonnement->setUser( $user );
         }
@@ -68,7 +68,7 @@ class AbonnementController extends AbstractController
     /**
      * @Route("/new/{type}", name="abonnement_new", methods={"GET","POST"})
      */
-    public function sAbonner(TypeAbonnement $type, TypeAbonnementRepository $typeAbRepo): Response
+    public function sAbonner(TypeAbonnement $type): Response
     {
         if( !$type )
         {
@@ -78,9 +78,11 @@ class AbonnementController extends AbstractController
 
         $user       = $this->getUser();
         $abonnement = new Abonnement();
+        $debut      = new \Datetime();
+        $fin        = $debut->add(new \DateInterval('P1M'));
 
-        $abonnement->setDateDebut( new \Datetime() );
-        $abonnement->setDateFin( (new \Datetime())->add(new \DateInterval('P1M')) );
+        $abonnement->setDateDebut( $debut );
+        $abonnement->setDateFin( $fin );
         $abonnement->setActif( 1 );
         $abonnement->setType( $type );
         $abonnement->setUser( $user );
@@ -94,16 +96,17 @@ class AbonnementController extends AbstractController
 
 
     /**
-     * @Route("/stop", name="abonnement_stop", methods={"GET","POST"})
+     * @Route("/toggle", name="abonnement_renouvelement", methods={"GET","POST"})
      */
-    public function seDesabonner(TypeAbonnementRepository $typeAbRepo): Response
+    public function seDesabonner(): Response
     {
         $user       = $this->getUser();
         $abonnement = $this->repAbonnement->findUserAbonnement( $user->getId() );
         $em         = $this->getDoctrine()->getManager();
-        
-        $abonnement->setActif(0);
-        
+        $etat       = $abonnement->getActif() == 0 ? 1 : 0;
+
+        $abonnement->setActif($etat);
+
         $em->persist($abonnement);
         $em->flush();
 
