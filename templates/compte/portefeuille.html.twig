@@ -19,6 +19,11 @@
                                         {{ message }}
                                     </div>
                     {% endfor %}
+                    {% for message in app.flashes('notCards') %}
+                                    <div class="alert alert-danger">
+                                        {{ message }}
+                                    </div>
+                    {% endfor %}
                     <div class="card-header d-flex align-items-top">
                         <i class="text-success fa fa-wallet mr-3" style="font-size: 3rem;"></i>
                         <div class="d-inline">

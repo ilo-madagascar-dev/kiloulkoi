@@ -61,40 +61,49 @@ class LocationController extends AbstractController
     /**
      * @Route("/new", name="location_new", methods={"POST"})
      */
-    public function new(Request $request, LocationRepository $locationRepository, AnnoncesRepository $annoncesRepository, StatutLocationRepository $statutReposistory): Response
+    public function new(Request $request, LocationRepository $locationRepository, AnnoncesRepository $annoncesRepository, StatutLocationRepository $statutReposistory,MangoPayService $mangoPayService): Response
     {
-        $token = $request->request->get('token');
-        if ($this->isCsrfTokenValid('new_location', $token))
-        {
-            $user    = $this->getUser();
-            $annonce = $annoncesRepository->find( $request->request->get('annonce'));
-            $em      = $this->getDoctrine()->getManager();
-            
-            $reservations = json_decode($request->request->get('reservations'));
-            $disponible   = $locationRepository->checkDates($reservations, $annonce->getId());
+        //vérify cards user
+        $cards = $mangoPayService->getCard($this->getUser()->getMangoPayId());
+        if ($cards) {
 
-            $locations = new ArrayCollection();
-            if( $disponible && $annonce )
+            $token = $request->request->get('token');
+            if ($this->isCsrfTokenValid('new_location', $token))
             {
-                $statut    = $statutReposistory->find(1); // Statut en attente
-                foreach( $reservations as $reservation )
-                {
-                    $location = new Location();
-    
-                    $location->setDateDebut( new DateTime($reservation->debut) );
-                    $location->setDateFin( new DateTime($reservation->fin) );
-                    $location->setAnnonce($annonce);
-                    $location->setStatutLocation($statut);
-                    $location->setUser($user);
+                $user    = $this->getUser();
+                $annonce = $annoncesRepository->find( $request->request->get('annonce'));
+                $em      = $this->getDoctrine()->getManager();
+                
+                $reservations = json_decode($request->request->get('reservations'));
+                $disponible   = $locationRepository->checkDates($reservations, $annonce->getId());
 
-                    $em->persist($location);
-                    $locations->add($location);
+                $locations = new ArrayCollection();
+                if( $disponible && $annonce )
+                {
+                    $statut    = $statutReposistory->find(1); // Statut en attente
+                    foreach( $reservations as $reservation )
+                    {
+                        $location = new Location();
+        
+                        $location->setDateDebut( new DateTime($reservation->debut) );
+                        $location->setDateFin( new DateTime($reservation->fin) );
+                        $location->setAnnonce($annonce);
+                        $location->setStatutLocation($statut);
+                        $location->setUser($user);
+
+                        $em->persist($location);
+                        $locations->add($location);
+                    }
+                    $em->flush();
                 }
-                $em->flush();
             }
-        }
 
         return $this->redirectToRoute('location_en_cours');
+        }else{
+            $this->addFlash('notCards', ' !Vous n avez pas encore un moyen de paiement pour faire une alocation.');
+            return $this->redirectToRoute('compte_portefeuille');
+        }
+
     }
 
 
@@ -122,14 +131,9 @@ class LocationController extends AbstractController
 
             $prix = intval( $difference * $location->getAnnonce()->getPrix() ) * 100;
             
-            //vérify cards user
-            $cards = $mangoPayService->getCard($this->getUser()->getMangoPayId());
-            if ($cards) {
-                //do paying cards
-                $reponsePaieCards = $mangoPayService->Payin($locataire->getMangoPayId(),0,"EUR",$prix);
-            }else{
-                /*return $this->redirectToRoute();*/
-            }
+            
+            $reponsePaieCards = $mangoPayService->Payin($locataire->getMangoPayId(),0,"EUR",$prix);
+            
             
 
             if ($reponsePaieCards == \MangoPay\PayInStatus::Succeeded) {

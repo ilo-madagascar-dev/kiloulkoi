@@ -75,28 +75,47 @@
                                         <td><strong>Pseudo :</strong></td>
                                         <td>{{ app.user.pseudo }}</td>
                                     </tr>
-                                    <tr>
-                                        <td><strong>Verification de mon compte:</strong></td>
-                                            {% if usersmango.KYCLevel == 'REGULAR' %}
-                                                <td>Effectué</td>
-                                            {% elseif usersmango.KYCLevel == 'LIGHT' %}
-                                                <td>En cours</td>
-                                            {% else %}
-                                                <td>En attente</td>
-                                            {% endif %}
-                                    </tr>
                                 </table>
                             </div>
-                            {% if discr == false %}
-                                <div class="col-lg-6 col-md-12 m-auto text-center">
-                                    <button class="btn btn-primary"  data-toggle="modal" data-target="#modalKYC">Vérifier mon Compte</button>
-                                </div>
+
+                            {% if usersmango.KYCLevel == 'REGULAR' %}
+                                {% set classe = "success" %}
+                            {% elseif usersmango.KYCLevel == 'LIGHT' %}
+                                {% set classe = "primary" %}
                             {% else %}
-                                <div class="col-lg-6 col-md-12 m-auto text-center">
-                                    <button class="btn btn-primary"  data-toggle="modal" data-target="#modalKYCpro">Vérifier mon Compte</button>
-                                </div>
+                                {% set classe = "warning" %}
                             {% endif %}
 
+                            <div class="col-lg-6 col-md-12">
+                                <div class="card h-100 border-{{ classe }} shadow mb-3" >
+                                    <div class="card-header border-bottom border-{{ classe }}">
+                                        <h5 class="m-0">Vérification du compte</h5>
+                                    </div> 
+                                    <div class="card-body text-center">
+                                        {% if getkycdoc %}
+                                            {% if usersmango.KYCLevel == 'REGULAR' %}
+                                                <p><span>La vérification de votre compte est: </span></p>
+                                                <strong class="text-success">Effectué</strong>
+                                            {% elseif usersmango.KYCLevel == 'LIGHT' %}
+                                                <p><span>La vérification de votre compte est: </span></p>
+                                                <strong class="text-primary">En cours</strong>
+                                            {% else %}
+                                                <p class="card-text">Votre compte est encore inactif.</p>
+                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalKYCpro" >
+                                                    ACTIVER MON COMPTE
+                                                </button>
+                                            {% endif %}
+                                        {% else %}
+                                                <p class="card-text">Votre compte est encore inactif.</p>
+                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalKYCpro" >
+                                                    ACTIVER MON COMPTE
+                                                </button>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-12 my-3 d-flex justify-content-center">
                                 <a href="{{ path('user_edit', { id: app.user.id }) }}" class="btn btn-primary btn-block w-md-50">Modifier votre compte</a>
                             </div>
@@ -130,41 +149,6 @@
             </div>
         </div>
     </div>
-    <!-- Modal -->
-    <div class="modal fade" id="modalKYC" tabindex="-1" role="dialog" aria-labelledby="modalUserLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalUserLabel">Ajouter document KYC</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-
-                    <form action="{{path('uploadkyc')}}"  enctype="multipart/form-data" method="post" class="card-body">
-
-                          <label class='w-100 __lk-fileInput mb-3'>
-                            <span data-default='Choose file' class="btn btn-info btn-block">TELECHARGER MA PIECE D’IDENTITE RECTO</span>
-                            <input type="file" style="display: none;" name="kycfile[]">
-                          </label>
-
-                          <label class='w-100 __lk-fileInput mb-3'>
-                            <span data-default='Choose file' class="btn btn-info btn-block">TELECHARGER MA PIECE D’IDENTITE VERSO</span>
-                            <input type="file" style="display: none;" name="kycfile[]">
-                          </label>
-                          
-                        
-                        <div class="form-group">
-                            <button class="btn btn-success btn-block" style="background-color: #FF4500;border-color: #FF4500;" type="submit"><img src="{{ asset('image/mangopay.png') }}" class="mr-2 float-left" style="height: 25px">Envoyer
-                            </button>
-                        </div>
-        
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- Modal kyc pro-->
     <div class="modal fade" id="modalKYCpro" tabindex="-1" role="dialog" aria-labelledby="modalUserLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -188,12 +172,12 @@
                             <span data-default='Choose file' class="btn btn-info btn-block">TELECHARGER MA PIECE D’IDENTITE VERSO</span>
                             <input type="file" style="display: none;" name="kycfile[]">
                         </label>
-
-                        <label class='w-100 __lk-fileInput mb-3'>
-                            <span data-default='Choose file' class="btn btn-info btn-block">TELECHARGER KBIS</span>
-                            <input type="file" style="display: none;" name="kycfile[]">
-                        </label>
-                          
+                        {% if discr != false %}
+                            <label class='w-100 __lk-fileInput mb-3'>
+                                <span data-default='Choose file' class="btn btn-info btn-block">TELECHARGER KBIS</span>
+                                <input type="file" style="display: none;" name="kycfile[]">
+                            </label>
+                        {% endif %}
                         
                         <div class="form-group">
                             <button class="btn btn-success btn-block" style="background-color: #FF4500;border-color: #FF4500;" type="submit"><img src="{{ asset('image/mangopay.png') }}" class="mr-2 float-left" style="height: 25px">Envoyer
