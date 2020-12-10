@@ -21,15 +21,16 @@
                                 <i class="text-muted fa fa-list mr-3" style="font-size: 3rem;"></i>
                                 {% set detail_type = annonce.type == 'offre' ? 'de l\'offre' : 'de la demande'  %} 
                             #}
-                            <h2 class="mb-0 " ><strong>Détails</strong></h2>
+                            <h2 class="mb-0 " ><strong>{{ annonce.titre }}</strong></h2>
                             {#
                                 <small class="text-muted mb-0">Publier le {{ annonce.dateModification | date("d/m/Y à H:m") }}</small>
                             #}
                         </div>
                         <div class="card-body">
                             <div>
-                                <h3 class="text-center text-success" style="font-size: 1.3rem;"><strong>{{ annonce.titre }}</strong></h3>
-                                <p class="mb-0"><strong>Prix: </strong>{{ annonce.prix }} €/{{ annonce.type ? annonce.type.libelle : 'mois' }}</p>
+                                <h3 class="text-center text-success" style="font-size: 1.3rem;">
+                                    <strong>{{ annonce.prix }} €/{{ annonce.type ? annonce.type.libelle : 'mois' }}</strong>
+                                </h3>
                             </div>
                             <hr>
 

@@ -129,6 +129,7 @@ class GoogleController extends AbstractController
             $user->setTelephone('-');
             $user->setGenre(1);
             $user->setDateMiseAJour();
+            $user->setPseudo( $googleUser->getFirstName() );
             $user->setDateMiseAJour();
             $user->setActif(true);
             
