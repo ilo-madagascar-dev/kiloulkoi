@@ -70,13 +70,13 @@ class JobService extends AbstractScheduledTask
 
             foreach ($toRenew as $a )
             {
-                $typeAbonnement = $a->getType();
-                $debut          = new \Datetime();
+                $type  = $a->getType();
+                $debut = new \Datetime();
 
                 $a->setDateDebut( $debut );
                 $a->setDateFin( $debut->add(new \DateInterval('P1M')) );
                 $a->setActif( 1 );
-                $a->setType( $typeAbonnement );
+                $a->setType( $type );
                 $a->setUser( $a->getUser() );
 
                 $this->em->persist($a);
