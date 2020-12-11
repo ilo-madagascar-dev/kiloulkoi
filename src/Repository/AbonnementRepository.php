@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Abonnement;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -52,6 +53,24 @@ class AbonnementRepository extends ServiceEntityRepository
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    /**
+     * @return Abonnement[]
+     */
+    public function findOutdated()
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a', 't', 'u')
+            ->join('a.type', 't')
+            ->join('a.user', 'u')
+            ->leftJoin('App\Entity\Abonnement', '_a', Expr\Join::WITH, 'a.user = _a.user AND a.id < _a.id')
+            ->where('_a.id is null')
+            ->andWhere('a.actif = 1')
+            ->andWhere('a.dateFin < :now')
+            ->setParameter('now', date('Y-m-d'))
+            ->getQuery()
+            ->getResult();
     }
 
     /*

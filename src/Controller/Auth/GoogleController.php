@@ -17,6 +17,7 @@ use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use App\Security\UserAuthenticator;
 use App\Service\FileUploader;
 use App\Service\MangoPayService;
+use Exception;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 Use KnpU\OAuth2ClientBundle\Exception\InvalidStateException;
 use League\OAuth2\Client\Provider\GoogleUser;
@@ -51,8 +52,7 @@ class GoogleController extends AbstractController
             $session->set('userType', 'particulier');
         }
 
-        return $clientRegistry->getClient('google')
-                              ->redirect();
+        return $clientRegistry->getClient('google')->redirect();
     }
 
     /**
@@ -77,7 +77,7 @@ class GoogleController extends AbstractController
 
         try {
             /**
-             * var League\OAuth2\Client\Provider\GoogleUser
+             * @var League\OAuth2\Client\Provider\GoogleUser
              */
             $googleUser = $client->fetchUser();
         } 

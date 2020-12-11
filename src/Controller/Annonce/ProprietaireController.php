@@ -81,9 +81,12 @@ class ProprietaireController extends AbstractController
             $em->persist($proprietaire);
             $em->flush();
 
-            $response = ($isFollower > 0) ? 0 : 1;
+            $response = [
+                'status'    => ($isFollower > 0) ? 0 : 1,
+                'kilouwers' => $this->repUser->countKilouwers( $proprietaire )
+            ];
 
-            return new Response( $response );
+            return new Response( json_encode($response) );
         }
     }
 }

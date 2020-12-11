@@ -59,27 +59,34 @@ class JobService extends AbstractScheduledTask
         $this->em = $em;
     }
 
-
+        
+    /**
+     * Renouvelle les abonnements actifs
+     *
+     * @return void
+     */
     public function run()
     {
         try {
             /**
-             * var App\Entity\Abonnement[]
+             * @var App\Repository\AbonnementRepository
              */
-            $toRenew = $this->em->getRepository(Abonnement::class)->findBy(['actif' => 1]);
+            $abRepo  = $this->em->getRepository(Abonnement::class);
+            $toRenew = $abRepo->findOutdated();
+            $debut   = new \Datetime();
+            $fin     = (new \Datetime())->add(new \DateInterval('P1M'));
 
             foreach ($toRenew as $a )
             {
-                $type  = $a->getType();
-                $debut = new \Datetime();
+                $abonnement = new Abonnement();
 
-                $a->setDateDebut( $debut );
-                $a->setDateFin( $debut->add(new \DateInterval('P1M')) );
-                $a->setActif( 1 );
-                $a->setType( $type );
-                $a->setUser( $a->getUser() );
+                $abonnement->setDateDebut( $debut );
+                $abonnement->setDateFin( $fin );
+                $abonnement->setActif( 1 );
+                $abonnement->setType( $a->getType() );
+                $abonnement->setUser( $a->getUser() );
 
-                $this->em->persist($a);
+                $this->em->persist($abonnement);
             }
             $this->em->flush();
         }
@@ -89,6 +96,6 @@ class JobService extends AbstractScheduledTask
 
 	protected function initialize(Schedule $schedule) 
 	{
-		$schedule->everyMinutes(1); // Perform the task every minutes
+		// $schedule->everyHours(24); // Perform the task every 24Hours
     }
 }

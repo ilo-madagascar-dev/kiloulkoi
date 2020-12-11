@@ -40,7 +40,7 @@ class AbonnementController extends AbstractController
         {
             $abonnement = new Abonnement();
             $debut      = new \Datetime();
-
+            $fin        = (new \Datetime())->add(new \DateInterval('P1M'));
             // if ($userType == 'Professionnel')
             // {
             //     $typeAbonnement = $this->repTypeAbonnement->find(2); // Professionnel
@@ -53,7 +53,7 @@ class AbonnementController extends AbstractController
             $typeAbonnement = $this->repTypeAbonnement->find(1); // Gratuit
 
             $abonnement->setDateDebut( $debut );
-            $abonnement->setDateFin( $debut->add(new \DateInterval('P1M')) );
+            $abonnement->setDateFin( $fin );
             $abonnement->setActif( 0 );
             $abonnement->setType( $typeAbonnement );
             $abonnement->setUser( $user );
@@ -78,8 +78,9 @@ class AbonnementController extends AbstractController
 
         $user       = $this->getUser();
         $abonnement = new Abonnement();
-        $debut      = new \Datetime();
-        $fin        = $debut->add(new \DateInterval('P1M'));
+        
+        $debut = new \Datetime();
+        $fin   = (new \Datetime())->add(new \DateInterval('P1M'));
 
         $abonnement->setDateDebut( $debut );
         $abonnement->setDateFin( $fin );

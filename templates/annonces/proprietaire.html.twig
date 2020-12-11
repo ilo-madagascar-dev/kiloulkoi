@@ -53,7 +53,7 @@
 						<i class="far fa-star"></i>
 					</div>
 					<div class="text-center text-secondary">
-						<strong>{{ kilouwersCount }}</strong> Kilouwers
+						<strong id="kilouwers">{{ kilouwersCount }}</strong> Kilouwers
 					</div>
 					<div class="text-center text-primary">
 						<strong>{{ annoncesCount }}</strong> annonces en ligne
@@ -114,7 +114,8 @@
 				$('.btn-follow .spinner-border').removeClass('d-none');
 				$.get( url, function (reponse) 
 				{
-					if( parseInt(reponse) == 0 )
+					reponse = JSON.parse(reponse);
+					if( parseInt(reponse.status) == 0 )
 					{
 						$(that).addClass('btn-primary');
 						$(that).removeClass('btn-success');
@@ -127,6 +128,7 @@
 						$('.btn-follow .text-follow').text('Ne plus suivre');
 					}
 
+					$('#kilouwers').text(reponse.kilouwers);
 					$('.btn-follow .spinner-border').addClass('d-none');
 				});
 			});
