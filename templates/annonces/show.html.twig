@@ -38,7 +38,7 @@
                                 <div>
                                     {% set separateur = annonce_serialized | length / 2 | round %}
                                     <div class="row">
-                                        <div class="col-6">
+                                        <div class="col-6 d-flex justify-content-center">
                                             {% for key, value in annonce_serialized | slice(0, separateur) %}
                                                 <div class="mb-2">
                                                     <h4 class="mb-0" style="font-size: 1.2rem;"><strong>{{ key | capitalize }}</strong></h4>
@@ -51,7 +51,7 @@
                                             {% endfor %}
                                         </div>
 
-                                        <div class="col-6">
+                                        <div class="col-6 d-flex justify-content-center">
                                             {% for key, value in annonce_serialized | slice(separateur, separateur) %}
                                                 <div class="mb-2">
                                                     <h4 class="mb-0" style="font-size: 1.2rem;"><strong>{{ key | capitalize }}</strong></h4>
@@ -68,7 +68,7 @@
                                 <hr>
                             {% endif %}
 
-                            <div>
+                            <div class="text-center">
                                 <h3 style="font-size: 1.2rem;"><strong>Description :</strong></h3>
                                 <p class="mb-0">{{ annonce.description | nl2br }}</p>
                             </div>
@@ -144,7 +144,7 @@
                                         <div class="p-3">
                                             <div class="form-group">
                                                 <label for="date-debut">Date du début:</label>
-                                                <input readonly id="date-debut" min="{{ date() | date('Y-m-d') }}" class="form-control" name="debut" placeholder="dd-mm-yyyy">
+                                                <input readonly id="date-debut" min="{{ date() | date('Y-m-d') }}" class="form-control" name="debut">
                                             </div>
                                             <div class="form-group">
                                                 <label for="date-fin">Date du fin:</label>

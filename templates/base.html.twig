@@ -121,10 +121,10 @@
                                 <a class="dropdown-item" href="{{ path('compte_facture') }}">Mes Factures</a>
                                 {% if app.session.get('wallet') %}
                                     {% for portfelle in app.session.get('wallet') %}
-                                        <a class="dropdown-item" href="{{ path('compte_portefeuille') }}">Mon Portefeuille {{ portfelle.Balance.Amount/100 }}.00 €</a>
+                                        <a class="dropdown-item pr-1" href="{{ path('compte_portefeuille') }}">Mon Portefeuille <strong class="ml-1 text-success text-right">{{ (portfelle.Balance.Amount/100) | number_format(2 , ',', '.') }} €</strong> </a>
                                     {% endfor %}
                                 {% else %}
-                                    <a class="dropdown-item" href="{{ path('compte_portefeuille') }}">Mon Portefeuille 00.00 €</a>
+                                    <a class="dropdown-item pr-1" href="{{ path('compte_portefeuille') }}">Mon Portefeuille  <strong class="ml-1 text-success text-right">0.00 €</strong></a>
                                 {% endif %}
                                 
                                 <div class="dropdown-divider"></div>

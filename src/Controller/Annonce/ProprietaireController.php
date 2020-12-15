@@ -64,17 +64,18 @@ class ProprietaireController extends AbstractController
      */
 	public function follow(User $proprietaire) : Response
 	{
-        if( $this->getUser() )
+        $user = $this->getUser();
+        if( $user && $user->getId() !== $proprietaire->getId() )
         {
-            $isFollower = $this->repUser->isFollowedBy( $proprietaire, $this->getUser() );
+            $isFollower = $this->repUser->isFollowedBy( $proprietaire, $user );
 
             if( $isFollower > 0 )
             {
-                $proprietaire->removeKilouwer( $this->getUser() );
+                $proprietaire->removeKilouwer( $user );
             }
             else
             {
-                $proprietaire->addKilouwer( $this->getUser() );
+                $proprietaire->addKilouwer( $user );
             }
 
             $em = $this->getDoctrine()->getManager();

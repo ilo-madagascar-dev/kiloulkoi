@@ -22,7 +22,7 @@ $(document).ready( function ()
 		range: true,
 		min: 0,
 		max: 1000,
-		values: [ 0, 300 ],
+		values: [ 0, 350 ],
 		slide: function( event, ui ) 
 		{
 			$( "#amount" ).val( ui.values[ 0 ] + "€ - " + ui.values[ 1 ] + "€" );
@@ -99,8 +99,8 @@ $(document).ready( function ()
 			var selected = `
 				<span data="${ categorie.attr('data') }">
 					<i class="delete">x</i>
-					<i class="mt-1 ml-1 ${ icon }"></i>
-					<em>${ categorie.text().trim() }</em>
+					<i class="fa-icon ${ icon } mx-1"></i>
+					<small>${ categorie.text().trim() }</small>
 				</span>
 			`;
 			$('#input-show-categorie').append( selected );

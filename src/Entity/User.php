@@ -135,10 +135,14 @@ class User implements UserInterface
     private $mangoPayId;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class)
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="kilouwees")
      */
     private $kilouwers;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="User", mappedBy="kilouwers")
+     */
+    private $kilouwees;
     
     public function __construct()
     {
@@ -564,5 +568,6 @@ class User implements UserInterface
 
         return $this;
     }
+
 
 }
