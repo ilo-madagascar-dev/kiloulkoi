@@ -10,6 +10,7 @@ use App\Repository\AnnoncesRepository;
 use App\Repository\LocationRepository;
 use App\Repository\StatutLocationRepository;
 use App\Service\MangoPayService;
+use App\Service\NotificationService;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,10 +27,6 @@ use Symfony\Component\Mercure\Update;
 class LocationController extends AbstractController
 {
 
-    public function __construct(LocationRepository $locationRepository)
-    {
-        $locationRepository->updateLocationStatus();
-    }
     /**
      * @Route("/", name="location_index", methods={"GET"})
      */
@@ -64,7 +61,7 @@ class LocationController extends AbstractController
     /**
      * @Route("/new", name="location_new", methods={"POST"})
      */
-    public function new(Request $request, LocationRepository $locationRepository, AnnoncesRepository $annoncesRepository, StatutLocationRepository $statutReposistory, MangoPayService $mangoPayService, PublisherInterface $publisher): Response
+    public function new(Request $request, LocationRepository $locationRepository, AnnoncesRepository $annoncesRepository, StatutLocationRepository $statutReposistory, MangoPayService $mangoPayService, NotificationService $notificationService): Response
     {
         //vérify cards user
         $cards = $mangoPayService->getCard($this->getUser()->getMangoPayId());
@@ -99,31 +96,18 @@ class LocationController extends AbstractController
                     $destinataire = $annonce->getUser();
 
                     $notification = new Notification();
-                    $photo        = $annonce->getPhoto() ? 'uploads/'. $annonce->getPhoto()[0]->getUrl() : 'image/logo-fond-blanc.png';
+                    $photo        = $annonce->getPhoto()[0] ? '/uploads/'. $annonce->getPhoto()[0]->getUrl() : '/image/logo-fond-blanc.png';
                     $notification->setDeclencheur( $user );
                     $notification->setDestinataire( $destinataire );
                     $notification->setMessage('Demande de location de l\'annonce <strong>'. $annonce->getTitre() .'</strong> par <strong>'. $user->getNomComplet() .'</strong>');
                     $notification->setRoute( $this->generateUrl('location_en_cours') );
                     $notification->setPhoto( $photo );
-                    
+
                     $em->persist($notification);
                     $em->flush();
 
-                    $serialized = json_encode([
-                        'content' => $notification->getMessage(),
-                        'date'    => $notification->getDateCreation()->format('d/m/Y | H:m'),
-                        'lien'    => $notification->getRoute(),
-                        'photo'   => $notification->getPhoto(),
-                        'unread'  => 11,
-                        'id'      => $notification->getId(),
-                        'type'    => 'notification',
-                    ]);
-                    
-                    $publisher( new Update(
-                        [ "http://127.0.0.1:8080/event/" . $destinataire->getId() ],
-                        $serialized,
-                        true,
-                    ));
+                    // send notification
+                    $notificationService->send($notification, $destinataire);
                 }
             }
 
@@ -141,7 +125,7 @@ class LocationController extends AbstractController
     /**
      * @Route("/action/{id}/{etat}", name="location_accept", methods={"GET"})
      */
-    public function accept(Request $request, Location $location, string $etat, StatutLocationRepository $statutReposistory, MangoPayService $mangoPayService, PublisherInterface $publisher): Response
+    public function accept(Request $request, Location $location, string $etat, StatutLocationRepository $statutReposistory, MangoPayService $mangoPayService, NotificationService $notificationService): Response
     {
         if( $etat == "accepter" )
         {
@@ -161,25 +145,25 @@ class LocationController extends AbstractController
 
             $prix = intval( $difference * $annonce->getPrix() ) * 100;
             
-            $reponsePaieCards = $mangoPayService->Payin($locataire->getMangoPayId(),0,"EUR",$prix);
+            // $reponsePaieCards = $mangoPayService->Payin($locataire->getMangoPayId(),0,"EUR",$prix);
 
-            if ($reponsePaieCards == \MangoPay\PayInStatus::Succeeded) {
+            // if ($reponsePaieCards == \MangoPay\PayInStatus::Succeeded) {
                 
-                $WIdproprietaire = $mangoPayService->getWalletId($this->getUser()->getMangoPayId());
-                $WIdlocataire = $mangoPayService->getWalletId($locataire->getMangoPayId());
-                $prixAnnonce = intval( $difference * $annonce->getPrix() ) * 100;
+            //     $WIdproprietaire = $mangoPayService->getWalletId($this->getUser()->getMangoPayId());
+            //     $WIdlocataire = $mangoPayService->getWalletId($locataire->getMangoPayId());
+            //     $prixAnnonce = intval( $difference * $annonce->getPrix() ) * 100;
 
-                //Do transfert
-                $result = $mangoPayService->doTransferWalet($locataire->getMangoPayId(),"EUR",$prixAnnonce,100,$WIdlocataire,$WIdproprietaire);
+            //     //Do transfert
+            //     $result = $mangoPayService->doTransferWalet($locataire->getMangoPayId(),"EUR",$prixAnnonce,100,$WIdlocataire,$WIdproprietaire);
                 
                 $destinataire = $locataire;
                 $user         = $this->getUser();
 
                 $notification = new Notification();
-                $photo        =  $annonce->getPhoto() ? 'uploads/'. $annonce->getPhoto()[0]->getUrl() : 'image/logo-fond-blanc.png';
+                $photo        =  $annonce->getPhoto()[0] ? '/uploads/'. $annonce->getPhoto()[0]->getUrl() : '/image/logo-fond-blanc.png';
                 $notification->setDeclencheur( $user );
                 $notification->setDestinataire( $destinataire );
-                $notification->setMessage('Demande de location accepter <strong>'. $annonce->getTitre() .'</strong>');
+                $notification->setMessage('Votre demande de location sur " <strong>'. $annonce->getTitre() .'</strong>" est acceptée!');
                 $notification->setRoute( $this->generateUrl('location_en_cours') );
                 $notification->setPhoto( $photo );
 
@@ -189,33 +173,20 @@ class LocationController extends AbstractController
                 $statut    = $statutReposistory->find(2); // Statut en cours
                 $location->setStatutLocation( $statut );
                 $this->getDoctrine()->getManager()->flush();
-
-                $serialized = json_encode([
-                    'content' => $notification->getMessage(),
-                    'date'    => $notification->getDateCreation()->format('d/m/Y | H:m'),
-                    'lien'    => $notification->getRoute(),
-                    'photo'   => $notification->getPhoto(),
-                    'unread'  => 11,
-                    'id'      => $notification->getId(),
-                    'type'    => 'notification',
-                ]);
-
-                $publisher( new Update(
-                    [ "http://127.0.0.1:8080/event/" . $destinataire->getId() ],
-                    $serialized,
-                    true,
-                ));
+                
+                // send notification
+                $notificationService->send($notification, $destinataire);
 
                 return $this->render('location/successLocation.html.twig', [
-                    'reponse' => $result,
+                    // 'reponse' => $result,
                     'proprio' => $this->getUser()->getNomComplet(),
                     'locataire' => $location->getUser()->getNomComplet()
                 ]);
-            }
-            else {
-                dd($createdPayIn->Status);
-                /*$createdPayIn->ResultCode;*/
-            }
+            // }
+            // else {
+            //     dd($createdPayIn->Status);
+            //     /*$createdPayIn->ResultCode;*/
+            // }
         }
         else
         {

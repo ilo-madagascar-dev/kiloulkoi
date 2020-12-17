@@ -157,20 +157,6 @@
                         <div class="notification-head text-light bg-success py-1 pl-3">
                             <strong>Notifications</strong>
                         </div>
-                        <a href="#" class="list-group-item list-group-item-action px-0 py-2" >
-                            <div class="row">
-                                <div class="col-3 text-center d-flex align-items-center justify-content-center">
-                                   <img src="/demo/man-profile.jpg" class="w-50 rounded-circle">
-                                </div>
-                                <div class="col-9 notification-content">
-                                   <strong class="text-primary">David John</strong>
-                                   <div style="font-size: 85%">
-                                      Lorem ipsum dolor sit amet, consectetur
-                                   </div>
-                                   <small class="text-muted">27.11.2015, 15:00</small>
-                                </div>
-                            </div>
-                        </a>
                     </div>
                </div>
 
@@ -289,8 +275,9 @@
 
             {% if app.user %}
                 <script>
-                    var notif_url = "{{ path('notification_init') }}";
+                    var init_url  = "{{ path('notification_init') }}";
                     var heart_url = "{{ path('annonces_heart', {id: 0}) }}";
+                    var notif_url = "{{ path('notification_redirect', {notification: 0}) }}";
                 </script>
                 <script src="{{ asset('/js/user.js') }}"></script>
             {% endif %}

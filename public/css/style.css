@@ -78,14 +78,14 @@ header .dropdown-toggle::after {
 .notifications-container .notification-content {
 	font-size: 90%;
 }
-.alertify-notifier.ajs-right .ajs-message.ajs-visible {
+.alertify-notifier.ajs-left .ajs-message.ajs-visible {
 	padding: 0;
 }
-.alertify-notifier.ajs-right .ajs-message.ajs-visible .toast-header {
+.alertify-notifier.ajs-left .ajs-message.ajs-visible .toast-header {
 	color: unset;
 	background-color: unset;
 }
-
+.ajs-message.ajs-custom { border-color: var(--primary); }
 .pagination {
 	justify-content: center !important;
 }

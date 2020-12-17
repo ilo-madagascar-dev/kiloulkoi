@@ -6,6 +6,7 @@ use App\Entity\Notification;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @method Notification|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,12 +20,43 @@ class NotificationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Notification::class);
     }
+    
+    /**
+     * count unread notifications
+     *
+     * @param  User $user
+     * @return int
+     */
+    public function countUnread(User $user)
+    {
+        $query = $this->createQueryBuilder('n')
+                    ->select( 'count(n.id)' )
+                    ->where('n.destinataire = :user and n.lu = 0')
+                    ->setParameter('user', $user->getId())
+                    ->groupBy('n.destinataire')
+                    ->getQuery();
+        try {
+            return $query->getSingleScalarResult();
+        } 
+        catch( Exception $e )
+        {
+            return 0;
+        }
+    }
 
-    public function findNotificationByUser(User $user)
+    
+    /**
+     * User notifications
+     *
+     * @param  User $user
+     * @return Notification[]
+     */
+    public function findAllByUser(User $user)
     {
         return $this->createQueryBuilder('n')
-                    ->where('n.user = :user')
+                    ->where('n.destinataire = :user')
                     ->setParameter('user', $user->getId())
+                    ->setMaxResults(20)
                     ->getQuery()
                     ->getResult();
     }

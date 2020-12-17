@@ -70,13 +70,12 @@ $(document).ready( function()
     const eventSource = new EventSource(url, { withCredentials: true });
     eventSource.onmessage = event => {
         var data = JSON.parse(event.data);
-        
         if( data.type == 'message' )
         {
             var message = data;
             var template = `
                 <div class="media w-50">
-                    <img src="${ message.user.avatar }" alt="user" width="40" height="40" class="rounded-circle">
+                    <img src="${ message.user.avatar }" alt="user" width="40" height="40" class="rounded-circle bg-white">
                     <div class="media-body mb-2 ml-3">
                         <div class="bg-light rounded py-2 px-3 shadow">
                             <p class="text-small mb-0 text-muted">${ nl2br(message.content) }</p>
