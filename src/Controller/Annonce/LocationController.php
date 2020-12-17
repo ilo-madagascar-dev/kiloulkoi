@@ -129,37 +129,23 @@ class LocationController extends AbstractController
                 $difference = $periodeTotal->format('%m') + 1;
             }
 
-            $prix = intval( $difference * $location->getAnnonce()->getPrix() ) * 100;
+            $prix =  $difference * $location->getAnnonce()->getPrix();
             
             
-            $reponsePaieCards = $mangoPayService->Payin($locataire->getMangoPayId(),0,"EUR",$prix);
+            //Do transfer
+            $mangoPayService->transferWallet($locataire->getMangoPayId(),$this->getUser()->getMangoPayId(),$prix);
             
+            //status
+            $statut    = $statutReposistory->find(2); // Statut en cours
+            $location->setStatutLocation( $statut );
+            $this->getDoctrine()->getManager()->flush();
             
-
-            if ($reponsePaieCards == \MangoPay\PayInStatus::Succeeded) {
-                
-                $WIdproprietaire = $mangoPayService->getWalletId($this->getUser()->getMangoPayId());
-                $WIdlocataire = $mangoPayService->getWalletId($locataire->getMangoPayId());
-                $prixAnnonce = intval( $difference * $location->getAnnonce()->getPrix() ) * 100;
-
-                //Do transfert
-                $result = $mangoPayService->doTransferWalet($locataire->getMangoPayId(),"EUR",$prixAnnonce,100,$WIdlocataire,$WIdproprietaire);
-                
-                //status
-                $statut    = $statutReposistory->find(2); // Statut en cours
-                $location->setStatutLocation( $statut );
-                $this->getDoctrine()->getManager()->flush();
-                
-                return $this->render('location/successLocation.html.twig', [
-                    'reponse' => $result,
-                    'proprio' => $this->getUser()->getNomComplet(),
-                    'locataire' => $location->getUser()->getNomComplet()
-                ]);
-            }
-            else {
-                dd($createdPayIn->Status);
-                /*$createdPayIn->ResultCode;*/
-            }
+            return $this->render('location/successLocation.html.twig', [
+                'reponse' => $result,
+                'proprio' => $this->getUser()->getNomComplet(),
+                'locataire' => $location->getUser()->getNomComplet()
+            ]);
+            
         }
         else
         {

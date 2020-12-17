@@ -170,42 +170,60 @@ class MangoPayService
 		return $wallet;
 	}
 
-	public function Payin (string $locatairemangoId, int $feesAmount,string $currency,int $debitedFundsAmount)
+	public function Payin (string $locatairemangoId, string $carteId, int $debitedFundsAmount, int $feesAmount = 0, string $currency = "EUR")
 	{
-		$mangoPayApi = $this->getMangoPayApi();
-
-		//get walet
-		$walletId = $this->getWalletId($locatairemangoId);
 
 		//payin processe
 		$payIn = new \MangoPay\PayIn();
 
-        	$payIn->CreditedWalletId = $walletId;
-            $payIn->AuthorId         = $locatairemangoId;
-            $payIn->DebitedFunds     = new \MangoPay\Money();
-            $payIn->Fees             = new \MangoPay\Money();
-            $payIn->Fees->Amount     = $feesAmount;
-            $payIn->Fees->Currency   = $currency;
-            $payIn->DebitedFunds->Amount   = $debitedFundsAmount;
-            $payIn->DebitedFunds->Currency = $currency;
+    	$payIn->CreditedWalletId = $this->getWalletId($locatairemangoId);
+        $payIn->AuthorId         = $locatairemangoId;
+        $payIn->DebitedFunds     = new \MangoPay\Money();
+        $payIn->Fees             = new \MangoPay\Money();
+        $payIn->Fees->Amount     = $feesAmount;
+        $payIn->Fees->Currency   = $currency;
+        $payIn->DebitedFunds->Amount   = $debitedFundsAmount;
+        $payIn->DebitedFunds->Currency = $currency;
 
         //get card
-        list ($cardId, $cardType , $cardObjet) = $this->getCards($locatairemangoId);
+       	$carte = $this->getCardById($carteId);
 
-            // payment type as CARD
-            $payIn->PaymentDetails = new \MangoPay\PayInPaymentDetailsCard();
-            $payIn->PaymentDetails->CardType = $cardType;
-            $payIn->PaymentDetails->CardId = $cardId;
+        // payment type as CARD
+        $payIn->PaymentDetails = new \MangoPay\PayInPaymentDetailsCard();
+        $payIn->PaymentDetails->CardType = $carte->CardType;
+        $payIn->PaymentDetails->CardId = $carteId;
 
-            // execution type as DIRECT
-            $payIn->ExecutionDetails = new \MangoPay\PayInExecutionDetailsDirect();
-            $payIn->ExecutionDetails->SecureModeReturnURL = 'http://test.com';
+        // execution type as DIRECT
+        $payIn->ExecutionDetails = new \MangoPay\PayInExecutionDetailsDirect();
+        $payIn->ExecutionDetails->SecureModeReturnURL = 'http://test.com';
 
-            // create Pay-In
-            $createdPayIn = $mangoPayApi->PayIns->Create($payIn);
+        // create Pay-In
+		$mangoPayApi  = $this->getMangoPayApi();
+        $createdPayIn = $mangoPayApi->PayIns->Create($payIn);
 
-         return $createdPayIn->Status;
+        return $createdPayIn->Status;
+	}
 
+	public function transferWallet(string $buyer, strin $seller ,float $prix, int $feesAmount=0, string $currency="EUR")
+	{
+        $prix = intval($prix*100);
+
+		$reponsePaieCards = $this->Payin($buyer, $prix);
+            
+
+        if ($reponsePaieCards == \MangoPay\PayInStatus::Succeeded) {
+                
+            $WIdproprietaire = $this->getWalletId($seller);
+            $WIdlocataire = $this->getWalletId($buyer);
+
+            //Do transfert
+            $result = $this->doTransferWalet($buyer,$currency,$prix,100,$WIdlocataire,$WIdproprietaire);
+            if ($result) {
+            	return true;
+            }
+        }
+            
+        return false;
 	}
 
 	public function getCards(string $locatairemangoId)
@@ -318,4 +336,14 @@ class MangoPayService
 		return $User;
 	}
 
+	public function getCardById (string $CardId)
+	{
+		try {
+			return $this->getMangoPayApi()->Cards->Get($CardId);
+		} catch(MangoPay\Libraries\ResponseException $e) {
+			// handle/log the response exception with code $e->GetCode(), message $e->GetMessage() and error(s) $e->GetErrorDetails() 
+		} catch(MangoPay\Libraries\Exception $e) {
+			// handle/log the exception $e->GetMessage() 
+		}
+	}
 }
