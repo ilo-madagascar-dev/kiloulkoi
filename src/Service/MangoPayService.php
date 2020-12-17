@@ -346,4 +346,30 @@ class MangoPayService
 			// handle/log the exception $e->GetMessage() 
 		}
 	}
+	public function creatBankAccount(string $userMangoId, string $type, string $iban ,string $bic,string $ownerName,string $ownerAddress)
+	{
+		try {
+	
+			$mangoPayApi = $this->getMangoPayApi();
+			$BankAccount = new \MangoPay\BankAccount();
+			$BankAccount->Type = $type;
+			$BankAccount->Details = new MangoPay\BankAccountDetailsIBAN();
+			$BankAccount->Details->IBAN = $iban; //"FR7618829754160173622224154";
+			$BankAccount->Details->BIC = $bic;//"CMBRFR2BCME";
+			$BankAccount->OwnerName = $ownerName;
+
+			$BankAccount->OwnerAddress = new \MangoPay\Address();
+			$BankAccount->OwnerAddress->AddressLine1 = $ownerAddress;
+			$BankAccount->OwnerAddress->City = "Paris";
+			$BankAccount->OwnerAddress->PostalCode = "75001";
+			$BankAccount->OwnerAddress->Country = "FR";
+			
+			$result = $mangoPayApi->Users->CreateBankAccount($userMangoId, $BankAccount);
+		} catch(MangoPay\Libraries\ResponseException $e) {
+			return $result = $e->GetErrorDetails();
+		} catch(MangoPay\Libraries\Exception $e) {
+			return $result = $e->GetMessage();
+		}
+		return $result;
+	}
 }

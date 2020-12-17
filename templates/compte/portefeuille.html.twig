@@ -106,9 +106,11 @@
                                                         <i class="fa fa-bank"></i>Réussit
                                                 </button>
                                             {% else %}
-                                                <a href="{{path('portefeuille_transfer')}}" class="btn btn-sm btn-success" title="Accepter">
+                                                {% if portfelle.Balance.Amount/100 >= 1 %}
+                                                    <a href="{{path('portefeuille_transfer')}}" class="btn btn-sm btn-success" title="Accepter">
                                                         <i class="fa fa-bank"></i>Transférer
-                                                </a>
+                                                    </a>
+                                                {% endif %}
                                             {% endif %}
                                         </td>
                                         
