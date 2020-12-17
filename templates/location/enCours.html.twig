@@ -66,7 +66,12 @@
                                                     <i class="fa fa-times-circle"></i>
                                                 </a>
                                             {% else %}
-                                                -
+                                                {% set pTemp = date("now").diff(date(location.dateFin))  %}
+                                                {% if pTemp.days < 1 %}
+                                                    <a class="btn btn-sm btn-warning text-white" href="#" title="Ouvrire un litige">
+                                                        <i class="fa fa-angry"></i>
+                                                    </a>
+                                                {% endif %}
                                             {% endif %}
                                         </td>
                                     </tr>
@@ -134,8 +139,11 @@
                                                         <i class="fa fa-times-circle"></i>
                                                     </a>
                                                 {% else %}
-                                                    -
+                                                    <a class="btn btn-sm btn-warning text-white" href="#" title="Ouvrire un litige">
+                                                        <i class="fa fa-angry"></i>
+                                                    </a>
                                                 {% endif %}
+
                                                 {% if location.statutLocation.id == 2 %}
                                                     <button class="btn btn-info btn-sm btn-message" data-toggle="modal" data-target="#message-modal" data-user="{{ location.annonce.user.nomComplet }}" data-url="{{ path('conversation_messages_new', { location: location.id, destinataire: location.annonce.user.id }) }}">
                                                         <i class="fa fa-comments"></i>

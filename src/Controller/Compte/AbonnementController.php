@@ -41,22 +41,26 @@ class AbonnementController extends AbstractController
             $abonnement = new Abonnement();
             $debut      = new \Datetime();
             $fin        = (new \Datetime())->add(new \DateInterval('P1M'));
-            // if ($userType == 'Professionnel')
-            // {
-            //     $typeAbonnement = $this->repTypeAbonnement->find(2); // Professionnel
-            // }
-            // else
-            // {
-            //     $typeAbonnement = $this->repTypeAbonnement->find(1); // Gratuit
-            // }
-
-            $typeAbonnement = $this->repTypeAbonnement->find(1); // Gratuit
+            if ($userType == 'Professionnel')
+            {
+                $typeAbonnement = $this->repTypeAbonnement->find(2); // Professionnel
+            }
+            else
+            {
+                $typeAbonnement = $this->repTypeAbonnement->find(1); // Gratuit
+            }
 
             $abonnement->setDateDebut( $debut );
             $abonnement->setDateFin( $fin );
             $abonnement->setActif( 0 );
             $abonnement->setType( $typeAbonnement );
             $abonnement->setUser( $user );
+
+            if ($userType == 'Professionnel')
+            {
+                $this->getDoctrine()->getManager()->persist($abonnement);
+                $this->getDoctrine()->getManager()->flush();
+            }
         }
 
         return $this->render('compte/abonnement.html.twig', [

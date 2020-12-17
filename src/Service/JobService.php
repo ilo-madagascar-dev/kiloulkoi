@@ -8,6 +8,7 @@
 namespace App\Service;
 
 use App\Entity\Abonnement;
+use App\Entity\Location;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Rewieer\TaskSchedulerBundle\Task\AbstractScheduledTask;
@@ -61,13 +62,21 @@ class JobService extends AbstractScheduledTask
 
         
     /**
-     * Renouvelle les abonnements actifs
+     * - Renouvelle les abonnements actifs
+     * - Met à jour le statut des locations
      *
      * @return void
      */
     public function run()
     {
         try {
+
+            /**
+             * @var App\Repository\LocationRepository
+             */
+            $locationRepository  = $this->em->getRepository(Location::class);
+            $locationRepository->updateLocationStatus();
+
             /**
              * @var App\Repository\AbonnementRepository
              */

@@ -18,7 +18,10 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @UniqueEntity(fields={"email"})
+ * @UniqueEntity(
+ *      fields={"email"},
+ *      entityClass="App\Entity\User"
+ * )
  * 
  * @InheritanceType("JOINED")
  * @DiscriminatorColumn(name="discr", type="string")
@@ -35,6 +38,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\Email()
      */
     private $email;
 
