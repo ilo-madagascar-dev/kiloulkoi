@@ -143,6 +143,11 @@ class User implements UserInterface
      * @ORM\ManyToMany(targetEntity="User", mappedBy="kilouwers")
      */
     private $kilouwees;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="destinataire")
+     */
+    private $notifications;
     
     public function __construct()
     {
@@ -153,6 +158,7 @@ class User implements UserInterface
         $this->favoris = new ArrayCollection();
         $this->abonnement = new ArrayCollection();
         $this->kilouwers = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -565,6 +571,36 @@ class User implements UserInterface
     public function removeKilouwer(self $kilouwer): self
     {
         $this->kilouwers->removeElement($kilouwer);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Notification[]
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): self
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications[] = $notification;
+            $notification->setDestinataire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): self
+    {
+        if ($this->notifications->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
+            if ($notification->getDestinataire() === $this) {
+                $notification->setDestinataire(null);
+            }
+        }
 
         return $this;
     }

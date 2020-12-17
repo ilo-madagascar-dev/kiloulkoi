@@ -1,7 +1,6 @@
 $(document).ready( function () 
 {
 	var words = $('.categorie-parent').map( function(i, e) { return $(e).text().trim() });
-	console.log( words );
 	var index = 0;
 	
 	var show = function() 

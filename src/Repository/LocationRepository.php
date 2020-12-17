@@ -38,7 +38,9 @@ class LocationRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('l')
                     ->select('count(l.id)')
                     ->where('l.annonce = :annonce')
-                    ->setParameter('annonce', $annonce);
+                    ->setParameter('annonce', $annonce)
+                    ->andWhere('l.statutLocation = :statut')
+                    ->setParameter('statut', 2);
 
         $i = 0;
         foreach( $reservations as $reservation )
@@ -48,6 +50,7 @@ class LocationRepository extends ServiceEntityRepository
                             ->setParameter("fin_$i"  , $reservation->fin );
             $i++;
         }
+
         return $query->getQuery()->getSingleScalarResult() == 0;
     }
 
@@ -78,8 +81,6 @@ class LocationRepository extends ServiceEntityRepository
                     ->getQuery()
                     ->getResult();
     }
-    
-
 
     /**
      * @return boolean met à jours les annonces à éfféctuer pour les locations finis

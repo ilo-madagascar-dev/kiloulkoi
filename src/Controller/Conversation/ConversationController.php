@@ -8,7 +8,6 @@ use App\Entity\Message;
 use App\Entity\User;
 use App\Repository\ConversationRepository;
 use App\Repository\MessageRepository;
-use App\Service\MercureCookieGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,13 +24,11 @@ class ConversationController extends AbstractController
 {
     private $conversationRepo;
     private $messageRepo;
-    private $cookieGenerator;
 
-    public function __construct(ConversationRepository $conversationRepository, MessageRepository $messageRepository, MercureCookieGenerator $cookieGenerator)
+    public function __construct(ConversationRepository $conversationRepository, MessageRepository $messageRepository)
     {
         $this->conversationRepo = $conversationRepository;
         $this->messageRepo      = $messageRepository;
-        $this->cookieGenerator  = $cookieGenerator;
     }
 
     /**
@@ -121,11 +118,12 @@ class ConversationController extends AbstractController
             'date'    => $message->getDate()->format('d/m/Y | H:m'),
             'conversation' => $conversation->getId(),
             'path'    => $this->generateUrl('conversation_show', ['id' => $conversation->getId()] ),
-            'unread'  => $this->conversationRepo->countUnreadBy($destinataire)
+            'unread'  => $this->conversationRepo->countUnreadBy($destinataire),
+            'type'    => 'message',
         ], 'json');
 
         $publisher( new Update(
-            [ "http://127.0.0.1:8080/message/" . $destinataire->getId() ],
+            [ "http://127.0.0.1:8080/event/" . $destinataire->getId() ],
             $serialized,
             true,
         ));
@@ -141,26 +139,9 @@ class ConversationController extends AbstractController
     }
 
     /**
-     * @Route("/set-cookie", name="conversation_cookie", methods={"get"})
-     */
-    public function setMercureCookies(Request $request): Response
-    {
-        if ( $request->isXmlHttpRequest() ) 
-        {
-            $response = new Response('Set');
-            $response->headers->set( 'set-cookie', $this->cookieGenerator->generate($this->getUser()) );
-            return $response;
-        }
-        else
-        {
-            return new Response(null);
-        }
-    }
-
-    /**
      * @Route("/get-unread", name="conversation_unread", methods={"get"})
      */
-    public function getUnreadMessages(Request $request, PublisherInterface $publisher): Response
+    public function getUnreadMessages(Request $request): Response
     {
         if ( $request->isXmlHttpRequest() ) 
         {

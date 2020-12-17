@@ -7,7 +7,13 @@
         <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"/>
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
-        {# <link href="{{ asset('fontawesome/css/all.min.css') }}" rel="stylesheet"/> #}
+        <!-- Alertify CSS -->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+        <!-- Alertify CSS -->
+
         <link href="{{ asset('css/style.css') }}" rel="stylesheet"/>
 
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
@@ -24,31 +30,12 @@
                 </button>
                 #}
 
-                <button class="navbar-toggler mr-3" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler mr-2" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-
                 <a class="navbar-brand text-success mr-auto" href="{{ path('accueil') }}">
                     <img src="{{ asset('image/kiloukoi.png') }}" class="mb-2" alt="Kiloukoi" style="height: 20px">
                 </a>
-
-                {#
-                {% if app.user %}
-                    <ul class="navbar-nav mr-auto" style="flex-direction: row;">
-                        <li class="nav-item mt-1 mr-2">
-                            <a href="{{ path('annonces_favoris') }}" class="nav-link text-white nav-icon favoris">
-                                <i class="fa fa-heart" ></i>
-                            </a>
-                        </li>
-                        <li class="nav-item mt-1 mr-3">
-                            <a href="{{ path('conversation_index') }}" class="nav-link text-white nav-icon messages">
-                                <i class="fa fa-envelope" ></i>
-                                <span class="d-none unread">0</span>
-                            </a>
-                        </li>
-                    </ul>
-                {% endif %}
-                #}
 
                 <div class="collapse navbar-collapse" id="navbarToggler">
                     <div class="m-auto row">
@@ -69,7 +56,7 @@
                 </div>
                 
                 {% if not app.user %}
-                    <ul class="navbar-nav ml-auto left-menu">
+                    <ul class="navbar-nav ml-auto left-menu pt-1">
                         <li class="nav-item">
                             <a class="nav-link"  href="{{ path('securitylogin') }}">
                                 <i class="mr-1 fa fa-user"></i> Se Connecter
@@ -79,14 +66,14 @@
                 {% endif  %}
 
                 {% if app.user %}
-                    <ul class="navbar-nav ml-auto left-menu" style="flex-direction: row;">
-                        <li class="nav-item text-center mr-2">
+                    <ul class="navbar-nav ml-auto left-menu pt-1" style="flex-direction: row;">
+                        <li class="nav-item text-center mr-1">
                             <a href="{{ path('annonces_favoris') }}" class="nav-link pt-0 text-white nav-icon favoris">
                                 <i class="d-block fa fa-heart" ></i>
                                 <span class="small">Favoris</span>
                             </a>
                         </li>
-                        <li class="nav-item text-center mr-2">
+                        <li class="nav-item text-center mr-1">
                             <a href="{{ path('conversation_index') }}" class="nav-link pt-0 text-white nav-icon messages">
                                 <i class="d-block fa fa-envelope" ></i>
                                 <span class="d-none unread">0</span>
@@ -141,6 +128,13 @@
         </header>
 
         <main class="mb-4 flex-fill">
+            <div aria-live="polite" aria-atomic="true" style="position: relative;">
+                <!-- Position it -->
+                <div id="pop-up" style="position: absolute; top: 0; right: 0;">
+
+                </div>
+            </div>
+
             <div class="container-fluid">
                 <div id="bg" style="position:absolute;z-index:-1;left:0;height:375px;"></div>
                 
@@ -154,6 +148,36 @@
 
             <div class="container-fluid"  style="max-width: 1500px;">
                 {% block body %}{% endblock %}
+            </div>
+
+
+            <div class="nav-item dropdown notifications-container rounded">
+               <div class="dropdown-menu small">
+                    <div class="list-group">
+                        <div class="notification-head text-light bg-success py-1 pl-3">
+                            <strong>Notifications</strong>
+                        </div>
+                        <a href="#" class="list-group-item list-group-item-action px-0 py-2" >
+                            <div class="row">
+                                <div class="col-3 text-center d-flex align-items-center justify-content-center">
+                                   <img src="/demo/man-profile.jpg" class="w-50 rounded-circle">
+                                </div>
+                                <div class="col-9 notification-content">
+                                   <strong class="text-primary">David John</strong>
+                                   <div style="font-size: 85%">
+                                      Lorem ipsum dolor sit amet, consectetur
+                                   </div>
+                                   <small class="text-muted">27.11.2015, 15:00</small>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+               </div>
+
+                <button type="button" class="btn btn-primary btn-lg" id="btn-notifications" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-bell"></i>
+                </button>
+                <small class="badge badge-danger d-none unread position-absolute rounded-circle p-1" style="right: 2.25rem">0</small>
             </div>
         </main>
 
@@ -261,127 +285,14 @@
             {{ encore_entry_script_tags('app') }}
             <script src="{{ asset('/bootstrap/js/bootstrap.min.js') }}"></script>
             <script src="{{ asset('/js/base.js') }}"></script>
-            
-            {% if app.user and app.request.cookies.get('mercureAuthorization') is null %}
-                {# Set mercure cookies #}
-                <script>
-                    $(document).ready( function()
-                    {
-                        $.get("{{ path('conversation_cookie') }}", function()
-                        {
-                            // URL is a built-in JavaScript class to manipulate URLs
-                            const url = new URL('http://127.0.0.1:3000/.well-known/mercure');
-
-                            url.searchParams.append('topic', "http://127.0.0.1:8080/message/{id}");
-
-                            const eventSource = new EventSource(url, { withCredentials: true });
-                            eventSource.onmessage = event => {
-                                var message = JSON.parse( event.data );
-                                if( parseInt(message.unread) > 0 )
-                                {
-                                    $('.messages .unread').html(message.unread);
-                                    $('.messages .unread').removeClass('d-none');
-                                }
-                            }
-                        });
-                    });
-                </script>
-
-            {% elseif app.user and app.request.cookies.get('mercureAuthorization') %}
-                
-                <script>
-                    $(document).ready( function()
-                    {
-                        // URL is a built-in JavaScript class to manipulate URLs
-                        const url = new URL('http://127.0.0.1:3000/.well-known/mercure');
-
-                        url.searchParams.append('topic', "http://127.0.0.1:8080/message/{id}");
-
-                        const eventSource = new EventSource(url, { withCredentials: true });
-                        eventSource.onmessage = event => {
-                            var message = JSON.parse( event.data );
-                            if( parseInt(message.unread) > 0 )
-                            {
-                                $('.messages .unread').html(message.unread);
-                                $('.messages .unread').removeClass('d-none');
-                            }
-                        }
-                    })
-                </script>
-            {% endif %}
+            <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 
             {% if app.user %}
                 <script>
-                    $(document).ready( function()
-                    {
-                        $.get("{{ path('conversation_unread') }}", function(data)
-                        {
-                            var message = JSON.parse(data);
-                            if( parseInt(message.unread) > 0 )
-                            {
-                                $('.messages .unread').html(message.unread);
-                                $('.messages .unread').removeClass('d-none');
-                            }
-                        })
-
-                        $('.btn-heart').click( function()
-                        {
-                            var id  = $(this).attr('data');
-                            var url = "{{ path('annonces_heart', {id: 0}) }}".replace('0', id);
-                            var that = $(this);
-                            $.get( url, function(data)
-                            {
-                                var heart = that.children('i');
-                                if( parseInt(data) == 1 )
-                                {
-                                    heart.removeClass('far fa-heart');
-                                    heart.addClass('fa fa-heart text-danger');
-                                }
-                                else
-                                {
-                                    heart.removeClass('fa fa-heart text-danger');
-                                    heart.addClass('far fa-heart');
-                                }
-                            })
-                        })
-
-                        $.get("{{ path('user_popkyc') }}", function (data)
-                        {
-                            var reponse = $.parseJSON(data);
-
-                            if( reponse.status == 0 )
-                            {
-                                $('.notifications').addClass('badge-danger');
-                                $('.notifications').removeClass('d-none');
-                            }
-                            // else if( reponse.status == 'SUCCESS' )
-                            // {
-                            //     $('.notifications').addClass('badge-success');
-                            //     $('.notifications').removeClass('d-none');
-                            // }
-
-                            // var html    = `
-                            //     <div class="w-100" aria-live="polite" aria-atomic="true" style="position: absolute;">
-                            //         <div id="pop-up-kyc" data-autohide="false" class="toast" style="position: absolute; top: 50px; right: 30px;">
-                            //             <div class="toast-header">
-                            //                 <i class="fa fa-envelop"></i>
-                            //                 <strong class="mr-auto">${ reponse.titre }</strong>
-                            //                 <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                            //                     <span aria-hidden="true">&times;</span>
-                            //                 </button>
-                            //             </div>
-                            //             <div class="toast-body">
-                            //                 ${ reponse.message }, <a href="${ reponse.lien }">vérifier mon compte</a>!
-                            //             </div>
-                            //         </div>
-                            //     </div>
-                            // `;
-
-                            // $('header nav').append(html);
-                            // $('#pop-up-kyc').toast('show');
-                        })
-                    });
+                    var notif_url = "{{ path('notification_init') }}";
+                    var heart_url = "{{ path('annonces_heart', {id: 0}) }}";
                 </script>
+                <script src="{{ asset('/js/user.js') }}"></script>
             {% endif %}
         {% endblock %}
     </body>

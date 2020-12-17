@@ -43,6 +43,10 @@ services:
             - 'App\Entity\User'
             - {facebook: facebookID, google: googleID}
 
+    App\EventListener\LoginListener:
+        arguments: ['@session']
+        tags:
+            - { name: 'kernel.event_listener', event: 'security.interactive_login' }
     
     App\Service\MercureCookieGenerator:
         arguments:

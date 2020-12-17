@@ -65,60 +65,63 @@ $(document).ready( function()
     // URL is a built-in JavaScript class to manipulate URLs
     const url = new URL('http://127.0.0.1:3000/.well-known/mercure');
 
-    url.searchParams.append('topic',  "http://127.0.0.1:8080/message/{id}");
+    url.searchParams.append('topic',  "http://127.0.0.1:8080/event/{id}");
 
     const eventSource = new EventSource(url, { withCredentials: true });
     eventSource.onmessage = event => {
-        var message = JSON.parse(event.data);
-    
-        var template = `
-            <div class="media w-50">
-                <img src="${ message.user.avatar }" alt="user" width="40" height="40" class="rounded-circle">
-                <div class="media-body mb-2 ml-3">
-                    <div class="bg-light rounded py-2 px-3 shadow">
-                        <p class="text-small mb-0 text-muted">${ nl2br(message.content) }</p>
-                    </div>
-                    <small class="small">${ message.date }</small>
-                </div>
-            </div>
-        `;
-
-        if( $(`#conversation-${ message.conversation }`).length == 0 )
+        var data = JSON.parse(event.data);
+        
+        if( data.type == 'message' )
         {
-            var content_m    = message.content.substring(0, 30) + (message.content.length > 30) ? '...' : '';
-            var conversation = `
-                <a id="conversation-${ message.conversation }" href="${ message.path }" class="list-group-item list-group-item-action text-muted rounded-0 list-group-item-info'">
-                    <div class="media">
-                        <img src="${ message.user.avatar }" alt="user" width="40" height="40" class="rounded-circle">
-                        <div class="media-body ml-3">
-                            <div class="d-flex align-items-center justify-content-between mb-0">
-                                <h6 class="mb-0" style="font-weight: bold;">${ message.user.fullName }</h6>
-                                <small class="conversation-date" style="font-size: 60%;">${ message.date }</small>
-                            </div>
-                            <p class="font-italic mb-0 text-small conversation-content">
-                                <small>${ content_m }</small>
-                            </p>
+            var message = data;
+            var template = `
+                <div class="media w-50">
+                    <img src="${ message.user.avatar }" alt="user" width="40" height="40" class="rounded-circle">
+                    <div class="media-body mb-2 ml-3">
+                        <div class="bg-light rounded py-2 px-3 shadow">
+                            <p class="text-small mb-0 text-muted">${ nl2br(message.content) }</p>
                         </div>
+                        <small class="small">${ message.date }</small>
                     </div>
-                </a>
+                </div>
             `;
 
-            $('#conversations').prepend( $(conversation) );
-        }
-        else
-        {
-            $(`#conversation-${ message.conversation }`).removeClass('text-muted list-group-item-light');
-            $(`#conversation-${ message.conversation }`).addClass('list-group-item-info');
-            $(`#conversation-${ message.conversation } .conversation-date`).html(message.date);
-            $(`#conversation-${ message.conversation } .conversation-content`).html(nl2br(message.content));
-
-            $('#conversations').prepend( $(`#conversation-${ message.conversation }`) );
-            if( $('#messageBody').attr('data') == `chat-${ message.conversation }` )
+            if( $(`#conversation-${ message.conversation }`).length == 0 )
             {
-                $("#messageBody").append( $(template) );
-                $('#messageBody').animate({ scrollTop: $('#messageBody')[0].scrollHeight }, 1000);
+                var content_m    = message.content.substring(0, 30) + (message.content.length > 30) ? '...' : '';
+                var conversation = `
+                    <a id="conversation-${ message.conversation }" href="${ message.path }" class="list-group-item list-group-item-action text-muted rounded-0 list-group-item-info'">
+                        <div class="media">
+                            <img src="${ message.user.avatar }" alt="user" width="40" height="40" class="rounded-circle">
+                            <div class="media-body ml-3">
+                                <div class="d-flex align-items-center justify-content-between mb-0">
+                                    <h6 class="mb-0" style="font-weight: bold;">${ message.user.fullName }</h6>
+                                    <small class="conversation-date" style="font-size: 60%;">${ message.date }</small>
+                                </div>
+                                <p class="font-italic mb-0 text-small conversation-content">
+                                    <small>${ content_m }</small>
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                `;
+
+                $('#conversations').prepend( $(conversation) );
+            }
+            else
+            {
+                $(`#conversation-${ message.conversation }`).removeClass('text-muted list-group-item-light');
+                $(`#conversation-${ message.conversation }`).addClass('list-group-item-info');
+                $(`#conversation-${ message.conversation } .conversation-date`).html(message.date);
+                $(`#conversation-${ message.conversation } .conversation-content`).html(nl2br(message.content));
+
+                $('#conversations').prepend( $(`#conversation-${ message.conversation }`) );
+                if( $('#messageBody').attr('data') == `chat-${ message.conversation }` )
+                {
+                    $("#messageBody").append( $(template) );
+                    $('#messageBody').animate({ scrollTop: $('#messageBody')[0].scrollHeight }, 1000);
+                }
             }
         }
-    
     }
 })
