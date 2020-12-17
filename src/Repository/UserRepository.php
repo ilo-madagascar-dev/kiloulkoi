@@ -64,7 +64,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         ;
     }
     */
-   
+
     public function findAllisClients($lastUsername,$role)
     {
         return $this->createQueryBuilder('u')
@@ -129,6 +129,51 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getSingleScalarResult();
     }
 
+    /**
+     * Mes kilouwers préférés
+     *
+     * @param  User $user
+     * @return \Doctrine\ORM\Query
+     */
+    public function userFavoris(User $user)
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u', 'kk', 'count(kk.id)', 'count(a.id)')
+            ->leftJoin('u.kilouwers', 'k')
+            ->leftJoin('u.kilouwers', 'kk')
+            ->leftJoin('u.annonces', 'a')
+            ->where('k.id = :id')
+            ->setParameter('id', $user->getId())
+            ->groupBy('u.id')
+            ->getQuery();
+    }
+
+    /**
+     * Mes followers sur kiloukoi
+     *
+     * @param  User $user
+     * @return \Doctrine\ORM\Query
+     */
+    public function kilouwers(User $user)
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u', 'kk', 'count(kk.id)', 'count(a.id)')
+            ->leftJoin('u.kilouwees', 'k')
+            ->leftJoin('u.kilouwees', 'kk')
+            ->leftJoin('u.annonces', 'a')
+            ->where('k.id = :id')
+            ->setParameter('id', $user->getId())
+            ->groupBy('u.id')
+            ->getQuery();
+    }
+
+    /**
+     * isFollowedBy
+     *
+     * @param  User $proprietaire
+     * @param  User $follower
+     * @return int
+     */
     public function isFollowedBy( User $proprietaire, User $follower )
     {
         return $this->createQueryBuilder('u')

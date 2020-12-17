@@ -1,0 +1,64 @@
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-10 offset-lg-1 col-md-12">
+				<h1 class="h3 text-center text-primary py-3 bg-white">{{ titre }}</h1>
+				{% if favoris|length == 0 %}
+					<div class="card">
+						<h1 class="h3 text-center text-muted pt-2">{{ annonce_titre }}</h1>
+						<div class="card-body">
+							<div class="alert alert-warning text-center">
+								Vous n'avez pas encore de kilouwers préférés!
+							</div>
+						</div>
+					</div>
+				{% endif %}
+			
+				<div class="row card-deck">
+					{% for result in favoris %}
+						{% set user      = result[0] %}
+						{% set followers = result[1] %}
+						{% set annonces  = result[2] %}
+						<div class="col-12 col-md-6 col-lg-4 mb-3">
+							<div class="card h-100 shadow m-auto" style="max-width: 300px;">
+								<a href="{{ path('proprietaire_annonce', {proprietaire: user.id, pseudo: user.pseudo }) }}" style="height: 185px;" class="text-center overflow-hidden bg-light">
+                           			<img src="{{ asset("uploads/avatar/" ~ user.avatar) }}" class="card-img-top w-100 m-auto" alt="...">
+								</a>
+
+								<div class="card-body py-2 px-3 text-center">
+									<h3 class="card-title text-primary mb-2" style="font-size: 1.15rem;">
+										<strong><a href="{{ path('proprietaire_annonce', {proprietaire: user.id, pseudo: user.pseudo }) }}" >{{ user.nomComplet }}</a></strong>
+									</h3>
+									<div class="text-center text-warning mb-1">
+										<i class="fas fa-star"></i>
+										<i class="fas fa-star"></i>
+										<i class="fas fa-star"></i>
+										<i class="far fa-star"></i>
+										<i class="far fa-star"></i>
+									</div>
+									<div class="details" style="font-size: .8rem;position:relative;">
+										<p class="card-text mb-0">
+											<strong class="text-success">Kilouwers : </strong>
+											<span>{{ followers }}</span>
+										</p>
+									</div>
+									<div class="details" style="font-size: .8rem;position:relative;">
+										<p class="card-text mb-0">
+											<strong class="text-success">Annonces en lignes : </strong>
+											<span>{{ annonces }}</span>
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+
+				{% include "pagination.html.twig"  with { count: favoris.count, max: favoris.query.maxResults } %}
+			</div>
+		</div>
+	</div>
+{% endblock %}

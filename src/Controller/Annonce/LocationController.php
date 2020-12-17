@@ -3,6 +3,7 @@
 namespace App\Controller\Annonce;
 
 use App\Entity\Location;
+use App\Entity\Notification;
 use App\Entity\StatutLocation;
 use App\Form\LocationType;
 use App\Repository\AnnoncesRepository;
@@ -16,6 +17,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use MangoPay;
+use Symfony\Component\Mercure\PublisherInterface;
+use Symfony\Component\Mercure\Update;
 
 /**
  * @Route("/location")
@@ -61,12 +64,12 @@ class LocationController extends AbstractController
     /**
      * @Route("/new", name="location_new", methods={"POST"})
      */
-    public function new(Request $request, LocationRepository $locationRepository, AnnoncesRepository $annoncesRepository, StatutLocationRepository $statutReposistory,MangoPayService $mangoPayService): Response
+    public function new(Request $request, LocationRepository $locationRepository, AnnoncesRepository $annoncesRepository, StatutLocationRepository $statutReposistory, MangoPayService $mangoPayService, PublisherInterface $publisher): Response
     {
         //vérify cards user
         $cards = $mangoPayService->getCard($this->getUser()->getMangoPayId());
-        if ($cards) {
-
+        if( !$cards ) 
+        {
             $token = $request->request->get('token');
             if ($this->isCsrfTokenValid('new_location', $token))
             {
@@ -77,10 +80,9 @@ class LocationController extends AbstractController
                 $reservations = json_decode($request->request->get('reservations'));
                 $disponible   = $locationRepository->checkDates($reservations, $annonce->getId());
 
-                $locations = new ArrayCollection();
                 if( $disponible && $annonce )
                 {
-                    $statut    = $statutReposistory->find(1); // Statut en attente
+                    $statut = $statutReposistory->find(1); // Statut en attente
                     foreach( $reservations as $reservation )
                     {
                         $location = new Location();
@@ -92,14 +94,43 @@ class LocationController extends AbstractController
                         $location->setUser($user);
 
                         $em->persist($location);
-                        $locations->add($location);
                     }
+
+                    $destinataire = $annonce->getUser();
+
+                    $notification = new Notification();
+                    $photo        = $annonce->getPhoto() ? 'uploads/'. $annonce->getPhoto()[0]->getUrl() : 'image/logo-fond-blanc.png';
+                    $notification->setDeclencheur( $user );
+                    $notification->setDestinataire( $destinataire );
+                    $notification->setMessage('Demande de location de l\'annonce <strong>'. $annonce->getTitre() .'</strong> par <strong>'. $user->getNomComplet() .'</strong>');
+                    $notification->setRoute( $this->generateUrl('location_en_cours') );
+                    $notification->setPhoto( $photo );
+                    
+                    $em->persist($notification);
                     $em->flush();
+
+                    $serialized = json_encode([
+                        'content' => $notification->getMessage(),
+                        'date'    => $notification->getDateCreation()->format('d/m/Y | H:m'),
+                        'lien'    => $notification->getRoute(),
+                        'photo'   => $notification->getPhoto(),
+                        'unread'  => 11,
+                        'id'      => $notification->getId(),
+                        'type'    => 'notification',
+                    ]);
+                    
+                    $publisher( new Update(
+                        [ "http://127.0.0.1:8080/event/" . $destinataire->getId() ],
+                        $serialized,
+                        true,
+                    ));
                 }
             }
 
-        return $this->redirectToRoute('location_en_cours');
-        }else{
+            return $this->redirectToRoute('location_en_cours');
+        }
+        else
+        {
             $this->addFlash('notCards', ' !Vous n avez pas encore un moyen de paiement pour faire une alocation.');
             return $this->redirectToRoute('compte_portefeuille');
         }
@@ -110,42 +141,81 @@ class LocationController extends AbstractController
     /**
      * @Route("/action/{id}/{etat}", name="location_accept", methods={"GET"})
      */
-    public function accept(Request $request, Location $location, string $etat, StatutLocationRepository $statutReposistory, MangoPayService $mangoPayService): Response
+    public function accept(Request $request, Location $location, string $etat, StatutLocationRepository $statutReposistory, MangoPayService $mangoPayService, PublisherInterface $publisher): Response
     {
         if( $etat == "accepter" )
         {
             $locataire = $location->getUser();
-
+            $annonce   = $location->getAnnonce();
             
             $periodeTotal = date_diff($location->getDateDebut(),$location->getDateFin());
-            
-            if ($location->getAnnonce()->getType()->getId() == 1) {
+            if ($annonce->getType()->getId() == 1) {
                 $difference = $periodeTotal->format('%h') + 1;
-            }elseif ($location->getAnnonce()->getType()->getId() == 2) {
+            }elseif ($annonce->getType()->getId() == 2) {
                 $difference = $periodeTotal->format('%a') + 1;
-            }elseif ($location->getAnnonce()->getType()->getId() == 3) {
+            }elseif ($annonce->getType()->getId() == 3) {
                 $difference = $periodeTotal->format('%a')/7 + 1;
             }else{
                 $difference = $periodeTotal->format('%m') + 1;
             }
 
-            $prix =  $difference * $location->getAnnonce()->getPrix();
+            $prix = intval( $difference * $annonce->getPrix() ) * 100;
             
-            
-            //Do transfer
-            $mangoPayService->transferWallet($locataire->getMangoPayId(),$this->getUser()->getMangoPayId(),$prix);
-            
-            //status
-            $statut    = $statutReposistory->find(2); // Statut en cours
-            $location->setStatutLocation( $statut );
-            $this->getDoctrine()->getManager()->flush();
-            
-            return $this->render('location/successLocation.html.twig', [
-                'reponse' => $result,
-                'proprio' => $this->getUser()->getNomComplet(),
-                'locataire' => $location->getUser()->getNomComplet()
-            ]);
-            
+            $reponsePaieCards = $mangoPayService->Payin($locataire->getMangoPayId(),0,"EUR",$prix);
+
+            if ($reponsePaieCards == \MangoPay\PayInStatus::Succeeded) {
+                
+                $WIdproprietaire = $mangoPayService->getWalletId($this->getUser()->getMangoPayId());
+                $WIdlocataire = $mangoPayService->getWalletId($locataire->getMangoPayId());
+                $prixAnnonce = intval( $difference * $annonce->getPrix() ) * 100;
+
+                //Do transfert
+                $result = $mangoPayService->doTransferWalet($locataire->getMangoPayId(),"EUR",$prixAnnonce,100,$WIdlocataire,$WIdproprietaire);
+                
+                $destinataire = $locataire;
+                $user         = $this->getUser();
+
+                $notification = new Notification();
+                $photo        =  $annonce->getPhoto() ? 'uploads/'. $annonce->getPhoto()[0]->getUrl() : 'image/logo-fond-blanc.png';
+                $notification->setDeclencheur( $user );
+                $notification->setDestinataire( $destinataire );
+                $notification->setMessage('Demande de location accepter <strong>'. $annonce->getTitre() .'</strong>');
+                $notification->setRoute( $this->generateUrl('location_en_cours') );
+                $notification->setPhoto( $photo );
+
+                $this->getDoctrine()->getManager()->persist($notification);
+
+                //status
+                $statut    = $statutReposistory->find(2); // Statut en cours
+                $location->setStatutLocation( $statut );
+                $this->getDoctrine()->getManager()->flush();
+
+                $serialized = json_encode([
+                    'content' => $notification->getMessage(),
+                    'date'    => $notification->getDateCreation()->format('d/m/Y | H:m'),
+                    'lien'    => $notification->getRoute(),
+                    'photo'   => $notification->getPhoto(),
+                    'unread'  => 11,
+                    'id'      => $notification->getId(),
+                    'type'    => 'notification',
+                ]);
+
+                $publisher( new Update(
+                    [ "http://127.0.0.1:8080/event/" . $destinataire->getId() ],
+                    $serialized,
+                    true,
+                ));
+
+                return $this->render('location/successLocation.html.twig', [
+                    'reponse' => $result,
+                    'proprio' => $this->getUser()->getNomComplet(),
+                    'locataire' => $location->getUser()->getNomComplet()
+                ]);
+            }
+            else {
+                dd($createdPayIn->Status);
+                /*$createdPayIn->ResultCode;*/
+            }
         }
         else
         {

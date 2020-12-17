@@ -38,3 +38,4 @@ security:
         - { path: ^/factures, roles: ROLE_USER }
         - { path: ^/abonnement, roles: ROLE_USER }
         - { path: ^/annonces/favoris, roles: ROLE_USER }
+        - { path: ^/notifications, roles: ROLE_USER }

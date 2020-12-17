@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\UserType;
+use App\Repository\UserRepository;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Mailer\MailerInterface;
 use App\Service\MangoPayService;
+use App\Service\PaginationService;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mime\Address;
 
@@ -22,19 +23,21 @@ class UserController extends AbstractController
     /**
      * @Route("/", name="user_profil", methods={"GET"})
      */
-    public function profil(MangoPayService $mangoPayService): Response
+    public function profil(MangoPayService $mangoPayService, UserRepository $userRepo): Response
     {
-        $user = $this->getUser();
-        $userMangoId = $this->getUser()->getMangoPayId();
-        $usersmango =  $mangoPayService->getUser($userMangoId);
-        $getkycdoc = $mangoPayService->getKYCDocs($userMangoId);
-        $discr = strpos(get_class($user), 'Professionnel');
-        
+        $user        = $this->getUser();
+        $userMangoId = $user->getMangoPayId();
+        $usersmango  = $mangoPayService->getUser($userMangoId);
+        $getkycdoc   = $mangoPayService->getKYCDocs($userMangoId);
+        $discr       = strpos(get_class($user), 'Professionnel');
+
         return $this->render('user/show.html.twig', [
             'user' => $user,
             'discr' => $discr,
             'usersmango' => $usersmango,
-            'getkycdoc' => $getkycdoc
+            'getkycdoc' => $getkycdoc,
+            'kilouwersCount'=> $userRepo->countKilouwers( $user ),
+            'annoncesCount' => $userRepo->countAnnonces( $user ),
         ]);
     }
 
@@ -92,6 +95,54 @@ class UserController extends AbstractController
         return new Response( json_encode($reponse) );
     }
 
+
+    /**
+     * @Route("/kilouwers-favoris", name="kilouwers_favoris")
+     */
+    public function userFavoris(Request $request, UserRepository $userRepo, PaginationService $paginator)
+    {
+        $user    = $this->getUser();
+        $query   = $userRepo->userFavoris($user);
+        $favoris = $paginator->paginate($query, $request->query->getInt('page', 1));
+        
+        return $this->render('user/userFavoris.html.twig', [
+            'favoris' => $favoris,
+            'titre'   => 'Mes kilouwers favoris',
+        ]);
+    }
+
+    /**
+     * @Route("/kilouwers", name="kilouwers_perso")
+     */
+    public function kilouwers(Request $request, UserRepository $userRepo, PaginationService $paginator)
+    {
+        $user    = $this->getUser();
+        $query   = $userRepo->kilouwers($user);
+        $favoris = $paginator->paginate($query, $request->query->getInt('page', 1));
+        
+        return $this->render('user/userFavoris.html.twig', [
+            'favoris' => $favoris,
+            'titre'   => 'Mes kilouwers',
+        ]);
+    }
+
+    /**
+     * @Route("/uploadkyc", name="uploadkyc")
+     */
+    public function uploadfileKYC(MangoPayService $mangoPayService, Request $request, FileUploader $uploader)
+    {
+        /*$filePath = filePath('\www\projetkiloukoi\Kiloukoi.WEBAPP\var\mangopay\FLYER_FR.pdf');*/
+        /*$file = base64_encode (file_get_contents($filePath));*/
+        
+        $file = $_FILES['kycfile']['tmp_name'];/*$uploader->upload($request->files->get('kycfile'));*/
+        
+        $mguId = $this->getUser()->getMangoPayId();
+        
+        $mangoPayService->setUserMangoPayKYC($mguId,$file);
+        $this->addFlash('addKYC', 'Merci ! la verification de votre compte peut prendre une semaine, une notification vous sera envoye par email .');
+        return $this->redirectToRoute('user_profil');
+       
+    }
     /**
      * @Route("/{id}", name="user_show", methods={"GET"})
      */
@@ -134,23 +185,5 @@ class UserController extends AbstractController
             'user' => $user,
             'form' => $form->createView(),
         ]);
-    }
-
-    /**
-     * @Route("/uploadkyc", name="uploadkyc")
-     */
-    public function uploadfileKYC(MangoPayService $mangoPayService, Request $request, FileUploader $uploader)
-    {
-        /*$filePath = filePath('\www\projetkiloukoi\Kiloukoi.WEBAPP\var\mangopay\FLYER_FR.pdf');*/
-        /*$file = base64_encode (file_get_contents($filePath));*/
-        
-        $file = $_FILES['kycfile']['tmp_name'];/*$uploader->upload($request->files->get('kycfile'));*/
-        
-        $mguId = $this->getUser()->getMangoPayId();
-        
-        $mangoPayService->setUserMangoPayKYC($mguId,$file);
-        $this->addFlash('addKYC', 'Merci ! la verification de votre compte peut prendre une semaine, une notification vous sera envoye par email .');
-        return $this->redirectToRoute('user_profil');
-       
     }
 }

@@ -21,6 +21,12 @@
 			top: .85rem;
 			z-index: 2;
 		}
+		@media (max-width: 768px) {
+			.container-proprietaire {
+				margin: auto !important;
+				text-align: center;
+			}
+		}
 	</style>
 {% endblock %}
 
@@ -28,9 +34,9 @@
 
 <div class="container">
 	<div class="row">
-		<div class="col-lg-10 offset-lg-1 col-md-12">
+		<div class="col-lg-8 offset-lg-2 col-md-12">
 			<div class="row bg-white mx-1 py-2 shadow rounded">
-				{% if app.user %}
+				{% if app.user and app.user.id != proprietaire.id %}
 					{% if followed %}
 						<button class="btn-follow btn btn-success">
 							<span class="spinner-border spinner-border-sm d-none"></span>
@@ -43,52 +49,55 @@
 						</button>
 					{% endif %}
 				{% endif %}
-				<div class="col-sm-4 text-center">
+				<div class="col-md-4 text-center">
 					<img src="{{ asset('uploads/avatar/') ~ proprietaire.avatar }}" class="my-2 rounded-circle img-fluid bg-primary" width="175px" height="175px">
-					<div class="text-center text-warning mb-1">
-						<i class="fas fa-star"></i>
-						<i class="fas fa-star"></i>
-						<i class="fas fa-star"></i>
-						<i class="far fa-star"></i>
-						<i class="far fa-star"></i>
-					</div>
-					<div class="text-center text-secondary">
-						<strong id="kilouwers">{{ kilouwersCount }}</strong> Kilouwers
-					</div>
-					<div class="text-center text-primary">
-						<strong>{{ annoncesCount }}</strong> annonces en ligne
-					</div>
 				</div>
-				<div class="col-sm-8 d-flex align-items-center">
-					<ul class="list-group list-group-flush">
-						<li class="list-group-item py-2">
-							<i class="fa fa-user text-secondary"></i>
-							<strong>{{ proprietaire.nomComplet }}</strong>
-						</li>
-						<li class="list-group-item py-2">
-							<i class="fa fa-phone text-secondary"></i>
-							<span>{{ proprietaire.telephone }}</span>
-						</li>
-						<li class="list-group-item py-2">
-							<i class="fa fa-envelope text-secondary"></i>
-							<span>{{ proprietaire.email }}</span>
-						</li>
-						<li class="list-group-item py-2">
-							<i class="fa fa-city text-secondary"></i>
-							<span>{{ proprietaire.ville }}</span> 
-						</li>
-						<li class="list-group-item py-2">
-							<i class="fa fa-map-marker-alt text-secondary"></i>
-							<span>{{ proprietaire.adresse }}</span>
-						</li>
-
-						{% if app.user.raisonSocial is defined %}
-							<li class="list-group-item py-2">
-								<i class="fa fa-archway text-secondary"></i>
-								<span>{{ proprietaire.Siret }}</span>
+				<div class="col-md-8 d-flex align-items-center" style="font-size: 120%">
+					<div class="container-proprietaire">
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item">
+								{# <i class="fa fa-user text-secondary"></i> #}
+								<strong>{{ proprietaire.nomComplet }}</strong>
 							</li>
-						{% endif %}
-					</ul>
+							<li class="list-group-item py-0 text-warning mb-1">
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star"></i>
+								<i class="far fa-star"></i>
+								<i class="far fa-star"></i>
+							</li>
+							<li class="list-group-item text-secondary py-0">
+								<strong id="kilouwers">{{ kilouwersCount }}</strong> Kilouwers
+							</li>
+							<li class="list-group-item text-primary py-0 ">
+								<strong>{{ annoncesCount }}</strong> annonces en ligne
+							</li>
+							{# 
+								<li class="list-group-item py-2">
+									<i class="fa fa-phone text-secondary"></i>
+									<span>{{ proprietaire.telephone }}</span>
+								</li>
+								<li class="list-group-item py-2">
+									<i class="fa fa-envelope text-secondary"></i>
+									<span>{{ proprietaire.email }}</span>
+								</li>
+								<li class="list-group-item py-2">
+									<i class="fa fa-city text-secondary"></i>
+									<span>{{ proprietaire.ville }}</span> 
+								</li>
+								<li class="list-group-item py-2">
+									<i class="fa fa-map-marker-alt text-secondary"></i>
+									<span>{{ proprietaire.adresse }}</span>
+								</li> 
+								{% if app.user.raisonSocial is defined %}
+									<li class="list-group-item py-2">
+										<i class="fa fa-archway text-secondary"></i>
+										<span>{{ proprietaire.Siret }}</span>
+									</li>
+								{% endif %}
+							#}
+						</ul>
+					</div>
 				</div>
 			</div>
 		</div>

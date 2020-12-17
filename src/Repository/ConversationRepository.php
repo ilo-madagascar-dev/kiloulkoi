@@ -62,7 +62,13 @@ class ConversationRepository extends ServiceEntityRepository
             ->orderBy('m.date', 'DESC')
             ->getQuery();
     }
-
+    
+    /**
+     * countUnreadBy
+     *
+     * @param  User $user
+     * @return int|null
+     */
     public function countUnreadBy(User $user)
     {
         return $this->createQueryBuilder('c')
