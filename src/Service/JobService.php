@@ -105,6 +105,6 @@ class JobService extends AbstractScheduledTask
 
 	protected function initialize(Schedule $schedule) 
 	{
-		// $schedule->everyHours(24); // Perform the task every 24Hours
+		// $schedule->everyHours(12); // Perform the task every 24Hours
     }
 }

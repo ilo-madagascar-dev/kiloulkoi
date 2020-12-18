@@ -81,6 +81,13 @@ $(document).ready( function()
 					</div>
 				`;
 
+				if( parseInt(data.unread) > 0 )
+				{
+					$('.notifications-container .unread').html(data.unread);
+					$('.notifications-container .unread').removeClass('d-none');
+				}
+
+				showNotification(data);
 			 	alertify.set('notifier','position', 'bottom-left');
 				alertify.notify( html, 'success', 100, function(){  console.log('notified'); });
 			}
@@ -108,24 +115,29 @@ $(document).ready( function()
 	var showNotifications = function(notifications)
 	{
 		notifications.all.forEach(notif => {
-			var url  = notif_url.replace('0', notif.id);
-			var html = `
-				<a href="${ url }" class="list-group-item list-group-item-action px-0 py-2" >
-					<div class="row">
-						<div class="col-3 text-center d-flex align-items-center justify-content-center pr-0">
-							<img src="${ notif.photo }" class="w-80 rounded-circle">
-						</div>
-						<div class="col-9 notification-content">
-							<div style="font-size: 85%">
-								${ notif.content }
-							</div>
-							<small class="text-muted">${ notif.date }</small>
-						</div>
-					</div>
-				</a>			
-			`;
-
-			$('.notifications-container .list-group').append(html);
+			showNotification(notif);
 		});
+	}
+
+	var showNotification = function(notif)
+	{
+		var url  = notif_url.replace('0', notif.id);
+		var html = `
+			<a href="${ url }" class="list-group-item list-group-item-action px-0 py-2" >
+				<div class="row">
+					<div class="col-3 text-center d-flex align-items-center justify-content-center pr-0">
+						<img src="${ notif.photo }" class="w-80 rounded-circle">
+					</div>
+					<div class="col-9 notification-content">
+						<div style="font-size: 85%">
+							${ notif.content }
+						</div>
+						<small class="text-muted">${ notif.date }</small>
+					</div>
+				</div>
+			</a>			
+		`;
+
+		$('.notifications-container .list-group').append(html);
 	}
 });
