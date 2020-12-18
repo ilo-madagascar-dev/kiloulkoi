@@ -3,9 +3,7 @@
 {% block title %}Portefeuille{% endblock %}
 
 {% block stylesheets %}
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
-  
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 {% endblock %}
 
 {% block body %}
@@ -15,14 +13,24 @@
             <div class="offset-lg-2 col-lg-8 offset-md-1 col-md-10">
                 <div class="card shadow mb-3">
                     {% for message in app.flashes('compteIBAN') %}
-                                    <div class="alert alert-danger">
-                                        {{ message }}
-                                    </div>
+                        <div class="text-center alert alert-danger">
+                            {{ message }}
+                        </div>
                     {% endfor %}
                     {% for message in app.flashes('notCards') %}
-                                    <div class="alert alert-danger">
-                                        {{ message }}
-                                    </div>
+                        <div class="text-center alert alert-danger">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                    {% for message in app.flashes('errorPayin') %}
+                        <div class="text-center alert alert-danger">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                    {% for message in app.flashes('successPayin') %}
+                        <div class="text-center alert alert-success">
+                            {{ message }}
+                        </div>
                     {% endfor %}
                     <div class="card-header d-flex align-items-top">
                         <i class="text-success fa fa-wallet mr-3" style="font-size: 3rem;"></i>
@@ -31,33 +39,32 @@
                             <small class="text-muted">Listes des cartes bancaires</small>
                         </div>
                         <div class="ml-auto">
-                            <button class="btn btn-primary"  data-toggle="modal" data-target="#modalUser">Ajouter</button>
+                            <button class="btn btn-primary"  data-toggle="modal" data-target="#modalAjoutCarte">Ajouter</button>
                         </div>
                     </div>
                     <div class="card-body p-0">
-						<table class="table">
+                        <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>Id Cartes</th>
-                                        <th>Numero de la cartes</th>
-                                        <th>Fournisseur de cartes</th>
-                                        <th>Types du cartes</th>
-                                        <th>Code banque</th>
+                                        <th>Numeros</th>
+                                        <th>Fournisseurs</th>
+                                        <th>Code</th>
                                         <th>Pays</th>
-                                        <th>Devise</th>
+                                        <th>Transferer dans le portefeuille</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {% for cartes in cards %}
-                                    <tr>
-                                        <td>{{cartes.Id}}</td>
-                                        <td>{{cartes.Alias}}</td>
-                                        <td>{{cartes.CardProvider}}</td>
-                                        <td>{{cartes.CardType}}</td>
-                                        <td>{{cartes.BankCode}}</td>
-                                        <td>{{cartes.Country}}</td>
-                                        <td>{{cartes.Currency}}</td>
-                                                                                
+                                {% for carte in cards %}
+                                    <tr  data="{{ {carte: carte.Id, numero: carte.Alias, devise: carte.Currency }|json_encode() }}">
+                                        <td>{{carte.Alias}}</td>
+                                        <td>{{carte.CardProvider}}</td>
+                                        <td>{{carte.BankCode}}</td>
+                                        <td>{{carte.Country}}</td>
+                                        <td class="text-center">
+                                            <button class="btn btn-sm btn-primary btn-payin" data-toggle="modal" data-target="#modalPayIn">
+                                                <i class="fa fa-download"></i>
+                                            </button>
+                                        </td>
                                     </tr>
                                  {% endfor %}
                               </tbody>
@@ -78,13 +85,12 @@
                         </div>
                     </div>
                     <div class="card-body p-0">
-						<table class="table">
+                        <table class="table">
                                 <thead>
                                     <tr>
                                         <th>Proprietaire</th>
                                         <th>Description</th>
                                         <th>Balance</th>
-                                        <th>Devise</th>
                                         <th>Transférer</th>
                                     </tr>
                                 </thead>
@@ -93,17 +99,18 @@
                                     <tr>
                                         <td>{{ proprietaire }}</td>
                                         <td>{{ portfelle.Description }}</td>
-                                        <td>{{ portfelle.Balance.Amount/100 }}.00</td>
-                                        <td>{{portfelle.Currency}}</td>
+                                        <td>{{ portfelle.Balance.Amount/100 }} {{portfelle.Currency}}</td>
                                         <td>
                                             {% if app.session.get('type') == "PAYOUT" %}
                                                 <button class="btn btn-sm btn-success" title="Accepter" disabled>
                                                         <i class="fa fa-bank"></i>Réussit
                                                 </button>
                                             {% else %}
-                                                <a href="{{path('portefeuille_transfer')}}" class="btn btn-sm btn-success" title="Accepter">
+                                                {% if portfelle.Balance.Amount/100 >= 1 %}
+                                                    <a href="{{path('portefeuille_transfer')}}" class="btn btn-sm btn-success" title="Accepter">
                                                         <i class="fa fa-bank"></i>Transférer
-                                                </a>
+                                                    </a>
+                                                {% endif %}
                                             {% endif %}
                                         </td>
                                         
@@ -115,6 +122,7 @@
                 </div>
             </div>
         </div>
+
         {# table transaction #}
         <div class="row mb-3">
             <div class="offset-lg-2 col-lg-8 offset-md-1 col-md-10">
@@ -137,7 +145,7 @@
                                         <th>Montant</th>
                                         <th>Statut</th>
                                         <th>Résultat</th>
-                                        <th>Transfère</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -147,17 +155,17 @@
                                         <td>{{ res.DebitedWalletId }}</td>
                                         <td>{{ res.CreationDate }}</td>
                                         <td>{{ res.Type }}</td>
-                                        <td>{{ res.DebitedFunds.Amount/100 }}.00 {{ res.DebitedFunds.Currency }}</td>
+                                        <td>{{ res.DebitedFunds.Amount/100 }} {{ res.DebitedFunds.Currency }}</td>
                                         <td>{{ res.Status }}</td>
                                         <td>{{ res.ResultMessage }}</td>
                                         <td>
                                             {% if app.session.get('type') == "PAYOUT" %}
                                                 <button class="btn btn-sm btn-success" title="Accepter" disabled>
-                                                        <i class="fa fa-bank"></i>Réussit
+                                                    <i class="fa fa-bank"></i>Réussit
                                                 </button>
                                             {% else %}
                                                 <a href="{{path('portefeuille_transfer')}}" class="btn btn-sm btn-success" title="Accepter">
-                                                        <i class="fa fa-bank"></i>Transférer
+                                                    <i class="fa fa-bank"></i>Transférer
                                                 </a>
                                             {% endif %}
                                         </td>
@@ -172,12 +180,12 @@
         </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="modalUser" tabindex="-1" role="dialog" aria-labelledby="modalUserLabel" aria-hidden="true">
+    <!-- Modal -- ajout carte -->
+    <div class="modal fade" id="modalAjoutCarte" tabindex="-1" role="dialog" aria-labelledby="modalAjoutCarteLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalUserLabel">Mes Moyens de Paiements</h5>
+                    <h5 class="modal-title" id="modalAjoutCarteLabel">Mes Moyens de Paiements</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -224,6 +232,38 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="modalPayIn" tabindex="-1" role="dialog" aria-labelledby="modalPayInLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form class="modal-content" action="{{ path('portefeuille_payin') }}" method="POST" >
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalPayInLabel">Transfert d'argent vers le portefeuil</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Numéro de la carte :</label>
+                        <input class="numero form-control" value="" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Devise :</label>
+                        <input class="devise form-control" value="" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Montant :</label>
+                        <input type="number" min="0,01" class="montant form-control" name="montant">
+                    </div>
+                    <input class="carte" type="hidden" name="carte">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-success">Transferer</button>
+                </div>
+            </form>
+        </div>
+    </div>
 {% endblock %}
 
 {% block javascripts %}
@@ -234,7 +274,6 @@
     <script>
         $(document).ready( function () 
         {
-            
             /*$("#datepicker").datepicker( "option", "dateFormat", 'mmy' );*/
             $( "#datepicker" ).datepicker({
               dateFormat: "mmy",
@@ -243,6 +282,16 @@
               dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
               dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
               dayNamesMin: ['Di', 'Lu', 'Ma', 'Mer', 'Je', 'Ve', 'Sa'],
+            });
+
+            $('.btn-payin').click( function()
+            {
+                var data = JSON.parse( $(this).parent().parent().attr('data') );
+
+                $('#modalPayIn .carte').val(data.carte);
+                $('#modalPayIn .numero').val(data.numero);
+                $('#modalPayIn .devise').val(data.devise);
+                $('#modalPayIn .montant').val(0);
             });
             
         });

@@ -53,15 +53,9 @@ class CompteController extends AbstractController
 
 
        //get card
-       $cards = $mangoPayService->getCard($this->getUser()->getMangoPayId());
-       
-       $portFeuil = $waletUserId = $mangoPayService->getWallet($this->getUser()->getMangoPayId());
-
-       $wallet = $session->get('wallet');
-       
-            $wallet = $portFeuil;
-       
-       $session->set('wallet', $wallet);
+       $cards     = $mangoPayService->getCard($this->getUser()->getMangoPayId());
+       $portFeuil = $mangoPayService->getWallet($this->getUser()->getMangoPayId());
+       $session->set('wallet', $portFeuil);
 
        //transaction get
        $transactionUser= $mangoPayService->getTransactionUser($this->getUser()->getMangoPayId());
@@ -132,48 +126,64 @@ class CompteController extends AbstractController
     }
 
     /**
-     * @Route("/portefeuille/transfere", name="portefeuille_transfer")
+     * @Route("/portefeuille/transfert", name="portefeuille_transfer")
      */
     public function transfereBank(SessionInterface $session, Request $request,MangoPayService $mangoPayService): Response
     {
-        
-        
-         $walletUser = $mangoPayService->getWallet($this->getUser()->getMangoPayId());
-         $walletId;$currency;$amountDebited;
-         foreach ($walletUser as $value) {
-                $walletId = $value->Id;
-                $currency = $value->Currency;
-                $amountDebited = $value->Balance->Amount;
-          }
+        $walletUser = $mangoPayService->getWallet($this->getUser()->getMangoPayId());
+        $walletId;$currency;$amountDebited;
+        foreach ($walletUser as $value) {
+            $walletId = $value->Id;
+            $currency = $value->Currency;
+            $amountDebited = $value->Balance->Amount;
+        }
 
         // get bank count IBAN user
         $bankUser = $mangoPayService->getBankCountUser($this->getUser()->getMangoPayId());
         $bankAccountId;
         foreach ($bankUser as $value) {
-                $bankAccountId = $value->Id;
-          }
+            $bankAccountId = $value->Id;
+        }
 
-         if ($bankUser) {
-             //do paying transfer
+        if ($bankUser) {
+        //do paying transfer
             $responseTransfer = $mangoPayService->doPayoutIBAN($this->getUser()->getMangoPayId(),$walletId,$currency,$amountDebited,0,"BANK_WIRE",$bankAccountId);
-         }else{
+        }else{
             $this->addFlash('compteIBAN', '!Vous n avez pas enconre de compte bancaire IBAN sur votre compte mangopay.');
-         }
-         
-         //check transaction
-         $transaction = $mangoPayService->getTransactionUser($this->getUser()->getMangoPayId());
-         
-         $typetransation;
-         foreach ($transaction as $value) {
-                $typetransation = $value->Type;
-          }
-          $type = $session->get('type');
-       
-            $type = $typetransation;
-       
-          $session->set('type', $type);
+        }
 
-         return $this->redirectToRoute('compte_portefeuille');
+        //check transaction
+        $transaction = $mangoPayService->getTransactionUser($this->getUser()->getMangoPayId());
+        $typetransation;
+        foreach ($transaction as $value) {
+            $typetransation = $value->Type;
+        }
+        $type = $session->get('type');
+        $type = $typetransation;
+        $session->set('type', $type);
 
+        return $this->redirectToRoute('compte_portefeuille');
+    }
+
+
+    /**
+     * @Route("/portefeuille/payin", name="portefeuille_payin")
+     */
+    public function transfertPortefeuil(Request $request, MangoPayService $mangoPayService) : Response
+    {
+        $montant = floatval( $request->request->get('montant') ) * 100;
+        $carte   = floatval( $request->request->get('carte') );
+
+        $status = $mangoPayService->Payin($this->getUser()->getMangoPayId(), $carte, $montant);
+        if( $status == \MangoPay\PayInStatus::Succeeded )
+        {
+            $this->addFlash('successPayin', 'Transfert éffectué!');
+        }
+        else
+        {
+            $this->addFlash('errorPayin', 'Un problème est survenu lors du transfert!');
+        }
+
+        return $this->redirectToRoute('compte_portefeuille');
     }
 }

@@ -186,4 +186,15 @@ class UserController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/Banque", name="creat_bank_Account", methods={"GET","POST"})
+     */
+    public function CreatBanKIBAN(Request $request,MangoPayService $mangoPayService): Response
+    {
+        
+        $result=$mangoPayService->creatBankAccount($this->getUser()->getMangoPayId(),"IBAN",$request->get('iban'),$request->get('bic'),$this->getUser()->getPseudo(),$this->getUser()->getAdresse());
+        
+        return $this->redirectToRoute('user_profil');
+    }
 }
