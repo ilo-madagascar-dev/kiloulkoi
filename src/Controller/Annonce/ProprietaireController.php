@@ -2,9 +2,11 @@
 
 namespace App\Controller\Annonce;
 
+use App\Entity\Notification;
 use App\Entity\User;
 use App\Repository\AnnoncesRepository;
 use App\Repository\UserRepository;
+use App\Service\NotificationService;
 use App\Service\PaginationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,7 +64,7 @@ class ProprietaireController extends AbstractController
     /**
      * @Route("{proprietaire}", name="proprietaire_follow", methods={"GET"})
      */
-	public function follow(User $proprietaire) : Response
+	public function follow(User $proprietaire, NotificationService $notificationService) : Response
 	{
         $user = $this->getUser();
         if( $user && $user->getId() !== $proprietaire->getId() )
@@ -76,6 +78,18 @@ class ProprietaireController extends AbstractController
             else
             {
                 $proprietaire->addKilouwer( $user );
+
+                $notification = new Notification();
+                $destinataire = $proprietaire;
+                $photo        = '/uploads/avatar/'. $user->getAvatar();
+
+                $notification->setDeclencheur( $user );
+                $notification->setDestinataire( $destinataire );
+                $notification->setMessage('<strong>'. $destinataire->getNomComplet() .'</strong> vous suit sur kiloukoi!');
+                $notification->setRoute( $this->generateUrl('location_en_cours') );
+                $notification->setPhoto( $photo );
+
+                $notificationService->send($notification, $destinataire);
             }
 
             $em = $this->getDoctrine()->getManager();
