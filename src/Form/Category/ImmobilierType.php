@@ -18,7 +18,7 @@ class ImmobilierType extends AnnoncesType
 
         $builder
             ->add('surface', NumberType::class, [
-                'label' => 'Surfaces',
+                'label' => 'Surface en m2',
                 'attr' => array('min' => 0)
             ])
             ->add('etage', IntegerType::class, [
@@ -26,7 +26,7 @@ class ImmobilierType extends AnnoncesType
                 'attr' => array('min' => 0)
             ])
             ->add('chambre', IntegerType::class, [
-                'label' => 'Surfaces',
+                'label' => 'Chambre(s)',
                 'attr' => array('min' => 0)
             ])
         ;

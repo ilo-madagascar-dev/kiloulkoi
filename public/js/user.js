@@ -88,7 +88,7 @@ $(document).ready( function()
 				}
 
 				showNotification(data);
-			 	alertify.set('notifier','position', 'bottom-left');
+			 	alertify.set('notifier','position', 'bottom-right');
 				alertify.notify( html, 'success', 100, function(){  console.log('notified'); });
 			}
 			else if( data.type == 'message' )
@@ -106,7 +106,7 @@ $(document).ready( function()
 							</div>
 						</div>
 				`;
-				alertify.set('notifier','position', 'bottom-left');
+				alertify.set('notifier','position', 'bottom-right');
 				alertify.notify( alertifyHtml, 'custom', 100, function(){  console.log('notified'); });
 			}
 		}
@@ -122,8 +122,9 @@ $(document).ready( function()
 	var showNotification = function(notif)
 	{
 		var url  = notif_url.replace('0', notif.id);
+		var lu   = notif.lu ? '' : 'bg-secondary text-white';
 		var html = `
-			<a href="${ url }" class="list-group-item list-group-item-action px-0 py-2" >
+			<a href="${ url }" class="list-group-item list-group-item-action px-0 py-2 ${ lu }">
 				<div class="row">
 					<div class="col-3 text-center d-flex align-items-center justify-content-center pr-0">
 						<img src="${ notif.photo }" class="w-80 rounded-circle">

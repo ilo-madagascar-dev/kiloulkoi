@@ -9,6 +9,7 @@ use App\Repository\AbonnementRepository;
 use App\Repository\AnnoncesRepository;
 use App\Repository\CategoriesRepository;
 use App\Repository\TypeAbonnementRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,13 +28,15 @@ class AnnoncesController extends AbstractController
     private $repCategorie;
     private $repAbonnement;
     private $repTypeAbonnement;
+    private $repUser;
 
-    public function __construct(AnnoncesRepository $repAnnonce, CategoriesRepository $repCategorie, AbonnementRepository $repAbonnement, TypeAbonnementRepository $repTypeAbonnement)
+    public function __construct(AnnoncesRepository $repAnnonce, CategoriesRepository $repCategorie, AbonnementRepository $repAbonnement, TypeAbonnementRepository $repTypeAbonnement, UserRepository $repUser)
     {
         $this->repAnnonce = $repAnnonce;
         $this->repCategorie = $repCategorie;
         $this->repAbonnement = $repAbonnement;
         $this->repTypeAbonnement = $repTypeAbonnement;
+        $this->repUser = $repUser;
     }
 
     /**
@@ -276,18 +279,21 @@ class AnnoncesController extends AbstractController
      */
     public function show(int $id, string $slug, SerializerInterface $serializer): Response
     {
-        $user    = $this->getUser();
-        $annonce = $this->repAnnonce->findAnnonceById($id);
+        $user         = $this->getUser();
+        $annonce      = $this->repAnnonce->findAnnonceById($id);
+        $proprietaire = $annonce->getUser();
+        $discr        = strpos(get_class($proprietaire), 'Professionnel');
+        $isFollower   = $user ? $this->repUser->isFollowedBy( $proprietaire, $user ) : false;
+        $isFavoris    = $user ? $this->repAnnonce->checkFavoris($user->getId(), $annonce->getId()) : false;
 
-        $abonnement = $this->repAbonnement->findOneBy( ['user' => $annonce->getUser()->getId() ]);
+        $abonnement = $this->repAbonnement->findOneBy( ['user' => $proprietaire->getId() ]);
         $photoMax   = ($abonnement && $abonnement->getId()) == 2 ? 6 : 3;
 
-        if ($user == null || ($user !== null && $user->getId() !== $annonce->getUser()->getId()) ) 
+        if ($user == null || ($user !== null && $user->getId() !== $proprietaire->getId()) ) 
         {
             $annonce->setVisite( intval($annonce->getVisite()) + 1);
             $this->getDoctrine()->getManager()->flush();
         }
-
         $annonce_serialized = $serializer->normalize($annonce, null, [AbstractNormalizer::IGNORED_ATTRIBUTES => [
             'photo', 'user', 'conversations', 'categorie', 'sousCategorie', 'locations',  // Relation to ignore
             'id', 'titre', 'description', 'prix', 'proucentageTva',                       //////////////
@@ -296,10 +302,17 @@ class AnnoncesController extends AbstractController
         ]]);
 
         return $this->render('annonces/show.html.twig', [
-            'annonce'  => $annonce,
-            'photoMax' => $photoMax,
+            'annonce'            => $annonce,
+            'photoMax'           => $photoMax,
             'annonce_serialized' => $annonce_serialized,
-            'user_annonces'      => $annonce->getUser()->getAnnonces()->count()
+
+            'user_annonces'      => $annonce->getUser()->getAnnonces()->count(),
+            'kilouwersCount'     => $this->repUser->countKilouwers( $proprietaire ),
+            'annoncesCount'      => $this->repUser->countAnnonces( $proprietaire ),
+            'followed'           => $isFollower,
+            'proprietaire'       => $proprietaire,
+            'discr'              => $discr,
+            'isFavoris'          => $isFavoris,
         ]); 
     }
 

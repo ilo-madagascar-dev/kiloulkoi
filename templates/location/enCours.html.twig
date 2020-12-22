@@ -135,7 +135,7 @@
                                             <td>{{ location.statutLocation.libelle }}</td>
                                             <td>
                                                 {% if not plusOneDay and location.statutLocation.id != 3 %}
-                                                    <a class="btn btn-sm btn-danger" href="{{ path('location_delete', { id: location.id}) }}" title="Annuler">
+                                                    <a class="btn btn-sm btn-warning" href="{{ path('location_accept', {id: location.id, etat: 'refuser'}) }}" title="Annuler">
                                                         <i class="fa fa-times-circle"></i>
                                                     </a>
                                                 {% else %}

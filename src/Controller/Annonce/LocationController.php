@@ -65,7 +65,7 @@ class LocationController extends AbstractController
     {
         //vérify cards user
         $cards = $mangoPayService->getCard($this->getUser()->getMangoPayId());
-        if( !$cards ) 
+        if( !$cards )
         {
             $token = $request->request->get('token');
             if ($this->isCsrfTokenValid('new_location', $token))
@@ -73,7 +73,7 @@ class LocationController extends AbstractController
                 $user    = $this->getUser();
                 $annonce = $annoncesRepository->find( $request->request->get('annonce'));
                 $em      = $this->getDoctrine()->getManager();
-                
+
                 $reservations = json_decode($request->request->get('reservations'));
                 $disponible   = $locationRepository->checkDates($reservations, $annonce->getId());
 
@@ -83,7 +83,7 @@ class LocationController extends AbstractController
                     foreach( $reservations as $reservation )
                     {
                         $location = new Location();
-        
+
                         $location->setDateDebut( new DateTime($reservation->debut) );
                         $location->setDateFin( new DateTime($reservation->fin) );
                         $location->setAnnonce($annonce);
@@ -127,73 +127,84 @@ class LocationController extends AbstractController
      */
     public function accept(Request $request, Location $location, string $etat, StatutLocationRepository $statutReposistory, MangoPayService $mangoPayService, NotificationService $notificationService): Response
     {
-        if( $etat == "accepter" )
+        $locataire = $location->getUser();
+        $annonce   = $location->getAnnonce();
+        $user      = $this->getUser();
+
+        if( $user->getId() === $annonce->getUser()->getId() )
         {
-            $locataire = $location->getUser();
-            $annonce   = $location->getAnnonce();
-            
-            $periodeTotal = date_diff($location->getDateDebut(),$location->getDateFin());
-            if ($annonce->getType()->getId() == 1) {
-                $difference = $periodeTotal->format('%h') + 1;
-            }elseif ($annonce->getType()->getId() == 2) {
-                $difference = $periodeTotal->format('%a') + 1;
-            }elseif ($annonce->getType()->getId() == 3) {
-                $difference = $periodeTotal->format('%a')/7 + 1;
-            }else{
-                $difference = $periodeTotal->format('%m') + 1;
+            if( $etat == "accepter" )
+            {
+                $periodeTotal = date_diff($location->getDateDebut(),$location->getDateFin());
+                if ($annonce->getType()->getId() == 1) {
+                    $difference = $periodeTotal->format('%h') + 1;
+                }elseif ($annonce->getType()->getId() == 2) {
+                    $difference = $periodeTotal->format('%a') + 1;
+                }elseif ($annonce->getType()->getId() == 3) {
+                    $difference = $periodeTotal->format('%a')/7 + 1;
+                }else{
+                    $difference = $periodeTotal->format('%m') + 1;
+                }
+
+                $prix = intval( $difference * $annonce->getPrix() ) * 100;
+
+                // $reponsePaieCards = $mangoPayService->Payin($locataire->getMangoPayId(),0,"EUR",$prix);
+
+                // if ($reponsePaieCards == \MangoPay\PayInStatus::Succeeded) {
+
+                //     $WIdproprietaire = $mangoPayService->getWalletId($this->getUser()->getMangoPayId());
+                //     $WIdlocataire = $mangoPayService->getWalletId($locataire->getMangoPayId());
+                //     $prixAnnonce = intval( $difference * $annonce->getPrix() ) * 100;
+
+                //     //Do transfert
+                //     $result = $mangoPayService->doTransferWalet($locataire->getMangoPayId(),"EUR",$prixAnnonce,100,$WIdlocataire,$WIdproprietaire);
+
+                    $destinataire = $locataire;
+                    $notification = new Notification();
+                    $photo        =  $annonce->getPhoto()[0] ? '/uploads/'. $annonce->getPhoto()[0]->getUrl() : '/image/logo-fond-blanc.png';
+                    $notification->setDeclencheur( $user );
+                    $notification->setDestinataire( $destinataire );
+                    $notification->setMessage('Votre demande de location sur " <strong>'. $annonce->getTitre() .'</strong>" est acceptée!');
+                    $notification->setRoute( $this->generateUrl('location_en_cours') );
+                    $notification->setPhoto( $photo );
+
+                    $this->getDoctrine()->getManager()->persist($notification);
+
+                    //status
+                    $statut    = $statutReposistory->find(2); // Statut en cours
+                    $location->setStatutLocation( $statut );
+                    $this->getDoctrine()->getManager()->flush();
+
+                    // send notification
+                    $notificationService->send($notification, $destinataire);
+
+                    return $this->render('location/successLocation.html.twig', [
+                        // 'reponse' => $result,
+                        'proprio' => $this->getUser()->getNomComplet(),
+                        'locataire' => $location->getUser()->getNomComplet()
+                    ]);
+                // }
+                // else {
+                //     dd($createdPayIn->Status);
+                //     /*$createdPayIn->ResultCode;*/
+                // }
             }
-
-            $prix = intval( $difference * $annonce->getPrix() ) * 100;
-            
-            // $reponsePaieCards = $mangoPayService->Payin($locataire->getMangoPayId(),0,"EUR",$prix);
-
-            // if ($reponsePaieCards == \MangoPay\PayInStatus::Succeeded) {
-                
-            //     $WIdproprietaire = $mangoPayService->getWalletId($this->getUser()->getMangoPayId());
-            //     $WIdlocataire = $mangoPayService->getWalletId($locataire->getMangoPayId());
-            //     $prixAnnonce = intval( $difference * $annonce->getPrix() ) * 100;
-
-            //     //Do transfert
-            //     $result = $mangoPayService->doTransferWalet($locataire->getMangoPayId(),"EUR",$prixAnnonce,100,$WIdlocataire,$WIdproprietaire);
-                
-                $destinataire = $locataire;
-                $user         = $this->getUser();
-
-                $notification = new Notification();
-                $photo        =  $annonce->getPhoto()[0] ? '/uploads/'. $annonce->getPhoto()[0]->getUrl() : '/image/logo-fond-blanc.png';
-                $notification->setDeclencheur( $user );
-                $notification->setDestinataire( $destinataire );
-                $notification->setMessage('Votre demande de location sur " <strong>'. $annonce->getTitre() .'</strong>" est acceptée!');
-                $notification->setRoute( $this->generateUrl('location_en_cours') );
-                $notification->setPhoto( $photo );
-
-                $this->getDoctrine()->getManager()->persist($notification);
-
-                //status
-                $statut    = $statutReposistory->find(2); // Statut en cours
+            else
+            {
+                $statut    = $statutReposistory->find(4); // Statut interrompue
                 $location->setStatutLocation( $statut );
+                $this->getDoctrine()->getManager()->persist($location);
                 $this->getDoctrine()->getManager()->flush();
-                
-                // send notification
-                $notificationService->send($notification, $destinataire);
-
-                return $this->render('location/successLocation.html.twig', [
-                    // 'reponse' => $result,
-                    'proprio' => $this->getUser()->getNomComplet(),
-                    'locataire' => $location->getUser()->getNomComplet()
-                ]);
-            // }
-            // else {
-            //     dd($createdPayIn->Status);
-            //     /*$createdPayIn->ResultCode;*/
-            // }
+            }
         }
-        else
+        elseif( $locataire->getId() === $user()->getId() && $etat == "refuser" )
         {
-            $statut    = $statutReposistory->find(4); // Statut interrompue
+            $statut    = $statutReposistory->find(5); // Statut annuler
             $location->setStatutLocation( $statut );
+            $this->getDoctrine()->getManager()->persist($location);
+            $this->getDoctrine()->getManager()->flush();
         }
-        
+
         return $this->redirectToRoute('location_en_cours');
     }
 
@@ -227,17 +238,18 @@ class LocationController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="location_delete", methods={"DELETE"})
-     */
-    public function delete(Request $request, Location $location): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$location->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($location);
-            $entityManager->flush();
-        }
+    // /**
+    //  * @Route("/{id}", name="location_delete", methods={"DELETE"})
+    //  */
+    // public function delete(Request $request, Location $location): Response
+    // {
+    //     if ($this->isCsrfTokenValid('delete'.$location->getId(), $request->request->get('_token')))
+    //     {
+    //         $entityManager = $this->getDoctrine()->getManager();
+    //         $entityManager->remove($location);
+    //         $entityManager->flush();
+    //     }
 
-        return $this->redirectToRoute('location_index');
-    }
+    //     return $this->redirectToRoute('location_index');
+    // }
 }

@@ -9,6 +9,8 @@ $(document).ready( function()
     var selected1 = '';
     var selected2 = '';
 
+    // S4G!?!M4d4
+
     const monthDiff = function(d1, d2) {
         var months;
         months = (d2.getFullYear() - d1.getFullYear()) * 12;
@@ -58,6 +60,9 @@ $(document).ready( function()
         let yearPrev = ( date.getMonth() == 0 ) ? date.getFullYear() - 1 : date.getFullYear();
         let monPrev  = ( date.getMonth() == 0 ) ? 12                     : date.getMonth();
 
+        var now   = new Date();
+        var today = now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate();
+
         for (let x = firstDayIndex; x > 0; x--)
         {
             let day        = n_(prevLastDay - x + 1);
@@ -69,13 +74,7 @@ $(document).ready( function()
         {
             let day        = n_(i);
             let span_date  = `${ date.getFullYear() }-${ n_(date.getMonth() + 1) }-${ day }`;
-    
-            if (i === new Date().getDate() && date.getMonth() === new Date().getMonth())
-            {
-                days += `<span data="${span_date}" class="today">${i}</span>`;
-            } else {
-                days += `<span data="${span_date}" >${i}</span>`;
-            }
+            days += `<span data="${span_date}" >${i}</span>`;
         }
 
         let yearNext = ( date.getMonth() == 11 ) ? date.getFullYear() + 1 : date.getFullYear();
@@ -124,17 +123,33 @@ $(document).ready( function()
             $(`.calendar .days span[data=${selected2}]`).addClass('selected');
         } catch(e) {}
 
+        try {
+            $(`.calendar .days span[data=${today}]`).addClass('today');
+        } catch(e) {}
+
         if( selected1 != '' && selected2 != '' )
         {
             $('.calendar .days span').each( function(i, span)
             {
-                if( (selected1 > $(span).attr('data') && $(span).attr('data') > selected2) || (selected1 < $(span).attr('data') && $(span).attr('data') < selected2) )
+                var data = $(span).attr('data');
+
+                if( (selected1 > data && data > selected2) || (selected1 < data && data < selected2) )
                 {
                     if( !$(span).hasClass('enCours') )
                         $(span).addClass('bg-secondary');
                 }
-            })
+            });
         }
+
+        $('.calendar .days span').each( function(i, span)
+        {
+            var data = $(span).attr('data');
+
+            if( today <= data ) return false;
+            $(span).addClass('interdit')
+        });
+
+
     }; // render calendar end
 
     document.querySelector(".prev").addEventListener("click", () => 
@@ -164,64 +179,71 @@ $(document).ready( function()
 
     $(document).on('click', '.days span', function()
     {
-        if( selected1 !== '' && selected2 == '' )
+        if( !$(this).hasClass('interdit') )
         {
-            selected2  = $(this).attr('data');
-            var before = $('.calendar span.selected').attr('data');
-            var after  = $(this).attr('data');
-            $(this).addClass('selected');
-
-            if( before > after )
+            if( selected1 !== '' && selected2 == '' )
             {
-                input_debut = after;
-                input_fin   = before;
+                selected2  = $(this).attr('data');
+                var before = $('.calendar span.selected').attr('data');
+                var after  = $(this).attr('data');
+                $(this).addClass('selected');
 
-                $('#date-debut').val( moment(after).format("Do MMMM YYYY") );
-                $('#date-fin').val( moment(before).format("Do MMMM YYYY") );
-
-                var toColor = $(this).next();
-                while( !toColor.hasClass('selected') && toColor.length > 0 )
+                if( before > after )
                 {
-                    if( !toColor.hasClass('enCours') )
+                    input_debut = after;
+                    input_fin   = before;
+
+                    $('#date-debut').val( moment(after).format("Do MMMM YYYY") );
+                    $('#date-fin').val( moment(before).format("Do MMMM YYYY") );
+
+                    var toColor = $(this).next();
+                    while( !toColor.hasClass('selected') && toColor.length > 0 )
                     {
-                        toColor.addClass('bg-secondary');
+                        if( !toColor.hasClass('enCours') )
+                        {
+                            toColor.addClass('bg-secondary');
+                        }
+                        toColor = toColor.next();
                     }
-                    toColor = toColor.next();
                 }
+                else if( before == after )
+                {
+                    $('#date-debut').val( moment(before).format("Do MMMM YYYY") );
+                    $('#date-fin').val( moment(after).format("Do MMMM YYYY") );
+                }
+                else
+                {
+                    input_debut = before;
+                    input_fin   = after;
+
+                    $('#date-debut').val( moment(before).format("Do MMMM YYYY") );
+                    $('#date-fin').val( moment(after).format("Do MMMM YYYY") );
+                    
+                    var toColor = $(this).prev();
+                    while( !toColor.hasClass('selected') && toColor.length > 0 )
+                    {
+                        if( !toColor.hasClass('enCours') )
+                        {
+                            toColor.addClass('bg-secondary');
+                        }
+                        toColor = toColor.prev();
+                    }
+                }
+            }
+            else if( selected1 !== '' && selected2 !== '' )
+            {
+                selected1 = $(this).attr('data');;
+                selected2 = '';
+                $('.calendar span.selected').removeClass('selected');
+                $('.calendar span.bg-secondary').removeClass('bg-secondary');
+                $(this).addClass('selected');
             }
             else
             {
-                input_debut = before;
-                input_fin   = after;
-
-                $('#date-debut').val( moment(before).format("Do MMMM YYYY") );
-                $('#date-fin').val( moment(after).format("Do MMMM YYYY") );
-                
-                var toColor = $(this).prev();
-                while( !toColor.hasClass('selected') && toColor.length > 0 )
-                {
-                    if( !toColor.hasClass('enCours') )
-                    {
-                        toColor.addClass('bg-secondary');
-                    }
-                    toColor = toColor.prev();
-                }
+                selected1 = $(this).attr('data');
+                $(this).addClass('selected');
             }
         }
-        else if( selected1 !== '' && selected2 !== '' )
-        {
-            selected1 = $(this).attr('data');;
-            selected2 = '';
-            $('.calendar span.selected').removeClass('selected');
-            $('.calendar span.bg-secondary').removeClass('bg-secondary');
-            $(this).addClass('selected');
-        }
-        else
-        {
-            selected1 = $(this).attr('data');
-            $(this).addClass('selected');
-        }
-        
     });
 
     $('#reserver').click( function()

@@ -17,14 +17,14 @@
         <link href="{{ asset('css/style.css') }}" rel="stylesheet"/>
 
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-        
+
         {% block stylesheets %}{% endblock %}
     </head>
 
     <body class="d-flex flex-column  min-vh-100" style="background-color: #e6e6e6e0;">
         <header style="height: 70px;">
             <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" style="min-height: 70px">
-                {#                 
+                {#
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#toggleNav" aria-controls="toggleNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -54,7 +54,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 {% if not app.user %}
                     <ul class="navbar-nav ml-auto left-menu pt-1">
                         <li class="nav-item">
@@ -67,6 +67,22 @@
 
                 {% if app.user %}
                     <ul class="navbar-nav ml-auto left-menu pt-1" style="flex-direction: row;">
+                        <li class="nav-item dropdown notifications-container">
+                            <a class="nav-link pt-0 text-white nav-icon text-center" id="btn-notifications" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="d-block fa fa-bell"></i>
+                                <small class="d-none unread">0</small>
+                                <span class="small">Notifications</span>
+                            </a>
+
+                            <div class="dropdown-menu small">
+                                <div class="notification-head text-light bg-success py-1 pl-3">
+                                    <strong>Notifications</strong>
+                                </div>
+                                <div class="list-group">
+                                </div>
+                            </div>
+                        </li>
+
                         <li class="nav-item text-center mr-1">
                             <a href="{{ path('annonces_favoris') }}" class="nav-link pt-0 text-white nav-icon favoris">
                                 <i class="d-block fa fa-heart" ></i>
@@ -101,7 +117,7 @@
                                 <a class="dropdown-item" href="{{ path('mes_annonces_index') }}">Mes Annonces</a>
                                 <a class="dropdown-item" href="{{ path('location_en_cours') }}">Locations en cours</a>
                                 {# <a class="dropdown-item" href="{{ path('annonces_favoris') }}">Mes Favoris</a> #}
-                                
+
                                 <div class="dropdown-divider"></div>
 
                                 <a class="dropdown-item" href="{{ path('abonnement_index') }}">Abonnements</a>
@@ -113,7 +129,7 @@
                                 {% else %}
                                     <a class="dropdown-item pr-1" href="{{ path('compte_portefeuille') }}">Mon Portefeuille  <strong class="ml-1 text-success text-right">0.00 €</strong></a>
                                 {% endif %}
-                                
+
                                 <div class="dropdown-divider"></div>
 
                                 <a class="dropdown-item"  href="{{ path('security_logout') }}">
@@ -137,33 +153,17 @@
 
             <div class="container-fluid">
                 <div id="bg" style="position:absolute;z-index:-1;left:0;height:375px;"></div>
-                
+
                 <center class="pt-1">
                     <a href="{{ path('accueil') }}">
                         <img src="{{ asset('image/logo.png') }}" class="mb-3" style="height: 120px;width: auto;" >
                     </a>
-                    <p class="text-center text-white" style="font-size: 1.4rem;"><strong>N'achetez que le nécessaire, pour <span class="slogan-animation">le reste</span> il y a Kiloukoi!</strong></p>
+                    <p class="text-center text-white" style="font-size: 1.4rem;"><strong>N'achetez que le nécessaire, pour <span class="slogan-animation text-success">le reste</span> il y a Kiloukoi!</strong></p>
                 </center>
             </div>
 
             <div class="container-fluid"  style="max-width: 1500px;">
                 {% block body %}{% endblock %}
-            </div>
-
-
-            <div class="nav-item dropdown notifications-container rounded">
-               <div class="dropdown-menu small">
-                    <div class="list-group">
-                        <div class="notification-head text-light bg-success py-1 pl-3">
-                            <strong>Notifications</strong>
-                        </div>
-                    </div>
-               </div>
-
-                <button type="button" class="btn btn-primary btn-lg" id="btn-notifications" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-bell"></i>
-                </button>
-                <small class="badge badge-danger d-none unread position-absolute rounded-circle p-1" style="right: 2.25rem">0</small>
             </div>
         </main>
 
@@ -197,7 +197,7 @@
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="col-12 col-sm-6 col-md-3">
                         <ul class="nav flex-column mb-3">
                             <li class="nav-item">
@@ -220,7 +220,7 @@
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="col-12 col-sm-6 col-md-3">
                         <ul class="nav flex-column mb-3">
                             <li class="nav-item">
@@ -240,7 +240,7 @@
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="col-12 col-sm-6 col-md-3">
                         <ul class="nav flex-column mb-3">
                             <li class="nav-item">
@@ -258,12 +258,20 @@
                         </ul>
                     </div>
                 </div>
-                
-                <div class="row border-top border-bottom border-primary bg-white">
+
+                <div class="row border-top border-primary bg-white">
+                    <div class="col text-right py-2">
+                        <img src="{{ asset('image/mangopay_power.png') }}" alt="Mangopay copyright" class="w-auto"  style="height: 40px">
+                    </div>
+                </div>
+
+                {#
+                <div class="row border-top border-primary bg-white">
                     <div class="col text-center py-2">
                         Copyright 2020
                     </div>
                 </div>
+                #}
             </div>
         </footer>
 

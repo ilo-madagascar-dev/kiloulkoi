@@ -9,7 +9,6 @@
 {% block title %}Details annonces{% endblock %}
 
 {% block body %}
-
     <div class="container">
         <div class="row">
             <div class="col-lg-10 offset-lg-1 col-md-12">
@@ -17,58 +16,114 @@
                     {# Détail de l'annonce #}
                     <div class="card shadow mb-3">
                         <div class="card-header text-center">
-                            {#
-                                <i class="text-muted fa fa-list mr-3" style="font-size: 3rem;"></i>
-                                {% set detail_type = annonce.type == 'offre' ? 'de l\'offre' : 'de la demande'  %} 
-                            #}
-                            <h2 class="mb-0 " ><strong>{{ annonce.titre }}</strong></h2>
-                            {#
-                                <small class="text-muted mb-0">Publier le {{ annonce.dateModification | date("d/m/Y à H:m") }}</small>
-                            #}
-                        </div>
-                        <div class="card-body">
-                            <div>
-                                <h3 class="text-center text-success" style="font-size: 1.3rem;">
-                                    <strong>{{ annonce.prix }} €/{{ annonce.type ? annonce.type.libelle : 'mois' }}</strong>
-                                </h3>
-                            </div>
-                            <hr>
-
-                            {% if annonce_serialized|length > 1 %}
-                                <div>
-                                    {% set separateur = annonce_serialized | length / 2 | round %}
-                                    <div class="row">
-                                        <div class="col-6 d-flex justify-content-center">
-                                            {% for key, value in annonce_serialized | slice(0, separateur) %}
-                                                <div class="mb-2">
-                                                    <h4 class="mb-0" style="font-size: 1.2rem;"><strong>{{ key | capitalize }}</strong></h4>
-                                                    {% if value is iterable %}
-                                                        <p>{{ value.valeur }}</p>
-                                                    {% else %}
-                                                        <p>{{ value == '' ? ' -- ' : value }}</p>
-                                                    {% endif %}
-                                                </div>
-                                            {% endfor %}
+                            <h2 class="mb-0">
+                                <strong>{{ annonce.titre }}</strong>
+                                <div class="float-right">
+                                    {% if app.user and app.user.id != annonce.user.id %}
+                                        <div title="Favoris" class="d-inline mr-2">
+                                            {% if isFavoris %}
+                                                <span class="btn-heart" data="{{ annonce.id }}">
+                                                    <i class="fa fa-heart text-danger"></i>
+                                                </span>
+                                            {% else %}
+                                                <span class="btn-heart" data="{{ annonce.id }}">
+                                                    <i class="far fa-heart"></i>
+                                                </span>
+                                            {% endif %}
                                         </div>
-
-                                        <div class="col-6 d-flex justify-content-center">
-                                            {% for key, value in annonce_serialized | slice(separateur, separateur) %}
-                                                <div class="mb-2">
-                                                    <h4 class="mb-0" style="font-size: 1.2rem;"><strong>{{ key | capitalize }}</strong></h4>
-                                                    {% if value is iterable %}
-                                                        <p>{{ value.valeur }}</p>
-                                                    {% else %}
-                                                        <p>{{ value == '' ? ' -- ' : value }}</p>
-                                                    {% endif %}
-                                                </div>
-                                            {% endfor %}
+                                    {% endif %}
+                                    <div title="Partager" class="d-inline dropdown">
+                                        <a class="btn btn-lg p-0" href="#" role="button" id="share-btn" data-toggle="dropdown">
+                                            <i class="fa fa-share-alt" style="font-size: 1.7rem;"></i>
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="share-btn">
+                                            <a class="dropdown-item py-2" href="#" onclick="copyUrl()">
+                                                <i style="width: 15px" class="fa mr-2 fa-copy"></i> Copier le lien
+                                            </a>
+                                            <a class="dropdown-item py-2" href="#">
+                                                <i style="width: 15px" class="fa mr-2 fa-envelope"></i> E-mail
+                                            </a>
+                                            <a class="dropdown-item py-2" href="#">
+                                                <i style="width: 15px" class="fab mr-2 fa-facebook-f"></i> Facebook
+                                            </a>
+                                            <a class="dropdown-item py-2" href="#">
+                                                <i style="width: 15px" class="fab mr-2 fa-twitter"></i> Twitter
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
-                                <hr>
-                            {% endif %}
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {% if annonce.photo | length == 0 %}
+                                        <div class="text-center">
+                                            <div>
+										        <img src="{{ asset('image/logo-fond-blanc.png') }}" class="card-img-top m-auto p-2" style="width: auto;height: 175px;" alt="...">
+                                            </div>
+                                            <div>
+                                                <strong class="text-warning">Aucune photo disponible.</strong>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <div class="tz-gallery">
+                                            <div class="row">
+                                                {% for photo in annonce.photo %}
+                                                    <div class="p-1 overflow-hidden" data-toggle="tooltip" data-placement="top" title="{{ photo.description }}">
+                                                        <a href="{{ asset('uploads/') ~ photo.url }}" class="lightbox">
+                                                            <img id="photo-{{ photo.id }}" src="{{ asset('uploads/') ~ photo.url }}" class="" style="height: 160px;width: auto" alt="{{ photo.description }}">
+                                                        </a>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            
+                                <table class="col-md-6 pt-4" style="font-size: 120%">
+                                    <tr style="font-size: 150%">
+                                        <td class="pl-3">
+                                            <strong >Prix: </strong>
+                                        </td>
+                                        <td>
+                                            <span class="pr-2">: </span>
+                                            <span class="text-success">{{ annonce.prix }} €/{{ annonce.type ? annonce.type.libelle : 'mois' }}</span>
+                                        </td>
+                                    </tr>
 
-                            <div class="text-center">
+                                    <tr>
+                                        <td colspan="2" class="pt-1"><hr></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="pt-1"></td>
+                                    </tr>
+                                    
+                                    {% if annonce_serialized|length > 1 %}
+                                        {% for key, value in annonce_serialized %}
+                                            {% if value is not null %}
+                                                <tr>
+                                                    <td class="pb-1 pl-3">
+                                                        <strong>{{ key | capitalize }}</strong>
+                                                    </td>
+                                                    <td class="pl-1">
+                                                        <span class="pr-2">: </span>
+                                                        {% if value is iterable %}
+                                                            <span>{{ value.valeur is defined ? value.valeur : value.libelle }}</span>
+                                                        {% else %}
+                                                            <span>{{ value }}</span>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                </table>
+                            </div>
+
+                            <hr>
+
+                            <div class="text-center w-80 m-auto">
                                 <h3 style="font-size: 1.2rem;"><strong>Description :</strong></h3>
                                 <p class="mb-0">{{ annonce.description | nl2br }}</p>
                             </div>
@@ -76,107 +131,126 @@
                     </div>
                     {# Fin - Détail de l'annonce #}
 
-                    {# photos #}
-                        <div class="card shadow mb-3">
-                            <div class="card-header">
+                    <div class="row">
+                        {# Calendrier #}
+                        <div class="col-md-8">
+                            <div class="card shadow mb-3">
                                 {#
-                                    <i class="text-muted fa fa-image mr-3" style="font-size: 3rem;"></i>
+                                    <div class="card-header">
+                                        <h2 class="mb-0 text-center" ><strong>Disponibilités</strong></h2>
+                                    </div>
                                 #}
-                                <h2 class="mb-0 text-center" ><strong>Photos</strong></h2>
-                            </div>
-                            <div class="card-body">
-                                {% if annonce.photo | length == 0 %}
-                                    <div class="text-center py-4">
-                                        <span class="">Aucune photo disponible.</span>
-                                    </div>
-                                {% else %}
-                                    <div class="tz-gallery">
-                                        <div class="row">
-                                            {% for photo in annonce.photo %}
-                                                <div class="p-1 m-auto overflow-hidden" data-toggle="tooltip" data-placement="top" title="{{ photo.description }}">
-                                                    <a href="{{ asset('uploads/') ~ photo.url }}" class="lightbox">
-                                                        <img id="photo-{{ photo.id }}" src="{{ asset('uploads/') ~ photo.url }}" class="" style="height: 160px;width: auto" alt="{{ photo.description }}">
-                                                    </a>
+                                <div class="card-body px-1 py-3">
+                                    <div class="row">
+                                        <div class="col-lg-6 {% if app.user and app.user.id == annonce.user.id %} offset-lg-3 {% endif %}">
+                                            <div class="calendar">
+                                                <div class="month row py-3 bg-success text-white border border-success">
+                                                    <div class="col-2 m-auto p-0 text-right">
+                                                        <i class=" display-4 fas fa-angle-left prev"></i>
+                                                    </div>
+                                                    <div class="col-8">
+                                                        <div class="date">
+                                                            <h3 class="text-center"></h3>
+                                                            <p class="text-center m-0"></p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-2 m-auto p-0 text-left">
+                                                        <i class=" display-4 fas fa-angle-right next"></i>
+                                                    </div>
                                                 </div>
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    {#Fin - photos #}
-
-                    {# Calendrier #}
-                    <div class="card shadow mb-3">
-                        <div class="card-header">
-                            {#
-                                <i class="text-muted fa fa-calendar mr-3" style="font-size: 3rem;"></i>
-                            #}
-                            <h2 class="mb-0 text-center" ><strong>Disponibilités</strong></h2>
-                        </div>
-                        <div class="card-body px-0 py-3">
-                            <div class="row">
-                                <div class="col-lg-6 {% if app.user and app.user.id == annonce.user.id %} offset-lg-3 {% endif %}">
-                                    <div class="calendar mb-3">
-                                        <div class="month row py-3 bg-success text-white border border-success">
-                                            <div class="col-2 m-auto p-0 text-right">
-                                                <i class=" display-4 fas fa-angle-left prev"></i>
+                                                <div class="weekdays border border-success  border-bottom-0">
+                                                    <span>Dim</span><span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span>
+                                                </div>
+                                                <div class="days border border-success"></div>
                                             </div>
-                                            <div class="col-8">
-                                                <div class="date">
-                                                    <h3 class="text-center"></h3>
-                                                    <p class="text-center m-0"></p>
+                                        </div>
+                                        
+                                        {% if not (app.user and app.user.id == annonce.user.id) %}
+                                            <div class="col-lg-6 d-flex align-items-end">
+                                                <div class="ml-3 mt-3">
+                                                    <div class="form-group">
+                                                        <label for="date-debut">Date du début:</label>
+                                                        <input readonly id="date-debut" min="{{ date() | date('Y-m-d') }}" class="form-control" name="debut">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="date-fin">Date du fin:</label>
+                                                        <input readonly id="date-fin" min="{{ date() | date('Y-m-d') }}" class="form-control" name="fin">
+                                                    </div>
+                                                    <div class="calendar-action text-center">
+                                                        <button id="reserver" class="btn btn-block btn-success" type="button" data-toggle="modal" data-target="#reservationModal">Vérifier la disponibilité</button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="col-2 m-auto p-0 text-left">
-                                                <i class=" display-4 fas fa-angle-right next"></i>
-                                            </div>
-                                        </div>
-                                        <div class="weekdays border border-success  border-bottom-0">
-                                            <span>Dim</span><span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span>
-                                        </div>
-                                        <div class="days border border-success"></div>
+                                        {% endif %}
                                     </div>
                                 </div>
-                                
-                                {% if not (app.user and app.user.id == annonce.user.id) %}
-                                    <div class="col-lg-6">
-                                        <div class="p-3">
-                                            <div class="form-group">
-                                                <label for="date-debut">Date du début:</label>
-                                                <input readonly id="date-debut" min="{{ date() | date('Y-m-d') }}" class="form-control" name="debut">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="date-fin">Date du fin:</label>
-                                                <input readonly id="date-fin" min="{{ date() | date('Y-m-d') }}" class="form-control" name="fin">
-                                            </div>
-                                            <div class="calendar-action text-center">
-                                                <button id="reserver" class="btn btn-block btn-success" type="button" data-toggle="modal" data-target="#reservationModal">Vérifier la disponibilité</button>
+                            </div>
+                        </div>
+                        {# Fin - Calendrier #}
+
+                        {# Profil propriétaire #}
+                        <div class="col-md-4 pl-md-0">
+                            <div class="card shadow">
+                                <div class="card-body px-1 py-3">
+                                    <div class="row">
+                                        <div class="col-4 pl-4 pr-0 text-center">
+                                            <img src="{{ asset('uploads/avatar/') ~ proprietaire.avatar }}" class="my-2 rounded-circle img-fluid bg-primary" width="175px" height="175px">
+                                        </div>
+                                        <div class="col-8 py-2">
+                                            <a href="{{ path('proprietaire_annonce', {proprietaire: annonce.user.id, pseudo: annonce.user.pseudo}) }}">
+                                                <strong>{{ proprietaire.nomComplet }}</strong>
+                                            </a>
+                                            <p class="mt-1 text-warning">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="mx-3 text-center">
+                                                <p class="text-secondary py-0 mb-1">
+                                                    <strong id="kilouwers">{{ kilouwersCount }}</strong> Kilouwers
+                                                </p>
+                                                <p class="text-primary py-0 mb-3 ">
+                                                    <strong>{{ annoncesCount }}</strong> annonces en ligne
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
-                                {% endif %}
-
-                                {% if app.user and app.user.id != annonce.user.id %}
-                                {% endif %}
+                                    
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="mx-3">
+                                                {% if app.user and app.user.id != proprietaire.id %}
+                                                    {% if followed %}
+                                                        <button class="btn-follow btn btn-block btn-success">
+                                                            <span class="spinner-border spinner-border-sm d-none"></span>
+                                                            <span class="text-follow">Ne plus suivre</span>
+                                                        </button>
+                                                    {% else %}
+                                                        <button class="btn-follow btn btn-block btn-primary">
+                                                            <span class="spinner-border spinner-border-sm d-none"></span>
+                                                            <span class="text-follow">Suivre</span>
+                                                        </button>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        {# Fin - Profil propriétaire #}
                     </div>
-                    {# Fin - Calendrier #}
-                
-                    {# Premiere colonne #}
-                    <div class="col-md-6">
-                    </div>
-                    {# Fin - Premiere colonne #}
-                    {# Deuxieme colonne #}
-                    <div class="col-md-6">
-                    </div>
-                    {# Fin - Deuxieme colonne #}
                 </div>
             </div>
         </div>
     </div>
-
 
     <!-- Modal -->
     <div class="modal fade" id="reservationModal" tabindex="-1" role="dialog" aria-labelledby="reservationModalLabel" aria-hidden="true">
@@ -234,6 +308,36 @@
                 return element.getElementsByTagName('img')[0].alt;
             }
         });
+
+		$(document).ready( function ()
+		{
+			var url = "{{ path('proprietaire_follow', { proprietaire: proprietaire.id }) }}";
+
+			$('.btn-follow').click( function () 
+			{
+				var that = this;
+				$('.btn-follow .spinner-border').removeClass('d-none');
+				$.get( url, function (reponse) 
+				{
+					reponse = JSON.parse(reponse);
+					if( parseInt(reponse.status) == 0 )
+					{
+						$(that).addClass('btn-primary');
+						$(that).removeClass('btn-success');
+						$('.btn-follow .text-follow').text('Suivre');
+					}
+					else
+					{
+						$(that).addClass('btn-success');
+						$(that).removeClass('btn-primary');
+						$('.btn-follow .text-follow').text('Ne plus suivre');
+					}
+
+					$('#kilouwers').text(reponse.kilouwers);
+					$('.btn-follow .spinner-border').addClass('d-none');
+				});
+			});
+		});
     </script>
     <script src="{{ asset('js/calendrier.js') }}"></script>
 {% endblock %}

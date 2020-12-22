@@ -4,6 +4,7 @@ namespace App\Service;
 use App\Entity\Notification;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\Mercure\PublisherInterface;
 use Symfony\Component\Mercure\Update;
 
@@ -32,13 +33,16 @@ class NotificationService
             'photo'   => $notification->getPhoto(),
             'unread'  => $notifRepo->countUnread($destinataire),
             'id'      => $notification->getId(),
+            'lu'      => $notification->getLu(),
             'type'    => 'notification',
         ]);
 
-        ($this->publisher)( new Update(
-            [ "http://127.0.0.1:8080/event/" . $destinataire->getId() ],
-            $serialized,
-            true,
-        ));
+        try {
+            ($this->publisher)( new Update(
+                [ "http://127.0.0.1:8080/event/" . $destinataire->getId() ],
+                $serialized,
+                true,
+            ));
+        } catch( Exception $e ) {}
     }
 }

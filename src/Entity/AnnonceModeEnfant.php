@@ -46,12 +46,12 @@ class AnnonceModeEnfant extends Annonces
         return $this;
     }
 
-    public function getTaille(): ?Taille
+    public function getTaille(): ?TailleEnfant
     {
         return $this->taille;
     }
 
-    public function setTaille(?Taille $taille): self
+    public function setTaille(?TailleEnfant $taille): self
     {
         $this->taille = $taille;
 

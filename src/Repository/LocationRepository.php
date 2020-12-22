@@ -83,7 +83,9 @@ class LocationRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return boolean met à jours les annonces à éfféctuer pour les locations finis
+     * Met à jours les statuts des locations
+     *
+     * @return boolean
      */
     public function updateLocationStatus()
     {
@@ -91,10 +93,10 @@ class LocationRepository extends ServiceEntityRepository
                     ->update(Location::class, 'l')
                     ->set('l.statutLocation', 3)
                     ->where('l.dateFin < :now and l.statutLocation = 2')
-                    ->setParameter('now', date("Y-m-d", time() - 86400)) 
+                    ->orWhere('l.dateDebut > :now and l.statutLocation = 1')
+                    ->setParameter('now', date("Y-m-d"))
                     ->getQuery()
-                    ->execute()
-                    ;
+                    ->execute();
     }
 
     // /**

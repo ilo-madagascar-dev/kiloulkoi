@@ -139,10 +139,11 @@ class AuthController extends AbstractController
     }
 
     /**
-     * @Route("/logout", name="security_logout")
+     * @Route("/deconnexion", name="security_logout")
      */
     public function logout()
     {
+        dd( 'lochou' );
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 

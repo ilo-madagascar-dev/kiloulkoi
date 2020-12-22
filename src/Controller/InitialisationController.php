@@ -95,6 +95,7 @@ class InitialisationController extends AbstractController
 				'date'    => $notification->getDateCreation()->format('d/m/Y | H:m'),
 				'lien'    => $notification->getRoute(),
 				'photo'   => $notification->getPhoto(),
+				'lu'      => $notification->getLu(),
 				'id'      => $notification->getId(),
 			];
 		}

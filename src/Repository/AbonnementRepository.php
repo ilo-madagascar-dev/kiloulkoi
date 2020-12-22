@@ -47,7 +47,7 @@ class AbonnementRepository extends ServiceEntityRepository
             ->join('a.type', 't')
             ->where('a.user = :user_id')
             ->setParameter('user_id', $user)
-            ->andWhere('a.dateFin >= :now')
+            ->andWhere('a.dateDebut <= :now and :now <= a.dateFin')
             ->setParameter('now', date("Y-m-d"))
             ->orderBy('t.id', 'DESC')
             ->setMaxResults(1)
