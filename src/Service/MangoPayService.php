@@ -372,4 +372,19 @@ class MangoPayService
 		}
 		return $result;
 	}
+
+	public function viewBankAccount(string $userMangoId)
+	{
+		try {
+			$mangoPayApi = $this->getMangoPayApi();
+			
+			$BankAccount = $mangoPayApi->Users->GetBankAccounts($userMangoId);
+			
+		} catch(MangoPay\Libraries\ResponseException $e) {
+			return $BankAccount = $e->GetErrorDetails();
+		} catch(MangoPay\Libraries\Exception $e) {
+			return $BankAccount = $e->GetMessage();
+		}
+		return $BankAccount;
+	}
 }
