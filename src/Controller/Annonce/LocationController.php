@@ -63,59 +63,73 @@ class LocationController extends AbstractController
      */
     public function new(Request $request, LocationRepository $locationRepository, AnnoncesRepository $annoncesRepository, StatutLocationRepository $statutReposistory, MangoPayService $mangoPayService, NotificationService $notificationService): Response
     {
-        //vérify cards user
-        $cards = $mangoPayService->getCard($this->getUser()->getMangoPayId());
-        if( !$cards ) 
-        {
-            $token = $request->request->get('token');
-            if ($this->isCsrfTokenValid('new_location', $token))
-            {
-                $user    = $this->getUser();
-                $annonce = $annoncesRepository->find( $request->request->get('annonce'));
-                $em      = $this->getDoctrine()->getManager();
-                
-                $reservations = json_decode($request->request->get('reservations'));
-                $disponible   = $locationRepository->checkDates($reservations, $annonce->getId());
+        //vérify éligibility
+        $eligibility = $mangoPayService->verifyKYCBANK($this->getUser()->getMangoPayId());
 
-                if( $disponible && $annonce )
-                {
-                    $statut = $statutReposistory->find(1); // Statut en attente
-                    foreach( $reservations as $reservation )
-                    {
-                        $location = new Location();
+        //vérify amount in wallet user
+        $amountWalletUser = $mangoPayService->getWallet($this->getUser()->getMangoPayId());
+        $prixLocation = intval($annoncesRepository->find( $request->request->get('annonce'))->getPrix()*100);
+
         
-                        $location->setDateDebut( new DateTime($reservation->debut) );
-                        $location->setDateFin( new DateTime($reservation->fin) );
-                        $location->setAnnonce($annonce);
-                        $location->setStatutLocation($statut);
-                        $location->setUser($user);
+        
+        if( $eligibility == true ) 
+        {
+            if ($amountWalletUser[0]->Balance->Amount >= $prixLocation) {
+           
+        
+                $token = $request->request->get('token');
+                if ($this->isCsrfTokenValid('new_location', $token))
+                {
+                    $user    = $this->getUser();
+                    $annonce = $annoncesRepository->find( $request->request->get('annonce'));
+                    $em      = $this->getDoctrine()->getManager();
+                    
+                    $reservations = json_decode($request->request->get('reservations'));
+                    $disponible   = $locationRepository->checkDates($reservations, $annonce->getId());
 
-                        $em->persist($location);
+                    if( $disponible && $annonce )
+                    {
+                        $statut = $statutReposistory->find(1); // Statut en attente
+                        foreach( $reservations as $reservation )
+                        {
+                            $location = new Location();
+            
+                            $location->setDateDebut( new DateTime($reservation->debut) );
+                            $location->setDateFin( new DateTime($reservation->fin) );
+                            $location->setAnnonce($annonce);
+                            $location->setStatutLocation($statut);
+                            $location->setUser($user);
+
+                            $em->persist($location);
+                        }
+
+                        $destinataire = $annonce->getUser();
+
+                        $notification = new Notification();
+                        $photo        = $annonce->getPhoto()[0] ? '/uploads/'. $annonce->getPhoto()[0]->getUrl() : '/image/logo-fond-blanc.png';
+                        $notification->setDeclencheur( $user );
+                        $notification->setDestinataire( $destinataire );
+                        $notification->setMessage('Demande de location de l\'annonce <strong>'. $annonce->getTitre() .'</strong> par <strong>'. $user->getNomComplet() .'</strong>');
+                        $notification->setRoute( $this->generateUrl('location_en_cours') );
+                        $notification->setPhoto( $photo );
+
+                        $em->persist($notification);
+                        $em->flush();
+
+                        // send notification
+                        $notificationService->send($notification, $destinataire);
                     }
-
-                    $destinataire = $annonce->getUser();
-
-                    $notification = new Notification();
-                    $photo        = $annonce->getPhoto()[0] ? '/uploads/'. $annonce->getPhoto()[0]->getUrl() : '/image/logo-fond-blanc.png';
-                    $notification->setDeclencheur( $user );
-                    $notification->setDestinataire( $destinataire );
-                    $notification->setMessage('Demande de location de l\'annonce <strong>'. $annonce->getTitre() .'</strong> par <strong>'. $user->getNomComplet() .'</strong>');
-                    $notification->setRoute( $this->generateUrl('location_en_cours') );
-                    $notification->setPhoto( $photo );
-
-                    $em->persist($notification);
-                    $em->flush();
-
-                    // send notification
-                    $notificationService->send($notification, $destinataire);
                 }
-            }
 
-            return $this->redirectToRoute('location_en_cours');
+                return $this->redirectToRoute('location_en_cours');
+            }else{
+                $this->addFlash('notCards', 'Le Solde dans votre portefeuille est insuffisant pour cette location');
+                return $this->redirectToRoute('compte_portefeuille');
+            }
         }
         else
         {
-            $this->addFlash('notCards', ' !Vous n avez pas encore un moyen de paiement pour faire une alocation.');
+            $this->addFlash('notCards', 'Vous n avez pas encore un moyen de paiement pour faire une location. ou vos documents KYC ne sont pas encore valides');
             return $this->redirectToRoute('compte_portefeuille');
         }
 
@@ -142,19 +156,12 @@ class LocationController extends AbstractController
             }else{
                 $difference = $periodeTotal->format('%m') + 1;
             }
-
-            $prix = intval( $difference * $annonce->getPrix() ) * 100;
+            $floatPrix = $difference * $annonce->getPrix();
             
-            // $reponsePaieCards = $mangoPayService->Payin($locataire->getMangoPayId(),0,"EUR",$prix);
+            
+                //do transfer prix location wallet buyer -> seller
+                $transfert = $mangoPayService->doTransferWalet($locataire->getMangoPayId(),$this->getUser()->getMangoPayId(),$floatPrix);
 
-            // if ($reponsePaieCards == \MangoPay\PayInStatus::Succeeded) {
-                
-            //     $WIdproprietaire = $mangoPayService->getWalletId($this->getUser()->getMangoPayId());
-            //     $WIdlocataire = $mangoPayService->getWalletId($locataire->getMangoPayId());
-            //     $prixAnnonce = intval( $difference * $annonce->getPrix() ) * 100;
-
-            //     //Do transfert
-            //     $result = $mangoPayService->doTransferWalet($locataire->getMangoPayId(),"EUR",$prixAnnonce,100,$WIdlocataire,$WIdproprietaire);
                 
                 $destinataire = $locataire;
                 $user         = $this->getUser();
@@ -182,11 +189,7 @@ class LocationController extends AbstractController
                     'proprio' => $this->getUser()->getNomComplet(),
                     'locataire' => $location->getUser()->getNomComplet()
                 ]);
-            // }
-            // else {
-            //     dd($createdPayIn->Status);
-            //     /*$createdPayIn->ResultCode;*/
-            // }
+            
         }
         else
         {

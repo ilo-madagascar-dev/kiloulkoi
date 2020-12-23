@@ -4,6 +4,7 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="{{asset('css/calendrier.css')}}">
 {% endblock %}
 
 {% block body %}
@@ -213,12 +214,46 @@
                         <input class="form-control" placeholder="Numeros de cart" type="text" name="cardNumber" value="" />
                         </div>
                         
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1"><i class="fa fa-calendar"></i></span>
+                       
+                       
+                           
+                        <div class="form-group">
+                             <i class="fa fa-calendar"></i>
+                            <div class="box">
+                              <select id="selectmonthcard">
+                                <option value="01">Janvier</option>
+                                <option value="02">Février</option>
+                                <option value="03">Mars</option>
+                                <option value="04">Avril</option>
+                                <option value="05">Mai</option>
+                                <option value="06">Juin</option>
+                                <option value="07">Juillet</option>
+                                <option value="08">Aôut</option>
+                                <option value="09">Septembre</option>
+                                <option value="10">Octobre</option>
+                                <option value="11">Novembre</option>
+                                <option value="12">Décembre</option>
+                              </select>
+
+                              <select id="selectyearcart">
+                                <option value="20">2020</option>
+                                <option value="21">2021</option>
+                                <option value="22">2022</option>
+                                <option value="23">2023</option>
+                                <option value="24">2024</option>
+                                <option value="25">2025</option>
+                                <option value="26">2026</option>
+                                <option value="27">2027</option>
+                                <option value="28">2028</option>
+                                <option value="29">2029</option>
+                                <option value="30">2030</option>
+                                <option value="31">2031</option>
+                              </select>
                             </div>
-                            <input id="datepicker" style="z-index: 1100 !important;" class="form-control" placeholder="Disponibilité MM/YY" name="cardExpirationDate" readonly="true">
                         </div>
+                       
+                            
+                        <input type="hidden" name="cardExpirationDate" class="inputcardExpirationDate">
 
                         
                         <div class="form-group">
@@ -341,11 +376,14 @@
             /*$("#datepicker").datepicker( "option", "dateFormat", 'mmy' );*/
             $( "#datepicker" ).datepicker({
               dateFormat: "mmy",
-              monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+              /*monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
               monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
               dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
               dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
-              dayNamesMin: ['Di', 'Lu', 'Ma', 'Mer', 'Je', 'Ve', 'Sa'],
+              dayNamesMin: ['Di', 'Lu', 'Ma', 'Mer', 'Je', 'Ve', 'Sa'],*/
+              changeMonth: true,
+              changeYear: true,
+              showButtonPanel: true,
             });
 
             $('.btn-payin').click( function()
@@ -357,9 +395,24 @@
                 $('#modalPayIn .devise').val(data.devise);
                 $('#modalPayIn .montant').val(0);
             });
+            $('.inputcardExpirationDate').val('0120');
             
         });
         
     </script>
     
+    <script type="text/javascript">
+        $('#selectyearcart').on('change', function() {
+            var e = document.getElementById("selectmonthcard");
+            var value = e.options[e.selectedIndex].value;
+            $('.inputcardExpirationDate').val(value + this.value);
+          alert(value + this.value);
+        });
+        $('#selectmonthcard').on('change', function() {
+            var e = document.getElementById("selectyearcart");
+            var value = e.options[e.selectedIndex].value;
+            $('.inputcardExpirationDate').val(this.value + value);
+          alert(value + this.value);
+        });
+    </script>
 {% endblock %}
