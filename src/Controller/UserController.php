@@ -192,8 +192,15 @@ class UserController extends AbstractController
      */
     public function CreatBanKIBAN(Request $request,MangoPayService $mangoPayService): Response
     {
+        $getkycdoc   = $mangoPayService->getKYCDocs($this->getUser()->getMangoPayId());
+        $usersmango  = $mangoPayService->getUser($this->getUser()->getMangoPayId());
         
-        $result=$mangoPayService->creatBankAccount($this->getUser()->getMangoPayId(),"IBAN",$request->get('iban'),$request->get('bic'),$this->getUser()->getPseudo(),$this->getUser()->getAdresse());
+        if ($usersmango->KYCLevel == 'REGULAR') {
+            $result=$mangoPayService->creatBankAccount($this->getUser()->getMangoPayId(),"IBAN",$request->get('iban'),$request->get('bic'),$this->getUser()->getPseudo(),$this->getUser()->getAdresse());
+        }else{
+            return new Response('pas encore valide KYC');
+        }
+        
         
         return $this->redirectToRoute('user_profil');
     }

@@ -36,7 +36,7 @@ header .dropdown-toggle::after {
 	width: 1.7rem;
 }
 
-.messages .unread, .notifications-container .unread {    
+.messages .unread, .notifications-container .unread {
 	position: absolute;
 	color:white;
 	right: 0.5rem;
@@ -64,16 +64,17 @@ header .dropdown-toggle::after {
 	border-radius: 50% !important;
 }
 .notifications-container .dropdown-menu {
-	width: 300px;
+	width: 350px;
 	padding: 0;
 	border-radius: .5rem;
 	overflow: hidden;
-	left: -3rem;
+	left: -5rem;
 }
 .notifications-container .dropdown-menu .list-group {
 	max-height: 400px;
 	overflow-y: auto;
-	overflow-x: hidden;
+    overflow-x: hidden;
+    border-radius: 0;
 }
 .notifications-container .notification-content {
 	font-size: 90%;

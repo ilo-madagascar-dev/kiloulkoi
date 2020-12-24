@@ -204,27 +204,6 @@ class MangoPayService
         return $createdPayIn->Status;
 	}
 
-	public function transferWallet(string $buyer, strin $seller ,float $prix, int $feesAmount=0, string $currency="EUR")
-	{
-        $prix = intval($prix*100);
-
-		$reponsePaieCards = $this->Payin($buyer, $prix);
-            
-
-        if ($reponsePaieCards == \MangoPay\PayInStatus::Succeeded) {
-                
-            $WIdproprietaire = $this->getWalletId($seller);
-            $WIdlocataire = $this->getWalletId($buyer);
-
-            //Do transfert
-            $result = $this->doTransferWalet($buyer,$currency,$prix,100,$WIdlocataire,$WIdproprietaire);
-            if ($result) {
-            	return true;
-            }
-        }
-            
-        return false;
-	}
 
 	public function getCards(string $locatairemangoId)
 	{
@@ -247,21 +226,33 @@ class MangoPayService
         return $cards;
 	}
 
-	public function doTransferWalet(string $authorId, string $currency, int $debitedFundsAmount , int $transferFeesAmount , string $debitedWalletId , string $creditedWalletId )
+	public function doTransferWalet(string $buyer,string $seller, float $prix ,string $currency="EUR" , int $transferFeesAmount = 0)
 	{
-		$mangoPayApi = $this->getMangoPayApi();
-		$Transfer = new \MangoPay\Transfer();
-                $Transfer->AuthorId = $authorId;
+		
+		$debitedFundsAmount = intval($prix * 100);
+
+		try {
+
+			$mangoPayApi = $this->getMangoPayApi();
+			$Transfer = new \MangoPay\Transfer();
+                $Transfer->AuthorId = $buyer;
                 $Transfer->DebitedFunds = new \MangoPay\Money();
                 $Transfer->DebitedFunds->Currency = $currency;
                 $Transfer->DebitedFunds->Amount = $debitedFundsAmount;
                 $Transfer->Fees = new \MangoPay\Money();
                 $Transfer->Fees->Currency = $currency;
                 $Transfer->Fees->Amount = $transferFeesAmount;
-                $Transfer->DebitedWalletID = $debitedWalletId;
-                $Transfer->CreditedWalletId = $creditedWalletId;
+                $Transfer->DebitedWalletID = $this->getWalletId($buyer);
+                $Transfer->CreditedWalletId = $this->getWalletId($seller);
                 $result = $mangoPayApi->Transfers->Create($Transfer);
-        return $result;
+			
+		} catch(MangoPay\Libraries\ResponseException $e) {
+			return $result = $e->GetErrorDetails();
+		} catch(MangoPay\Libraries\Exception $e) {
+			return $result = $e->GetMessage();
+		}
+		return $result;
+		
 	}
 
 	public function creatCardRegistration(string $userId , string $currency , string $cardType)
@@ -329,12 +320,6 @@ class MangoPayService
 		return $transactionUser;
 	}
 
-	public function getUserMango (string $userMangoId)
-	{
-		$mangoPayApi = $this->getMangoPayApi();
-		$User = $mangoPayApi->Users->Get($userMangoId);
-		return $User;
-	}
 
 	public function getCardById (string $CardId)
 	{
@@ -372,4 +357,35 @@ class MangoPayService
 		}
 		return $result;
 	}
+
+	public function viewBankAccount(string $userMangoId)
+	{
+		try {
+			$mangoPayApi = $this->getMangoPayApi();
+			
+			$BankAccount = $mangoPayApi->Users->GetBankAccounts($userMangoId);
+			
+		} catch(MangoPay\Libraries\ResponseException $e) {
+			return $BankAccount = $e->GetErrorDetails();
+		} catch(MangoPay\Libraries\Exception $e) {
+			return $BankAccount = $e->GetMessage();
+		}
+		return $BankAccount;
+	}
+
+	public function verifyKYCBANK(string $idUser)
+	{
+		$infoUser = $this->getUser($idUser);
+		$cards = $this->getCard($idUser);
+		
+
+		if ( $infoUser->KYCLevel == "REGULAR"  && $cards ) {
+			return true;
+		}else{
+			return false;
+		}
+
+	}
+
+
 }

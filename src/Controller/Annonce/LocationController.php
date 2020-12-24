@@ -63,59 +63,70 @@ class LocationController extends AbstractController
      */
     public function new(Request $request, LocationRepository $locationRepository, AnnoncesRepository $annoncesRepository, StatutLocationRepository $statutReposistory, MangoPayService $mangoPayService, NotificationService $notificationService): Response
     {
-        //vérify cards user
-        $cards = $mangoPayService->getCard($this->getUser()->getMangoPayId());
-        if( !$cards )
+        //vérify éligibility
+        $eligibility = $mangoPayService->verifyKYCBANK($this->getUser()->getMangoPayId());
+
+        //vérify amount in wallet user
+        $amountWalletUser = $mangoPayService->getWallet($this->getUser()->getMangoPayId());
+        $prixLocation = intval($annoncesRepository->find( $request->request->get('annonce'))->getPrix()*100);
+
+        if( $eligibility == true )
         {
-            $token = $request->request->get('token');
-            if ($this->isCsrfTokenValid('new_location', $token))
+            if ($amountWalletUser[0]->Balance->Amount >= $prixLocation)
             {
-                $user    = $this->getUser();
-                $annonce = $annoncesRepository->find( $request->request->get('annonce'));
-                $em      = $this->getDoctrine()->getManager();
-
-                $reservations = json_decode($request->request->get('reservations'));
-                $disponible   = $locationRepository->checkDates($reservations, $annonce->getId());
-
-                if( $disponible && $annonce )
+                $token = $request->request->get('token');
+                if ($this->isCsrfTokenValid('new_location', $token))
                 {
-                    $statut = $statutReposistory->find(1); // Statut en attente
-                    foreach( $reservations as $reservation )
+                    $user    = $this->getUser();
+                    $annonce = $annoncesRepository->find( $request->request->get('annonce'));
+                    $em      = $this->getDoctrine()->getManager();
+
+                    $reservations = json_decode($request->request->get('reservations'));
+                    $disponible   = $locationRepository->checkDates($reservations, $annonce->getId());
+
+                    if( $disponible && $annonce )
                     {
-                        $location = new Location();
+                        $statut = $statutReposistory->find(1); // Statut en attente
+                        foreach( $reservations as $reservation )
+                        {
+                            $location = new Location();
 
-                        $location->setDateDebut( new DateTime($reservation->debut) );
-                        $location->setDateFin( new DateTime($reservation->fin) );
-                        $location->setAnnonce($annonce);
-                        $location->setStatutLocation($statut);
-                        $location->setUser($user);
+                            $location->setDateDebut( new DateTime($reservation->debut) );
+                            $location->setDateFin( new DateTime($reservation->fin) );
+                            $location->setAnnonce($annonce);
+                            $location->setStatutLocation($statut);
+                            $location->setUser($user);
 
-                        $em->persist($location);
+                            $em->persist($location);
+                        }
+
+                        $destinataire = $annonce->getUser();
+
+                        $notification = new Notification();
+                        $photo        = $annonce->getPhoto()[0] ? '/uploads/'. $annonce->getPhoto()[0]->getUrl() : '/image/logo-fond-blanc.png';
+                        $notification->setDeclencheur( $user );
+                        $notification->setDestinataire( $destinataire );
+                        $notification->setMessage('Demande de location de l\'annonce <strong>'. $annonce->getTitre() .'</strong> par <strong>'. $user->getNomComplet() .'</strong>');
+                        $notification->setRoute( $this->generateUrl('location_en_cours') );
+                        $notification->setPhoto( $photo );
+
+                        $em->persist($notification);
+                        $em->flush();
+
+                        // send notification
+                        $notificationService->send($notification, $destinataire);
                     }
-
-                    $destinataire = $annonce->getUser();
-
-                    $notification = new Notification();
-                    $photo        = $annonce->getPhoto()[0] ? '/uploads/'. $annonce->getPhoto()[0]->getUrl() : '/image/logo-fond-blanc.png';
-                    $notification->setDeclencheur( $user );
-                    $notification->setDestinataire( $destinataire );
-                    $notification->setMessage('Demande de location de l\'annonce <strong>'. $annonce->getTitre() .'</strong> par <strong>'. $user->getNomComplet() .'</strong>');
-                    $notification->setRoute( $this->generateUrl('location_en_cours') );
-                    $notification->setPhoto( $photo );
-
-                    $em->persist($notification);
-                    $em->flush();
-
-                    // send notification
-                    $notificationService->send($notification, $destinataire);
                 }
-            }
 
-            return $this->redirectToRoute('location_en_cours');
+                return $this->redirectToRoute('location_en_cours');
+            }else{
+                $this->addFlash('notCards', 'Le Solde dans votre portefeuille est insuffisant pour cette location');
+                return $this->redirectToRoute('compte_portefeuille');
+            }
         }
         else
         {
-            $this->addFlash('notCards', ' !Vous n avez pas encore un moyen de paiement pour faire une alocation.');
+            $this->addFlash('notCards', 'Vous n avez pas encore un moyen de paiement pour faire une location. ou vos documents KYC ne sont pas encore valides');
             return $this->redirectToRoute('compte_portefeuille');
         }
 
@@ -146,60 +157,45 @@ class LocationController extends AbstractController
                     $difference = $periodeTotal->format('%m') + 1;
                 }
 
-                $prix = intval( $difference * $annonce->getPrix() ) * 100;
+                $prix = $difference * $annonce->getPrix();
+                $result = $mangoPayService->doTransferWalet($locataire->getMangoPayId(), $user->getMangoPayId(), $prix);
 
-                // $reponsePaieCards = $mangoPayService->Payin($locataire->getMangoPayId(),0,"EUR",$prix);
+                $destinataire = $locataire;
+                $notification = new Notification();
+                $photo        =  $annonce->getPhoto()[0] ? '/uploads/'. $annonce->getPhoto()[0]->getUrl() : '/image/logo-fond-blanc.png';
+                $notification->setDeclencheur( $user );
+                $notification->setDestinataire( $destinataire );
+                $notification->setMessage('Votre demande de location sur " <strong>'. $annonce->getTitre() .'</strong>" est acceptée!');
+                $notification->setRoute( $this->generateUrl('location_en_cours') );
+                $notification->setPhoto( $photo );
 
-                // if ($reponsePaieCards == \MangoPay\PayInStatus::Succeeded) {
+                $this->getDoctrine()->getManager()->persist($notification);
 
-                //     $WIdproprietaire = $mangoPayService->getWalletId($this->getUser()->getMangoPayId());
-                //     $WIdlocataire = $mangoPayService->getWalletId($locataire->getMangoPayId());
-                //     $prixAnnonce = intval( $difference * $annonce->getPrix() ) * 100;
+                //status
+                $statut    = $statutReposistory->find(2); // Statut en cours
+                $location->setStatutLocation( $statut );
+                $this->getDoctrine()->getManager()->flush();
 
-                //     //Do transfert
-                //     $result = $mangoPayService->doTransferWalet($locataire->getMangoPayId(),"EUR",$prixAnnonce,100,$WIdlocataire,$WIdproprietaire);
+                // send notification
+                $notificationService->send($notification, $destinataire);
 
-                    $destinataire = $locataire;
-                    $notification = new Notification();
-                    $photo        =  $annonce->getPhoto()[0] ? '/uploads/'. $annonce->getPhoto()[0]->getUrl() : '/image/logo-fond-blanc.png';
-                    $notification->setDeclencheur( $user );
-                    $notification->setDestinataire( $destinataire );
-                    $notification->setMessage('Votre demande de location sur " <strong>'. $annonce->getTitre() .'</strong>" est acceptée!');
-                    $notification->setRoute( $this->generateUrl('location_en_cours') );
-                    $notification->setPhoto( $photo );
-
-                    $this->getDoctrine()->getManager()->persist($notification);
-
-                    //status
-                    $statut    = $statutReposistory->find(2); // Statut en cours
-                    $location->setStatutLocation( $statut );
-                    $this->getDoctrine()->getManager()->flush();
-
-                    // send notification
-                    $notificationService->send($notification, $destinataire);
-
-                    return $this->render('location/successLocation.html.twig', [
-                        // 'reponse' => $result,
-                        'proprio' => $this->getUser()->getNomComplet(),
-                        'locataire' => $location->getUser()->getNomComplet()
-                    ]);
-                // }
-                // else {
-                //     dd($createdPayIn->Status);
-                //     /*$createdPayIn->ResultCode;*/
-                // }
+                return $this->render('location/successLocation.html.twig', [
+                    'reponse' => $result,
+                    'proprio' => $user->getNomComplet(),
+                    'locataire' => $locataire->getNomComplet()
+                ]);
             }
             else
             {
-                $statut    = $statutReposistory->find(4); // Statut interrompue
+                $statut = $statutReposistory->find(4); // Statut interrompue
                 $location->setStatutLocation( $statut );
                 $this->getDoctrine()->getManager()->persist($location);
                 $this->getDoctrine()->getManager()->flush();
             }
         }
-        elseif( $locataire->getId() === $user()->getId() && $etat == "refuser" )
+        elseif( $locataire->getId() === $user->getId() && $etat == "refuser" )
         {
-            $statut    = $statutReposistory->find(5); // Statut annuler
+            $statut    = $statutReposistory->find(4); // Statut interrompue
             $location->setStatutLocation( $statut );
             $this->getDoctrine()->getManager()->persist($location);
             $this->getDoctrine()->getManager()->flush();
@@ -218,25 +214,25 @@ class LocationController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/edit", name="location_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, Location $location): Response
-    {
-        $form = $this->createForm(LocationType::class, $location);
-        $form->handleRequest($request);
+    // /**
+    //  * @Route("/{id}/edit", name="location_edit", methods={"GET","POST"})
+    //  */
+    // public function edit(Request $request, Location $location): Response
+    // {
+    //     $form = $this->createForm(LocationType::class, $location);
+    //     $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+    //     if ($form->isSubmitted() && $form->isValid())
+    //     {
+    //         $this->getDoctrine()->getManager()->flush();
+    //         return $this->redirectToRoute('location_index');
+    //     }
 
-            return $this->redirectToRoute('location_index');
-        }
-
-        return $this->render('location/edit.html.twig', [
-            'location' => $location,
-            'form' => $form->createView(),
-        ]);
-    }
+    //     return $this->render('location/edit.html.twig', [
+    //         'location' => $location,
+    //         'form' => $form->createView(),
+    //     ]);
+    // }
 
     // /**
     //  * @Route("/{id}", name="location_delete", methods={"DELETE"})

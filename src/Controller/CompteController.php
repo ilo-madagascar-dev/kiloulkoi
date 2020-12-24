@@ -35,6 +35,9 @@ class CompteController extends AbstractController
     public function portefeuille(SessionInterface $session,MangoPayService $mangoPayService): Response
     {
 
+        //listes bank acount
+        $listBankAccount = $mangoPayService->viewBankAccount($this->getUser()->getMangoPayId());
+        
         //create card registration
         $createdCardRegister = $mangoPayService->creatCardRegistration($this->getUser()->getMangoPayId(),"EUR","CB_VISA_MASTERCARD");
         
@@ -57,6 +60,7 @@ class CompteController extends AbstractController
        $portFeuil = $mangoPayService->getWallet($this->getUser()->getMangoPayId());
        $session->set('wallet', $portFeuil);
 
+       
        //transaction get
        $transactionUser= $mangoPayService->getTransactionUser($this->getUser()->getMangoPayId());
        $seller = (object)[];$buyer=  (object)[];
@@ -83,6 +87,7 @@ class CompteController extends AbstractController
             'transaction' => $transactionUser,
             'seller' => $seller,
             'buyer' => $buyer,
+            'listBankAccount' => $listBankAccount,
             'proprietaire' => $this->getUser()->getNomComplet()
         ]);
     }
@@ -146,8 +151,18 @@ class CompteController extends AbstractController
         }
 
         if ($bankUser) {
-        //do paying transfer
-            $responseTransfer = $mangoPayService->doPayoutIBAN($this->getUser()->getMangoPayId(),$walletId,$currency,$amountDebited,0,"BANK_WIRE",$bankAccountId);
+
+            $getkycdoc   = $mangoPayService->getKYCDocs($this->getUser()->getMangoPayId());
+            $usersmango  = $mangoPayService->getUser($this->getUser()->getMangoPayId());
+        
+            if ($usersmango->KYCLevel == 'REGULAR') {
+               //do paying transfer
+               $responseTransfer = $mangoPayService->doPayoutIBAN($this->getUser()->getMangoPayId(),$walletId,$currency,$amountDebited,0,"BANK_WIRE",$bankAccountId);
+               $this->addFlash('compteIBANSuccess', 'Transfert réussi.');
+            }else{
+               $this->addFlash('compteIBAN', '!Vos documments KYC ne sont pas encore valide.');
+            }
+            
         }else{
             $this->addFlash('compteIBAN', '!Vous n avez pas enconre de compte bancaire IBAN sur votre compte mangopay.');
         }
