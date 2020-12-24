@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints\DateTime;
 class CompteController extends AbstractController
 {
 
-    
+
 
     /**
      * @Route("/facture", name="compte_facture")
@@ -37,10 +37,10 @@ class CompteController extends AbstractController
 
         //listes bank acount
         $listBankAccount = $mangoPayService->viewBankAccount($this->getUser()->getMangoPayId());
-        
+
         //create card registration
         $createdCardRegister = $mangoPayService->creatCardRegistration($this->getUser()->getMangoPayId(),"EUR","CB_VISA_MASTERCARD");
-        
+
         $arrayName = array(
             'Id' => $createdCardRegister->Id,
             'UserId' => $createdCardRegister->UserId,
@@ -49,9 +49,9 @@ class CompteController extends AbstractController
             'CardRegistrationURL' => $createdCardRegister->CardRegistrationURL,
         );
         $cardId = $session->get('cardId', []);
-       
+
             $cardId['id'] = $createdCardRegister->Id;
-       
+
        $session->set('cardId', $cardId);
 
 
@@ -60,33 +60,13 @@ class CompteController extends AbstractController
        $portFeuil = $mangoPayService->getWallet($this->getUser()->getMangoPayId());
        $session->set('wallet', $portFeuil);
 
-       
-       //transaction get
-       $transactionUser= $mangoPayService->getTransactionUser($this->getUser()->getMangoPayId());
-       $seller = (object)[];$buyer=  (object)[];
-       if ($transactionUser) {
-           $walletSeller;$walletBuyer;$date;
-           foreach ($transactionUser as $value) {
-                $walletSeller = $value->CreditedWalletId;
-                $walletBuyer = $value->DebitedWalletId;
-                $date = $value->CreationDate;
-           }
 
-           
-           if ($walletSeller && $walletBuyer) {
-             $seller = $mangoPayService->getWallet($walletSeller);
-             $buyer = $mangoPayService->getWallet($walletBuyer);  
-           }
-       }
-       
-       
+
+
         return $this->render('compte/portefeuille.html.twig',[
             'dataform' => $arrayName,
             'cards' => $cards,
             'walet' => $portFeuil,
-            'transaction' => $transactionUser,
-            'seller' => $seller,
-            'buyer' => $buyer,
             'listBankAccount' => $listBankAccount,
             'proprietaire' => $this->getUser()->getNomComplet()
         ]);
@@ -104,13 +84,13 @@ class CompteController extends AbstractController
      * @Route("/portefeuille/card", name="portefeuille_creat")
      */
     public function portefeuilleCreat(SessionInterface $session, Request $request,MangoPayService $mangoPayService): Response
-    {   
+    {
 
-        
+
         /*dd($request->get('data'));*/
         if ($request->get('data')) {
             $cardId = $session->get('cardId', []);
-       
+
             //
             $cardRegister = $mangoPayService->getCrdWithId($cardId['id']);
 
@@ -125,7 +105,7 @@ class CompteController extends AbstractController
         }else{
             dd($request->get('errorCode'));
         }
-        
+
         /*return new Response('create card');*/
         return $this->redirectToRoute('compte_portefeuille');
     }
@@ -154,7 +134,7 @@ class CompteController extends AbstractController
 
             $getkycdoc   = $mangoPayService->getKYCDocs($this->getUser()->getMangoPayId());
             $usersmango  = $mangoPayService->getUser($this->getUser()->getMangoPayId());
-        
+
             if ($usersmango->KYCLevel == 'REGULAR') {
                //do paying transfer
                $responseTransfer = $mangoPayService->doPayoutIBAN($this->getUser()->getMangoPayId(),$walletId,$currency,$amountDebited,0,"BANK_WIRE",$bankAccountId);
@@ -162,7 +142,7 @@ class CompteController extends AbstractController
             }else{
                $this->addFlash('compteIBAN', '!Vos documments KYC ne sont pas encore valide.');
             }
-            
+
         }else{
             $this->addFlash('compteIBAN', '!Vous n avez pas enconre de compte bancaire IBAN sur votre compte mangopay.');
         }
