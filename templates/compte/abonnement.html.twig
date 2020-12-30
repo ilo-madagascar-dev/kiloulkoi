@@ -4,37 +4,39 @@
 
 {% block body %}
 
-    <div class="container-fluid" >
-
-        <div class="row mb-3">
-            <div class="offset-lg-2 col-lg-8 offset-md-1 col-md-10">
+    <div class="container mt-4">
+		<div class="row">
+			<div class="col-lg-10 offset-lg-1 col-md-12">
                 {% for message in app.flashes('error') %}
                     <div class="alert alert-warning text-center">
                         {{ message }}
                     </div>
                 {% endfor %}
-                <div class="card shadow mb-3">
-                    <div class="card-header d-flex align-items-top">
-                        <i class="text-success fa fa-calendar-plus mr-3" style="font-size: 3rem;"></i>
-                        <div class="d-inline">
-                            <h1 class="mb-0" style="font-size: 1.4rem;"><strong>Mon Abonnement</strong></h1>
-                            <small class="text-muted">Votre abonnement actuel.</small>
-                        </div>
-                        <div class="ml-auto pt-2">
-                            {% if abonnement.actif == 1 and abonnement.type.id != 1 %}
-                                <a href="{{ path('abonnement_renouvelement') }}" class="btn btn-warning text-white">Désactiver le renouvelement</a>
-                            {% else %}
-                                {% if abonnement.type.id == 1 %}
-                                    <button class="btn btn-primary"  data-toggle="modal" data-target="#modalAbonnement">S'abonner</button>
+
+                <div class="mb-4">
+                    <div class="card shadow mb-2">
+                        <h1 class="h3 text-center text-muted pt-2">
+                            <span>Mon Abonnement</span>
+
+                            <div class="position-absolute d-inline pr-2" style="right: .25rem">
+                                {% if abonnement.actif == 1 and abonnement.type.id != 1 %}
+                                    <a href="{{ path('abonnement_renouvelement') }}" class="btn btn-warning text-white">Désactiver le renouvelement</a>
                                 {% else %}
-                                    <a href="{{ path('abonnement_renouvelement') }}" class="btn btn-success">Activer le renouvelement</a>
+                                    {% if abonnement.type.id == 1 %}
+                                        <button class="btn btn-primary"  data-toggle="modal" data-target="#modalAbonnement">S'abonner</button>
+                                    {% else %}
+                                        <a href="{{ path('abonnement_renouvelement') }}" class="btn btn-success">Activer le renouvelement</a>
+                                    {% endif %}
                                 {% endif %}
-                            {% endif %}
-                        </div>
+                            </div>
+                        </h1>
                     </div>
-                    <div class="card-body text-center">
-                        <p>Vous disposez d'un compte: </p>
-                        <h2 class="text-success font-weight-bold">{{ abonnement.type.libelle }}</h2>
+
+                    <div class="card shadow">
+                        <div class="card-body text-center">
+                            <p>Vous disposez d'un compte: </p>
+                            <h2 class="text-success font-weight-bold">{{ abonnement.type.libelle }}</h2>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -124,7 +126,7 @@
     </div>
 {% endblock %}
 
-{# 
+{#
 {% block javascripts %}
     {{ parent() }}
     <script>
@@ -132,10 +134,10 @@
             $('#mois').change( function ()
             {
                 const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
-                
+
                 var date = new Date( Date.parse($('#debut').attr('data')) );
                 var mois = parseInt($(this).val());
-                
+
                 date.setMonth( date.getMonth() + mois );
                 $('#fin').val( date.toLocaleDateString('fr-FR', options) );
             })

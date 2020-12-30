@@ -4,40 +4,39 @@
 
 {% block body %}
 
-    <div class="container-fluid">
+    <div class="container mt-4">
+		<div class="row">
+			<div class="col-lg-10 offset-lg-1 col-md-12">
+                <div class="mb-4">
+                    <div class="card shadow mb-2">
+                        <h1 class="h3 text-center text-muted pt-2">
+                            <span>Mes factures</span>
 
-        <div class="row mb-3">
-            <div class="offset-lg-2 col-lg-8 offset-md-1 col-md-10">
-                <div class="card shadow mb-3">
-                    <div class="card-header d-flex align-items-top">
-                        <i class="text-success fa fa-file-invoice-dollar mr-3" style="font-size: 3rem;"></i>
-                        <div class="d-inline">
-                            <h1 class="mb-0" style="font-size: 1.4rem;"><strong>Mes factures</strong></h1>
-                            <small class="text-muted">Liste des factures de tout les mois.</small>
-                        </div>
-                        <div class="ml-auto mt-2">
-                            <select id="anne" class="custom-select">
-                                {% set current_year = "now"|date('Y') %}
-                                {% for year in 2017..current_year %}
-                                    <option value="{{ year }}" {% if current_year == year %} selected {% endif %}>
-                                        {{ year }}
-                                    </option>
+                            <div class="position-absolute d-inline pr-2" style="right: .25rem">
+                                <select id="anne" class="custom-select">
+                                    {% set current_year = "now"|date('Y') %}
+                                    {% for year in 2017..current_year %}
+                                        <option value="{{ year }}" {% if current_year == year %} selected {% endif %}>
+                                            {{ year }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </h1>
+                    </div>
+
+                    <div class="card shadow">
+                        <div class="card-body text-center pb-0">
+                            <div class="row">
+                                {% for month in months %}
+                                    <div class="col-md-3 text-center mb-3">
+                                        <a href="{{ '/' }}" class="btn btn-outline-success w-100">{{ month|capitalize }}</a>
+                                    </div>
                                 {% endfor %}
-                            </select>
+                            </div>
                         </div>
                     </div>
-                    <div class="card-body">
-                        
-                        <div class="row">
-                            {% for month in months %}
-                                <div class="col-md-3 text-center mb-3">
-                                    <a href="{{ '/' }}" class="btn btn-outline-success w-100">{{ month|capitalize }}</a>
-                                </div>
-                            {% endfor %}
-                        </div>
 
-						<!-- <div class="mb-0 alert alert-warning text-center d-flex justify-content-center align-items-center" style="height: 120px;"><strong>Aucun résultat.</strong></div> -->
-                    </div>
                 </div>
             </div>
         </div>

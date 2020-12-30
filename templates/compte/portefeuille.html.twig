@@ -1,416 +1,395 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Portefeuille{% endblock %}
+{% block title %}Portefeuille
+{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="{{asset('css/calendrier.css')}}">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="{{asset('css/calendrier.css')}}">
 {% endblock %}
 
 {% block body %}
+	<div class="container mt-4">
+		<div class="row">
+			<div class="col-lg-10 offset-lg-1 col-md-12">
+				{% for message in app.flashes('compteIBANSuccess') %}
+				<div class="text-center alert alert-success">
+					{{ message }}
+				</div>
+				{% endfor %}
+				{% for message in app.flashes('compteIBAN') %}
+				<div class="text-center alert alert-danger">
+					{{ message }}
+				</div>
+				{% endfor %}
+				{% for message in app.flashes('notCards') %}
+				<div class="text-center alert alert-danger">
+					{{ message }}
+				</div>
+				{% endfor %}
+				{% for message in app.flashes('errorPayin') %}
+				<div class="text-center alert alert-danger">
+					{{ message }}
+				</div>
+				{% endfor %}
+				{% for message in app.flashes('successPayin') %}
+				<div class="text-center alert alert-success">
+					{{ message }}
+				</div>
+				{% endfor %}
+				
+				<div class="mb-4">
+					<div class="card shadow mb-2">
+						<h1 class="h3 text-center text-muted pt-2">
+							<span>Mes Moyens de Paiements</span>
+						</h1>
+					</div>
 
-    <div class="container-fluid">
-        <div class="row mb-3">
-            <div class="offset-lg-2 col-lg-8 offset-md-1 col-md-10">
-                <div class="card shadow mb-3">
-                    {% for message in app.flashes('compteIBANSuccess') %}
-                        <div class="text-center alert alert-success">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                    {% for message in app.flashes('compteIBAN') %}
-                        <div class="text-center alert alert-danger">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                    {% for message in app.flashes('notCards') %}
-                        <div class="text-center alert alert-danger">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                    {% for message in app.flashes('errorPayin') %}
-                        <div class="text-center alert alert-danger">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                    {% for message in app.flashes('successPayin') %}
-                        <div class="text-center alert alert-success">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                    <div class="card-header d-flex align-items-top">
-                        <i class="text-success fa fa-wallet mr-3" style="font-size: 3rem;"></i>
-                        <div class="d-inline">
-                            <h1 class="mb-0" style="font-size: 1.4rem;"><strong>Mes Moyens de Paiements</strong></h1>
-                            <small class="text-muted">Listes des cartes bancaires</small>
-                        </div>
-                        <div class="ml-auto">
-                            <button class="btn btn-primary"  data-toggle="modal" data-target="#modalAjoutCarte">Ajouter</button>
-                        </div>
-                    </div>
-                    <div class="card-body p-0">
-                        <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Numeros</th>
-                                        <th>Fournisseurs</th>
-                                        <th>Code</th>
-                                        <th>Pays</th>
-                                        <th>Date de création</th>
-                                        <th>Transferer dans le portefeuille</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                {% for carte in cards %}
-                                    <tr  data="{{ {carte: carte.Id, numero: carte.Alias, devise: carte.Currency }|json_encode() }}">
-                                        <td>{{carte.Alias}}</td>
-                                        <td>{{carte.CardProvider}}</td>
-                                        <td>{{carte.BankCode}}</td>
-                                        <td>{{carte.Country}}</td>
-                                        <td>{{ carte.CreationDate | date("d/m/Y") }}</td>
-                                        <td class="text-center">
-                                            <button class="btn btn-sm btn-primary btn-payin" data-toggle="modal" data-target="#modalPayIn">
-                                                <i class="fa fa-download"></i>
-                                            </button>
-                                        </td>
-                                        {% if carte.Validity == "INVALID" %}
-                                            <td class="text-center">
-                                                <button class="btn btn-sm btn-primary btn-payin" data-toggle="modal" data-target="#deletCards">
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
-                                            </td>
-                                        {% endif %}
-                                    </tr>
-                                 {% endfor %}
-                              </tbody>
-                            </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+					<div class="card shadow">
+						<div class="card-body p-0">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Numeros</th>
+										<th>Fournisseurs</th>
+										<th>Code</th>
+										<th>Pays</th>
+										<th>Date de création</th>
+										<th>Transferer dans le portefeuille</th>
+										<th>Action</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for carte in cards %}
+									<tr data="{{ {carte: carte.Id, numero: carte.Alias, devise: carte.Currency }|json_encode() }}">
+										<td>{{carte.Alias}}</td>
+										<td>{{carte.CardProvider}}</td>
+										<td>{{carte.BankCode}}</td>
+										<td>{{carte.Country}}</td>
+										<td>{{ carte.CreationDate | date("d/m/Y") }}</td>
+										<td class="text-center">
+											<button class="btn btn-sm btn-primary btn-payin" data-toggle="modal" data-target="#modalPayIn">
+												<i class="fa fa-download"></i>
+											</button>
+										</td>
+										{% if carte.Validity == "INVALID" %}
+											<td class="text-center">
+												<button class="btn btn-sm btn-primary btn-payin" data-toggle="modal" data-target="#deletCards">
+													<i class="fa fa-trash"></i>
+												</button>
+											</td>
+										{% endif %}
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				
+				<div class="mb-4">
+					<div class="card shadow mb-2">
+						<h1 class="h3 text-center text-muted pt-2">
+							<span>
+								Mon Portefeuille
+							</span>
+						</h1>
+					</div>
+					
+					<div class="card shadow">
+						<div class="card-body p-0">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Proprietaire</th>
+										<th>Description</th>
+										<th>Balance</th>
+										<th>Transférer</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for portfelle in walet %}
+										<tr>
+											<td>{{ proprietaire }}</td>
+											<td>{{ portfelle.Description }}</td>
+											<td>{{ portfelle.Balance.Amount/100 }}
+												{{portfelle.Currency}}</td>
+											<td>
+												{% if app.session.get('type') == "PAYOUT" %}
+													<button class="btn btn-sm btn-success" title="Accepter" disabled>
+														<i class="fa fa-bank"></i>Réussit
+													</button>
+												{% else %}
+													{% if portfelle.Balance.Amount/100 >= 1 %}
+													<a href="{{path('portefeuille_transfer')}}" class="btn btn-sm btn-success" title="Accepter">
+														<i class="fa fa-bank"></i>Transférer
+													</a>
+													{% endif %}
+												{% endif %}
+											</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
 
-        <div class="row mb-3">
-            <div class="offset-lg-2 col-lg-8 offset-md-1 col-md-10">
-                <div class="card shadow mb-3">
-                    <div class="card-header d-flex align-items-top">
-                        <i class="text-success fa fa-wallet mr-3" style="font-size: 3rem;"></i>
-                        <div class="d-inline">
-                            <h1 class="mb-0" style="font-size: 1.4rem;"><strong>Mon Portefeuille</strong></h1>
-                            <small class="text-muted">Liste des factures de tout les mois.</small>
-                        </div>
-                    </div>
-                    <div class="card-body p-0">
-                        <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Proprietaire</th>
-                                        <th>Description</th>
-                                        <th>Balance</th>
-                                        <th>Transférer</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                {% for portfelle in walet %}
-                                    <tr>
-                                        <td>{{ proprietaire }}</td>
-                                        <td>{{ portfelle.Description }}</td>
-                                        <td>{{ portfelle.Balance.Amount/100 }} {{portfelle.Currency}}</td>
-                                        <td>
-                                            {% if app.session.get('type') == "PAYOUT" %}
-                                                <button class="btn btn-sm btn-success" title="Accepter" disabled>
-                                                        <i class="fa fa-bank"></i>Réussit
-                                                </button>
-                                            {% else %}
-                                                {% if portfelle.Balance.Amount/100 >= 1 %}
-                                                    <a href="{{path('portefeuille_transfer')}}" class="btn btn-sm btn-success" title="Accepter">
-                                                        <i class="fa fa-bank"></i>Transférer
-                                                    </a>
-                                                {% endif %}
-                                            {% endif %}
-                                        </td>
+				<div class="mb-4">
+					<div class="card shadow mb-2">
+						<h1 class="h3 text-center text-muted pt-2">
+							<span>
+								Créer un compte bancaire (de type IBAN)
+							</span>
 
-                                    </tr>
-                                 {% endfor %}
-                              </tbody>
-                            </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+							<div class="position-absolute d-inline pr-2" style="right: .25rem">
+								<button class="btn btn-primary" data-toggle="modal" data-target="#modacreatBank">Ajouter</button>
+							</div>
+						</h1>
+					</div>
 
-        {# table transaction #}
-        <div class="row mb-3">
-            <div class="offset-lg-2 col-lg-8 offset-md-1 col-md-10">
-                <div class="card shadow mb-3">
-                    <div class="card-header d-flex align-items-top">
-                        <i class="text-success fa fa-wallet mr-3" style="font-size: 3rem;"></i>
-                        <div class="d-inline">
-                            <h1 class="mb-0" style="font-size: 1.4rem;">
-                                <strong>Créer un compte bancaire (de type IBAN)</strong>
-                            </h1>
-                            <small class="text-muted">Informations relevé d'identité bancaire.</small>
-                        </div>
-                        <div class="ml-auto">
-                            <button class="btn btn-primary"  data-toggle="modal" data-target="#modacreatBank">Ajouter</button>
-                        </div>
-                    </div>
-                    <div class="card-body p-0">
-                        <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Type</th>
-                                        <th>Code d' identité bancaire</th>
-                                        <th>Numéros (IBAN)</th>
-                                        <th>Statut</th>
-                                        <th>Date de création</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                {% for res in listBankAccount %}
-                                    <tr>
-                                        <td>{{ res.Type }}</td>
-                                        <td>{{ res.Details.BIC }}</td>
-                                        <td>{{ res.Details.IBAN }}</td>
-                                        {% if res.Active == true %}
-                                            <td>Activé</td>
-                                        {% else %}
-                                            <td>Desactivé</td>
-                                        {% endif %}
-                                        <td>{{ res.CreationDate |date("d/m/Y") }}</td>
-                                    </tr>
-                                 {% endfor %}
-                              </tbody>
-                            </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal -- ajout carte -->
-    <div class="modal fade" id="modalAjoutCarte" tabindex="-1" role="dialog" aria-labelledby="modalAjoutCarteLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalAjoutCarteLabel">Mes Moyens de Paiements</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-
-                    <form action="{{ dataform.CardRegistrationURL }}"  method="post" class="card-body">
-
-                        <input type="hidden" name="data" value="{{dataform.PreregistrationData}}" />
-                         <input type="hidden" name="accessKeyRef" value="{{dataform.AccessKey}}" />
-
-                         <input type="hidden" name="returnURL" value="{{ absolute_url (path('portefeuille_creat')) }}" />
-
-                        <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1"><i class="fa fa-credit-card"></i></span>
-                        </div>
-                        <input class="form-control" placeholder="Numeros de cart" type="text" name="cardNumber" value="" />
-                        </div>
-
-
-
-
-                        <div class="form-group">
-                             <i class="fa fa-calendar"></i>
-                            <div class="box">
-                              <select id="selectmonthcard">
-                                <option value="01">Janvier</option>
-                                <option value="02">Février</option>
-                                <option value="03">Mars</option>
-                                <option value="04">Avril</option>
-                                <option value="05">Mai</option>
-                                <option value="06">Juin</option>
-                                <option value="07">Juillet</option>
-                                <option value="08">Aôut</option>
-                                <option value="09">Septembre</option>
-                                <option value="10">Octobre</option>
-                                <option value="11">Novembre</option>
-                                <option value="12">Décembre</option>
-                              </select>
-
-                              <select id="selectyearcart">
-                                <option value="20">2020</option>
-                                <option value="21">2021</option>
-                                <option value="22">2022</option>
-                                <option value="23">2023</option>
-                                <option value="24">2024</option>
-                                <option value="25">2025</option>
-                                <option value="26">2026</option>
-                                <option value="27">2027</option>
-                                <option value="28">2028</option>
-                                <option value="29">2029</option>
-                                <option value="30">2030</option>
-                                <option value="31">2031</option>
-                              </select>
-                            </div>
-                        </div>
-
-
-                        <input type="hidden" name="cardExpirationDate" class="inputcardExpirationDate">
-
-
-                        <div class="form-group">
-                        <input class="form-control" placeholder="CVV" type="text" name="cardCvx" value="" />
-                        </div>
-
-                        <div class="form-group">
-                            <button class="btn btn-success btn-block" style="background-color: #FF4500;border-color: #FF4500;" type="submit"><img src="{{ asset('image/mangopay.png') }}" class="mr-2 float-left" style="height: 25px">Valider
-                            </button>
-                        </div>
-
-                        <div class="row">
-
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="modalPayIn" tabindex="-1" role="dialog" aria-labelledby="modalPayInLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <form class="modal-content" action="{{ path('portefeuille_payin') }}" method="POST" >
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalPayInLabel">Transfert d'argent vers le portefeuil</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label>Numéro de la carte :</label>
-                        <input class="numero form-control" value="" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label>Devise :</label>
-                        <input class="devise form-control" value="" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label>Montant :</label>
-                        <input type="number" min="0,01" class="montant form-control" name="montant">
-                    </div>
-                    <input class="carte" type="hidden" name="carte">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-dismiss="modal">Annuler</button>
-                    <button type="submit" class="btn btn-success">Transferer</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <!-- Modal creat bank-->
-    <div class="modal fade" id="modacreatBank" tabindex="-1" role="dialog" aria-labelledby="modalUserLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalUserLabel">Créer un compte bancaire (de type IBAN)</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-
-                    <form action="{{path('creat_bank_Account')}}"  enctype="multipart/form-data" method="post" class="card-body">
-
-                        <div class="form-group">
-                            <label for="inputIban">Numéro de compte bancaire international (IBAN)</label>
-                            <input type="text" name="iban" class="form-control" id="iban" aria-describedby="iban" placeholder="Enter IBAN">
-                            <small class="form-text text-muted">Numéro de compte bancaire international (IBAN).</small>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="inputBic">Code Identité Bancaire (BIC)</label>
-                            <input type="text" name="bic" class="form-control" id="bic" aria-describedby="iban" placeholder="Entrer votre BIC">
-                            <small class="form-text text-muted">Code Identité Bancaire (BIC).</small>
-                        </div>
-
-
-                        <div class="form-group">
-                            <button class="btn btn-success btn-block" style="background-color: #FF4500;border-color: #FF4500;" type="submit"><img src="{{ asset('image/mangopay.png') }}" class="mr-2 float-left" style="height: 25px">Envoyer
-                            </button>
-                        </div>
-
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Modal delete cards -->
-    <div class="modal fade" id="deletCards" tabindex="-1" role="dialog" aria-labelledby="modalPayInLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <form class="modal-content" action="{{ path('portefeuille_payin') }}" method="POST" >
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalPayInLabel">SUpprimmer la carte Bancaire</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-dismiss="modal">Annuler</button>
-                    <button type="submit" class="btn btn-success">Supprimer</button>
-                </div>
-            </form>
-        </div>
-    </div>
+					<div class="card shadow">
+						<div class="card-body p-0">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Type</th>
+										<th>Code d' identité bancaire</th>
+										<th>Numéros (IBAN)</th>
+										<th>Statut</th>
+										<th>Date de création</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for res in listBankAccount %}
+									<tr>
+										<td>{{ res.Type }}</td>
+										<td>{{ res.Details.BIC }}</td>
+										<td>{{ res.Details.IBAN }}</td>
+										{% if res.Active == true %}
+										<td>Activé</td>
+										{% else %}
+										<td>Desactivé</td>
+										{% endif %}
+										<td>{{ res.CreationDate |date("d/m/Y") }}</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Modal -- ajout carte -->
+	<div class="modal fade" id="modalAjoutCarte" tabindex="-1" role="dialog" aria-labelledby="modalAjoutCarteLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalAjoutCarteLabel">Mes Moyens de Paiements</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					
+					<form action="{{ dataform.CardRegistrationURL }}" method="post" class="card-body">
+						<input type="hidden" name="data" value="{{dataform.PreregistrationData}}"/>
+						<input type="hidden" name="accessKeyRef" value="{{dataform.AccessKey}}"/>
+						<input type="hidden" name="returnURL" value="{{ absolute_url (path('portefeuille_creat')) }}"/>
+						
+						<div class="input-group mb-3">
+							<div class="input-group-prepend">
+								<span class="input-group-text" id="basic-addon1">
+									<i class="fa fa-credit-card"></i>
+								</span>
+							</div>
+							<input class="form-control" placeholder="Numeros de cart" type="text" name="cardNumber" value=""/>
+						</div>
+						
+						<div class="form-group">
+							<i class="fa fa-calendar"></i>
+							<div class="box">
+								<select id="selectmonthcard">
+									<option value="01">Janvier</option>
+									<option value="02">Février</option>
+									<option value="03">Mars</option>
+									<option value="04">Avril</option>
+									<option value="05">Mai</option>
+									<option value="06">Juin</option>
+									<option value="07">Juillet</option>
+									<option value="08">Aôut</option>
+									<option value="09">Septembre</option>
+									<option value="10">Octobre</option>
+									<option value="11">Novembre</option>
+									<option value="12">Décembre</option>
+								</select>
+								
+								<select id="selectyearcart">
+									<option value="20">2020</option>
+									<option value="21">2021</option>
+									<option value="22">2022</option>
+									<option value="23">2023</option>
+									<option value="24">2024</option>
+									<option value="25">2025</option>
+									<option value="26">2026</option>
+									<option value="27">2027</option>
+									<option value="28">2028</option>
+									<option value="29">2029</option>
+									<option value="30">2030</option>
+									<option value="31">2031</option>
+								</select>
+							</div>
+						</div>
+						<input type="hidden" name="cardExpirationDate" class="inputcardExpirationDate">
+						
+						<div class="form-group">
+							<input class="form-control" placeholder="CVV" type="text" name="cardCvx" value=""/>
+						</div>
+						
+						<div class="form-group">
+							<button class="btn btn-success btn-block" style="background-color: #FF4500;border-color: #FF4500;" type="submit"><img src="{{ asset('image/mangopay.png') }}" class="mr-2 float-left" style="height: 25px">Valider
+							</button>
+						</div>
+						
+						<div class="row"></div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Modal -->
+	<div class="modal fade" id="modalPayIn" tabindex="-1" role="dialog" aria-labelledby="modalPayInLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<form class="modal-content" action="{{ path('portefeuille_payin') }}" method="POST">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalPayInLabel">Transfert d'argent vers le portefeuil</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label>Numéro de la carte :</label>
+						<input class="numero form-control" value="" readonly>
+					</div>
+					<div class="form-group">
+						<label>Devise :</label>
+						<input class="devise form-control" value="" readonly>
+					</div>
+					<div class="form-group">
+						<label>Montant :</label>
+						<input type="number" min="0,01" class="montant form-control" name="montant">
+					</div>
+					<input class="carte" type="hidden" name="carte">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-light" data-dismiss="modal">Annuler</button>
+					<button type="submit" class="btn btn-success">Transferer</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	
+	<!-- Modal creat bank-->
+	<div class="modal fade" id="modacreatBank" tabindex="-1" role="dialog" aria-labelledby="modalUserLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalUserLabel">Créer un compte bancaire (de type IBAN)</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					
+					<form action="{{path('creat_bank_Account')}}" enctype="multipart/form-data" method="post" class="card-body">
+						
+						<div class="form-group">
+							<label for="inputIban">Numéro de compte bancaire international (IBAN)</label>
+							<input type="text" name="iban" class="form-control" id="iban" aria-describedby="iban" placeholder="Enter IBAN">
+							<small class="form-text text-muted">Numéro de compte bancaire international (IBAN).</small>
+						</div>
+						
+						<div class="form-group">
+							<label for="inputBic">Code Identité Bancaire (BIC)</label>
+							<input type="text" name="bic" class="form-control" id="bic" aria-describedby="iban" placeholder="Entrer votre BIC">
+							<small class="form-text text-muted">Code Identité Bancaire (BIC).</small>
+						</div>
+						
+						
+						<div class="form-group">
+							<button class="btn btn-success btn-block" style="background-color: #FF4500;border-color: #FF4500;" type="submit"><img src="{{ asset('image/mangopay.png') }}" class="mr-2 float-left" style="height: 25px">Envoyer
+							</button>
+						</div>
+						
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Modal delete cards -->
+	<div class="modal fade" id="deletCards" tabindex="-1" role="dialog" aria-labelledby="modalPayInLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<form class="modal-content" action="{{ path('portefeuille_payin') }}" method="POST">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalPayInLabel">SUpprimmer la carte Bancaire</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body"></div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-light" data-dismiss="modal">Annuler</button>
+					<button type="submit" class="btn btn-success">Supprimer</button>
+				</div>
+			</form>
+		</div>
+	</div>
 {% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	{{ parent() }}
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	
+	<script>
+		$(document).ready(function () { /*$("#datepicker").datepicker( "option", "dateFormat", 'mmy' );*/
+		$("#datepicker").datepicker({
+			dateFormat: "mmy",              
+			changeMonth: true,
+			changeYear: true,
+			showButtonPanel: true   
+		});     
+		
+		$('.btn-payin').click(function () {
+			var data = JSON.parse($(this).parent().parent().attr('data'));
+			
+			$('#modalPayIn .carte').val(data.carte);
+			$('#modalPayIn .numero').val(data.numero);
+			$('#modalPayIn .devise').val(data.devise);
+			$('#modalPayIn .montant').val(0);
+		});
+		$('.inputcardExpirationDate').val('0120');
+		
+	});
+	</script>
 
-    <script>
-        $(document).ready( function ()
-        {
-            /*$("#datepicker").datepicker( "option", "dateFormat", 'mmy' );*/
-            $( "#datepicker" ).datepicker({
-              dateFormat: "mmy",
-              /*monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
-              monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
-              dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
-              dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
-              dayNamesMin: ['Di', 'Lu', 'Ma', 'Mer', 'Je', 'Ve', 'Sa'],*/
-              changeMonth: true,
-              changeYear: true,
-              showButtonPanel: true,
-            });
-
-            $('.btn-payin').click( function()
-            {
-                var data = JSON.parse( $(this).parent().parent().attr('data') );
-
-                $('#modalPayIn .carte').val(data.carte);
-                $('#modalPayIn .numero').val(data.numero);
-                $('#modalPayIn .devise').val(data.devise);
-                $('#modalPayIn .montant').val(0);
-            });
-            $('.inputcardExpirationDate').val('0120');
-
-        });
-
-    </script>
-
-    <script type="text/javascript">
-        $('#selectyearcart').on('change', function() {
-            var e = document.getElementById("selectmonthcard");
-            var value = e.options[e.selectedIndex].value;
-            $('.inputcardExpirationDate').val(value + this.value);
-        });
-        $('#selectmonthcard').on('change', function() {
-            var e = document.getElementById("selectyearcart");
-            var value = e.options[e.selectedIndex].value;
-            $('.inputcardExpirationDate').val(this.value + value);
-        });
-    </script>
+	<script type="text/javascript">
+		$('#selectyearcart').on('change', function () {
+			var e = document.getElementById("selectmonthcard");
+			var value = e.options[e.selectedIndex].value;
+			$('.inputcardExpirationDate').val(value + this.value);
+		});
+		$('#selectmonthcard').on('change', function () {
+			var e = document.getElementById("selectyearcart");
+			var value = e.options[e.selectedIndex].value;
+			$('.inputcardExpirationDate').val(this.value + value);
+		});
+	</script>
 {% endblock %}
+			
