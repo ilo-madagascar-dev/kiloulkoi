@@ -80,7 +80,7 @@
                                         </div>
                                     {% endif %}
                                 </div>
-                            
+
                                 <table class="col-md-6 pt-4" style="font-size: 120%">
                                     <tr style="font-size: 150%">
                                         <td class="pl-3">
@@ -98,7 +98,7 @@
                                     <tr>
                                         <td class="pt-1"></td>
                                     </tr>
-                                    
+
                                     {% if annonce_serialized|length > 1 %}
                                         {% for key, value in annonce_serialized %}
                                             {% if value is not null %}
@@ -133,7 +133,7 @@
 
                     <div class="row">
                         {# Calendrier #}
-                        <div class="col-md-8">
+                        <div class="col-md-7">
                             <div class="card shadow mb-3">
                                 {#
                                     <div class="card-header">
@@ -144,13 +144,13 @@
                                     <div class="row">
                                         <div class="col-lg-6 {% if app.user and app.user.id == annonce.user.id %} offset-lg-3 {% endif %}">
                                             <div class="calendar">
-                                                <div class="month row py-3 bg-success text-white border border-success">
+                                                <div class="month row py-1 bg-success text-white border border-success">
                                                     <div class="col-2 m-auto p-0 text-right">
                                                         <i class=" display-4 fas fa-angle-left prev"></i>
                                                     </div>
                                                     <div class="col-8">
                                                         <div class="date">
-                                                            <h3 class="text-center"></h3>
+                                                            <h3 class="month-name text-center"></h3>
                                                             <p class="text-center m-0"></p>
                                                         </div>
                                                     </div>
@@ -164,22 +164,22 @@
                                                 <div class="days border border-success"></div>
                                             </div>
                                         </div>
-                                        
+
                                         {% if not (app.user and app.user.id == annonce.user.id) %}
-                                            <div class="col-lg-6 d-flex align-items-end">
+                                            <div class="col-lg-6 d-flex align-items-end justify-content-center">
                                                 <div class="ml-3 mt-3">
                                                     <div class="form-group">
                                                         <label for="date-debut">Date du début:</label>
-                                                        <input readonly id="date-debut" min="{{ date() | date('Y-m-d') }}" class="form-control" name="debut">
+                                                        <input readonly autocomplete="off" id="date-debut" min="{{ date() | date('Y-m-d') }}" class="form-control" name="debut">
                                                     </div>
-                                                    <div class="form-group">
+                                                    <div class="form-group mb-0">
                                                         <label for="date-fin">Date du fin:</label>
-                                                        <input readonly id="date-fin" min="{{ date() | date('Y-m-d') }}" class="form-control" name="fin">
-                                                    </div>
-                                                    <div class="calendar-action text-center">
-                                                        <button id="reserver" class="btn btn-block btn-success" type="button" data-toggle="modal" data-target="#reservationModal">Vérifier la disponibilité</button>
+                                                        <input readonly autocomplete="off" id="date-fin" min="{{ date() | date('Y-m-d') }}" class="form-control" name="fin">
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="col-12 mt-3 px-4 calendar-action text-center">
+                                                <button id="reserver" class="btn btn-block btn-success" type="button" data-toggle="modal" data-target="#reservationModal">Vérifier la disponibilité</button>
                                             </div>
                                         {% endif %}
                                     </div>
@@ -189,17 +189,19 @@
                         {# Fin - Calendrier #}
 
                         {# Profil propriétaire #}
-                        <div class="col-md-4 pl-md-0">
-                            <div class="card shadow">
+                        <div class="col-md-5 pl-md-0 mb-3">
+                            <div class="card shadow h-100">
                                 <div class="card-body px-1 py-3">
                                     <div class="row">
                                         <div class="col-4 pl-4 pr-0 text-center">
                                             <img src="{{ asset('uploads/avatar/') ~ proprietaire.avatar }}" class="my-2 rounded-circle img-fluid bg-primary" width="175px" height="175px">
                                         </div>
                                         <div class="col-8 py-2">
-                                            <a href="{{ path('proprietaire_annonce', {proprietaire: annonce.user.id, pseudo: annonce.user.pseudo}) }}">
-                                                <strong>{{ proprietaire.nomComplet }}</strong>
-                                            </a>
+                                            <h3 class="text-capitalize">
+                                                <a href="{{ path('proprietaire_annonce', {proprietaire: annonce.user.id, pseudo: annonce.user.pseudo}) }}">
+                                                    <strong>{{ proprietaire.nomComplet }}</strong>
+                                                </a>
+                                            </h3>
                                             <p class="mt-1 text-warning">
                                                 <i class="fas fa-star"></i>
                                                 <i class="fas fa-star"></i>
@@ -222,7 +224,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="mx-3">
@@ -302,7 +304,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.js"></script>
     <script>
         var locations = {{ locations|json_encode|raw }};
-        
+
         baguetteBox.run('.tz-gallery', {
             captions: function(element) {
                 return element.getElementsByTagName('img')[0].alt;
@@ -313,11 +315,11 @@
 		{
 			var url = "{{ path('proprietaire_follow', { proprietaire: proprietaire.id }) }}";
 
-			$('.btn-follow').click( function () 
+			$('.btn-follow').click( function ()
 			{
 				var that = this;
 				$('.btn-follow .spinner-border').removeClass('d-none');
-				$.get( url, function (reponse) 
+				$.get( url, function (reponse)
 				{
 					reponse = JSON.parse(reponse);
 					if( parseInt(reponse.status) == 0 )

@@ -86,7 +86,7 @@ class AnnoncesController extends AbstractController
     public function mesAnnonces(Request $request, PaginationService $paginator): Response
     {
         $user = $this->getUser();
-        if ($user == null) 
+        if ($user == null)
         {
             return $this->redirectToRoute('securitylogin');
         }
@@ -100,7 +100,7 @@ class AnnoncesController extends AbstractController
             'annonce_titre' => $annonce_titre
         ]);
     }
-    
+
     /**
      * @Route("/filter", name="annonces_filter", methods={"POST"})
      */
@@ -110,7 +110,7 @@ class AnnoncesController extends AbstractController
         $query         = $this->repAnnonce->findAnnonces($request->request->all());
         $annonces      = $paginator->paginate($query, $request->query->getInt('page', 1));
         $annonce_titre = "Résultats des recherches";
-        
+
         return $this->render('annonces/list-base.html.twig', [
             'categories' => $categories,
             'annonces' => $annonces,
@@ -118,7 +118,7 @@ class AnnoncesController extends AbstractController
         ]);
     }
 
-    
+
     /**
      * @Route("/favoris", name="annonces_favoris", methods={"GET"})
      */
@@ -159,7 +159,7 @@ class AnnoncesController extends AbstractController
         }
 
         $annonce_titre = empty($annonce_titre) ? "Résultats des recherches" : $annonce_titre;
-        
+
         return $this->render('annonces/list-base.html.twig', [
             'categories' => $categories,
             'annonces' => $annonces,
@@ -173,7 +173,7 @@ class AnnoncesController extends AbstractController
     public function deposer()
     {
         $categories = $this->repCategorie->findParents();
-        
+
         return $this->render('annonces/depos.html.twig', [
             'categories' => $categories,
         ]);
@@ -185,7 +185,7 @@ class AnnoncesController extends AbstractController
     public function new(Request $request, FileUploader $fileUploader): Response
     {
         $user = $this->getUser();
-        if ($user == null) 
+        if ($user == null)
         {
             return $this->redirectToRoute('securitylogin');
         }
@@ -235,7 +235,7 @@ class AnnoncesController extends AbstractController
         $annonce  = new $class();
         $form     = $this->createForm($formType, $annonce);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) 
+        if ($form->isSubmitted() && $form->isValid())
         {
             $photos = $form->get('photo')->getData();
             foreach ($photos as $photo )
@@ -289,7 +289,7 @@ class AnnoncesController extends AbstractController
         $abonnement = $this->repAbonnement->findOneBy( ['user' => $proprietaire->getId() ]);
         $photoMax   = ($abonnement && $abonnement->getId()) == 2 ? 6 : 3;
 
-        if ($user == null || ($user !== null && $user->getId() !== $proprietaire->getId()) ) 
+        if ($user == null || ($user !== null && $user->getId() !== $proprietaire->getId()) )
         {
             $annonce->setVisite( intval($annonce->getVisite()) + 1);
             $this->getDoctrine()->getManager()->flush();
@@ -313,7 +313,7 @@ class AnnoncesController extends AbstractController
             'proprietaire'       => $proprietaire,
             'discr'              => $discr,
             'isFavoris'          => $isFavoris,
-        ]); 
+        ]);
     }
 
     /**
@@ -322,7 +322,7 @@ class AnnoncesController extends AbstractController
     public function edit(Request $request, Annonces $annonce, FileUploader $fileUploader): Response
     {
         $user = $this->getUser();
-        if ( $user == null) 
+        if ( $user == null)
         {
             return $this->redirectToRoute('securitylogin');
         }
@@ -330,12 +330,12 @@ class AnnoncesController extends AbstractController
         $formType = str_replace('Annonce', '', substr(get_class($annonce), 11) );
         $class    = 'App\Form\Category\\' . $formType . 'Type';
         $form     = $this->createForm($class, $annonce);
-        
+
         $abonnement = $this->repAbonnement->findOneBy( ['user' => $user->getId() ]);
         $photoMax   = ($abonnement && $abonnement->getId() == 2) ? 6 : 3;
 
         $form->handleRequest($request);
-        if ( $form->isSubmitted() && $form->isValid() ) 
+        if ( $form->isSubmitted() && $form->isValid() )
         {
             $max    = 0;
             $photos = $form->get('photo')->getData();
@@ -351,7 +351,7 @@ class AnnoncesController extends AbstractController
 
                 if( $max >= $photoMax )
                     break;
-                
+
                 $max++;
             }
 
@@ -376,12 +376,12 @@ class AnnoncesController extends AbstractController
      */
     public function delete(Request $request, Annonces $annonce): Response
     {
-        if ($this->getUser() == null) 
+        if ($this->getUser() == null)
         {
             return $this->redirectToRoute('securitylogin');
         }
-        
-        if ($this->isCsrfTokenValid('delete'.$annonce->getId(), $request->request->get('_token'))) 
+
+        if ($this->isCsrfTokenValid('delete'.$annonce->getId(), $request->request->get('_token')))
         {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($annonce);

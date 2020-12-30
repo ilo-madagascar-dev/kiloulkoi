@@ -73,6 +73,15 @@ class AnnoncesType extends AbstractType
                     'choice_label' => 'libelle'
                 ])
                 ->add('description', TextareaType::class)
+                ->add('currency'   , ChoiceType::class,
+                    [
+                        'label' => 'Montant de la caution',
+                        "mapped" => false,
+                        'choices' => [
+                            'Euro' => 1,
+                        ],
+                    ],
+                )
                 // ->add('location', LocationType::class, array('required' => false))
                 // ->add('categorie', EntityType::class, [
                 //     'class' => Categories::class,

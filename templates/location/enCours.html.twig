@@ -3,114 +3,30 @@
 {% block title %}Locations en cours{% endblock %}
 
 {% block body %}
-
-    <div class="container-fluid" >
-
-        <div class="row mb-3">
-            <div class="offset-lg-2 col-lg-8 offset-md-1 col-md-10">
-                <div class="card shadow mb-3">
-                    <div class="card-header d-flex align-items-top">
-                        <i class="text-success fa fa-list mr-3" style="font-size: 3rem;"></i>
-                        <div class="d-inline">
-                            <h1 class="mb-0" style="font-size: 1.4rem;"><strong>Mes Biens</strong></h1>
-                            <small class="text-muted">Liste des demandes de locations de vos annonces.</small>
-                        </div>
+    <div class="container mt-4">
+		<div class="row">
+			<div class="col-lg-10 offset-lg-1 col-md-12">
+                <div class="mb-4">
+                    <div class="card shadow mb-2">
+                        <h1 class="h3 text-center text-muted pt-2">Mes Biens</h1>
                     </div>
-                    <div class="card-body p-0">
-                        {% if mesBiens|length > 0 %}
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Annonce</th>
-                                        <th>Début</th>
-                                        <th>Fin</th>
-                                        <th>Prix</th>
-                                        <th>Statut</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                {% for location in mesBiens %}
-                                    {% set periodeTotal = date(location.dateDebut).diff(date(location.dateFin)) %}
-                                    {% set plusOneDay   = location.dateReservation|date_modify("+24 hour")|date > date() %}
 
-                                    {% if location.annonce.type.id == 1 %}
-                                        {% set difference = periodeTotal.hours + 1 %}
-                                    {% elseif location.annonce.type.id == 2 %}
-                                        {% set difference = periodeTotal.days + 1 %}
-                                    {% elseif location.annonce.type.id == 3 %}
-                                        {% set difference = periodeTotal.days/7 + 1 %}
-                                    {% else %}
-                                        {% set difference = (periodeTotal.days/30)|round() + 1 %}
-                                    {% endif %}
-
-                                    <tr>
-                                        <td>
-                                            {% set slug = location.annonce.slug == '' ? 'annonces_' : location.annonce.slug %}
-                                            <a href="{{ path('annonces_show', { id: location.annonce.id, slug: slug }) }}">{{ location.annonce.titre }}</a>
-                                        </td>
-                                        <td>{{ location.dateDebut ? location.dateDebut|date('d/m/Y') : '' }}</td>
-                                        <td>{{ location.dateFin ? location.dateFin|date('d/m/Y') : '' }}</td>
-                                        <td>{{ (difference * location.annonce.prix) |round(2, 'floor') }}</td>
-                                        <td>{{ location.statutLocation.libelle }}</td>
-                                        <td>
-                                            {% if location.statutLocation.id == 2 %} {# En Cours #}
-                                                <button class="btn btn-info btn-sm btn-message" title="Envoyer un message" data-toggle="modal" data-target="#message-modal" data-user="{{ location.user.nomComplet }}" data-url="{{ path('conversation_messages_new', { location: location.id, destinataire: location.user.id }) }}">
-                                                    <i class="fa fa-comments"></i>
-                                                </button>
-                                            {% elseif location.statutLocation.id == 1 %} {# En attente #}
-                                                <a href="{{ path('location_accept', {id: location.id, etat: 'accepter'}) }}" class="btn btn-sm btn-success" title="Accepter">
-                                                    <i class="fa fa-check"></i>
-                                                </a>
-                                                <a href="{{ path('location_accept', {id: location.id, etat: 'refuser'}) }}" class="btn btn-sm btn-danger" title="Réfuser">
-                                                    <i class="fa fa-times-circle"></i>
-                                                </a>
-                                            {% else %}
-                                                {% set pTemp = date("now").diff(date(location.dateFin))  %}
-                                                {% if pTemp.days < 1 %}
-                                                    <a class="btn btn-sm btn-warning text-white" href="#" title="Ouvrire un litige">
-                                                        <i class="fa fa-angry"></i>
-                                                    </a>
-                                                {% endif %}
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                        {% else %}
-                            <div class="mb-0 alert alert-warning text-center d-flex justify-content-center align-items-center" style="height: 120px;"><strong>Aucun résultat.</strong></div>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="offset-lg-2 col-lg-8 offset-md-1 col-md-10">
-                <div class="card shadow mb-3">
-                    <div class="card-header d-flex align-items-top">
-                        <i class="text-success fa fa-list mr-3" style="font-size: 3rem;"></i>
-                        <div class="d-inline">
-                            <h1 class="mb-0" style="font-size: 1.4rem;"><strong>Mes Emprunts</strong></h1>
-                            <small class="text-muted">Liste des annonces que vous vous êtes abonnées.</small>
-                        </div>
-                    </div>
-                    <div class="card-body p-0">
-                        {% if mesEmprunts|length > 0 %}
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                       <th>Annonce</th>
-                                       <th>Début</th>
-                                       <th>Fin</th>
-                                       <th>Prix</th>
-                                       <th>Statut</th>
-                                       <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for location in mesEmprunts %}
+                    <div class="card shadow">
+                        <div class="card-body p-0">
+                            {% if mesBiens|length > 0 %}
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Annonce</th>
+                                            <th>Début</th>
+                                            <th>Fin</th>
+                                            <th>Prix</th>
+                                            <th>Statut</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for location in mesBiens %}
                                         {% set periodeTotal = date(location.dateDebut).diff(date(location.dateFin)) %}
                                         {% set plusOneDay   = location.dateReservation|date_modify("+24 hour")|date > date() %}
 
@@ -134,29 +50,105 @@
                                             <td>{{ (difference * location.annonce.prix) |round(2, 'floor') }}</td>
                                             <td>{{ location.statutLocation.libelle }}</td>
                                             <td>
-                                                {% if not plusOneDay and location.statutLocation.id != 3 %}
-                                                    <a class="btn btn-sm btn-warning" href="{{ path('location_accept', {id: location.id, etat: 'refuser'}) }}" title="Annuler">
+                                                {% if location.statutLocation.id == 2 %} {# En Cours #}
+                                                    <button class="btn btn-info btn-sm btn-message" title="Envoyer un message" data-toggle="modal" data-target="#message-modal" data-user="{{ location.user.nomComplet }}" data-url="{{ path('conversation_messages_new', { location: location.id, destinataire: location.user.id }) }}">
+                                                        <i class="fa fa-comments"></i>
+                                                    </button>
+                                                {% elseif location.statutLocation.id == 1 %} {# En attente #}
+                                                    <a href="{{ path('location_accept', {id: location.id, etat: 'accepter'}) }}" class="btn btn-sm btn-success" title="Accepter">
+                                                        <i class="fa fa-check"></i>
+                                                    </a>
+                                                    <a href="{{ path('location_accept', {id: location.id, etat: 'refuser'}) }}" class="btn btn-sm btn-danger" title="Réfuser">
                                                         <i class="fa fa-times-circle"></i>
                                                     </a>
                                                 {% else %}
-                                                    <a class="btn btn-sm btn-warning text-white" href="#" title="Ouvrire un litige">
-                                                        <i class="fa fa-angry"></i>
-                                                    </a>
-                                                {% endif %}
-
-                                                {% if location.statutLocation.id == 2 %}
-                                                    <button class="btn btn-info btn-sm btn-message" data-toggle="modal" data-target="#message-modal" data-user="{{ location.annonce.user.nomComplet }}" data-url="{{ path('conversation_messages_new', { location: location.id, destinataire: location.annonce.user.id }) }}">
-                                                        <i class="fa fa-comments"></i>
-                                                    </button>
+                                                    {% set pTemp = date("now").diff(date(location.dateFin))  %}
+                                                    {% if pTemp.days < 1 %}
+                                                        <a class="btn btn-sm btn-warning text-white" href="#" title="Ouvrire un litige">
+                                                            <i class="fa fa-angry"></i>
+                                                        </a>
+                                                    {% endif %}
                                                 {% endif %}
                                             </td>
                                         </tr>
                                     {% endfor %}
-                                </tbody>
-                            </table>
-                        {% else %}
-                            <div class="mb-0 alert alert-warning text-center d-flex justify-content-center align-items-center" style="height: 120px;"><strong>Aucun résultat.</strong></div>
-                        {% endif %}
+                                    </tbody>
+                                </table>
+                            {% else %}
+                                <div class="mb-0 alert alert-warning text-center d-flex justify-content-center align-items-center" style="height: 120px;"><strong>Aucun résultat.</strong></div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <div class="card shadow mb-2">
+                        <h1 class="h3 text-center text-muted pt-2">Mes Emprunts</h1>
+                    </div>
+
+                    <div class="card shadow">
+                        <div class="card-body p-0">
+                            {% if mesEmprunts|length > 0 %}
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Annonce</th>
+                                            <th>Début</th>
+                                            <th>Fin</th>
+                                            <th>Prix</th>
+                                            <th>Statut</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for location in mesEmprunts %}
+                                            {% set periodeTotal = date(location.dateDebut).diff(date(location.dateFin)) %}
+                                            {% set plusOneDay   = location.dateReservation|date_modify("+24 hour")|date > date() %}
+
+                                            {% if location.annonce.type.id == 1 %}
+                                                {% set difference = periodeTotal.hours + 1 %}
+                                            {% elseif location.annonce.type.id == 2 %}
+                                                {% set difference = periodeTotal.days + 1 %}
+                                            {% elseif location.annonce.type.id == 3 %}
+                                                {% set difference = periodeTotal.days/7 + 1 %}
+                                            {% else %}
+                                                {% set difference = (periodeTotal.days/30)|round() + 1 %}
+                                            {% endif %}
+
+                                            <tr>
+                                                <td>
+                                                    {% set slug = location.annonce.slug == '' ? 'annonces_' : location.annonce.slug %}
+                                                    <a href="{{ path('annonces_show', { id: location.annonce.id, slug: slug }) }}">{{ location.annonce.titre }}</a>
+                                                </td>
+                                                <td>{{ location.dateDebut ? location.dateDebut|date('d/m/Y') : '' }}</td>
+                                                <td>{{ location.dateFin ? location.dateFin|date('d/m/Y') : '' }}</td>
+                                                <td>{{ (difference * location.annonce.prix) |round(2, 'floor') }}</td>
+                                                <td>{{ location.statutLocation.libelle }}</td>
+                                                <td>
+                                                    {% if not plusOneDay and location.statutLocation.id != 3 %}
+                                                        <a class="btn btn-sm btn-warning" href="{{ path('location_accept', {id: location.id, etat: 'refuser'}) }}" title="Annuler">
+                                                            <i class="fa fa-times-circle"></i>
+                                                        </a>
+                                                    {% else %}
+                                                        <a class="btn btn-sm btn-warning text-white" href="#" title="Ouvrire un litige">
+                                                            <i class="fa fa-angry"></i>
+                                                        </a>
+                                                    {% endif %}
+
+                                                    {% if location.statutLocation.id == 2 %}
+                                                        <button class="btn btn-info btn-sm btn-message" data-toggle="modal" data-target="#message-modal" data-user="{{ location.annonce.user.nomComplet }}" data-url="{{ path('conversation_messages_new', { location: location.id, destinataire: location.annonce.user.id }) }}">
+                                                            <i class="fa fa-comments"></i>
+                                                        </button>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% else %}
+                                <div class="mb-0 alert alert-warning text-center d-flex justify-content-center align-items-center" style="height: 120px;"><strong>Aucun résultat.</strong></div>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>

@@ -8,7 +8,7 @@
             <a class="nav-link btn btn-outline-primary" id="pills-photos-tab" data-toggle="pill" href="#pills-photos" role="tab" aria-controls="pills-photos" aria-selected="false">Photos</a>
         </li>
     </ul>
-    
+
     <div class="tab-content" id="pills-tabContent" style="min-height: 370px;">
         <div class="tab-pane fade" id="pills-photos" role="tabpanel" aria-labelledby="pills-photos-tab">
             {% set i = 0 %}
@@ -26,19 +26,22 @@
         </div>
 
         <div class="tab-pane fade show active" id="pills-detail" role="tabpanel" aria-labelledby="pills-detail-tab">
-    
+
             {{ form_row(form.titre) }}
 
             {# render the the rest, except submit button #}
             {% for child in form %}
-                {% if child.vars.name not in ['prix', 'type', 'description'] %}
+                {% if child.vars.name not in ['prix', 'type', 'description', 'currency'] %}
                     {{ form_row(child) }}
                 {% endif %}
             {% endfor %}
-            
+
             <div class="row">
-                <div class="col-8">
+                <div class="col-4">
                     {{ form_row(form.prix, {'attr': {'autocomplete': 'off'} }) }}
+                </div>
+                <div class="col-4">
+                    {{ form_row(form.currency, {'attr': {'autocomplete': 'off'} }) }}
                 </div>
                 <div class="col-4">
                     {{ form_row(form.type) }}
@@ -50,7 +53,7 @@
     </div>
 
     <button class="btn btn-primary btn-block" type="submit">{{ button_label|default('Enregistrer') }}</button>
-    
+
 {{ form_end(form) }}
 
 <!-- Modal - Photo maximum permis atteint -->

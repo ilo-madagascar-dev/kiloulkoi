@@ -1,10 +1,11 @@
 
 .calendar span {
-	width: 2.2rem;
-	height: 2rem;
+	width: 2rem;
+	height: 1.5rem;
 	display: inline-block;
 	text-align: center;
-	padding-top: .3rem;
+    padding-top: .1rem;
+    font-size: 90%;
 }
 
 .calendar .month i:hover {
@@ -53,18 +54,23 @@
 }
 
 .calendar .weekdays, h3 {
-	font-weight: bold;
+    font-weight: bold;
+}
+
+.calendar .month-name {
+    font-size: 1.2rem;
+    margin-bottom: 0;
+    margin-top: .5rem;
 }
 
 .calendar .month, .weekdays, .days {
-	width: 260px;
+	width: 14.2rem;
 	margin: auto;
 }
 
 .calendar .today {
 	color: var(--primary);
 	font-weight: bold;
-	border: 1px solid lightseagreen;
 }
 
 /*select date*/
