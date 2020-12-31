@@ -37,7 +37,7 @@
 					{{ message }}
 				</div>
 				{% endfor %}
-				
+
 				<div class="mb-4">
 					<div class="card shadow mb-2">
 						<h1 class="h3 text-center text-muted pt-2">
@@ -86,16 +86,16 @@
 						</div>
 					</div>
 				</div>
-				
+
 				<div class="mb-4">
 					<div class="card shadow mb-2">
 						<h1 class="h3 text-center text-muted pt-2">
 							<span>
-								Mon Portefeuille
+								Mon Portefeuille Kiloukoi
 							</span>
 						</h1>
 					</div>
-					
+
 					<div class="card shadow">
 						<div class="card-body p-0">
 							<table class="table">
@@ -142,7 +142,7 @@
 								Créer un compte bancaire (de type IBAN)
 							</span>
 
-							<div class="position-absolute d-inline pr-2" style="right: .25rem">
+							<div class="position-absolute d-inline pr-2" style="right: .25rem; top: .32rem">
 								<button class="btn btn-primary" data-toggle="modal" data-target="#modacreatBank">Ajouter</button>
 							</div>
 						</h1>
@@ -182,7 +182,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<!-- Modal -- ajout carte -->
 	<div class="modal fade" id="modalAjoutCarte" tabindex="-1" role="dialog" aria-labelledby="modalAjoutCarteLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
@@ -194,12 +194,12 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					
+
 					<form action="{{ dataform.CardRegistrationURL }}" method="post" class="card-body">
 						<input type="hidden" name="data" value="{{dataform.PreregistrationData}}"/>
 						<input type="hidden" name="accessKeyRef" value="{{dataform.AccessKey}}"/>
 						<input type="hidden" name="returnURL" value="{{ absolute_url (path('portefeuille_creat')) }}"/>
-						
+
 						<div class="input-group mb-3">
 							<div class="input-group-prepend">
 								<span class="input-group-text" id="basic-addon1">
@@ -208,7 +208,7 @@
 							</div>
 							<input class="form-control" placeholder="Numeros de cart" type="text" name="cardNumber" value=""/>
 						</div>
-						
+
 						<div class="form-group">
 							<i class="fa fa-calendar"></i>
 							<div class="box">
@@ -226,7 +226,7 @@
 									<option value="11">Novembre</option>
 									<option value="12">Décembre</option>
 								</select>
-								
+
 								<select id="selectyearcart">
 									<option value="20">2020</option>
 									<option value="21">2021</option>
@@ -244,23 +244,23 @@
 							</div>
 						</div>
 						<input type="hidden" name="cardExpirationDate" class="inputcardExpirationDate">
-						
+
 						<div class="form-group">
 							<input class="form-control" placeholder="CVV" type="text" name="cardCvx" value=""/>
 						</div>
-						
+
 						<div class="form-group">
 							<button class="btn btn-success btn-block" style="background-color: #FF4500;border-color: #FF4500;" type="submit"><img src="{{ asset('image/mangopay.png') }}" class="mr-2 float-left" style="height: 25px">Valider
 							</button>
 						</div>
-						
+
 						<div class="row"></div>
 					</form>
 				</div>
 			</div>
 		</div>
 	</div>
-	
+
 	<!-- Modal -->
 	<div class="modal fade" id="modalPayIn" tabindex="-1" role="dialog" aria-labelledby="modalPayInLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
@@ -293,7 +293,7 @@
 			</form>
 		</div>
 	</div>
-	
+
 	<!-- Modal creat bank-->
 	<div class="modal fade" id="modacreatBank" tabindex="-1" role="dialog" aria-labelledby="modalUserLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
@@ -305,33 +305,33 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					
+
 					<form action="{{path('creat_bank_Account')}}" enctype="multipart/form-data" method="post" class="card-body">
-						
+
 						<div class="form-group">
 							<label for="inputIban">Numéro de compte bancaire international (IBAN)</label>
 							<input type="text" name="iban" class="form-control" id="iban" aria-describedby="iban" placeholder="Enter IBAN">
 							<small class="form-text text-muted">Numéro de compte bancaire international (IBAN).</small>
 						</div>
-						
+
 						<div class="form-group">
 							<label for="inputBic">Code Identité Bancaire (BIC)</label>
 							<input type="text" name="bic" class="form-control" id="bic" aria-describedby="iban" placeholder="Entrer votre BIC">
 							<small class="form-text text-muted">Code Identité Bancaire (BIC).</small>
 						</div>
-						
-						
+
+
 						<div class="form-group">
 							<button class="btn btn-success btn-block" style="background-color: #FF4500;border-color: #FF4500;" type="submit"><img src="{{ asset('image/mangopay.png') }}" class="mr-2 float-left" style="height: 25px">Envoyer
 							</button>
 						</div>
-						
+
 					</form>
 				</div>
 			</div>
 		</div>
 	</div>
-	
+
 	<!-- Modal delete cards -->
 	<div class="modal fade" id="deletCards" tabindex="-1" role="dialog" aria-labelledby="modalPayInLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
@@ -356,26 +356,26 @@
 	{{ parent() }}
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	
+
 	<script>
 		$(document).ready(function () { /*$("#datepicker").datepicker( "option", "dateFormat", 'mmy' );*/
 		$("#datepicker").datepicker({
-			dateFormat: "mmy",              
+			dateFormat: "mmy",
 			changeMonth: true,
 			changeYear: true,
-			showButtonPanel: true   
-		});     
-		
+			showButtonPanel: true
+		});
+
 		$('.btn-payin').click(function () {
 			var data = JSON.parse($(this).parent().parent().attr('data'));
-			
+
 			$('#modalPayIn .carte').val(data.carte);
 			$('#modalPayIn .numero').val(data.numero);
 			$('#modalPayIn .devise').val(data.devise);
 			$('#modalPayIn .montant').val(0);
 		});
 		$('.inputcardExpirationDate').val('0120');
-		
+
 	});
 	</script>
 
@@ -392,4 +392,3 @@
 		});
 	</script>
 {% endblock %}
-			

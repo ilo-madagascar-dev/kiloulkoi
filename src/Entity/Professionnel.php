@@ -4,11 +4,16 @@ namespace App\Entity;
 
 use App\Repository\ProfessionnelRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 use MangoPay;
 
 /**
  * @ORM\Entity(repositoryClass=ProfessionnelRepository::class)
+ * @UniqueEntity(
+ *     fields={"siret"},
+ *     message="Siret déjà enregistré."
+ * )
  */
 class Professionnel extends User
 {
@@ -18,7 +23,7 @@ class Professionnel extends User
     private $raisonSocial;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50, unique=true)
      */
     private $siret;
 

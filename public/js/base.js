@@ -1,32 +1,32 @@
-$(document).ready( function () 
+$(document).ready( function ()
 {
 	var words = [
-		"un appartement", 
-		"une toile de tante", 
-		"une tondeuse", 
-		"un vehicule", 
-		"une perceuse", 
-		"la mode", 
-		"une poussette", 
-		"l'iTech", 
-		"l'electromenager", 
+		"un appartement",
+		"une toile de tente",
+		"une tondeuse",
+		"un véhicule",
+		"une perceuse",
+		"la mode",
+		"une poussette",
+		"l'iTech",
+		"l'électromenager",
 		"un meuble",
 		"le reste",
 	];
 	var index = 0;
 
-	var show = function() 
+	var show = function()
 	{
 		setTimeout(function ()
 		{
-			$('.slogan-animation').fadeOut(1000, function() 
+			$('.slogan-animation').fadeOut(1000, function()
 			{
 				$('.slogan-animation').text(words[index]);
 				index++;
-				
+
 				if( !words[index] )
 					index = 0;
-				
+
 				$('.slogan-animation').fadeIn(1500, show);
 			});
 		}, 1000)

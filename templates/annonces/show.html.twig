@@ -17,7 +17,14 @@
                     <div class="card shadow mb-3">
                         <div class="card-header text-center">
                             <h2 class="mb-0">
+                                {% if app.user %}
+                                    <div class="position-absolute">
+                                        <button class="btn btn-outline-warning">Signaler cette annonce</button>
+                                    </div>
+                                {% endif %}
+
                                 <strong>{{ annonce.titre }}</strong>
+
                                 <div class="float-right">
                                     {% if app.user and app.user.id != annonce.user.id %}
                                         <div title="Favoris" class="d-inline mr-2">
@@ -84,11 +91,11 @@
                                 <table class="col-md-6 pt-4" style="font-size: 120%">
                                     <tr style="font-size: 150%">
                                         <td class="pl-3">
-                                            <strong >Prix: </strong>
+                                            <strong >Prix </strong>
                                         </td>
                                         <td>
                                             <span class="pr-2">: </span>
-                                            <span class="text-success">{{ annonce.prix }} €/{{ annonce.type ? annonce.type.libelle : 'mois' }}</span>
+                                            <span class="text-success">{{ annonce.prix }}€/{{ annonce.type ? annonce.type.libelle : 'mois' }}</span>
                                         </td>
                                     </tr>
 
@@ -103,10 +110,10 @@
                                     </tr>
 
                                     <tr>
-                                        <td colspan="2" class="pt-1"><hr></td>
+                                        <td colspan="2"><hr class="mt-2 mb-0"></td>
                                     </tr>
                                     <tr>
-                                        <td class="pt-1"></td>
+                                        <td></td>
                                     </tr>
 
                                     {% if annonce_serialized|length > 1 %}
@@ -134,8 +141,15 @@
                             <hr>
 
                             <div class="text-center w-80 m-auto">
-                                <h3 style="font-size: 1.2rem;"><strong>Description :</strong></h3>
-                                <p class="mb-0">{{ annonce.description | nl2br }}</p>
+                                <h3 style="font-size: 1.2rem;"><strong>Déscription :</strong></h3>
+                                <p class="mb-0">
+                                    <span class="collapse show descriptionCollapse">
+                                       {{ annonce.description | nl2br | slice(0, 100) }} <a data-toggle="collapse" href=".descriptionCollapse" class="card-link">...afficher plus.</a>
+                                    </span>
+                                    <span class="collapse descriptionCollapse">
+                                        {{ annonce.description | nl2br }}  <a data-toggle="collapse" href=".descriptionCollapse" class="card-link">...afficher moins.</a>
+                                    </span>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -177,7 +191,8 @@
 
                                         {% if not (app.user and app.user.id == annonce.user.id) %}
                                             <div class="col-lg-6 d-flex align-items-end justify-content-center">
-                                                <div class="ml-3 mt-3">
+                                                <div class="mx-auto">
+                                                    <h3 class="text-center mb-4">Réservation:</h3>
                                                     <div class="form-group">
                                                         <label for="date-debut">Date du début:</label>
                                                         <input readonly autocomplete="off" id="date-debut" min="{{ date() | date('Y-m-d') }}" class="form-control" name="debut">
@@ -201,7 +216,7 @@
                         {# Profil propriétaire #}
                         <div class="col-md-5 pl-md-0 mb-3">
                             <div class="card shadow h-100">
-                                <div class="card-body px-1 py-3">
+                                <div class="card-body px-1 py-3 d-flex align-items-end flex-column">
                                     <div class="row">
                                         <div class="col-4 pl-4 pr-0 text-center">
                                             <img src="{{ asset('uploads/avatar/') ~ proprietaire.avatar }}" class="my-2 rounded-circle img-fluid bg-primary" width="175px" height="175px">
@@ -222,7 +237,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="row">
+                                    <div class="row w-100">
                                         <div class="col-12">
                                             <div class="mx-3 text-center">
                                                 <p class="text-secondary py-0 mb-1">
@@ -235,7 +250,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="row">
+                                    <div class="w-100 mt-auto">
                                         <div class="col-12">
                                             <div class="mx-3">
                                                 {% if app.user and app.user.id != proprietaire.id %}

@@ -17,7 +17,7 @@ class MultimediaType extends AnnoncesType
         parent::buildForm($builder, $options);
 
         $builder
-            ->add('systeme', TextType::class)
+            ->add('systeme', TextType::class, ['label' => 'Système'])
             ->add('marque', TextType::class)
             ->add('couleur', TextType::class)
         ;

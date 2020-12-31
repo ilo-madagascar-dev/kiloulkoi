@@ -83,7 +83,7 @@ class AnnoncesController extends AbstractController
     /**
      * @Route("/mes-annonces", name="mes_annonces_index", methods={"GET"})
      */
-    public function mesAnnonces(Request $request, PaginationService $paginator): Response
+    public function mesAnnonces(Request $request, PaginationService $paginator, SerializerInterface $serializer): Response
     {
         $user = $this->getUser();
         if ($user == null)

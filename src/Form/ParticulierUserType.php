@@ -14,7 +14,7 @@ class ParticulierUserType extends UserType
         parent::buildForm($builder, $options);
         $builder
             ->add('nom', TextType::class)
-            ->add('prenom', TextType::class)
+            ->add('prenom', TextType::class, ['label' => 'Prénom'])
         ;
     }
 

@@ -1,6 +1,6 @@
-	<div class="container mt-4 mb-3">
+	<div class="container-fluid mt-4 mb-3">
 		<div class="row">
-			<div class="col-lg-10 offset-lg-1 col-md-12">
+			<div class="col-lg-12">
 				<div class="card">
 					<h1 class="h3 text-center text-muted pt-2">{{ annonce_titre }}</h1>
 					{% if annonces|length == 0 %}
@@ -15,13 +15,13 @@
 		</div>
 	</div>
 
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row">
-			<div class="col-lg-10 offset-lg-1 col-md-12">
+			<div class="col-lg-12">
 				<div class="row card-deck">
 					{% for annonce in annonces %}
 						{% set slug = annonce.slug == '' ? 'annonces_' : annonce.slug %}
-						<div class="col-12 col-md-6 col-lg-4 mb-3">
+						<div class="col-12 col-md-4 col-lg-3 mb-3">
 							<div class="card h-100 shadow m-auto" style="max-width: 300px;">
 								<a href="{{ path('annonces_show', {id: annonce.id, slug: slug }) }}" style="height: 185px;" class="text-center overflow-hidden bg-light">
 									{% if annonce.photo|length > 0 %}
@@ -47,7 +47,7 @@
 									<div class="row">
 										{% if app.user and app.user.id == annonce.user.id %}
 											<div class="col text-left ml-2 mt-2">
-												<a href="{{ path('annonces_edit', {'id': annonce.id}) }}" class="card-link" >Modifier</a>
+												<a href="{{ path('annonces_edit', {'id': annonce.id}) }}" class="p-0 btn btn-link text-info" style="font-size: .8rem;">Modifier</a>
 												{{ include('annonces/_delete_form.html.twig') }}
 											</div>
 										{% else %}

@@ -31,7 +31,7 @@
                                 </div>
                             </div>
                         {% endif %}
-                        
+
                         {% if registrationForm.raison_social is defined %}
                             <div class="row">
                                 <div class="col-md-6">
@@ -66,12 +66,12 @@
                                 {{ form_row(registrationForm.cp, { 'id': 'code_postal', 'attr': {'readonly': 'on'}} ) }}
                             </div>
                         </div>
-                    
+
 
                         {{ form_row(registrationForm.adresse, { 'id': 'registration_adresse'}) }}
 
                         <div class="row m-3 text-center">
-                            <div class="col-md-8 offset-md-2 col-lg-4 offset-lg-4">
+                            <div class="col-md-8 offset-md-2 col-lg-6 offset-lg-3">
                                 <img src="{{ asset('uploads/avatar/default-men.png') }}" alt="" class="img-fluid rounded output-image">
                                 <div>
                                     {% do registrationForm.avatar.setRendered() %}

@@ -1,5 +1,5 @@
 
-$(document).ready( function () 
+$(document).ready( function ()
 {
 	$('#datepicker').datepicker({
 		format: 'dd/mm/yyyy',
@@ -17,19 +17,19 @@ $(document).ready( function ()
 		weekHeader: 'Sem.',
 		firstDay: 1
 	});
-	
+
 	$( "#slider-range" ).slider({
 		range: true,
 		min: 0,
 		max: 10000,
 		values: [ 0, 3000 ],
-		slide: function( event, ui ) 
+		slide: function( event, ui )
 		{
 			$( "#amount" ).val( ui.values[ 0 ] + "€ - " + ui.values[ 1 ] + "€" );
 		}
 	});
 	$( "#amount" ).val( $( "#slider-range" ).slider( "values", 0 ) + "€ - " + $( "#slider-range" ).slider( "values", 1 ) + "€" );
-	
+
 	$('#input-categorie').val(null);
 	$('#input-show-categorie').click( function(e)
 	{
@@ -37,12 +37,12 @@ $(document).ready( function ()
 		$('.categorie-container').toggleClass('d-none');
 	})
 
-	$('.categorie-enfant').click( function () 
+	$('.categorie-enfant').click( function ()
 	{
 		selectCategorie( $(this) );
 	})
 
-	$('.categorie-parent').click( function () 
+	$('.categorie-parent').click( function ()
 	{
 		if( $(this).attr('data-class') == 'Service' || $(this).attr('data-class') == 'Divers' )
 		{
@@ -55,8 +55,8 @@ $(document).ready( function ()
 			$('#prix-unite').val('2');
 		}
 	})
-	
-	$(document).on('click', '#input-show-categorie span i', function (event) 
+
+	$(document).on('click', '#input-show-categorie span i', function (event)
 	{
 		try {
 			var values = JSON.parse( $('#input-categorie').val() );
@@ -70,7 +70,7 @@ $(document).ready( function ()
 		}
 
 		var val = $(this).parent().attr('data');
-		values  = values.filter( function(ele){ 
+		values  = values.filter( function(ele){
 			return ele != val;
 		});
 		values = JSON.stringify( values );
@@ -110,7 +110,7 @@ $(document).ready( function ()
 
 	$('#city').select2({
 		language: 'fr',
-		placeholder: 'Séléctionner une ville',
+		placeholder: 'Choisissez une ville',
 		templateSelection: function (params) {
 			return params.text;
 		},
@@ -136,7 +136,7 @@ $(document).ready( function ()
 	$(document).click( function(event)
 	{
 		//check if the clicked area is dropDown or not
-		if ( $(".categorie-container *").has(event.target).length === 0 && $("#input-show-categorie *").has(event.target).length === 0 && "input-show-categorie" !== $(event.target).attr('id') ) 
+		if ( $(".categorie-container *").has(event.target).length === 0 && $("#input-show-categorie *").has(event.target).length === 0 && "input-show-categorie" !== $(event.target).attr('id') )
 		{
 			$(".categorie-container").addClass("d-none");
 			$("#input-show-categorie").addClass("not-show-all");

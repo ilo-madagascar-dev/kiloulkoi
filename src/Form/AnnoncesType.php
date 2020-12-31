@@ -27,6 +27,7 @@ class AnnoncesType extends AbstractType
         if( isset($options['classe']) && !in_array($options['classe'], ['Service', 'Divers']) )
         {
             $builder = $builder->add('sous_categorie', EntityType::class, [
+                'label' => 'Sous-catégorie',
                 'class' => Categories::class,
                 'query_builder' => function (EntityRepository $er) use($options)
                     {
@@ -72,14 +73,13 @@ class AnnoncesType extends AbstractType
                     },
                     'choice_label' => 'libelle'
                 ])
-                ->add('description', TextareaType::class)
-                ->add('currency'   , ChoiceType::class,
+                ->add('description', TextareaType::class, ['label' => 'Déscription'])
+                ->add('currency'   , TextType::class,
                     [
                         'label' => 'Montant de la caution',
-                        "mapped" => false,
-                        'choices' => [
-                            'Euro' => 1,
-                        ],
+                        'disabled' => true,
+                        'data' => '€',
+                        'mapped' => false
                     ],
                 )
                 // ->add('location', LocationType::class, array('required' => false))

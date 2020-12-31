@@ -8,6 +8,7 @@ use App\Form\AnnoncesType;
 use App\Entity\Energie;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -20,10 +21,10 @@ class VehiculeType extends AnnoncesType
 
         $builder
             ->add('marque')
-            ->add('modele')
+            ->add('modele', TextType::class, ['label' => 'Modèle'])
             ->add('energie', EntityType::class, [
                 'class' => Energie::class,
-                'query_builder' => function (EntityRepository $er) 
+                'query_builder' => function (EntityRepository $er)
                 {
                     return $er->createQueryBuilder('p')
                             ->orderBy('p.id');
