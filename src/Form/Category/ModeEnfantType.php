@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Form\AnnoncesType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -22,12 +23,12 @@ class ModeEnfantType extends AnnoncesType
 
         $builder
             ->add('marque')
-            ->add('modele')
-            ->add('pointure', 
-                IntegerType::class, 
+            ->add('modele', TextType::class, ['label' => 'Modèle'])
+            ->add('pointure',
+                IntegerType::class,
                 array(
                     'attr' => array(
-                        'min' => 16, 
+                        'min' => 16,
                         'max' => 36,
                         'class' => 'pointure'
                     ),
@@ -35,7 +36,7 @@ class ModeEnfantType extends AnnoncesType
             )
             ->add('taille', EntityType::class, [
                 'class' => TailleEnfant::class,
-                'query_builder' => function (EntityRepository $er) 
+                'query_builder' => function (EntityRepository $er)
                 {
                     return $er->createQueryBuilder('t')
                             ->orderBy('t.id');

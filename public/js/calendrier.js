@@ -50,8 +50,8 @@ $(document).ready( function()
 
         const nextDays = 7 - lastDayIndex - 1;
         const months   = ["Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "July", "Août", "Septembre", "Octobre", "Novembre", "Decembre"];
-        
-        document.querySelector(".date h3").innerHTML = months[date.getMonth()];
+
+        document.querySelector(".date .month-name").innerHTML = months[date.getMonth()];
         // document.querySelector(".date p").innerHTML  = new Date().toDateString();
         document.querySelector(".date p").innerHTML  = date.getFullYear();
 
@@ -70,7 +70,7 @@ $(document).ready( function()
             days += `<span data="${span_date}" class="prev-date text-muted">${day}</span>`;
         }
 
-        for (let i = 1; i <= lastDay; i++) 
+        for (let i = 1; i <= lastDay; i++)
         {
             let day        = n_(i);
             let span_date  = `${ date.getFullYear() }-${ n_(date.getMonth() + 1) }-${ day }`;
@@ -83,7 +83,7 @@ $(document).ready( function()
         {
             let day        = n_(j);
             let span_date  = `${ yearNext }-${ n_(monNext) }-${ day }`;
-    
+
             days += `<span data="${span_date}" class="next-date  text-muted">${j}</span>`;
         }
         monthDays.innerHTML = days;
@@ -152,7 +152,7 @@ $(document).ready( function()
 
     }; // render calendar end
 
-    document.querySelector(".prev").addEventListener("click", () => 
+    document.querySelector(".prev").addEventListener("click", () =>
     {
         date.setMonth(date.getMonth() - 1);
         renderCalendar();
@@ -164,16 +164,16 @@ $(document).ready( function()
         $('.next').removeClass('d-none');
     });
 
-    document.querySelector(".next").addEventListener("click", () => 
+    document.querySelector(".next").addEventListener("click", () =>
     {
         date.setMonth(date.getMonth() + 1);
         renderCalendar();
-        
+
         if( monthDiff((new Date()), date) > 2 )
         {
             $('.next').addClass('d-none');
         }
-        
+
         $('.prev').removeClass('d-none');
     });
 
@@ -218,7 +218,7 @@ $(document).ready( function()
 
                     $('#date-debut').val( moment(before).format("Do MMMM YYYY") );
                     $('#date-fin').val( moment(after).format("Do MMMM YYYY") );
-                    
+
                     var toColor = $(this).prev();
                     while( !toColor.hasClass('selected') && toColor.length > 0 )
                     {
@@ -262,7 +262,7 @@ $(document).ready( function()
         else
         {
             let demandes = getFreeDates(demande_debut, demande_fin, locations);
-    
+
             if( demandes.length == 0 )
             {
                 $('#reservationModal .liste-reservation' ).addClass("d-none");
@@ -300,7 +300,7 @@ $(document).ready( function()
         }
     });
 
-    const getFreeDates = (demande_debut, demande_fin, locations) => 
+    const getFreeDates = (demande_debut, demande_fin, locations) =>
     {
         let demandes = [];
         let debut    = demande_debut;
@@ -308,7 +308,7 @@ $(document).ready( function()
 
         let totalement_reserve = false;
 
-        for (const location of locations) 
+        for (const location of locations)
         {
             // Date déja reservé
             let reserve_debut = location.debut.date.slice(0, 10);;
@@ -340,28 +340,28 @@ $(document).ready( function()
                 {
                     let temp = new Date(reserve_fin);
                     temp.setDate(temp.getDate() + 1);
-    
+
                     debut = temp.toISOString().slice(0, 10);
                 }
                 else if( reserve_debut < fin && fin <= reserve_fin )
                 {
                     let temp = new Date(reserve_debut);
                     temp.setDate(temp.getDate() - 1);
-    
+
                     fin = temp.toISOString().slice(0, 10);
                 }
                 else
                 {
                     let temp = new Date(reserve_debut);
                     temp.setDate(temp.getDate() - 1);
-    
+
                     let temp_fin = temp.toISOString().slice(0, 10);
 
                     demandes.push({debut: debut, fin: temp_fin});
-                    
+
                     temp = new Date(reserve_fin);
                     temp.setDate(temp.getDate() + 1);
-    
+
                     debut = temp.toISOString().slice(0, 10);
                 }
             }
@@ -372,6 +372,6 @@ $(document).ready( function()
 
         return demandes;
     }
-    
+
     renderCalendar();
 });

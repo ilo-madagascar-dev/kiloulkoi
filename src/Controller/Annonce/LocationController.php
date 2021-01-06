@@ -139,8 +139,14 @@ class LocationController extends AbstractController
         }
         else
         {
+
             $this->addFlash('warning', 'Le proprietaire n as pas encore de document KYC valide, la location est annuler');
             return $this->redirectToRoute('location_en_cours');
+
+            /*$url = $this->generateUrl('user_profil');
+            $this->addFlash('notCards', "Vous n'avez pas encore de moyen de paiement pour effectuer une location ou <a href=\"" . $url . "\">votre compte</a> n'a pas été vérifier.");
+            return $this->redirectToRoute('compte_portefeuille');*/
+
         }
     }
 

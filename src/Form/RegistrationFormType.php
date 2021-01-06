@@ -42,14 +42,14 @@ class RegistrationFormType extends AbstractType
                 'options' => ['attr' => ['class' => 'password-field']],
                 'required' => true,
                 'first_options'  => ['label' => 'Mot de passe'],
-                'second_options' => ['label' => 'Confirmer votre mot de passe'],
+                'second_options' => ['label' => 'Confirmez votre mot de passe'],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez entrer un mot de passe',
                     ]),
                     new Length([
                         'min' => 10,
-                        'minMessage' => 'Entrer au moins {{ limit }} caracteres',
+                        'minMessage' => 'Entrez au moins {{ limit }} caracteres',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
@@ -74,7 +74,7 @@ class RegistrationFormType extends AbstractType
                 'label' => false
             ])
             ;
-            
+
             // ->add('agreeTerms', CheckboxType::class, [
             //     'mapped' => false,
             //     'constraints' => [

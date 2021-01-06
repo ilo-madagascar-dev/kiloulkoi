@@ -8,6 +8,7 @@ use App\Entity\Energie;
 use App\Form\AnnoncesType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -20,7 +21,7 @@ class BricoJardinType extends AnnoncesType
 
         $builder
             ->add('marque')
-            ->add('modele')
+            ->add('modele', TextType::class, ['label' => 'Modèle'])
         ;
     }
 

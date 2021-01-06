@@ -34,8 +34,7 @@ class AnnoncesRepository extends ServiceEntityRepository
                         ->leftJoin('a.categorie', 'c')
                         ->leftJoin('a.sousCategorie', 'sc')
                         ->leftJoin('a.photo', 'p')
-                        ->orderBy('a.id', 'DESC')
-                        ->orderBy('p.id', 'ASC');
+                        ->orderBy('a.id', 'DESC');
 
         if( $user )
         {
@@ -49,7 +48,7 @@ class AnnoncesRepository extends ServiceEntityRepository
 
     /**
      * Annonces des autres utilisateurs
-     * 
+     *
      * @return Annonces[] Returns an array of Annonces objects
      */
     public function findOtherAnnonceById($id)
@@ -67,7 +66,7 @@ class AnnoncesRepository extends ServiceEntityRepository
 
     /**
      * favoris des utilisateurs
-     * 
+     *
      * @return Annonces[] Returns an array of Annonces objects
      */
     public function findFavoris($user_id)
@@ -81,7 +80,7 @@ class AnnoncesRepository extends ServiceEntityRepository
     }
 
     /**
-     * 
+     *
      * @return int
      */
     public function checkFavoris($user_id, $annonce_id)

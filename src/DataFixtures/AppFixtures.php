@@ -22,7 +22,7 @@ class AppFixtures implements FixtureInterface
 
         // Energie vehicule
         $energies = ['Essence', 'Diesel', 'Electrique'];
-        for ($i = 0; $i < count($energies); $i++) 
+        for ($i = 0; $i < count($energies); $i++)
         {
             $energie = new Energie();
             $energie->setValeur($energies[$i]);
@@ -31,7 +31,7 @@ class AppFixtures implements FixtureInterface
 
         //taille HommeFemmeMode
         $tailles = ['XS', 'S', 'M', 'L', 'XL', 'XXl', 'XXXL'];
-        for ($i = 0; $i < count($tailles); $i++) 
+        for ($i = 0; $i < count($tailles); $i++)
         {
             $taille = new Taille();
             $taille->setValeur($tailles[$i]);
@@ -41,7 +41,7 @@ class AppFixtures implements FixtureInterface
 
         //pointure VetementMaternite
         $tailles = ["Prématuré", "Naissance", "0-3mois", "3-6mois", "6-9mois", "9-12mois", "12-18mois", "18-24mois", "24-36mois"];
-        for ($i = 0; $i < count($tailles); $i++) 
+        for ($i = 0; $i < count($tailles); $i++)
         {
             $taille = new Taille();
             $taille->setValeur($tailles[$i]);
@@ -150,7 +150,7 @@ class AppFixtures implements FixtureInterface
                 ]
             ],
             "Electromenager" => [
-                'icon' => 'fas fa-tv',
+                'icon' => 'fas fa-blender',
                 'libelle' => "ÉLECTROMÉNAGER",
                 'sub_cat' => [
                     "Cuisine",
@@ -287,7 +287,7 @@ class AppFixtures implements FixtureInterface
         }
 
         $statuLocations = ['En attente', 'En cours', 'Effectué', 'Interrompu'];
-        for ($i = 0; $i < count($statuLocations); $i++) 
+        for ($i = 0; $i < count($statuLocations); $i++)
         {
             $statuLocation = new StatutLocation();
             $statuLocation->setLibelle($statuLocations[$i]);
@@ -296,7 +296,7 @@ class AppFixtures implements FixtureInterface
 
         //type location
         $typeLocations = ["heure", "jour", "semaine", "mois"];
-        for ($i = 0; $i < count($typeLocations); $i++) 
+        for ($i = 0; $i < count($typeLocations); $i++)
         {
             $typeLocation = new TypeLocation();
             $typeLocation->setLibelle($typeLocations[$i]);
@@ -309,7 +309,7 @@ class AppFixtures implements FixtureInterface
             ["Professionnel", 3, 3, 5],
             ["Premium"      , 6, 6, 7.99],
         ];
-        for ($i = 0; $i < count($typeAbonnements); $i++) 
+        for ($i = 0; $i < count($typeAbonnements); $i++)
         {
             $type = new TypeAbonnement();
             $type->setLibelle($typeAbonnements[$i][0]);
@@ -333,7 +333,7 @@ class AppFixtures implements FixtureInterface
             "16 ans",
             "18 ans",
         ];
-        for ($i = 0; $i < count($tailles); $i++) 
+        for ($i = 0; $i < count($tailles); $i++)
         {
             $type = new TailleEnfant();
             $type->setLibelle($tailles[$i]);
@@ -356,7 +356,7 @@ class AppFixtures implements FixtureInterface
             "24 mois",
             "36 mois",
         ];
-        for ($i = 0; $i < count($tailles); $i++) 
+        for ($i = 0; $i < count($tailles); $i++)
         {
             $type = new TailleMaternite();
             $type->setLibelle($tailles[$i]);
