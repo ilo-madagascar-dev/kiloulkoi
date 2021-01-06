@@ -12,7 +12,7 @@
                     <div class="card-header d-flex align-items-top">
                         <i class="text-success fa fa-list mr-3" style="font-size: 3rem;"></i>
                         <div class="d-inline">
-                            <h1 class="mb-0" style="font-size: 1.4rem;"><strong>Paiement transfere Réussit</strong></h1>
+                            <h1 class="mb-0" style="font-size: 1.4rem;"><strong>Paiement Réussit</strong></h1>
                             
                         </div>
                     </div>
@@ -23,7 +23,7 @@
                                     <tr>
                                         <th>Propriétaire</th>
                                         <th>Locataire</th>
-                                        <th>Prix du location</th>
+                                        <th>Prix</th>
                                         <th>Devis</th>
                                         <th>Statut</th>
                                         <th>Actions</th>
@@ -34,13 +34,13 @@
                                     <tr>
                                         <td>{{ proprio }}</td>
                                         <td>{{ locataire }}</td>
-                                        <td>{{ reponse.DebitedFunds.Amount }}</td>
+                                        <td>{{ reponse.DebitedFunds.Amount/100 }}</td>
                                         <td>{{ reponse.DebitedFunds.Currency }}</td>
                                         <td>{{ reponse.ResultMessage }}</td>
                                         <td>
                                                  
                                                     <a href="{{ path('location_en_cours') }}" class="btn btn-sm btn-success" title="Accepter">
-                                                    Retour sur l'alocation
+                                                    Retour
                                                     </a>
                                         
                                         </td>

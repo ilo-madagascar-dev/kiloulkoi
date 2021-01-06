@@ -87,6 +87,11 @@
         </div>
 
         <div class="row">
+            {% for message in app.flashes('warning') %}
+                        <div class="text-center alert alert-danger">
+                            {{ message }}
+                        </div>
+            {% endfor %}
             <div class="offset-lg-2 col-lg-8 offset-md-1 col-md-10">
                 <div class="card shadow mb-3">
                     <div class="card-header d-flex align-items-top">
