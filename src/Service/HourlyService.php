@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\Abonnement;
 use App\Entity\Location;
+use App\Entity\Note;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Rewieer\TaskSchedulerBundle\Task\AbstractScheduledTask;
@@ -32,6 +33,19 @@ class HourlyService extends AbstractScheduledTask
              */
             $locationRepository  = $this->em->getRepository(Location::class);
             $locationRepository->updateLocationStatus();
+
+            $locations = $locationRepository->toNote();
+
+            foreach($locations as $location)
+            {
+                $note = new Note();
+                $note->setValeur(5);
+                $note->setLocation( $location );
+
+                $this->em->persist($note);
+            }
+
+            $this->em->flush();
         }
         catch( Exception $e ) {}
     }
