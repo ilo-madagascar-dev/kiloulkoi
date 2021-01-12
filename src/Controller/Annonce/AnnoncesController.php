@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Repository\AbonnementRepository;
 use App\Repository\AnnoncesRepository;
 use App\Repository\CategoriesRepository;
+use App\Repository\NoteRepository;
 use App\Repository\TypeAbonnementRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -277,7 +278,7 @@ class AnnoncesController extends AbstractController
     /**
      * @Route("/details/{id}/{slug}", name="annonces_show", methods={"GET"})
      */
-    public function show(int $id, string $slug, SerializerInterface $serializer): Response
+    public function show(int $id, string $slug, SerializerInterface $serializer, NoteRepository $noteRepository): Response
     {
         $user         = $this->getUser();
         $annonce      = $this->repAnnonce->findAnnonceById($id);
@@ -301,10 +302,12 @@ class AnnoncesController extends AbstractController
             'visite', 'slug', 'validationAdmin', 'type', 'userFavoris'                    //////////////
         ]]);
 
+        $note = $noteRepository->getNote( $proprietaire );
         return $this->render('annonces/show.html.twig', [
             'annonce'            => $annonce,
             'photoMax'           => $photoMax,
             'annonce_serialized' => $annonce_serialized,
+            'note'               => $note['count'] == 0 ? 0 : round($note['sum'] / $note['count'], 1),
 
             'user_annonces'      => $annonce->getUser()->getAnnonces()->count(),
             'kilouwersCount'     => $this->repUser->countKilouwers( $proprietaire ),

@@ -18,7 +18,7 @@
                         <h1 class="h3 text-center text-muted pt-2">
                             <span>Mon Abonnement</span>
 
-                            <div class="position-absolute d-inline pr-2" style="right: .25rem; top: .32rem">
+                            <div class="position-absolute d-inline" style="right: .35rem; top: .35rem">
                                 {% if abonnement.actif == 1 and abonnement.type.id != 1 %}
                                     <a href="{{ path('abonnement_renouvelement') }}" class="btn btn-warning text-white">Désactiver le renouvelement</a>
                                 {% else %}

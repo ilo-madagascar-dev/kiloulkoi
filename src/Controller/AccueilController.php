@@ -28,14 +28,14 @@ class AccueilController extends AbstractController
         $query      = $repAnnonce->findAllAnnonces();
         $annonces   = $paginator->paginate($query, $request->query->getInt('page', 1));
 
-        if ($this->getUser()) 
+        if ($this->getUser())
         {
-            //portefeuille 
+            //portefeuille
             $portFeuil = $mangoPayService->getWallet($this->getUser()->getMangoPayId());
             $wallet    = $portFeuil;
             $session->set('wallet', $wallet);
         }
-        
+
 
         return $this->render('accueil/index.html.twig', [
             'categories' => $categories,
@@ -55,12 +55,12 @@ class AccueilController extends AbstractController
         $categories = $serializer->normalize($categories, null, [
             AbstractObjectNormalizer::ENABLE_MAX_DEPTH => true,
             AbstractNormalizer::IGNORED_ATTRIBUTES => [
-                'annonces', 
+                'annonces',
                 'className',
                 'id'
             ]
         ]);
-        
+
         $datas = json_encode([
             'categories' => $categories,
         ]);
