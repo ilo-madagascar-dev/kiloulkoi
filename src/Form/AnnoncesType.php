@@ -52,7 +52,10 @@ class AnnoncesType extends AbstractType
                     'by_reference' => false,
                 ])
                 ->add('prix', IntegerType::class, [
-                    'attr' => array('min' => 0)
+                    'attr' => array(
+                        'placeholder' => '€',
+                        'min' => 0
+                    ),
                 ])
                 ->add('type', EntityType::class, [
                     'label' => 'Location par ',
@@ -73,12 +76,13 @@ class AnnoncesType extends AbstractType
                     },
                     'choice_label' => 'libelle'
                 ])
-                ->add('description', TextareaType::class, ['label' => 'Déscription'])
-                ->add('currency'   , TextType::class,
+                ->add('description', TextareaType::class, ['label' => 'Description'])
+                ->add('caution'    , TextType::class,
                     [
                         'label' => 'Montant de la caution',
-                        'disabled' => true,
-                        'data' => '€',
+                        'attr' => [
+                            'placeholder' => '€',
+                        ],
                         'mapped' => false
                     ],
                 )

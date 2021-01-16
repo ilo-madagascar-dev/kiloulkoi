@@ -106,7 +106,7 @@ class UserController extends AbstractController
     {
         $user    = $this->getUser();
         $query   = $userRepo->userFavoris($user);
-        $favoris = $paginator->paginate($query, $request->query->getInt('page', 1));
+        $favoris = $paginator->paginate($query, $request->query->getInt('page', 1), 40);
 
         return $this->render('user/userFavoris.html.twig', [
             'favoris' => $favoris,
@@ -121,7 +121,7 @@ class UserController extends AbstractController
     {
         $user    = $this->getUser();
         $query   = $userRepo->kilouwers($user);
-        $favoris = $paginator->paginate($query, $request->query->getInt('page', 1));
+        $favoris = $paginator->paginate($query, $request->query->getInt('page', 1), 40);
 
         return $this->render('user/userFavoris.html.twig', [
             'favoris' => $favoris,

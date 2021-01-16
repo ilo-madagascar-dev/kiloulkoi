@@ -26,7 +26,7 @@ class AccueilController extends AbstractController
         $categories = $repCategorie->findAllWithSousCategorie();
         $types      = $ReptypeLocation->findAllOrd();
         $query      = $repAnnonce->findAllAnnonces();
-        $annonces   = $paginator->paginate($query, $request->query->getInt('page', 1));
+        $annonces   = $paginator->paginate($query, $request->query->getInt('page', 1), 40);
 
         if ($this->getUser())
         {

@@ -47,7 +47,7 @@ class AnnoncesController extends AbstractController
     {
         $categories = $this->repCategorie->findParents();
         $query      = $this->repAnnonce->findAllAnnonces();
-        $annonces   = $paginator->paginate($query, $request->query->getInt('page', 1));
+        $annonces   = $paginator->paginate($query, $request->query->getInt('page', 1), 40);
 
         return $this->render('annonces/index.html.twig', [
             'categories' => $categories,
@@ -93,7 +93,7 @@ class AnnoncesController extends AbstractController
         }
 
         $query      = $this->repAnnonce->findMesAnnonces($user->getId());
-        $annonces   = $paginator->paginate($query, $request->query->getInt('page', 1));
+        $annonces   = $paginator->paginate($query, $request->query->getInt('page', 1), 40);
         $annonce_titre = "Mes annonces";
 
         return $this->render('annonces/list-base.html.twig', [
@@ -109,7 +109,7 @@ class AnnoncesController extends AbstractController
     {
         $categories    = $this->repCategorie->findParents();
         $query         = $this->repAnnonce->findAnnonces($request->request->all());
-        $annonces      = $paginator->paginate($query, $request->query->getInt('page', 1));
+        $annonces      = $paginator->paginate($query, $request->query->getInt('page', 1), 40);
         $annonce_titre = "Résultats des recherches";
 
         return $this->render('annonces/list-base.html.twig', [
@@ -127,7 +127,7 @@ class AnnoncesController extends AbstractController
     {
         $categories    = $this->repCategorie->findParents();
         $query         = $this->repAnnonce->findFavoris( $this->getUser()->getId() );
-        $annonces      = $paginator->paginate($query, $request->query->getInt('page', 1));
+        $annonces      = $paginator->paginate($query, $request->query->getInt('page', 1), 40);
         $annonce_titre = "Mes Favoris";
 
         return $this->render('annonces/list-base.html.twig', [
