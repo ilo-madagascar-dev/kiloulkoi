@@ -3,6 +3,7 @@
 namespace App\Controller\Annonce;
 
 use App\Entity\Location;
+use App\Entity\Note;
 use App\Entity\Notification;
 use App\Entity\StatutLocation;
 use App\Form\LocationType;
@@ -223,14 +224,40 @@ class LocationController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="location_show", methods={"GET"})
+     * @Route("/note/{location}", name="location_comment", methods={"POST"})
      */
-    public function show(Location $location): Response
+    public function comment(Request $request, Location $location): Response
     {
-        return $this->render('location/show.html.twig', [
-            'location' => $location,
-        ]);
+        $user = $this->getUser();
+
+        if( $user->getId() == $location->getUser()->getId() )
+        {
+            $valeur  = intval( $request->request->get('note') );
+            $comment = $request->request->get('commentaire');
+            $em      = $this->getDoctrine()->getManager();
+
+            $note = new Note();
+            $note->setValeur( $valeur );
+            $note->setCommentaire( $comment );
+            $note->setLocation( $location );
+
+            $em->persist($note);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('location_en_cours');
     }
+
+
+    // /**
+    //  * @Route("/{id}", name="location_show", methods={"GET"})
+    //  */
+    // public function show(Location $location): Response
+    // {
+    //     return $this->render('location/show.html.twig', [
+    //         'location' => $location,
+    //     ]);
+    // }
 
     // /**
     //  * @Route("/{id}/edit", name="location_edit", methods={"GET","POST"})

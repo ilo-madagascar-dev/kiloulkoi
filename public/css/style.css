@@ -1,5 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@1,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@1,300&family=Roboto:wght@300;400;700;900&display=swap');
+
+h1 {
+    font-family: 'Raleway';
+}
+
+h2 {
+    font-family: 'Merriweather';
+}
+
 body {
-	min-width: 360px;
+    min-width: 360px;
+    font-family: 'Roboto';
 }
 
 header .dropdown-toggle::after {

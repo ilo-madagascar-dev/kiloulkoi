@@ -9,6 +9,11 @@ $(document).ready( function()
                 {
                     regex: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                     message: "Veuillez entrer un email valide."
+                },
+                {
+                    unique: true,
+                    id: 'Email',
+                    message: "Email déjà utilisé."
                 }
             ]
         },
@@ -36,17 +41,27 @@ $(document).ready( function()
                 {
                     regex: /^[0-9]{14}$/,
                     message: "Veuillez entrer un numero de siret valide."
+                },
+                {
+                    unique: true,
+                    id: 'Siret',
+                    message: "Siret déjà utilisé."
                 }
             ]
         },
     ];
 
-    validations.forEach( function(element, i) 
+    validations.forEach( function(element, i)
     {
         element.rules.forEach( function(rule, j)
         {
             var errorField = `<div id="feedback-${i}-${j}" class="invalid-feedback">${rule.message}</div>`;
             $(errorField).insertAfter( $(element.fields) );
+
+            if(j == 1)
+            {
+                $(`<div class="invalid-feedback verification">Vérification....</div>`).insertAfter( $(element.fields) );
+            }
         })
 
         $(element.fields).change( function()
@@ -54,23 +69,71 @@ $(document).ready( function()
             if( $(this).val().trim().match(element.rules[0].regex) )
             {
                 $(this).parent().children('.invalid-feedback').removeClass('d-block');
-                $(this).removeClass('is-invalid');
-                $(this).addClass('is-valid');
+                if( !element.rules[1] )
+                {
+                    $(this).removeClass('is-invalid');
+                    $(this).addClass('is-valid');
+                }
             }
             else
-            {                    
+            {
                 $(this).parent().children('.invalid-feedback').addClass('d-block');
                 $(this).addClass('is-invalid');
                 $(this).removeClass('is-valid');
+
+                $(`#feedback-${i}-${1}`).removeClass('d-block');
+                $(`#feedback-${i}-${1}`).addClass('d-none');
+
+                $(`#feedback-${i}-${1}`).removeClass('d-block');
+                $(`#feedback-${i}-${1}`).addClass('d-none');
+
+                $(this).parent().children('.invalid-feedback.verification').addClass('d-none');
+                $(this).parent().children('.invalid-feedback.verification').removeClass('d-block');
             }
         });
+
+        if( element.rules[1] )
+        {
+            $(element.fields).focusout( function()
+            {
+                var that = this;
+                if( $(this).val().trim().match(element.rules[0].regex) )
+                {
+                    $(this).parent().children('.invalid-feedback').addClass('d-none');
+                    $(this).parent().children('.invalid-feedback').removeClass('d-block');
+                    $(this).parent().children('.invalid-feedback.verification').addClass('d-block');
+
+                    var value = $(this).val();
+
+                    $.post('/check' + element.rules[1].id, { data: value }, function(data)
+                    {
+                        if( data.trim() == 0 )
+                        {
+                            $(that).removeClass('is-invalid');
+                            $(that).addClass('is-valid');
+                        }
+                        else
+                        {
+                            $(that).removeClass('is-valid');
+                            $(that).addClass('is-invalid');
+
+                            $(`#feedback-${i}-${1}`).removeClass('d-none');
+                            $(`#feedback-${i}-${1}`).addClass('d-block');
+                        }
+
+                        $(that).parent().children('.invalid-feedback.verification').addClass('d-none');
+                        $(that).parent().children('.invalid-feedback.verification').removeClass('d-block');
+                    })
+                }
+            });
+        }
     })
 
     $('input:not([type="file"])').keyup( function()
     {
         $('#registration_form').removeClass('was-validated');
     })
-    
+
     $(`<div id="feedback-pass-2" class="invalid-feedback">Doit être le même que le champ "Mot de passe"</div>`).insertAfter( $("#registration_form_password_second") );
     $('#registration_form_password_second').change( function()
     {
@@ -81,7 +144,7 @@ $(document).ready( function()
             $(this).addClass('is-valid');
         }
         else
-        {                    
+        {
             $(this).parent().children('.invalid-feedback').addClass('d-block');
             $(this).addClass('is-invalid');
             $(this).removeClass('is-valid');
@@ -105,8 +168,8 @@ $(document).ready( function()
         else
         {
             var error = false;
-            
-            for (const element of $('input[required]') ) 
+
+            for (const element of $('input[required]') )
             {
                 if( $(element).val().trim() == '' )
                 {
@@ -177,14 +240,14 @@ $(document).ready( function()
             }
         }
     })
-    
+
     $('.input-image').val(null);
-    $(document).on('change', '.input-image', function(e) 
+    $(document).on('change', '.input-image', function(e)
     {
         var input = this;
         var reader = new FileReader();
-        
-        reader.onload = function(e) 
+
+        reader.onload = function(e)
         {
             if( e.total < 64000 )
             {
@@ -199,8 +262,7 @@ $(document).ready( function()
                 $(input).val(null);
             }
         };
-        
+
         reader.readAsDataURL(input.files[0]); // convert to base64 string
 	});
 });
-	

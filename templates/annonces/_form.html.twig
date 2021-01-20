@@ -31,7 +31,7 @@
 
             {# render the the rest, except submit button #}
             {% for child in form %}
-                {% if child.vars.name not in ['prix', 'type', 'description', 'currency'] %}
+                {% if child.vars.name not in ['prix', 'type', 'description', 'caution'] %}
                     {{ form_row(child) }}
                 {% endif %}
             {% endfor %}
@@ -41,7 +41,7 @@
                     {{ form_row(form.prix, {'attr': {'autocomplete': 'off'} }) }}
                 </div>
                 <div class="col-4">
-                    {{ form_row(form.currency, {'attr': {'autocomplete': 'off'} }) }}
+                    {{ form_row(form.caution, {'attr': {'autocomplete': 'off'} }) }}
                 </div>
                 <div class="col-4">
                     {{ form_row(form.type) }}

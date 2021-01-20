@@ -26,18 +26,18 @@ class ProprietaireController extends AbstractController
         $this->repAnnonce = $repAnnonce;
         $this->repUser    = $repUser;
 	}
-	
+
 
     /**
      * @Route("{proprietaire}/{pseudo}", name="proprietaire_annonce", methods={"GET"})
      */
 	public function index(Request $request, User $proprietaire, string $pseudo, PaginationService $paginator) : Response
 	{
-        if ($proprietaire == null) 
+        if ($proprietaire == null)
         {
             return $this->redirectToRoute('accueil');
 		}
-        
+
         $isFollower = false;
         if( $this->getUser() )
         {
@@ -45,7 +45,7 @@ class ProprietaireController extends AbstractController
         }
 
         $query         = $this->repAnnonce->findMesAnnonces($proprietaire->getId());
-        $annonces      = $paginator->paginate($query, $request->query->getInt('page', 1));
+        $annonces      = $paginator->paginate($query, $request->query->getInt('page', 1), 40);
         $annonce_titre = $proprietaire->getPseudo() . ' annonces';
         $discr         = strpos(get_class($proprietaire), 'Professionnel');
 
@@ -59,8 +59,8 @@ class ProprietaireController extends AbstractController
             'annonce_titre' => $annonce_titre
         ]);
     }
-    
-    
+
+
     /**
      * @Route("{proprietaire}", name="proprietaire_follow", methods={"GET"})
      */

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\NoteRepository;
 use App\Repository\UserRepository;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,17 +24,19 @@ class UserController extends AbstractController
     /**
      * @Route("/", name="user_profil", methods={"GET"})
      */
-    public function profil(MangoPayService $mangoPayService, UserRepository $userRepo): Response
+    public function profil(MangoPayService $mangoPayService, UserRepository $userRepo, NoteRepository $noteRepository): Response
     {
         $user        = $this->getUser();
         $userMangoId = $user->getMangoPayId();
         $usersmango  = $mangoPayService->getUser($userMangoId);
         $getkycdoc   = $mangoPayService->getKYCDocs($userMangoId);
         $discr       = strpos(get_class($user), 'Professionnel');
+        $note        = $noteRepository->getNote( $user );
 
         return $this->render('user/show.html.twig', [
             'user' => $user,
             'discr' => $discr,
+            "note" => $note['count'] == 0 ? 0 : round($note['sum'] / $note['count'], 1),
             'usersmango' => $usersmango,
             'getkycdoc' => $getkycdoc,
             'kilouwersCount'=> $userRepo->countKilouwers( $user ),
@@ -91,7 +94,7 @@ class UserController extends AbstractController
                 'lien' => $this->generateUrl('user_profil')
             ];
         }
-        
+
         return new Response( json_encode($reponse) );
     }
 
@@ -103,8 +106,8 @@ class UserController extends AbstractController
     {
         $user    = $this->getUser();
         $query   = $userRepo->userFavoris($user);
-        $favoris = $paginator->paginate($query, $request->query->getInt('page', 1));
-        
+        $favoris = $paginator->paginate($query, $request->query->getInt('page', 1), 40);
+
         return $this->render('user/userFavoris.html.twig', [
             'favoris' => $favoris,
             'titre'   => 'Mes kilouwers favoris',
@@ -118,8 +121,8 @@ class UserController extends AbstractController
     {
         $user    = $this->getUser();
         $query   = $userRepo->kilouwers($user);
-        $favoris = $paginator->paginate($query, $request->query->getInt('page', 1));
-        
+        $favoris = $paginator->paginate($query, $request->query->getInt('page', 1), 40);
+
         return $this->render('user/userFavoris.html.twig', [
             'favoris' => $favoris,
             'titre'   => 'Mes kilouwers',
@@ -133,15 +136,15 @@ class UserController extends AbstractController
     {
         /*$filePath = filePath('\www\projetkiloukoi\Kiloukoi.WEBAPP\var\mangopay\FLYER_FR.pdf');*/
         /*$file = base64_encode (file_get_contents($filePath));*/
-        
+
         $file = $_FILES['kycfile']['tmp_name'];/*$uploader->upload($request->files->get('kycfile'));*/
-        
+
         $mguId = $this->getUser()->getMangoPayId();
-        
+
         $mangoPayService->setUserMangoPayKYC($mguId,$file);
         $this->addFlash('addKYC', 'Merci ! la verification de votre compte peut prendre une semaine, une notification vous sera envoye par email .');
         return $this->redirectToRoute('user_profil');
-       
+
     }
     /**
      * @Route("/{id}", name="user_show", methods={"GET"})
@@ -164,7 +167,7 @@ class UserController extends AbstractController
         $form = $this->createForm($formType, $user);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) 
+        if ($form->isSubmitted() && $form->isValid())
         {
             if( $form->get('avatar')->getData() )
             {
@@ -194,14 +197,14 @@ class UserController extends AbstractController
     {
         $getkycdoc   = $mangoPayService->getKYCDocs($this->getUser()->getMangoPayId());
         $usersmango  = $mangoPayService->getUser($this->getUser()->getMangoPayId());
-        
+
         if ($usersmango->KYCLevel == 'REGULAR') {
             $result=$mangoPayService->creatBankAccount($this->getUser()->getMangoPayId(),"IBAN",$request->get('iban'),$request->get('bic'),$this->getUser()->getPseudo(),$this->getUser()->getAdresse());
         }else{
             return new Response('pas encore valide KYC');
         }
-        
-        
+
+
         return $this->redirectToRoute('user_profil');
     }
 }

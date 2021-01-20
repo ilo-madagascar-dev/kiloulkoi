@@ -34,7 +34,7 @@ class AnnoncesRepository extends ServiceEntityRepository
                         ->leftJoin('a.categorie', 'c')
                         ->leftJoin('a.sousCategorie', 'sc')
                         ->leftJoin('a.photo', 'p')
-                        ->orderBy('a.id', 'DESC');
+                        ->orderBy('a.dateModification', 'DESC');
 
         if( $user )
         {

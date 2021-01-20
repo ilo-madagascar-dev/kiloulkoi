@@ -62,6 +62,11 @@ class Location
      */
     private $conversations;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Note::class, mappedBy="location", cascade={"persist", "remove"})
+     */
+    private $note;
+
     public function __construct()
     {
         $this->conversations = new ArrayCollection();
@@ -198,6 +203,23 @@ class Location
     {
         if ($this->conversations->removeElement($conversation)) {
             $conversation->removeLocation($this);
+        }
+
+        return $this;
+    }
+
+    public function getNote(): ?Note
+    {
+        return $this->note;
+    }
+
+    public function setNote(Note $note): self
+    {
+        $this->note = $note;
+
+        // set the owning side of the relation if necessary
+        if ($note->getLocation() !== $this) {
+            $note->setLocation($this);
         }
 
         return $this;

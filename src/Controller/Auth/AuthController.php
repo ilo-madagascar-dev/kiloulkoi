@@ -16,6 +16,8 @@ use App\Entity\User;
 use App\Form\ParticulierType;
 use App\Form\ProfessionnelType;
 use App\Form\RegistrationFormType;
+use App\Repository\ProfessionnelRepository;
+use App\Repository\UserRepository;
 use App\Security\UserAuthenticator;
 use App\Service\FileUploader;
 use App\Service\MangoPayService;
@@ -147,5 +149,31 @@ class AuthController extends AbstractController
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
-    
+    /**
+     * @Route("/checkSiret", name="security_check_siret")
+     */
+    public function checkSiret(Request $request, ProfessionnelRepository $userRepository)
+    {
+        $siret = $request->request->get('data');
+        $user = $userRepository->findBy(['siret' => $siret]);
+
+        if( $user )
+            return new Response('1');
+        else
+            return new Response('0');
+    }
+
+    /**
+     * @Route("/checkEmail", name="security_check_email")
+     */
+    public function checkEmail(Request $request, UserRepository $userRepository)
+    {
+        $email = $request->request->get('data');
+        $user = $userRepository->findBy(['email' => $email]);
+
+        if( $user )
+            return new Response('1');
+        else
+            return new Response('0');
+    }
 }

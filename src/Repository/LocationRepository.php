@@ -99,6 +99,23 @@ class LocationRepository extends ServiceEntityRepository
                     ->execute();
     }
 
+    /**
+     * toNote
+     *
+     * @return Location[]
+     */
+    public function toNote()
+    {
+        return $this->createQueryBuilder('l')
+                    ->where('l.dateFin > :now' )
+                    ->setParameter('now', date("Y-m-d"))
+                    ->andWhere('l.statutLocation = 3')
+                    ->andWhere('l.note is null')
+                    ->getQuery()
+                    ->getResult()
+                    ;
+    }
+
     // /**
     //  * @return Location[] Returns an array of Location objects
     //  */

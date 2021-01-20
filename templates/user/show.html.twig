@@ -11,18 +11,38 @@
 {% block body %}
 
     <div class="container-fluid" id="tab">
-        
+
         <div class="row">
             <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2 col-sm-12 bg-white rounded pb-3" style="margin-top: 50px;;">
                 <div class="text-center mb-3">
                     <img src="{{ asset('uploads/avatar/') ~ app.user.avatar }}" class="bg-white" alt="" style="height: 150px;width:auto;margin-top:-60px;border-radius: 50%">
-                    <div class="text-center text-warning mb-1">
-						<i class="fas fa-star"></i>
-						<i class="fas fa-star"></i>
-						<i class="fas fa-star"></i>
-						<i class="far fa-star"></i>
-						<i class="far fa-star"></i>
-					</div>
+                    <div class="text-center my-1 text-warning">
+                        {% set noteRounded = note|round(0, 'floor') %}
+                        {% if noteRounded == 5 %}
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        {% elseif noteRounded == 0 %}
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                        {% else %}
+                            {% for i in range( noteRounded, 1) %}
+                                <i class="fas fa-star"></i>
+                            {% endfor %}
+
+                            {% for i in range( (5 - noteRounded), 1) %}
+                                <i class="far fa-star"></i>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <strong class="text-warning ml-2">({{ note|round(1, 'floor') }})</strong>
+
 					<div class="text-center text-secondary">
                         <a href="{{ path('kilouwers_perso') }}">
                             <strong id="kilouwers">{{ kilouwersCount }}</strong> Kilouwers
@@ -61,7 +81,7 @@
                                             <td>{{ app.user.telephone }}</td>
                                         </tr>
                                     {% endif %}
-                                    
+
                                     {% if app.user.raisonSocial is defined %}
                                         <tr>
                                             <td><strong>Raison social :</strong></td>
@@ -105,7 +125,7 @@
                                 <div class="card h-100 border-{{ classe }} shadow mb-3" >
                                     <div class="card-header border-bottom border-{{ classe }}">
                                         <h5 class="m-0">Vérification du compte</h5>
-                                    </div> 
+                                    </div>
                                     <div class="card-body text-center">
                                         {% if getkycdoc %}
                                             {% if usersmango.KYCLevel == 'REGULAR' %}
@@ -196,42 +216,42 @@
                                 <input type="file" style="display: none;" name="kycfile[]">
                             </label>
                         {% endif %}
-                        
+
                         <div class="form-group">
                             <button class="btn btn-success btn-block" style="background-color: #FF4500;border-color: #FF4500;" type="submit"><img src="{{ asset('image/mangopay.png') }}" class="mr-2 float-left" style="height: 25px">Envoyer
                             </button>
                         </div>
-        
+
                     </form>
                 </div>
             </div>
         </div>
     </div>
-    
+
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript">
-        $(function(){  
+        $(function(){
             $('input').change(function(){
-                var label = $(this).parent().find('span'); 
-                if(typeof(this.files) !='undefined'){ // fucking IE      
+                var label = $(this).parent().find('span');
+                if(typeof(this.files) !='undefined'){ // fucking IE
                     if(this.files.length == 0){
                         label.removeClass('withFile').text(label.data('default'));
-                    }           
+                    }
                     else{
-                        var file = this.files[0]; 
+                        var file = this.files[0];
                         var name = file.name;
-                        var size = (file.size / 1048576).toFixed(3); //size in mb 
+                        var size = (file.size / 1048576).toFixed(3); //size in mb
                         label.addClass('withFile').text(name + ' (' + size + 'mb)');
-                    }                        
+                    }
                 }
                 else{
                   var name = this.value.split("\\");
                   label.addClass('withFile').text(name[name.length-1]);
                 }
                 return false;
-            });  
+            });
         });
     </script>
 {% endblock %}
