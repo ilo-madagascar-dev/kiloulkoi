@@ -201,10 +201,11 @@ class UserController extends AbstractController
         if ($usersmango->KYCLevel == 'REGULAR') {
             $result=$mangoPayService->creatBankAccount($this->getUser()->getMangoPayId(),"IBAN",$request->get('iban'),$request->get('bic'),$this->getUser()->getPseudo(),$this->getUser()->getAdresse());
         }else{
-            return new Response('pas encore valide KYC');
+            $this->addFlash('warningKYC', 'Vos documments KYC ne sont pas encore valide.');
+            return $this->redirectToRoute('user_profil');
         }
 
-
-        return $this->redirectToRoute('user_profil');
+        $this->addFlash('successPayin', 'Création de compte bancaire éffectué!');
+        return $this->redirectToRoute('compte_portefeuille');/*user_profil*/
     }
 }

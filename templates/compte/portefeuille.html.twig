@@ -101,17 +101,17 @@
 							<table class="table">
 								<thead>
 									<tr>
-										<th>Proprietaire</th>
-										<th>Description</th>
-										<th>Balance</th>
-										<th>Transférer</th>
+										{# <th>Proprietaire</th>
+										<th>Description</th> #}
+										<th>Montant</th>
+										<th>Transférer vers mon compte bancaire</th>
 									</tr>
 								</thead>
 								<tbody>
 									{% for portfelle in walet %}
 										<tr>
-											<td>{{ proprietaire }}</td>
-											<td>{{ portfelle.Description }}</td>
+											{# <td>{{ proprietaire }}</td>
+											<td>{{ portfelle.Description }}</td> #}
 											<td>{{ portfelle.Balance.Amount/100 }}
 												{{portfelle.Currency}}</td>
 											<td>
@@ -139,7 +139,7 @@
 					<div class="card shadow mb-2">
 						<h1 class="h3 text-center text-muted pt-2">
 							<span>
-								Créer un compte bancaire (de type IBAN)
+								Enregistrer mon IBAN{# Créer un compte bancaire (de type IBAN) #}
 							</span>
 
 							<div class="position-absolute d-inline" style="right: .35rem; top: .35rem">
@@ -310,7 +310,7 @@
 
 						<div class="form-group">
 							<label for="inputIban">Numéro de compte bancaire international (IBAN)</label>
-							<input type="text" name="iban" class="form-control" id="iban" aria-describedby="iban" placeholder="Enter IBAN">
+							<input type="text" name="iban" class="form-control" id="iban" aria-describedby="iban" placeholder="Entrer votre IBAN">
 							<small class="form-text text-muted">Numéro de compte bancaire international (IBAN).</small>
 						</div>
 

@@ -66,6 +66,11 @@
                                         {{ message }}
                                     </div>
                                 {% endfor %}
+                                {% for message in app.flashes('warningKYC') %}
+                                    <div class="alert alert-danger">
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
                                 <table class="table table-borderless table-sm">
                                     {% if app.user.nom is defined %}
                                         <tr>
@@ -124,7 +129,7 @@
                             <div class="col-lg-6 col-md-12">
                                 <div class="card h-100 border-{{ classe }} shadow mb-3" >
                                     <div class="card-header border-bottom border-{{ classe }}">
-                                        <h5 class="m-0">Vérification du compte</h5>
+                                        <h5 class="m-0" style="text-align: center;">Vérification du compte</h5>
                                     </div>
                                     <div class="card-body text-center">
                                         {% if getkycdoc %}
@@ -192,7 +197,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalUserLabel">Ajouter document KYC</h5>
+                    <h5 class="modal-title" id="modalUserLabel" style="text-align: center;">Activer mon compte</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -218,8 +223,8 @@
                         {% endif %}
 
                         <div class="form-group">
-                            <button class="btn btn-success btn-block" style="background-color: #FF4500;border-color: #FF4500;" type="submit"><img src="{{ asset('image/mangopay.png') }}" class="mr-2 float-left" style="height: 25px">Envoyer
-                            </button>
+                            <button type="submit" class="btn btn-primary w-100">ENVOYER</button>{# <button class="btn btn-success btn-block" style="background-color: #FF4500;border-color: #FF4500;" type="submit"><img src="{{ asset('image/mangopay.png') }}" class="mr-2 float-left" style="height: 25px">Envoyer
+                            </button> #}
                         </div>
 
                     </form>
