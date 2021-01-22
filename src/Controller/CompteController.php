@@ -125,10 +125,11 @@ class CompteController extends AbstractController
 
         // get bank count IBAN user
         $bankUser = $mangoPayService->getBankCountUser($this->getUser()->getMangoPayId());
-        $bankAccountId;
+        /*$bankAccountId;
         foreach ($bankUser as $value) {
             $bankAccountId = $value->Id;
-        }
+        }*/
+        $bankAccountId = $request->get('bankAccountId');
 
         if ($bankUser) {
 

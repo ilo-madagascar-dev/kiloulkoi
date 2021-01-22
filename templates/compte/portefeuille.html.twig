@@ -120,10 +120,13 @@
 														<i class="fa fa-bank"></i>Réussit
 													</button>
 												{% else %}
-													{% if portfelle.Balance.Amount/100 >= 1 %}
+													{# {% if portfelle.Balance.Amount/100 >= 1 %}
 													<a href="{{path('portefeuille_transfer')}}" class="btn btn-sm btn-success" title="Accepter">
 														<i class="fa fa-bank"></i>Transférer
 													</a>
+													{% endif %} #}
+													{% if portfelle.Balance.Amount/100 >= 1 %}
+														<i class="fa fa-bank"></i><button class="btn btn-primary" data-toggle="modal" data-target="#modalTransfer">Transférer</button>
 													{% endif %}
 												{% endif %}
 											</td>
@@ -332,6 +335,68 @@
 		</div>
 	</div>
 
+	<!-- Modal transfere bank-->
+	<div class="modal fade" id="modalTransfer" tabindex="-1" role="dialog" aria-labelledby="modalUserLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalUserLabel">Transférer vers mon compte bancaire</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<h4 style="text-align: center;">Veuillez sélectionner un compte bancaire</h4>
+					<form action="{{path('portefeuille_transfer')}}" enctype="multipart/form-data" method="post" class="card-body">
+
+						<div class="card shadow">
+							<div class="card-body p-0">
+								<table class="table">
+									<thead>
+										<tr>
+											<th></th>
+											<th>Code d' identité bancaire</th>
+											<th>Numéros (IBAN)</th>
+											<th>Statut</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for res in listBankAccount %}
+											<tr>
+												<td>
+													<div>
+													  <label>
+													    <input type="checkbox" class="radio" value="{{ res.Id }}" name="bankAccountId" />
+													  </label>
+													</div>
+												</td>
+												<td>{{ res.Type }}</td>
+												<td>{{ res.Details.BIC }}</td>
+												<td>{{ res.Details.IBAN }}</td>
+												{% if res.Active == true %}
+													<td>Activé</td>
+													{% else %}
+													<td>Desactivé</td>
+												{% endif %}
+											</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div><br>
+
+
+						<div class="form-group">
+							<button class="btn btn-success btn-block" type="submit">Transférer
+							</button>
+						</div>
+
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<!-- Modal delete cards -->
 	<div class="modal fade" id="deletCards" tabindex="-1" role="dialog" aria-labelledby="modalPayInLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
@@ -389,6 +454,23 @@
 			var e = document.getElementById("selectyearcart");
 			var value = e.options[e.selectedIndex].value;
 			$('.inputcardExpirationDate').val(this.value + value);
+		});
+	</script>
+
+	{# check box #}
+	<script type="text/javascript">
+		$("input:checkbox").on('click', function() {
+		  
+		  var $box = $(this);
+		  if ($box.is(":checked")) {
+		    
+		    var group = "input:checkbox[name='" + $box.attr("name") + "']";
+		    
+		    $(group).prop("checked", false);
+		    $box.prop("checked", true);
+		  } else {
+		    $box.prop("checked", false);
+		  }
 		});
 	</script>
 {% endblock %}
