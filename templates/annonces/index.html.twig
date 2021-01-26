@@ -7,40 +7,44 @@
 {% block body %}
 
 <div class="container-fluid">
-    <div class="container pt-5">
-        <div class="card px-3 py-5 shadow">
-            <div class="card-title"><h3 class="text-success text-center">Déposer une annonce</h3></div>
-            <div class="card-body pt-1">
-                <div class="row">
-                    <div class="col-12 col-md-6 offset-md-3">
-                        <form action="{{ path('annonces_new') }}" class="text-center"> 
-                            {#
-                            <div class="form-group ">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="type" id="radio-offre" value="offre" checked>
-                                    <label class="form-check-label" for="radio-offre">
-                                        Offre
-                                    </label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="type" id="radio-demande" value="demande">
-                                    <label class="form-check-label" for="radio-demande">
-                                        Demande
-                                    </label>
-                                </div>
-                            </div>
-                            #}
+    <div class="container pt-5 px-0">
+        <div class="row px-0">
+            <div class="col-lg-10 offset-lg-1 px-0">
+                <div class="card px-3 py-5 shadow">
+                    <div class="card-title"><h3 class="text-success text-center">Déposer une annonce</h3></div>
+                    <div class="card-body pt-1">
+                        <div class="row">
+                            <div class="col-12 col-md-6 offset-md-3">
+                                <form action="{{ path('annonces_new') }}" class="text-center"> 
+                                    {#
+                                    <div class="form-group ">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="type" id="radio-offre" value="offre" checked>
+                                            <label class="form-check-label" for="radio-offre">
+                                                Offre
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="type" id="radio-demande" value="demande">
+                                            <label class="form-check-label" for="radio-demande">
+                                                Demande
+                                            </label>
+                                        </div>
+                                    </div>
+                                    #}
 
-                            <div class="form-group">
-                                <select class="form-control custom-select" name="categorie">
-                                    {% for categorie in categories %}
-                                        <option value="{{ categorie.className }}">{{ categorie.libelle }} </option>
-                                    {% endfor %}
-                                </select>
-                            </div>
+                                    <div class="form-group">
+                                        <select class="form-control custom-select" name="categorie">
+                                            {% for categorie in categories %}
+                                                <option value="{{ categorie.className }}">{{ categorie.libelle }} </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
 
-                            <button class="btn btn-success btn-block" type="submit">Continuer</button>
-                        </form>
+                                    <button class="btn btn-success btn-block" type="submit">Continuer</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

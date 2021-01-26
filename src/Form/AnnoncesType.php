@@ -24,18 +24,16 @@ class AnnoncesType extends AbstractType
     {
         $builder->add('titre', TextType::class);
 
-        if( isset($options['classe']) && !in_array($options['classe'], ['Service', 'Divers']) )
-        {
+        if (isset($options['classe']) && !in_array($options['classe'], ['Service', 'Divers'])) {
             $builder = $builder->add('sous_categorie', EntityType::class, [
                 'label' => 'Sous-catégorie',
                 'class' => Categories::class,
-                'query_builder' => function (EntityRepository $er) use($options)
-                    {
-                        return $er->createQueryBuilder('c')
-                                    ->where('c.categorieParent is not null')
-                                    ->andWhere('c.className = :classe')
-                                    ->setParameter('classe', $options['classe']);
-                    },
+                'query_builder' => function (EntityRepository $er) use ($options) {
+                    return $er->createQueryBuilder('c')
+                        ->where('c.categorieParent is not null')
+                        ->andWhere('c.className = :classe')
+                        ->setParameter('classe', $options['classe']);
+                },
                 'choice_label' => 'libelle',
                 'attr' => [
                     'class' => 'sous-categorie'
@@ -43,54 +41,51 @@ class AnnoncesType extends AbstractType
             ]);
         }
 
-        $builder->add('photo', CollectionType::class ,[
-                    'entry_type' => PhotoType::class,
-                    'entry_options' => ['label' => false],
-                    'allow_add' => true,
-                    'prototype' => true,
-                    'allow_delete' => true,
-                    'by_reference' => false,
-                ])
-                ->add('prix', IntegerType::class, [
-                    'attr' => array(
+        $builder->add('photo', CollectionType::class, [
+            'entry_type' => PhotoType::class,
+            'entry_options' => ['label' => false],
+            'allow_add' => true,
+            'prototype' => true,
+            'allow_delete' => true,
+            'by_reference' => false,
+        ])
+            ->add('prix', IntegerType::class, [
+                'attr' => array(
+                    'placeholder' => '€',
+                    'min' => 0
+                ),
+            ])
+            ->add('type', EntityType::class, [
+                'label' => 'Location par ',
+                'class' => TypeLocation::class,
+                'query_builder' => function (EntityRepository $er) use ($options) {
+                    if ($options['classe'] == "Service") {
+                        return $er->createQueryBuilder('type')
+                            ->orderBy('type.id');
+                    } else {
+                        return $er->createQueryBuilder('type')
+                            ->where('type.id > 1')
+                            ->orderBy('type.id');
+                    }
+                },
+                'choice_label' => 'libelle'
+            ])
+            ->add('description', TextareaType::class, ['label' => 'Description'])
+            ->add(
+                'caution',
+                TextType::class,
+                [
+                    'label' => 'Montant de la caution',
+                    'attr' => [
                         'placeholder' => '€',
-                        'min' => 0
-                    ),
-                ])
-                ->add('type', EntityType::class, [
-                    'label' => 'Location par ',
-                    'class' => TypeLocation::class,
-                    'query_builder' => function (EntityRepository $er) use($options)
-                    {
-                        if( $options['classe'] == "Service" )
-                        {
-                            return $er->createQueryBuilder('type')
-                                        ->orderBy('type.id');
-                        }
-                        else
-                        {
-                            return $er->createQueryBuilder('type')
-                                        ->where('type.id > 1')
-                                        ->orderBy('type.id');
-                        }
-                    },
-                    'choice_label' => 'libelle'
-                ])
-                ->add('description', TextareaType::class, ['label' => 'Description'])
-                ->add('caution'    , TextType::class,
-                    [
-                        'label' => 'Montant de la caution',
-                        'attr' => [
-                            'placeholder' => '€',
-                        ],
-                        'mapped' => false
-                    ],
-                )
-                // ->add('location', LocationType::class, array('required' => false))
-                // ->add('categorie', EntityType::class, [
-                //     'class' => Categories::class,
-                //     'choice_label' => 'libelle',
-                // ])
+                    ]
+                ],
+            )
+            // ->add('location', LocationType::class, array('required' => false))
+            // ->add('categorie', EntityType::class, [
+            //     'class' => Categories::class,
+            //     'choice_label' => 'libelle',
+            // ])
         ;
     }
 

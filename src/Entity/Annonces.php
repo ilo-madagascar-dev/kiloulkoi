@@ -131,6 +131,11 @@ class Annonces
      */
     private $user_favoris;
 
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $caution;
+
     public function __construct()
     {
         $this->photo = new ArrayCollection();
@@ -406,6 +411,18 @@ class Annonces
             $this->user_favoris->removeElement($userFavori);
             $userFavori->removeFavori($this);
         }
+
+        return $this;
+    }
+
+    public function getCaution(): ?float
+    {
+        return $this->caution;
+    }
+
+    public function setCaution(float $caution): self
+    {
+        $this->caution = $caution;
 
         return $this;
     }
