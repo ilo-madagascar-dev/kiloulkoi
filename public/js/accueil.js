@@ -1,6 +1,5 @@
 
-$(document).ready( function ()
-{
+$(document).ready(function () {
 	$('#datepicker').datepicker({
 		format: 'dd/mm/yyyy',
 		uiLibrary: 'bootstrap4',
@@ -18,70 +17,61 @@ $(document).ready( function ()
 		firstDay: 1
 	});
 
-	$( "#slider-range" ).slider({
+	$("#slider-range").slider({
 		range: true,
 		min: 0,
 		max: 10000,
-		values: [ 0, 3000 ],
-		slide: function( event, ui )
-		{
-			$( "#amount" ).val( ui.values[ 0 ] + "€ - " + ui.values[ 1 ] + "€" );
+		values: [0, 3000],
+		slide: function (event, ui) {
+			$("#amount").val(ui.values[0] + "€ - " + ui.values[1] + "€");
 		}
 	});
-	$( "#amount" ).val( $( "#slider-range" ).slider( "values", 0 ) + "€ - " + $( "#slider-range" ).slider( "values", 1 ) + "€" );
+	$("#amount").val($("#slider-range").slider("values", 0) + "€ - " + $("#slider-range").slider("values", 1) + "€");
 
 	$('#input-categorie').val(null);
-	$('#input-show-categorie').click( function(e)
-	{
+	$('#input-show-categorie').click(function (e) {
 		$(this).toggleClass('not-show-all');
 		$('.categorie-container').toggleClass('d-none');
 	})
 
-	$('.categorie-enfant').click( function ()
-	{
-		selectCategorie( $(this) );
+	$('.categorie-enfant').click(function () {
+		selectCategorie($(this));
 	})
 
-	$('.categorie-parent').click( function ()
-	{
-		if( $(this).attr('data-class') == 'Service' || $(this).attr('data-class') == 'Divers' )
-		{
+	$('.categorie-parent').click(function () {
+		if ($(this).attr('data-class') == 'Service' || $(this).attr('data-class') == 'Divers') {
 			$('#prix-unite option[value=1]').removeClass('d-none');
-			selectCategorie( $(this) );
+			selectCategorie($(this));
 		}
-		else
-		{
+		else {
 			$('#prix-unite option[value=1]').addClass('d-none');
 			$('#prix-unite').val('2');
 		}
 	})
 
-	$(document).on('click', '#input-show-categorie span i', function (event)
-	{
+	$(document).on('click', '#input-show-categorie span i', function (event) {
 		try {
-			var values = JSON.parse( $('#input-categorie').val() );
+			var values = JSON.parse($('#input-categorie').val());
 		} catch (e) {
 			var values = [];
 		}
 
-		if( values.length <= 1 )
-		{
+		if (values.length <= 1) {
 			$('.categorie-placeholder').removeClass('d-none');
 		}
 
 		var val = $(this).parent().attr('data');
-		values  = values.filter( function(ele){
+		values = values.filter(function (ele) {
 			return ele != val;
 		});
-		values = JSON.stringify( values );
-		$('#input-categorie').val( values );
+		values = JSON.stringify(values);
+		$('#input-categorie').val(values);
 		$(this).parent().remove();
 	})
 
-	var selectCategorie = function (categorie)
-	{
+	var selectCategorie = function (categorie) {
 		try {
-			var values = JSON.parse( $('#input-categorie').val() );
+			var values = JSON.parse($('#input-categorie').val());
 		} catch (e) {
 			var values = [];
 		}
@@ -90,21 +80,20 @@ $(document).ready( function ()
 
 		var forChild = categorie.parent().prev().children('i').attr('class');
 		var icon = forChild ? forChild : categorie.children('i').attr('class');
-		var val  = categorie.attr('data');
-		if( !values.includes(val) )
-		{
+		var val = categorie.attr('data');
+		if (!values.includes(val)) {
 			values.push(val);
-			values = JSON.stringify( values );
+			values = JSON.stringify(values);
 
 			var selected = `
-				<span data="${ categorie.attr('data') }">
+				<span data="${categorie.attr('data')}">
 					<i class="delete">x</i>
-					<i class="fa-icon ${ icon } mx-1"></i>
-					<small>${ categorie.text().trim() }</small>
+					<i class="fa-icon ${icon} mx-1"></i>
+					<small>${categorie.text().trim()}</small>
 				</span>
 			`;
-			$('#input-show-categorie').append( selected );
-			$('#input-categorie').val( values );
+			$('#input-show-categorie').append(selected);
+			$('#input-categorie').val(values);
 		}
 	}
 
@@ -121,10 +110,10 @@ $(document).ready( function ()
 			processResults: function (data) {
 				// Transforms the top-level key of the response object from 'items' to 'results'
 				var response = data.records;
-				var options  = $.map(response, function (obj) {
+				var options = $.map(response, function (obj) {
 					return {
 						text: obj.fields.code_postal + ' - ' + obj.fields.nom_de_la_commune,
-						id:  obj.fields.code_postal + ' - ' + obj.fields.nom_de_la_commune,
+						id: obj.fields.code_postal + ' - ' + obj.fields.nom_de_la_commune,
 					};
 				});
 
@@ -133,65 +122,65 @@ $(document).ready( function ()
 		}
 	});
 
-	$(document).click( function(event)
-	{
+	$(document).click(function (event) {
 		//check if the clicked area is dropDown or not
-		if ( $(".categorie-container *").has(event.target).length === 0 && $("#input-show-categorie *").has(event.target).length === 0 && "input-show-categorie" !== $(event.target).attr('id') )
-		{
+		if ($(".categorie-container *").has(event.target).length === 0 && $("#input-show-categorie *").has(event.target).length === 0 && "input-show-categorie" !== $(event.target).attr('id')) {
 			$(".categorie-container").addClass("d-none");
 			$("#input-show-categorie").addClass("not-show-all");
 		}
-    });
+	});
 })
+
+/* Modifications demandées dans le Compte rendu réunion vendredi 22-v2.docx
 
 $(document).ready( function()
 {
 	var test1 = function()
 	{
-        $($('.phrases')[0]).fadeOut(2000, 'swing', function()
-        {
-            $($('.phrases')[0]).next().fadeIn(2000, 'swing', function()
-            {
-                $($('.phrases')[0]).next().fadeOut(2000, 'swing', function()
-                {
-                    $($('.phrases')[0]).fadeIn(2000, 'swing', test1);
-                });
+		$($('.phrases')[0]).fadeOut(2000, 'swing', function()
+		{
+			$($('.phrases')[0]).next().fadeIn(2000, 'swing', function()
+			{
+				$($('.phrases')[0]).next().fadeOut(2000, 'swing', function()
+				{
+					$($('.phrases')[0]).fadeIn(2000, 'swing', test1);
+				});
 
-            });
-        });
+			});
+		});
 	}
 
 	var test2 = function()
 	{
-        $($('.phrases')[1]).fadeOut(2000, 'swing', function()
-        {
-            $($('.phrases')[1]).next().fadeIn(2000, 'swing', function()
-            {
-                $($('.phrases')[1]).next().fadeOut(2000, 'swing', function()
-                {
-                    $($('.phrases')[1]).fadeIn(2000, 'swing', test2);
-                });
+		$($('.phrases')[1]).fadeOut(2000, 'swing', function()
+		{
+			$($('.phrases')[1]).next().fadeIn(2000, 'swing', function()
+			{
+				$($('.phrases')[1]).next().fadeOut(2000, 'swing', function()
+				{
+					$($('.phrases')[1]).fadeIn(2000, 'swing', test2);
+				});
 
-            });
-        });
+			});
+		});
 	}
 
 	var test3 = function()
 	{
-        $($('.phrases')[2]).fadeOut(2000, 'swing', function()
-        {
-            $($('.phrases')[2]).next().fadeIn(2000, 'swing', function()
-            {
-                $($('.phrases')[2]).next().fadeOut(2000, 'swing', function()
-                {
-                    $($('.phrases')[2]).fadeIn(2000, 'swing', test3);
-                });
+		$($('.phrases')[2]).fadeOut(2000, 'swing', function()
+		{
+			$($('.phrases')[2]).next().fadeIn(2000, 'swing', function()
+			{
+				$($('.phrases')[2]).next().fadeOut(2000, 'swing', function()
+				{
+					$($('.phrases')[2]).fadeIn(2000, 'swing', test3);
+				});
 
-            });
-        });
+			});
+		});
 	}
 
-    test1();
-    test2();
-    test3();
-})
+	test1();
+	test2();
+	test3();
+})*/

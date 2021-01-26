@@ -51,14 +51,14 @@
 {% block body %}
 
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
+    <div class="row row_search_container">
+        <div class="col-lg-10 offset-lg-1 col-md-12 mt-5 mb-4">
             <div class="card p-3 shadow">
                 <div class="card-body py-0 px-0 px-md-3">
                     <form action="{{ path('annonces_filter') }}" method="post">
                         <h1 class="text-primary py-3 text-center" >Recherche d'annonces</h1>
 
-                        <div class="row">
+                        <div class="row_for_fields">
                             <div class="form-group col-12 col-md-6">
                                 <input type="hidden" id="input-categorie" name="categories">
                                 {# <input type="text" id="input-show-categorie" class=" form-control" placeholder="Catégories"> #}
@@ -75,9 +75,9 @@
 
                                 <div class="pt-1 categorie-container d-none">
                                     <div class="card py-3 shadow">
-                                        <div class="card-title mb-0"><h3 class="text-success text-center">Liste des catégries</h3></div>
+                                        <div class="card-title mb-0"><h3 class="text-success text-center">Liste des catégories</h3></div>
                                         <div class="card-body pt-0">
-                                            <div class="row">
+                                            <div class="row categories_row">
                                                 <div class="col-lg-4 col-md-6" id="list-1">
                                                     <div class="list-group">
                                                         {% for categorie in categories | slice(0, 5) %}
@@ -160,7 +160,7 @@
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row slider-row">
                             <div class="col-sm-6 col-12 slider">
                                 <div class="form-group m-2" data-toggle="tooltip" data-placement="top" title="Prix">
                                     <div id="slider-range" class="mt-3"></div>
@@ -168,7 +168,7 @@
                             </div>
 
                             <div class="col-sm-6">
-                                <div class="row">
+                                <div class="row row_range_values">
                                     <div class="col-md-6 col-5">
                                         <div class="mt-2 text-center text-muted">
                                             <input type="text" id="amount" name="prix" readonly style="border:0; color:#007bff; font-weight:bold;" class="w-100 text-center">
@@ -187,14 +187,14 @@
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row row-search-button">
                             <div class="col-md-6 offset-md-3 mb-3">
                                 <button class="btn btn-primary btn-block">
                                     <i class="fa fa-search"></i> Rechercher
                                 </button>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row row-create-button">
                             <div class="col-md-6 offset-md-3">
                                 <a class="btn btn-success btn-block text-white" href="{{ path('annonces_depos') }}">
                                     Déposer une annonce
@@ -209,30 +209,33 @@
 </div>
 
 <div class="container pt-5">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="row">
-                <div class="col-md-4 mb-5">
-                    <div class="text-center ">
+    <div class="row row-values-sentences">
+        <div class="col-lg-10 offset-lg-1">
+            <div class="row row-sentences-container">
+                <div class="col-md-4 mb-4">
+                    <div class="text-center">
                         <img src="icone/green.png"  class="img-fluid mb-3" style="height: 80px !important;">
-                        <p class="mb-1 text-primary phrases"><strong style="font-size: 1.5rem;">Protégez notre planete</strong></p>
-                        <p class="" style="display: none;">En évitant d'acheter du neuf</p>
+                        <p class="mb-1 text-primary phrases"><strong style="font-size: 1.5rem;">Protégez notre planète</strong></p>
+                        <p class="">En évitant d'acheter du neuf</p>
+                        <!-- p class="" style="display: none;">En évitant d'acheter du neuf</p -->
                     </div>
                 </div>
 
-                <div class="col-md-4 mb-5">
+                <div class="col-md-4 mb-4">
                     <div class="text-center ">
                         <img src="icone/money.png"  class="img-fluid mb-3" style="height: 80px !important;">
                         <p class="mb-1 text-primary phrases"><strong style="font-size: 1.5rem;">Arrondissez vos fins de mois</strong></p>
-                        <p class="" style="display: none;">En mettant en location vos biens et services</p>
+                        <p class="">En mettant en location vos biens et services</p>
+                        <!-- p class="" style="display: none;">En mettant en location vos biens et services</p -->
                     </div>
                 </div>
 
-                <div class="col-md-4 mb-5">
+                <div class="col-md-4 mb-4">
                     <div class="text-center ">
                         <img src="icone/problem.png"  class="img-fluid mb-3" style="height: 80px !important;">
                         <p class="mb-1 text-primary phrases"><strong style="font-size: 1.5rem;">Changez le monde</strong></p>
-                        <p class="" style="display: none;">En aidant vos voisins ou vos proches</p>
+                        <p class="">En aidant vos voisins ou vos proches</p>
+                        <!-- p class="" style="display: none;">En aidant vos voisins ou vos proches</p -->
                     </div>
                 </div>
             </div>
