@@ -16,16 +16,20 @@
                     {# Détail de l'annonce #}
                     <div class="card shadow mb-3">
                         <div class="card-header text-center">
-                            <h2 class="mb-0 text-center">
-                                {% if app.user %}
-                                    <div class="position-absolute">
-                                        <button class="btn btn-warning" style="color:white; font-weight:bolder;">Signaler cette annonce</button>
-                                    </div>
-                                {% endif %}
-
-                                <strong>{{ annonce.titre }}</strong>
-
-                                <div class="float-right">
+                            <div class="row">
+                                <div class="col-4 text-left">
+                                    {% if app.user %}
+                                        <div class="">
+                                            <button class="btn btn-warning" style="color:white; font-weight:bolder;">Signaler cette annonce</button>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-5">
+                                    <h2 class="mb-0 text-center">
+                                        <strong>{{ annonce.titre }}</strong>
+                                    </h2>
+                                </div>
+                                <div class="col-3 text-right">
                                     {% if app.user and app.user.id != annonce.user.id %}
                                         <div title="Favoris" class="d-inline mr-2">
                                             {% if isFavoris %}
@@ -59,7 +63,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </h2>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="row">
