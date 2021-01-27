@@ -21,7 +21,7 @@
 				<div class="row card-deck">
 					{% for annonce in annonces %}
 						{% set slug = annonce.slug == '' ? 'annonces_' : annonce.slug %}
-						<div class="col-lg-12 mb-3">
+						<div class="col-12 col-md-4 col-lg-3 mb-3">
 							<div class="card h-100 shadow m-auto text-center" style="">
 								<a href="{{ path('annonces_show', {id: annonce.id, slug: slug }) }}" style="height: 185px;" class="overflow-hidden bg-light">
 									{% if annonce.photo|length > 0 %}
@@ -32,16 +32,16 @@
 								</a>
 
 								<div class="card-body py-2 px-3 text-left">
-									<h3 class="card-title text-primary mt-4 mb-4" style="font-size: 1.5rem;">
+									<h3 class="card-title text-primary mb-2" style="font-size: 1.15rem;">
 										<strong><a href="{{ path('annonces_show', {id: annonce.id, slug: slug }) }}" >{{ annonce.titre }}</a></strong>
 									</h3>
 
-									<div class="details" style="font-size: 1rem;position:relative;">
+									<div class="details" style="font-size: 0.8rem;position:relative;">
 										<p class="card-text mb-0"><strong class="text-success">Prix : </strong>{{ annonce.prix }}€ /{{ annonce.type ? annonce.type.libelle : "mois" }}</p>
-										<p class="card-text"><strong class="text-success">Caution : </strong>{{ annonce.caution ? annonce.caution : 0 }}€</p>
+										<p class="card-text mb-0"><strong class="text-success">Caution : </strong>{{ annonce.caution ? annonce.caution : 0 }}€</p>
 										<p class="card-text mb-0"><strong class="text-success">Catégorie : </strong>{{ annonce.categorie.libelle }} {% if annonce.sousCategorie is not null %}/ {{ annonce.sousCategorie.libelle }}{% endif %}</p>
-										<p class="card-text text-justify"><strong class="text-success">Description : </strong> {{ annonce.description | nl2br | slice(0, 100) }} ... </p>
-										<p class="card-text mb-2"><strong class="text-success">Propriétaire : </strong><a href="{{ path('proprietaire_annonce', {proprietaire: annonce.user.id, pseudo: annonce.user.pseudo}) }}">{{ annonce.user.pseudo }}</a></p>
+										<p class="card-text text-justify mb-0"><strong class="text-success">Description : </strong> {{ annonce.description | nl2br | slice(0, 50) }} ... </p>
+										<p class="card-text mb-0"><strong class="text-success">Propriétaire : </strong><a href="{{ path('proprietaire_annonce', {proprietaire: annonce.user.id, pseudo: annonce.user.pseudo}) }}">{{ annonce.user.pseudo }}</a></p>
 									</div>
 								</div>
 
