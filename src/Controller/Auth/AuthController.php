@@ -111,21 +111,38 @@ class AuthController extends AbstractController
             {
                 $nom    = $user->getNom();
                 $prenom = $user->getPrenom();
+
+                $mangoPayUserId = $mangoPayService->createUserParticulier($user->getEmail(), $nom, $prenom);
             }
             else
             {
-                $nom    = ' - ';
-                $prenom = $user->getRaisonSocial();
+                
+                $address = $user->getAdresse();
+                $city = $user->getVille();
+                $region = "FR" ;
+                $postalCode = $user->getCp();
+                $legalPersonType = $request->get('legalType');
+                $name = $user->getRaisonSocial();
+                $birthday = intval(strtotime($request->get('datenaissance')));
+                $countryOfResidence = "FR";
+                $email = $user->getEmail();
+                $firstName = $user->getPseudo();
+                $lastName = $user->getPseudo();
+                $companyNumber = $user->getSiret();
+
+                $mangoPayUserId = $mangoPayService->createUserProfessionnel($address, $city, $region, $postalCode , $legalPersonType , $name, $birthday , $countryOfResidence , $email, $firstName, $lastName,$companyNumber);
+
             }
 
-            $mangoPayUserId = $mangoPayService->setUserMangoPay($user->getEmail(), $nom, $prenom);
-            /*$mangoPayService->setUserMangoPayKYC($mangoPayUserId);*/
+            //$mangoPayUserId = $mangoPayService->setUserMangoPay($user->getEmail(), $nom, $prenom);
+            //$mangoPayService->setUserMangoPayKYC($mangoPayUserId);
 
             $user->setMangoPayId( $mangoPayUserId );
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
+
 
             return $guardHandler->authenticateUserAndHandleSuccess(
                 $user,

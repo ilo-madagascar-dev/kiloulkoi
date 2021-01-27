@@ -2,6 +2,11 @@
 
 {% block title %}Inscription{% endblock %}
 
+{% block stylesheets %}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="{{asset('css/calendrier.css')}}">
+{% endblock %}
+
 {% block body %}
 <div class="container-fluid">
 
@@ -40,8 +45,24 @@
                                 <div class="col-md-6">
                                     {{ form_row(registrationForm.siret, { 'id': 'registration_siret'}) }}
                                 </div>
-                            </div>
+                                <div class="col-md-12">
+                                    <label for="exampleFormControlSelect1">Type d'entité légale</label>
+                                    <select class="form-control" name="legalType" id="legalType">
+                                      <option value="BUSINESS">AFFAIRES</option>
+                                      <option value="ORGANIZATION">ORGANISATION</option>
+                                      <option value="SOLETRADER">EXCLUSIVITÉ</option>
+                                    </select>
+                                </div>
+                            </div><br>
+
                         {% endif %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="exampleFormControlSelect1">Date de naissance</label>
+                                <input type="text" name="datenaissance" id="datepicker" class="form-control" />
+                            </div>
+                        </div>
+                        
 
                         <div class="row">
                             <div class="col-md-6">
@@ -111,5 +132,37 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+        $(document).ready(function () { /*$("#datepicker").datepicker( "option", "dateFormat", 'mmy' );*/
+        $("#datepicker").datepicker({
+           altField: "#datepicker",
+            closeText: 'Fermer',
+            prevText: 'Précédent',
+            nextText: 'Suivant',
+            currentText: 'Aujourd\'hui',
+            monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+            monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
+            dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+            dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
+            dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+            weekHeader: 'Sem.'
+        });
+
+        $('.btn-payin').click(function () {
+            var data = JSON.parse($(this).parent().parent().attr('data'));
+
+            $('#modalPayIn .carte').val(data.carte);
+            $('#modalPayIn .numero').val(data.numero);
+            $('#modalPayIn .devise').val(data.devise);
+            $('#modalPayIn .montant').val(0);
+        });
+        $('.inputcardExpirationDate').val('0120');
+
+    });
+    </script>
     <script src="{{ asset('/js/inscription.js') }}"></script>
+    
 {% endblock %}
