@@ -87,7 +87,7 @@ class CompteController extends AbstractController
     {
 
 
-        /*dd($request->get('data'));*/
+        
         if ($request->get('data')) {
             $cardId = $session->get('cardId', []);
 
@@ -101,10 +101,12 @@ class CompteController extends AbstractController
             if (!empty($cardId['id'])) {
             unset($cardId['id']);
             }
+             dd($session->get('cardId', []));
             return $this->redirectToRoute('compte_portefeuille');
         }else{
             dd($request->get('errorCode'));
         }
+
 
         /*return new Response('create card');*/
         return $this->redirectToRoute('compte_portefeuille');
@@ -180,6 +182,52 @@ class CompteController extends AbstractController
             $this->addFlash('errorPayin', 'Un problème est survenu lors du transfert!');
         }
 
+        return $this->redirectToRoute('compte_portefeuille');
+    }
+
+    /**
+     * @Route("/portefeuille/card/update/{id}", name="card_update")
+     */
+    public function cardsUpdate(Request $request,MangoPayService $mangoPayService): Response
+    {
+        
+        if ($request->get('data')) {
+            
+            $cardRegister = $mangoPayService->getCrdWithId('98883210');
+
+            
+            $cardRegister->RegistrationData = 'data=' . $request->get('data');
+
+            $mangoPayService->updateCardRegister($cardRegister);
+
+            
+            return $this->redirectToRoute('compte_portefeuille');
+        }else{
+            dd($request->get('errorCode'));
+        }
+
+        
+        return $this->redirectToRoute('compte_portefeuille');
+    }
+
+
+    /**
+     * @Route("/portefeuille/card/statut/{id}/{boolean}", name="card_status")
+     */
+    public function cardsStatus(Request $request,MangoPayService $mangoPayService): Response
+    {
+        
+        if ($request->get('boolean')  == "false") {
+            
+            $mangoPayService->statusCarte($request->get('id'),false);
+           
+        }else{
+            
+            $mangoPayService->statusCarte($request->get('id'),true);
+            
+        }
+
+        
         return $this->redirectToRoute('compte_portefeuille');
     }
 }

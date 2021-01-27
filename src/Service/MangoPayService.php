@@ -268,12 +268,43 @@ class MangoPayService
         return $createdCardRegister;
 	}
 
+	// get card REGISTRATION with ID
 	public function getCrdWithId(string $cardId)
 	{
 		$mangoPayApi = $this->getMangoPayApi();
 		$cardRegister = $mangoPayApi->CardRegistrations->Get($cardId);
 
 		return $cardRegister;
+	}
+
+	// get card with ID
+	public function getCarteId(string $cardId)
+	{
+		$mangoPayApi = $this->getMangoPayApi();
+		$cards = $mangoPayApi->Cards->Get($cardId);
+
+		return $cards;
+	}
+
+	// active and desactive card with ID
+	public function statusCarte(string $cardId, bool $boolean)
+	{
+		
+		try {
+			
+			$Card = new \MangoPay\Card();
+			$Card->Id = $cardId;
+			$Card->Active = $boolean;
+			$Result = $this->getMangoPayApi()->Cards->Update($Card);
+			
+			
+		} catch(MangoPay\Libraries\ResponseException $e) {
+			// handle/log the response exception with code $e->GetCode(), message $e->GetMessage() and error(s) $e->GetErrorDetails() 
+		} catch(MangoPay\Libraries\Exception $e) {
+			// handle/log the exception $e->GetMessage() 
+		}
+
+		return $Result;
 	}
 
 	public function updateCardRegister($cardRegister)
