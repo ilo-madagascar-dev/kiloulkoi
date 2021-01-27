@@ -92,10 +92,10 @@ header .dropdown-toggle::after {
 .notifications-container .notification-content {
 	font-size: 90%;
 }
-.alertify-notifier.ajs-left .ajs-message.ajs-visible {
+.ajs-message.ajs-visible {
 	padding: 0;
 }
-.alertify-notifier.ajs-left .ajs-message.ajs-visible .toast-header {
+.ajs-message.ajs-visible .toast-header {
 	color: unset;
 	background-color: unset;
 }

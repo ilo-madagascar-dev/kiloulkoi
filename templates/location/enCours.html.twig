@@ -15,7 +15,39 @@
                         <h1 class="h3 text-center text-muted pt-2">Mes Biens</h1>
                     </div>
 
-                    <div class="card shadow">
+    {# HEAD #}
+        <div class="row">
+            {% for message in app.flashes('warning') %}
+                        <div class="text-center alert alert-danger">
+                            {{ message }}
+                        </div>
+            {% endfor %}
+            <div class="offset-lg-2 col-lg-8 offset-md-1 col-md-10">
+                <div class="card shadow mb-3">
+                    <div class="card-header d-flex align-items-top">
+                        <i class="text-success fa fa-list mr-3" style="font-size: 3rem;"></i>
+                        <div class="d-inline">
+                            <h1 class="mb-0" style="font-size: 1.4rem;"><strong>Mes Emprunts</strong></h1>
+                            <small class="text-muted">Liste des annonces que vous vous êtes abonnées.</small>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        {% if mesEmprunts|length > 0 %}
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                       <th>Annonce</th>
+                                       <th>Début</th>
+                                       <th>Fin</th>
+                                       <th>Prix</th>
+                                       <th>Statut</th>
+                                       <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for location in mesEmprunts %}
+
+                    {# <div class="card shadow">
                         <div class="card-body p-0">
                             {% if mesBiens|length > 0 %}
                                 <table class="table">
@@ -30,7 +62,8 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    {% for location in mesBiens %}
+                                    {% for location in mesBiens %} #}
+
                                         {% set periodeTotal = date(location.dateDebut).diff(date(location.dateFin)) %}
                                         {% set plusOneDay   = location.dateFin|date_modify("+24 hour") > date() %}
 

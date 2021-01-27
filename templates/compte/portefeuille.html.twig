@@ -42,6 +42,9 @@
 					<div class="card shadow mb-2">
 						<h1 class="h3 text-center text-muted pt-2">
 							<span>Mes Moyens de Paiements</span>
+							<div class="position-absolute d-inline" style="right: .35rem; top: .35rem">
+								<button class="btn btn-primary" data-toggle="modal" data-target="#modalAjoutCarte">Ajouter</button>
+							</div>
 						</h1>
 					</div>
 
@@ -72,13 +75,25 @@
 												<i class="fa fa-download"></i>
 											</button>
 										</td>
-										{% if carte.Validity == "INVALID" %}
+										{# {% if carte.Validity == "INVALID" %}
 											<td class="text-center">
 												<button class="btn btn-sm btn-primary btn-payin" data-toggle="modal" data-target="#deletCards">
 													<i class="fa fa-trash"></i>
 												</button>
 											</td>
-										{% endif %}
+										{% endif %} #}
+										<td class="text-center">
+											{# <button class="btn btn-sm btn-primary btn-payin" data-toggle="modal" data-target="#updateCards{{carte.Id}}">
+											<i class="fas fa-edit"></i>
+											</button> #}
+											{% if carte.Active == true %}
+												{# <button class="btn btn-block btn-danger" data-toggle="modal" data-target="#DesactiveCards{{carte.Id}}">Désactiver</button> #}
+												<a href="{{path('card_status' , {id:carte.Id , boolean:"false"})}}" class="btn btn-block btn-danger" >Désactiver</a>
+											{% else %}
+												{# <button class="btn btn-block btn-success" data-toggle="modal" data-target="#ActiveCards{{carte.Id}}">Activer</button> #}
+												<a href="{{path('card_status' , {id:carte.Id , boolean:"true"} )}}" class="btn btn-block btn-success" >Activer</a>
+											{% endif %}
+										</td>
 									</tr>
 									{% endfor %}
 								</tbody>
@@ -101,17 +116,17 @@
 							<table class="table">
 								<thead>
 									<tr>
-										<th>Proprietaire</th>
-										<th>Description</th>
-										<th>Balance</th>
-										<th>Transférer</th>
+										{# <th>Proprietaire</th>
+										<th>Description</th> #}
+										<th>Montant</th>
+										<th>Transférer vers mon compte bancaire</th>
 									</tr>
 								</thead>
 								<tbody>
 									{% for portfelle in walet %}
 										<tr>
-											<td>{{ proprietaire }}</td>
-											<td>{{ portfelle.Description }}</td>
+											{# <td>{{ proprietaire }}</td>
+											<td>{{ portfelle.Description }}</td> #}
 											<td>{{ portfelle.Balance.Amount/100 }}
 												{{portfelle.Currency}}</td>
 											<td>
@@ -120,10 +135,13 @@
 														<i class="fa fa-bank"></i>Réussit
 													</button>
 												{% else %}
-													{% if portfelle.Balance.Amount/100 >= 1 %}
+													{# {% if portfelle.Balance.Amount/100 >= 1 %}
 													<a href="{{path('portefeuille_transfer')}}" class="btn btn-sm btn-success" title="Accepter">
 														<i class="fa fa-bank"></i>Transférer
 													</a>
+													{% endif %} #}
+													{% if portfelle.Balance.Amount/100 >= 1 %}
+														<i class="fa fa-bank"></i><button class="btn btn-primary" data-toggle="modal" data-target="#modalTransfer">Transférer</button>
 													{% endif %}
 												{% endif %}
 											</td>
@@ -139,7 +157,7 @@
 					<div class="card shadow mb-2">
 						<h1 class="h3 text-center text-muted pt-2">
 							<span>
-								Créer un compte bancaire (de type IBAN)
+								Enregistrer mon IBAN{# Créer un compte bancaire (de type IBAN) #}
 							</span>
 
 							<div class="position-absolute d-inline" style="right: .35rem; top: .35rem">
@@ -250,7 +268,7 @@
 						</div>
 
 						<div class="form-group">
-							<button class="btn btn-success btn-block" style="background-color: #FF4500;border-color: #FF4500;" type="submit"><img src="{{ asset('image/mangopay.png') }}" class="mr-2 float-left" style="height: 25px">Valider
+							<button class="btn btn-success btn-block" type="submit">Valider
 							</button>
 						</div>
 
@@ -310,7 +328,7 @@
 
 						<div class="form-group">
 							<label for="inputIban">Numéro de compte bancaire international (IBAN)</label>
-							<input type="text" name="iban" class="form-control" id="iban" aria-describedby="iban" placeholder="Enter IBAN">
+							<input type="text" name="iban" class="form-control" id="iban" aria-describedby="iban" placeholder="Entrer votre IBAN">
 							<small class="form-text text-muted">Numéro de compte bancaire international (IBAN).</small>
 						</div>
 
@@ -322,7 +340,7 @@
 
 
 						<div class="form-group">
-							<button class="btn btn-success btn-block" style="background-color: #FF4500;border-color: #FF4500;" type="submit"><img src="{{ asset('image/mangopay.png') }}" class="mr-2 float-left" style="height: 25px">Envoyer
+							<button class="btn btn-success btn-block"  type="submit">Envoyer
 							</button>
 						</div>
 
@@ -332,24 +350,204 @@
 		</div>
 	</div>
 
-	<!-- Modal delete cards -->
-	<div class="modal fade" id="deletCards" tabindex="-1" role="dialog" aria-labelledby="modalPayInLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<form class="modal-content" action="{{ path('portefeuille_payin') }}" method="POST">
+	<!-- Modal transfere bank-->
+	<div class="modal fade" id="modalTransfer" tabindex="-1" role="dialog" aria-labelledby="modalUserLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="modalPayInLabel">SUpprimmer la carte Bancaire</h5>
+					<h5 class="modal-title" id="modalUserLabel">Transférer vers mon compte bancaire</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<div class="modal-body"></div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-light" data-dismiss="modal">Annuler</button>
-					<button type="submit" class="btn btn-success">Supprimer</button>
+				<div class="modal-body">
+					<h4 style="text-align: center;">Veuillez sélectionner un compte bancaire</h4>
+					<form action="{{path('portefeuille_transfer')}}" enctype="multipart/form-data" method="post" class="card-body">
+
+						<div class="card shadow">
+							<div class="card-body p-0">
+								<table class="table">
+									<thead>
+										<tr>
+											<th></th>
+											<th>Code d' identité bancaire</th>
+											<th>Numéros (IBAN)</th>
+											<th>Statut</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for res in listBankAccount %}
+											<tr>
+												<td>
+													<div>
+													  <label>
+													    <input type="checkbox" class="radio" value="{{ res.Id }}" name="bankAccountId" />
+													  </label>
+													</div>
+												</td>
+												<td>{{ res.Type }}</td>
+												<td>{{ res.Details.BIC }}</td>
+												<td>{{ res.Details.IBAN }}</td>
+												{% if res.Active == true %}
+													<td>Activé</td>
+													{% else %}
+													<td>Desactivé</td>
+												{% endif %}
+											</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div><br>
+
+
+						<div class="form-group">
+							<button class="btn btn-success btn-block" type="submit">Transférer
+							</button>
+						</div>
+
+					</form>
 				</div>
-			</form>
+			</div>
 		</div>
 	</div>
+
+
+	<!-- Modal active cards -->
+	{% for carte in cards %}
+	<div class="modal fade" id="ActiveCards{{carte.Id}}" tabindex="-1" role="dialog" aria-labelledby="modalAjoutCarteLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalAjoutCarteLabel">Activer la carte</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<form action="{{ dataform.CardRegistrationURL }}" method="post" class="card-body">
+					<div class="modal-body">
+						<h4>Voulez-vous vraiment activer cette carte?</h4>
+					</div>
+					<div class="modal-footer">
+			            <button type="submit" class="btn btn-primary">Activer</button>
+			            <button type="button" class="btn btn-default" data-dismiss="modal">Annuler
+			            </button>
+			        </div>
+		        </form>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+
+	<!-- Modal desactive cards -->
+	{% for carte in cards %}
+	<div class="modal fade" id="DesactiveCards{{carte.Id}}" tabindex="-1" role="dialog" aria-labelledby="modalAjoutCarteLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalAjoutCarteLabel">Désactiver la carte</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<form action="{{ dataform.CardRegistrationURL }}" method="post" class="card-body">
+					<div class="modal-body">
+						<h4>Voulez-vous vraiment désactiver cette carte?</h4>
+						<input type="text" name="id" value="">
+					</div>
+					<div class="modal-footer">
+			            <button type="submit" class="btn btn-primary">Désactiver</button>
+			            <button type="button" class="btn btn-default" data-dismiss="modal">Annuler
+			            </button>
+			        </div>
+		        </form>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+
+	<!-- Modal update cards -->
+	{# {% for carte in cards %}
+	<div class="modal fade" id="updateCards{{carte.Id}}" tabindex="-1" role="dialog" aria-labelledby="modalAjoutCarteLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalAjoutCarteLabel">Mis à jour de la carte</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+
+					<form action="{{ dataform.CardRegistrationURL }}" method="post" class="card-body">
+						<input class="form-control" placeholder="Numeros de cart" type="text" name="idcard" value="{{carte.Id}}"/>
+						<input type="hidden" name="data" value="{{dataform.PreregistrationData}}"/>
+						<input type="hidden" name="accessKeyRef" value="{{dataform.AccessKey}}"/>
+
+						<input type="hidden" name="returnURL" value="{{ absolute_url (path('card_update',{id: carte.Id })) }}"/>
+
+						<div class="input-group mb-3">
+							<div class="input-group-prepend">
+								<span class="input-group-text" id="basic-addon1">
+									<i class="fa fa-credit-card"></i>
+								</span>
+							</div>
+							
+							<input class="form-control" placeholder="Numeros de cart" type="text" name="cardNumber" value=""/>
+						</div>
+
+						<div class="form-group">
+							<i class="fa fa-calendar"></i>
+							<div class="box">
+								<select id="selectmonthcard">
+									<option value="01">Janvier</option>
+									<option value="02">Février</option>
+									<option value="03">Mars</option>
+									<option value="04">Avril</option>
+									<option value="05">Mai</option>
+									<option value="06">Juin</option>
+									<option value="07">Juillet</option>
+									<option value="08">Aôut</option>
+									<option value="09">Septembre</option>
+									<option value="10">Octobre</option>
+									<option value="11">Novembre</option>
+									<option value="12">Décembre</option>
+								</select>
+
+								<select id="selectyearcart">
+									<option value="20">2020</option>
+									<option value="21">2021</option>
+									<option value="22">2022</option>
+									<option value="23">2023</option>
+									<option value="24">2024</option>
+									<option value="25">2025</option>
+									<option value="26">2026</option>
+									<option value="27">2027</option>
+									<option value="28">2028</option>
+									<option value="29">2029</option>
+									<option value="30">2030</option>
+									<option value="31">2031</option>
+								</select>
+							</div>
+						</div>
+						<input type="hidden" name="cardExpirationDate" value="1025">
+
+						<div class="form-group">
+							<input class="form-control" placeholder="CVV" type="text" name="cardCvx" value=""/>
+						</div>
+
+						<div class="form-group">
+							<button class="btn btn-success btn-block" style="background-color: #FF4500;border-color: #FF4500;" type="submit"><img src="{{ asset('image/mangopay.png') }}" class="mr-2 float-left" style="height: 25px">Valider
+							</button>
+						</div>
+
+						<div class="row"></div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% endfor %} #}
 {% endblock %}
 
 {% block javascripts %}
@@ -389,6 +587,23 @@
 			var e = document.getElementById("selectyearcart");
 			var value = e.options[e.selectedIndex].value;
 			$('.inputcardExpirationDate').val(this.value + value);
+		});
+	</script>
+
+	{# check box #}
+	<script type="text/javascript">
+		$("input:checkbox").on('click', function() {
+		  
+		  var $box = $(this);
+		  if ($box.is(":checked")) {
+		    
+		    var group = "input:checkbox[name='" + $box.attr("name") + "']";
+		    
+		    $(group).prop("checked", false);
+		    $box.prop("checked", true);
+		  } else {
+		    $box.prop("checked", false);
+		  }
 		});
 	</script>
 {% endblock %}

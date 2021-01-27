@@ -26,14 +26,14 @@ class MangoPayService
 		return $mangoPayApi;
 	}
 
-	public function setUserMangoPay(string $email, string $nom, string $prenom): int
+	public function createUserParticulier(string $email, string $nom, string $prenom): int
 	{
 		$mangoPayApi = $this->getMangoPayApi();
 
 		$mangoUser = new \MangoPay\UserNatural();
 
 		$mangoUser->Email              = $email;
-		$mangoUser->PersonType         = "NATURAL";
+		$mangoUser->PersonType         = "PARTICULIER";
 		$mangoUser->FirstName          = $prenom;
 		$mangoUser->LastName           = $nom;
 		$mangoUser->Birthday           = 1409735187;
@@ -50,6 +50,58 @@ class MangoPayService
 		$mangoPayApi->Wallets->Create($Wallet);
 
 		return $mangoUser->Id ;
+	}
+
+	public function createUserProfessionnel(string $address, string $city, string $region, string $postalCode , string $legalPersonType , string $name, int $birthday , string $countryOfResidence , string $email, string $firstName, string $lastName,string $companyNumber): int
+	{
+	
+		try {
+
+			$mangoPayApi = $this->getMangoPayApi();
+
+			$UserLegal = new \MangoPay\UserLegal();
+
+			$UserLegal->HeadquartersAddress = new \MangoPay\Address();
+			$UserLegal->HeadquartersAddress->AddressLine1 = $address;
+			$UserLegal->HeadquartersAddress->AddressLine2 = $address;
+			$UserLegal->HeadquartersAddress->City = $city;
+			$UserLegal->HeadquartersAddress->Region = $region;
+			$UserLegal->HeadquartersAddress->PostalCode = $postalCode;
+			$UserLegal->HeadquartersAddress->Country = "FR";
+			$UserLegal->LegalPersonType = $legalPersonType;
+			$UserLegal->Name = $name;
+			/*$UserLegal->LegalRepresentativeAddress = new \MangoPay\Address();
+			$UserLegal->LegalRepresentativeAddress->AddressLine1 = "1 Mangopay Street";
+			$UserLegal->LegalRepresentativeAddress->AddressLine2 = "The Loop";
+			$UserLegal->LegalRepresentativeAddress->City = "Paris";
+			$UserLegal->LegalRepresentativeAddress->Region = "Ile de France";
+			$UserLegal->LegalRepresentativeAddress->PostalCode = "75001";
+			$UserLegal->LegalRepresentativeAddress->Country = "FR";*/
+			$UserLegal->LegalRepresentativeBirthday = $birthday;
+			$UserLegal->LegalRepresentativeCountryOfResidence = $countryOfResidence;
+			$UserLegal->LegalRepresentativeNationality = "FR";
+			$UserLegal->LegalRepresentativeEmail = $email;
+			$UserLegal->LegalRepresentativeFirstName = $firstName;
+			$UserLegal->LegalRepresentativeLastName = $lastName;
+			$UserLegal->Email = $email;
+			$UserLegal->CompanyNumber = $companyNumber;
+
+			$UserLegal = $mangoPayApi->Users->Create($UserLegal);
+
+			$Wallet = new \MangoPay\Wallet();
+			$Wallet->Owners = array($UserLegal->Id);
+			$Wallet->Description = "Wallet for " . $name . ' ' . $firstName;
+			$Wallet->Currency = "EUR";
+
+			$mangoPayApi->Wallets->Create($Wallet);
+			
+		} catch(MangoPay\Libraries\ResponseException $e) {
+			// handle/log the response exception with code $e->GetCode(), message $e->GetMessage() and error(s) $e->GetErrorDetails() 
+		} catch(MangoPay\Libraries\Exception $e) {
+			// handle/log the exception $e->GetMessage() 
+		}
+
+		return $UserLegal->Id ;
 	}
 
 	public function setUserMangoPayKYC(string $userId, $upf)
@@ -268,12 +320,43 @@ class MangoPayService
         return $createdCardRegister;
 	}
 
+	// get card REGISTRATION with ID
 	public function getCrdWithId(string $cardId)
 	{
 		$mangoPayApi = $this->getMangoPayApi();
 		$cardRegister = $mangoPayApi->CardRegistrations->Get($cardId);
 
 		return $cardRegister;
+	}
+
+	// get card with ID
+	public function getCarteId(string $cardId)
+	{
+		$mangoPayApi = $this->getMangoPayApi();
+		$cards = $mangoPayApi->Cards->Get($cardId);
+
+		return $cards;
+	}
+
+	// active and desactive card with ID
+	public function statusCarte(string $cardId, bool $boolean)
+	{
+		
+		try {
+			
+			$Card = new \MangoPay\Card();
+			$Card->Id = $cardId;
+			$Card->Active = $boolean;
+			$Result = $this->getMangoPayApi()->Cards->Update($Card);
+			
+			
+		} catch(MangoPay\Libraries\ResponseException $e) {
+			// handle/log the response exception with code $e->GetCode(), message $e->GetMessage() and error(s) $e->GetErrorDetails() 
+		} catch(MangoPay\Libraries\Exception $e) {
+			// handle/log the exception $e->GetMessage() 
+		}
+
+		return $Result;
 	}
 
 	public function updateCardRegister($cardRegister)
