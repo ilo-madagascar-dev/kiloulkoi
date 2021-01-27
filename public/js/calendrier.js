@@ -135,7 +135,14 @@ $(document).ready(function () {
             var data = $(span).attr('data');
 
             if (today <= data) return false;
-            //$(span).addClass('interdit')
+
+            var user_eligibility = $('.user_eligibility').data('userEligibility');
+
+            console.log(user_eligibility);
+
+            if (user_eligibility != 'REGULAR') {
+                $(span).addClass('interdit');
+            }
         });
 
 

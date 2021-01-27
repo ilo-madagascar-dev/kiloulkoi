@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\FileUploader;
+use App\Service\MangoPayService;
 use App\Service\PaginationService;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -262,7 +263,7 @@ class AnnoncesController extends AbstractController
     /**
      * @Route("/details/{id}/{slug}", name="annonces_show", methods={"GET"})
      */
-    public function show(int $id, string $slug, SerializerInterface $serializer, NoteRepository $noteRepository): Response
+    public function show(int $id, string $slug, SerializerInterface $serializer, NoteRepository $noteRepository, MangoPayService $mangoPayService): Response
     {
         $user         = $this->getUser();
         $annonce      = $this->repAnnonce->findAnnonceById($id);
@@ -271,6 +272,10 @@ class AnnoncesController extends AbstractController
         $isFollower   = $user ? $this->repUser->isFollowedBy($proprietaire, $user) : false;
         $isFavoris    = $user ? $this->repAnnonce->checkFavoris($user->getId(), $annonce->getId()) : false;
 
+        $userMangoId = $user->getMangoPayId();
+        $userMangoKYC = $mangoPayService->getUser($userMangoId);
+        $userKYCLevel = $userMangoKYC->KYCLevel;
+
         $abonnement = $this->repAbonnement->findOneBy(['user' => $proprietaire->getId()]);
         $photoMax   = ($abonnement && $abonnement->getId()) == 2 ? 6 : 3;
 
@@ -278,6 +283,7 @@ class AnnoncesController extends AbstractController
             $annonce->setVisite(intval($annonce->getVisite()) + 1);
             $this->getDoctrine()->getManager()->flush();
         }
+
         $annonce_serialized = $serializer->normalize($annonce, null, [AbstractNormalizer::IGNORED_ATTRIBUTES => [
             'photo', 'user', 'conversations', 'categorie', 'sousCategorie', 'locations',  // Relation to ignore
             'id', 'titre', 'description', 'prix', 'proucentageTva',                       //////////////
@@ -287,10 +293,13 @@ class AnnoncesController extends AbstractController
 
         $note = $noteRepository->getNote($proprietaire);
 
-        //dd($annonce);
+        $adDescriptionArrayOfWords = explode(' ', $annonce->getDescription());
+        $adDescriptionNumberOfWords = count($adDescriptionArrayOfWords);
 
         return $this->render('annonces/show.html.twig', [
             'annonce'            => $annonce,
+            'eligibility' => $userKYCLevel,
+            'annonceDescriptionLength' => $adDescriptionNumberOfWords,
             'photoMax'           => $photoMax,
             'annonce_serialized' => $annonce_serialized,
             'note'               => $note['count'] == 0 ? 0 : round($note['sum'] / $note['count'], 1),

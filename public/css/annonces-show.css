@@ -1,0 +1,22 @@
+/**
+ * Description de l'annonce
+ */
+/* #ad-picture {
+    background: red;   
+}*/
+
+.jumbotron {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#table-details {
+    margin-top: 60px;
+}
+
+
+@media screen and (max-width:768px){
+    #table-details {
+        margin-top: 20px;
+    }   
+}

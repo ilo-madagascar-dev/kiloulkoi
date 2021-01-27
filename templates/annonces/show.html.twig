@@ -3,6 +3,7 @@
 {% block stylesheets %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.css">
     <link rel="stylesheet" href="{{ asset('/css/calendrier.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/annonces-show.css') }}">
     <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 {% endblock %}
 
@@ -28,6 +29,7 @@
                                     <h2 class="mb-0 text-center">
                                         <strong>{{ annonce.titre }}</strong>
                                     </h2>
+                                    <p class="user_eligibility" data-user-eligibility="{{ eligibility }}"></p>
                                 </div>
                                 <div class="col-3 text-right">
                                     {% if app.user and app.user.id != annonce.user.id %}
@@ -66,8 +68,8 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-12">
+                            <div class="row mt-2">
+                                <div class="col-md-6">
                                     {% if annonce.photo | length == 0 %}
                                         <div class="text-center jumbotron">
                                             <div>
@@ -78,9 +80,9 @@
                                             </div>
                                         </div>
                                     {% else %}
-                                        <div class="tz-gallery">
+                                        <div class="tz-gallery jumbotron">
                                             {% set firstPhoto = annonce.photo[0] %}
-                                            <div class="p-1 overflow-hidden" data-toggle="tooltip" data-placement="top" title="{{ firstPhoto.description }}" style="height: 200px; overflow-y:hidden;">
+                                            <div class="p-1 overflow-hidden" id="ad-picture" data-toggle="tooltip" data-placement="top" title="{{ firstPhoto.description }}" style="overflow-y:hidden;">
                                                 <a href="{{ asset('uploads/') ~ firstPhoto.url }}" class="lightbox">
                                                     <img id="photo-{{ firstPhoto.id }}" src="{{ asset('uploads/') ~ firstPhoto.url }}" class="w-100" alt="{{ firstPhoto.description }}">
                                                 </a>
@@ -98,10 +100,10 @@
                                         </div>
                                     {% endif %}
                                 </div>
-                            </div>
+                            <!-- /div -->
 
-                            <div class="row">
-                                <table class="col-md-12 mt-2 mb-2 pt-4 text-center" style="font-size: 120%">
+                            <!-- div class="row" -->
+                                <table class="col-md-6 mb-2 pt-4 text-center" style="font-size: 120%" id="table-details">
                                     <tr style="font-size: 150%">
                                         <td class="pl-3">
                                             <strong >Prix </strong>
@@ -161,7 +163,7 @@
                                 <h3 style="font-size: 1.2rem;"><strong>Description :</strong></h3>
                                 <p class="mb-0 text-justify">
                                     <span class="collapse show descriptionCollapse">
-                                       {{ annonce.description | nl2br | slice(0, 100) }} <a data-toggle="collapse" href=".descriptionCollapse" class="card-link">...afficher plus.</a>
+                                       {{ annonce.description | slice(0, 100) | nl2br  }} {% if annonceDescriptionLength > 100 %} <a data-toggle="collapse" href=".descriptionCollapse" class="card-link">...afficher plus.</a> {% endif %}
                                     </span>
                                     <span class="collapse descriptionCollapse">
                                         {{ annonce.description | nl2br }}  <a data-toggle="collapse" href=".descriptionCollapse" class="card-link">...afficher moins.</a>
