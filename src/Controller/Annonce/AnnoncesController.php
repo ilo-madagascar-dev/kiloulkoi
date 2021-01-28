@@ -272,9 +272,13 @@ class AnnoncesController extends AbstractController
         $isFollower   = $user ? $this->repUser->isFollowedBy($proprietaire, $user) : false;
         $isFavoris    = $user ? $this->repAnnonce->checkFavoris($user->getId(), $annonce->getId()) : false;
 
-        $userMangoId = $user->getMangoPayId();
-        $userMangoKYC = $mangoPayService->getUser($userMangoId);
-        $userKYCLevel = $userMangoKYC->KYCLevel;
+        $userKYCLevel = null;
+
+        if ($user) {
+            $userMangoId = $user->getMangoPayId();
+            $userMangoKYC = $mangoPayService->getUser($userMangoId);
+            $userKYCLevel = $userMangoKYC->KYCLevel;
+        }
 
         $abonnement = $this->repAbonnement->findOneBy(['user' => $proprietaire->getId()]);
         $photoMax   = ($abonnement && $abonnement->getId()) == 2 ? 6 : 3;
