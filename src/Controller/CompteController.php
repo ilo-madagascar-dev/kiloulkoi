@@ -143,7 +143,7 @@ class CompteController extends AbstractController
                $responseTransfer = $mangoPayService->doPayoutIBAN($this->getUser()->getMangoPayId(),$walletId,$currency,$amountDebited,0,"BANK_WIRE",$bankAccountId);
                $this->addFlash('compteIBANSuccess', 'Transfert réussi.');
             }else{
-               $this->addFlash('compteIBAN', 'Vos documments KYC ne sont pas encore valide.');
+               $this->addFlash('compteIBAN', 'Vos documments ne sont pas encore valide.');
             }
 
         }else{

@@ -60,7 +60,7 @@ class UserController extends AbstractController
             $reponse = [
                 'status' => 0,
                 'titre' => 'KYC Document',
-                'message' => 'Uploader votre KYC document',
+                'message' => 'Uploader vos documents',
                 'lien' => $this->generateUrl('user_profil')
             ];
         }
@@ -69,7 +69,7 @@ class UserController extends AbstractController
             $reponse = [
                 'status' => $usersmango->KYCLevel,
                 'titre' => 'KYC Document',
-                'message' => 'La validation de votre KYC est en attente',
+                'message' => 'La validation de vos documents est en attente',
                 'lien' => $this->generateUrl('user_profil')
             ];
         }
@@ -79,7 +79,7 @@ class UserController extends AbstractController
             $email = (new TemplatedEmail())
                         ->from(new Address('njanahary46@gmail.com', 'Kiloukoi'))
                         ->to($this->getUser()->getEmail())
-                        ->subject('Validation KYC')
+                        ->subject('Validation document')
                         ->htmlTemplate('user/email.html.twig')
                         ->context([
                             'messages' => $messages,
@@ -90,7 +90,7 @@ class UserController extends AbstractController
             $reponse = [
                 'status' => 'SUCCESS',
                 'titre' => 'KYC Document',
-                'message' => 'KYC Document validé(s)',
+                'message' => 'Document validé(s)',
                 'lien' => $this->generateUrl('user_profil')
             ];
         }
@@ -201,7 +201,7 @@ class UserController extends AbstractController
         if ($usersmango->KYCLevel == 'REGULAR') {
             $result=$mangoPayService->creatBankAccount($this->getUser()->getMangoPayId(),"IBAN",$request->get('iban'),$request->get('bic'),$this->getUser()->getPseudo(),$this->getUser()->getAdresse());
         }else{
-            $this->addFlash('warningKYC', 'Vos documments KYC ne sont pas encore valide.');
+            $this->addFlash('warningKYC', 'Vos documments ne sont pas encore valide.');
             return $this->redirectToRoute('user_profil');
         }
 
