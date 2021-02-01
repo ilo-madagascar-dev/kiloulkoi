@@ -129,8 +129,14 @@ class AuthController extends AbstractController
                 $firstName = $user->getPseudo();
                 $lastName = $user->getPseudo();
                 $companyNumber = $user->getSiret();
+                $addrEntreprise = $request->get('addressEntreprise');
+                $cityEntreprise = $request->get('villeEntreprise');
+                $regionEntreprise = $request->get('regionEntreprise');
+                $pcEntreprise = $request->get('codepoEntreprise');
+                $emailEntreprise = $request->get('mailEntreprise');
 
-                $mangoPayUserId = $mangoPayService->createUserProfessionnel($address, $city, $region, $postalCode , $legalPersonType , $name, $birthday , $countryOfResidence , $email, $firstName, $lastName,$companyNumber);
+                $mangoPayUserId = $mangoPayService->createUserProfessionnel($address, $city, $region, $postalCode , $legalPersonType , $name, $birthday , $countryOfResidence , $email, $firstName, $lastName,$companyNumber, $addrEntreprise, $cityEntreprise, $regionEntreprise, $pcEntreprise, $emailEntreprise);
+
 
             }
 

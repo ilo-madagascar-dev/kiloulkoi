@@ -52,7 +52,7 @@ class MangoPayService
 		return $mangoUser->Id ;
 	}
 
-	public function createUserProfessionnel(string $address, string $city, string $region, string $postalCode , string $legalPersonType , string $name, int $birthday , string $countryOfResidence , string $email, string $firstName, string $lastName,string $companyNumber): int
+	public function createUserProfessionnel(string $address, string $city, string $region, string $postalCode , string $legalPersonType , string $name, int $birthday , string $countryOfResidence , string $email, string $firstName, string $lastName,string $companyNumber,string $addrEntreprise,string $cityEntreprise,string $regionEntreprise,string $pcEntreprise,string $emailEntreprise): int
 	{
 	
 		try {
@@ -62,28 +62,28 @@ class MangoPayService
 			$UserLegal = new \MangoPay\UserLegal();
 
 			$UserLegal->HeadquartersAddress = new \MangoPay\Address();
-			$UserLegal->HeadquartersAddress->AddressLine1 = $address;
-			$UserLegal->HeadquartersAddress->AddressLine2 = $address;
-			$UserLegal->HeadquartersAddress->City = $city;
-			$UserLegal->HeadquartersAddress->Region = $region;
-			$UserLegal->HeadquartersAddress->PostalCode = $postalCode;
+			$UserLegal->HeadquartersAddress->AddressLine1 = $addrEntreprise;
+			$UserLegal->HeadquartersAddress->AddressLine2 = $addrEntreprise;
+			$UserLegal->HeadquartersAddress->City = $cityEntreprise;
+			$UserLegal->HeadquartersAddress->Region = $regionEntreprise;
+			$UserLegal->HeadquartersAddress->PostalCode = $pcEntreprise;
 			$UserLegal->HeadquartersAddress->Country = "FR";
 			$UserLegal->LegalPersonType = $legalPersonType;
 			$UserLegal->Name = $name;
-			/*$UserLegal->LegalRepresentativeAddress = new \MangoPay\Address();
-			$UserLegal->LegalRepresentativeAddress->AddressLine1 = "1 Mangopay Street";
-			$UserLegal->LegalRepresentativeAddress->AddressLine2 = "The Loop";
-			$UserLegal->LegalRepresentativeAddress->City = "Paris";
-			$UserLegal->LegalRepresentativeAddress->Region = "Ile de France";
-			$UserLegal->LegalRepresentativeAddress->PostalCode = "75001";
-			$UserLegal->LegalRepresentativeAddress->Country = "FR";*/
+			$UserLegal->LegalRepresentativeAddress = new \MangoPay\Address();
+			$UserLegal->LegalRepresentativeAddress->AddressLine1 = $address;
+			$UserLegal->LegalRepresentativeAddress->AddressLine2 = $address;
+			$UserLegal->LegalRepresentativeAddress->City = $city;
+			$UserLegal->LegalRepresentativeAddress->Region = $region;
+			$UserLegal->LegalRepresentativeAddress->PostalCode = $postalCode;
+			$UserLegal->LegalRepresentativeAddress->Country = "FR";
 			$UserLegal->LegalRepresentativeBirthday = $birthday;
 			$UserLegal->LegalRepresentativeCountryOfResidence = $countryOfResidence;
 			$UserLegal->LegalRepresentativeNationality = "FR";
 			$UserLegal->LegalRepresentativeEmail = $email;
 			$UserLegal->LegalRepresentativeFirstName = $firstName;
 			$UserLegal->LegalRepresentativeLastName = $lastName;
-			$UserLegal->Email = $email;
+			$UserLegal->Email = $emailEntreprise;
 			$UserLegal->CompanyNumber = $companyNumber;
 
 			$UserLegal = $mangoPayApi->Users->Create($UserLegal);
