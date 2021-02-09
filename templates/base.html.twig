@@ -2,6 +2,7 @@
 <html  lang="fr">
     <head>
         <meta charset="UTF-8">
+        
         <title>{% block title %}Welcome!{% endblock %}</title>
 
         <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"/>
@@ -17,6 +18,10 @@
 
         <link href="{{ asset('css/style.css') }}" rel="stylesheet"/>
 
+        <!-- CSS des annonces -->
+        <link rel="stylesheet" href="{{ asset('css/ad-style.css') }}">
+        <!-- CSS des annonces -->
+        
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
         {% block stylesheets %}{% endblock %}
@@ -155,7 +160,7 @@
             <div class="container-fluid">
                 <div id="bg" style="position:absolute;z-index:-1;left:0;height:375px;"></div>
 
-                <center class="pt-1">
+                <center class="pt-4">
                     <a href="{{ path('accueil') }}">
                         <img src="{{ asset('image/logo.png') }}" class="mb-3" style="height: 120px;width: auto;" >
                     </a>
