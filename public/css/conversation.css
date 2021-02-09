@@ -1,5 +1,5 @@
 body {
-   overflow-y: hidden;
+   /* overflow-y: hidden; */
 }
 center {
    display: none;
@@ -11,7 +11,7 @@ center {
    background: #fff;
    border-radius: 12px;
    background: linear-gradient(#009CB5, #00CD9C 60% );
-   overflow: hidden;
+   /* overflow: hidden; */
    font-size: 80%;
 }
 #messageBody {
@@ -29,5 +29,5 @@ center {
 }
 #message-form  {
    border-radius: 0 12px;
-   overflow: hidden;
+   /* overflow: hidden; */
 }
