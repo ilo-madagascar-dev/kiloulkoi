@@ -26,14 +26,13 @@ class MangoPayService
 		return $mangoPayApi;
 	}
 
-	public function createUserParticulier(string $email, string $nom, string $prenom): int
+	public function createUserGoogle(string $email, string $nom, string $prenom): int
 	{
 		$mangoPayApi = $this->getMangoPayApi();
 
 		$mangoUser = new \MangoPay\UserNatural();
 
 		$mangoUser->Email              = $email;
-		$mangoUser->PersonType         = "PARTICULIER";
 		$mangoUser->FirstName          = $prenom;
 		$mangoUser->LastName           = $nom;
 		$mangoUser->Birthday           = 1409735187;
@@ -50,6 +49,46 @@ class MangoPayService
 		$mangoPayApi->Wallets->Create($Wallet);
 
 		return $mangoUser->Id ;
+	}
+
+	public function createUserParticulier(string $email, string $nom, string $prenom, string $addr, string $city,string $region, string $postalCode, int $birthday,string $nationality, string $countryOfResidence, string $occupation): int
+	{
+
+		try {
+
+			$mangoPayApi = $this->getMangoPayApi();
+
+			$UserNatural = new \MangoPay\UserNatural();
+			$UserNatural->FirstName = $prenom;
+			$UserNatural->LastName = $nom;
+			$UserNatural->Address = new \MangoPay\Address();
+			$UserNatural->Address->AddressLine1 = $addr;
+			$UserNatural->Address->AddressLine2 = $addr;
+			$UserNatural->Address->City = $city;
+			$UserNatural->Address->Region = $region;
+			$UserNatural->Address->PostalCode = $postalCode;
+			$UserNatural->Address->Country = "FR";
+			$UserNatural->Birthday = $birthday;
+			$UserNatural->Nationality = $nationality;
+			$UserNatural->CountryOfResidence = $countryOfResidence;
+			$UserNatural->Occupation = $occupation;
+			$UserNatural->Email = $email;
+			$UserNatural = $mangoPayApi->Users->Create($UserNatural);
+
+			$Wallet = new \MangoPay\Wallet();
+			$Wallet->Owners = array($UserNatural->Id);
+			$Wallet->Description = "Wallet for " . $nom . ' ' . $prenom;
+			$Wallet->Currency = "EUR";
+
+			$mangoPayApi->Wallets->Create($Wallet);
+			
+		} catch(MangoPay\Libraries\ResponseException $e) {
+			// handle/log the response exception with code $e->GetCode(), message $e->GetMessage() and error(s) $e->GetErrorDetails() 
+		} catch(MangoPay\Libraries\Exception $e) {
+			// handle/log the exception $e->GetMessage() 
+		}
+
+		return $UserNatural->Id ;
 	}
 
 	public function createUserProfessionnel(string $address, string $city, string $region, string $postalCode , string $legalPersonType , string $name, int $birthday , string $countryOfResidence , string $email, string $firstName, string $lastName,string $companyNumber,string $addrEntreprise,string $cityEntreprise,string $regionEntreprise,string $pcEntreprise,string $emailEntreprise): int

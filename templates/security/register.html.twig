@@ -75,6 +75,19 @@
                             </div>
                         </div>
 
+                        {% if registrationForm.nom is defined %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="Occupation" class="required">Occupation</label>
+                                    <input type="text" name="occupation" class="form-control" required />
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="region" class="required">Région</label>
+                                    <input type="text" name="region" class="form-control" required/>
+                                </div>
+                            </div><br>
+                        {% endif %}
+
                         <div class="row">
                             <div class="col-md-6">
                                 {{ form_row(registrationForm.ville, { 'id': 'city', 'attr': {'autocomplete': 'off'} }) }}
