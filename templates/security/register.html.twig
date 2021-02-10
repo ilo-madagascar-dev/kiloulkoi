@@ -15,7 +15,25 @@
             <div class="card">
                 <div class="card-body">
                     {{ form_start(registrationForm, {'attr': {'id': 'registration_form'}} ) }}
+
+                        {% if registrationForm.raison_social is defined %}
+                            <h4>Ajouter les détails du représentant légal</h4>
+                        {% endif %}
+
                         {{ form_row(registrationForm.email) }}
+
+                        {% if registrationForm.raison_social is defined %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="Nomrepresentent" class="required">Nom</label>
+                                    <input type="text" name="firstname" class="form-control" required />
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="prenomrepresentant" class="required">Prénom</label>
+                                    <input type="text" name="lastname" class="form-control" required/>
+                                </div>
+                            </div><br>
+                        {% endif %}
 
                         <div class="row">
                             <div class="col-md-6">
@@ -37,32 +55,6 @@
                             </div>
                         {% endif %}
 
-                        {% if registrationForm.raison_social is defined %}
-                            <div class="row">
-                                <div class="col-md-6">
-                                    {{ form_row(registrationForm.raison_social) }}
-                                </div>
-                                <div class="col-md-6">
-                                    {{ form_row(registrationForm.siret, { 'id': 'registration_siret'}) }}
-                                </div>
-                                <div class="col-md-12">
-                                    <label for="identitylegale" class="required">Type d'entité légale</label>
-                                    <select class="form-control" name="legalType" id="legalType">
-                                      <option value="BUSINESS">AFFAIRES</option>
-                                      <option value="ORGANIZATION">ORGANISATION</option>
-                                      <option value="SOLETRADER">EXCLUSIVITÉ</option>
-                                    </select>
-                                </div>
-                            </div><br>
-
-                        {% endif %}
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label for="datenaiss" class="required">Date de naissance</label>
-                                <input type="text" name="datenaissance" id="datepicker" class="form-control" required />
-                            </div>
-                        </div><br>
-                        
 
                         <div class="row">
                             <div class="col-md-6">
@@ -74,10 +66,27 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
+                                <label for="datenaissance" class="required">Date de naissance</label>
+                                <input type="text" name="datenaissance" id="datepicker" class="form-control" required />
+                            </div>
+                            <div class="col-md-6">
                                 {{ form_row(registrationForm.telephone, { 'id': 'registration_phone'} ) }}
                             </div>
                         </div>
+
+                        {% if registrationForm.nom is defined %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="Occupation" class="required">Occupation</label>
+                                    <input type="text" name="occupation" class="form-control" required />
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="region" class="required">Région</label>
+                                    <input type="text" name="region" class="form-control" required/>
+                                </div>
+                            </div><br>
+                        {% endif %}
 
                         <div class="row">
                             <div class="col-md-6">
@@ -90,6 +99,53 @@
 
 
                         {{ form_row(registrationForm.adresse, { 'id': 'registration_adresse'}) }}
+
+                        {% if registrationForm.raison_social is defined %}
+                            <h4>Ajouter les détails de l'entreprise</h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {{ form_row(registrationForm.raison_social) }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ form_row(registrationForm.siret, { 'id': 'registration_siret'}) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="typeidentitelegale" class="required">Type d'entité légale</label>
+                                    <select class="form-control" name="legalType" id="legalType">
+                                      <option value="BUSINESS">Entreprise</option>
+                                      <option value="ORGANIZATION">Association</option>
+                                      <option value="SOLETRADER">Auto-Entrepreneur/Entreprise individuelle</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6">
+                                    <label for="emailentreprise" class="required">Email</label>
+                                    <input type="text" name="mailEntreprise" class="form-control" required />
+                                </div>
+                            </div><br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="addressEntreprise" class="required">Addresse</label>
+                                    <input type="text" name="addressEntreprise" class="form-control" required />
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="codepoEntreprise" class="required">Code postal</label>
+                                    <input type="text" name="codepoEntreprise" class="form-control" required />
+                                </div>
+                            </div><br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="villeEntreprise" class="required" >Ville</label>
+                                    <input type="text" name="villeEntreprise" class="form-control" required="" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="regionEntreprise" class="required">Région</label>
+                                    <input type="text" name="regionEntreprise" class="form-control" required />
+                                </div>
+                            </div>
+                           
+                        {% endif %}
 
                         <div class="row m-3 text-center">
                             <div class="col-md-8 offset-md-2 col-lg-6 offset-lg-3">

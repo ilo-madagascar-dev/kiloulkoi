@@ -133,7 +133,7 @@ class GoogleController extends AbstractController
             $user->setDateMiseAJour();
             $user->setActif(true);
             
-            $mangoPayUserId = $mangoPayService->createUserParticulier($user->getEmail(), $googleUser->getName(), $googleUser->getFirstName());
+            $mangoPayUserId = $mangoPayService->createUserGoogle($user->getEmail(), $googleUser->getName(), $googleUser->getFirstName());
             //$mangoPayUserId = $mangoPayService->setUserMangoPay($user->getEmail(), $googleUser->getName(), $googleUser->getFirstName());
             $user->setMangoPayId( $mangoPayUserId );
 

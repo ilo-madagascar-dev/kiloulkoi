@@ -109,10 +109,19 @@ class AuthController extends AbstractController
 
             if( $type == 'particulier' )
             {
-                $nom    = $user->getNom();
-                $prenom = $user->getPrenom();
+                $nom        = $user->getNom();
+                $prenom     = $user->getPrenom();
+                $addr       = $user->getAdresse();
+                $city       = $user->getVille();
+                $region     = $request->get('region');
+                $postalCode = $user->getCp();
+                $birthday   = intval(strtotime($request->get('datenaissance')));
+                $nationality = "FR";
+                $countryOfResidence = "FR";
+                $occupation = $request->get('occupation');;
+               
 
-                $mangoPayUserId = $mangoPayService->createUserParticulier($user->getEmail(), $nom, $prenom);
+                $mangoPayUserId = $mangoPayService->createUserParticulier($user->getEmail(), $nom, $prenom, $addr, $city, $region, $postalCode, $birthday, $nationality, $countryOfResidence, $occupation);
             }
             else
             {
@@ -129,8 +138,14 @@ class AuthController extends AbstractController
                 $firstName = $user->getPseudo();
                 $lastName = $user->getPseudo();
                 $companyNumber = $user->getSiret();
+                $addrEntreprise = $request->get('addressEntreprise');
+                $cityEntreprise = $request->get('villeEntreprise');
+                $regionEntreprise = $request->get('regionEntreprise');
+                $pcEntreprise = $request->get('codepoEntreprise');
+                $emailEntreprise = $request->get('mailEntreprise');
 
-                $mangoPayUserId = $mangoPayService->createUserProfessionnel($address, $city, $region, $postalCode , $legalPersonType , $name, $birthday , $countryOfResidence , $email, $firstName, $lastName,$companyNumber);
+                $mangoPayUserId = $mangoPayService->createUserProfessionnel($address, $city, $region, $postalCode , $legalPersonType , $name, $birthday , $countryOfResidence , $email, $firstName, $lastName,$companyNumber, $addrEntreprise, $cityEntreprise, $regionEntreprise, $pcEntreprise, $emailEntreprise);
+
 
             }
 

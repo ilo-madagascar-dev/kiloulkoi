@@ -101,7 +101,7 @@ class CompteController extends AbstractController
             if (!empty($cardId['id'])) {
             unset($cardId['id']);
             }
-             dd($session->get('cardId', []));
+             
             return $this->redirectToRoute('compte_portefeuille');
         }else{
             dd($request->get('errorCode'));
@@ -175,11 +175,11 @@ class CompteController extends AbstractController
         $status = $mangoPayService->Payin($this->getUser()->getMangoPayId(), $carte, $montant);
         if( $status == \MangoPay\PayInStatus::Succeeded )
         {
-            $this->addFlash('successPayin', 'Transfert éffectué!');
+            $this->addFlash('successPayin', 'Transfert éffectué');
         }
         else
         {
-            $this->addFlash('errorPayin', 'Un problème est survenu lors du transfert!');
+            $this->addFlash('errorPayin', 'Un problème est survenu, la carte est désactivé ou expirer');
         }
 
         return $this->redirectToRoute('compte_portefeuille');
@@ -212,7 +212,7 @@ class CompteController extends AbstractController
 
 
     /**
-     * @Route("/portefeuille/card/statut/{id}/{boolean}", name="card_status")
+     * @Route("/portefeuille/card/statut", name="card_status")
      */
     public function cardsStatus(Request $request,MangoPayService $mangoPayService): Response
     {
@@ -220,10 +220,11 @@ class CompteController extends AbstractController
         if ($request->get('boolean')  == "false") {
             
             $mangoPayService->statusCarte($request->get('id'),false);
+            $this->addFlash('successPayin', 'La carte est désactivé');
            
         }else{
             
-            $mangoPayService->statusCarte($request->get('id'),true);
+            $this->addFlash('errorCardActive', 'Vous ne pouvez plus réactiver la carte');
             
         }
 
