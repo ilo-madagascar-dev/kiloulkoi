@@ -32,6 +32,11 @@
 					{{ message }}
 				</div>
 				{% endfor %}
+				{% for message in app.flashes('errorCardActive') %}
+				<div class="text-center alert alert-danger">
+					{{ message }}
+				</div>
+				{% endfor %}
 				{% for message in app.flashes('successPayin') %}
 				<div class="text-center alert alert-success">
 					{{ message }}
@@ -87,11 +92,13 @@
 											<i class="fas fa-edit"></i>
 											</button> #}
 											{% if carte.Active == true %}
-												{# <button class="btn btn-block btn-danger" data-toggle="modal" data-target="#DesactiveCards{{carte.Id}}">Désactiver</button> #}
-												<a href="{{path('card_status' , {id:carte.Id , boolean:"false"})}}" class="btn btn-block btn-danger" >Désactiver</a>
+												<a href="{{path('card_status' , {id:carte.Id , boolean:"false"} )}}" class="" title="déactiver la carte" ><label class="switch">
+													<input type="checkbox" class="input-check" checked  onclick="desactiveFunction({{carte.Id}})" data-active-cards="{{carte.Id}}"><span class="slider round"></span></label>
+												</a>
 											{% else %}
-												{# <button class="btn btn-block btn-success" data-toggle="modal" data-target="#ActiveCards{{carte.Id}}">Activer</button> #}
-												<a href="{{path('card_status' , {id:carte.Id , boolean:"true"} )}}" class="btn btn-block btn-success" >Activer</a>
+												{# <i class="fas fa-toggle-off" style="font-size:46px; color:grey;" readonly></i> #}
+												<label class="switch" title="Vous ne pouvez plus réactiver la carte">
+													<input type="checkbox" checked  data-active-cards="{{carte.Id}}"><span class="slider round"></span></label>
 											{% endif %}
 										</td>
 									</tr>
@@ -605,5 +612,37 @@
 		    $box.prop("checked", false);
 		  }
 		});
+	</script>
+	<script type="text/javascript">
+		function desactiveFunction(idcard) {
+		 	
+		    $.ajax({
+		           method: "POST",
+		           url: "{{ path('card_status') }}",
+		           data: {
+		           		id: idcard,
+		           		boolean : "false"
+		           		},
+		           success: function(reponse){
+		               window.location= "{{ path('compte_portefeuille') }}";
+		           }
+		    });
+		   
+		}
+		function activeFunction(idcard) {
+		  $.ajax({
+		           method: "POST",
+		           url: "{{ path('card_status') }}",
+		           data: {
+		           		id: idcard,
+		           		boolean : "true"
+		           		},
+		           success: function(reponse){
+		               window.location= "{{ path('compte_portefeuille') }}";
+		           }
+		    });
+		    
+		}
+		
 	</script>
 {% endblock %}
