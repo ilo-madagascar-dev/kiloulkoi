@@ -26,13 +26,40 @@
             margin: auto;
         }
 
-@media screen and(max-width:1024px){
+        .img-logo-kilouks{
+            width:70%;
+        }
+
+        .padding-col-lg-nine {
+            padding-top: 1.5rem !important;
+        }
+
+@media screen and (max-width:1024px) {
     .padding-top-a-little-different {
         padding-top: 0.8rem !important;
     }
+    
+    .img-logo-kilouks{
+        width:89%;
+    }
 
-    .card-body-ad-list .card-body{
+    /*.card-body-ad-list .card-body{
         padding-bottom: 20px;
+    }*/
+
+    .card-body-ad-list img{
+        position:unset !important;
+        padding-top: 0.5rem !important;
+    }
+
+    .padding-col-lg-nine {
+        padding-top: 1.2rem !important;
+    }
+}
+
+@media screen and (max-width:768px) {
+    .img-logo-kilouks{
+        width:89%;
     }
 }
 

@@ -10,6 +10,7 @@
         "lcobucci/jwt": "^3.3",
         "league/oauth2-facebook": "^2.0",
         "league/oauth2-google": "^3.0",
+        "liip/imagine-bundle": "^2.4",
         "mangopay/php-sdk-v2": "^3.1",
         "ninsuo/symfony-collection": "^2.1",
         "phpdocumentor/reflection-docblock": "^5.2",

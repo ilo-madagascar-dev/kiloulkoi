@@ -26,3 +26,7 @@ yarn-error.log
 
 ###< symfony/webpack-encore-bundle ###
 /mercure_deux
+
+###> liip/imagine-bundle ###
+/public/media/cache/
+###< liip/imagine-bundle ###
