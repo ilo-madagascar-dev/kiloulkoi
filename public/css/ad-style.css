@@ -18,12 +18,14 @@
         }
 
         .card-body-ad-list img{
-            position: absolute;
+            /* position: absolute;
             top: 0;
             bottom: 0;
             left: 0;
             right: 0;
-            margin: auto;
+            margin: auto; */
+            line-height: 4rem;
+            padding-top: 0.5rem;
         }
 
         .img-logo-kilouks{
@@ -31,8 +33,9 @@
         }
 
         .padding-col-lg-nine {
-            padding-top: 1.5rem !important;
+            padding-top: 1.2rem !important;
         }
+        
 
 @media screen and (max-width:1024px) {
     .padding-top-a-little-different {

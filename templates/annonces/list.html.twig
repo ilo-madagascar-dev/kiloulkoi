@@ -30,13 +30,13 @@
 											<div class="card-body card-body-ad-list">
 												<div class="row row_ad">
 													{% if annonce.photo|length > 0 %}
-														<div class="col-lg-3 col-sm-3 col-5 text-center py-2" style="position:relative;">
+														<div class="col-lg-3 col-sm-3 col-5 text-center py-2 pb-3" style="position:relative;">
 															<a href="{{ path('annonces_show', {id: annonce.id, slug: slug }) }}" style="" class="overflow-hidden text-center">
 																<img src="{{ asset("uploads/" ~ annonce.photo[0].url) | imagine_filter('thumb') }}" class="card-img-top w-100 m-auto" alt="..." style="width: 100%;">
 															</a>
 														</div>
 													{% else %}
-														<div class="col-lg-3 col-sm-3 col-5 text-center bg-light py-2" style="position:relative;">
+														<div class="col-lg-3 col-sm-3 col-5 text-center bg-light py-2 pb-3" style="position:relative;">
 															<a href="{{ path('annonces_show', {id: annonce.id, slug: slug }) }}" style="" class="overflow-hidden text-center">
 																<img src="{{ asset('image/logo-fond-blanc.png') }}" class="card-img-top m-auto p-3 img-logo-kilouks" style="" alt="...">
 															</a>
