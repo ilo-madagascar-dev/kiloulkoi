@@ -23,3 +23,10 @@ yarn-error.log
 /public/uploads/*
 !/public/uploads/avatar/default-men.png
 !/public/uploads/avatar/default-women.png
+
+###< symfony/webpack-encore-bundle ###
+/mercure_deux
+
+###> liip/imagine-bundle ###
+/public/media/cache/
+###< liip/imagine-bundle ###

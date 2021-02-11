@@ -3,8 +3,85 @@
 {% set annonce_title = annonce_title is defined ? annonce_title : "Mes annonces" %}
 {% block title %}{{ annonce_title }}{% endblock %}
 
-{% block body %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/ad-list.css') }}">
+    <link rel="stylesheet" href="{{ asset('../css/ad-style.css') }}">
+    <style>
+        .card-body-ad-list{
+            padding-top:0;
+            padding-left:0;
+            padding-right:0;
+        }
 
+        .row_ad {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+
+            .row_ad .col-3 {
+                border-radius: 3px 3px 0px 0px;
+            }
+
+                .padding-top-a-little-different {
+                    padding-top: 1.5rem !important;
+                }
+
+                .card-body-ad-list img{
+                    line-height: 4rem !important;
+                    padding-top: 0.5rem !important;
+                   
+
+                }
+
+                .img-logo-kilouks{
+                    width:70% !important;
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    margin: auto;
+                }
+
+                .padding-col-lg-nine {
+                    padding-top: 1.2rem !important;
+                }
+                
+
+        @media screen and (max-width:1024px) {
+            .padding-top-a-little-different {
+                padding-top: 0.8rem !important;
+            }
+            
+            .img-logo-kilouks{
+                width:89%;
+            }
+
+            /*.card-body-ad-list .card-body{
+                padding-bottom: 20px;
+            }*/
+
+            .card-body-ad-list img{
+                position:unset !important;
+                padding-top: 0.5rem !important;
+            }
+
+            .padding-col-lg-nine {
+                padding-top: 1.2rem !important;
+            }
+        }
+
+        @media screen and (max-width:768px) {
+            .img-logo-kilouks{
+                width:89%;
+            }
+        }
+    </style>
+    
+{% endblock %}
+
+{% block body %}
+    <div class="mt-5"></div>
    {% include "annonces/list.html.twig" %}
 
 {% endblock %}
