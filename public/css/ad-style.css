@@ -49,15 +49,11 @@
         padding-top: 0.8rem !important;
     }
     
-    .img-logo-kilouks{
-        width:89%;
-    }
-
     /*.card-body-ad-list .card-body{
         padding-bottom: 20px;
     }*/
 
-    .card-body-ad-list img{
+    .ad-img-updated{
         position:unset !important;
         padding-top: 0.5rem !important;
     }
@@ -65,11 +61,33 @@
     .padding-col-lg-nine {
         padding-top: 1.2rem !important;
     }
+
+    .img-logo-kilouks{
+        width:89%;
+        padding-top: unset !important; /* Propriété à modifier pour le réajustement de la position verticale de l'image si besoin */
+        position: absolute !important;;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+    }
 }
 
 @media screen and (max-width:768px) {
     .img-logo-kilouks{
         width:89%;
+        padding-top: unset !important; /* Propriété à modifier pour le réajustement de la position verticale de l'image si besoin */
+        position: absolute !important;;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+    }
+
+    .date-ad {
+        display: none;
     }
 }
 
