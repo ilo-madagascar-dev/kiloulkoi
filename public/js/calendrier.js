@@ -152,15 +152,24 @@ $(document).ready(function () {
         date.setMonth(date.getMonth() - 1);
         renderCalendar();
 
-        if (monthDiff((new Date()), date) == 0) {
+        let monthDifference = monthDiff(date, (new Date()));
+
+        console.log(monthDifference);
+
+        if (monthDiff(date, (new Date())) > 2) {
             $('.prev').addClass('d-none');
         }
+
         $('.next').removeClass('d-none');
     });
 
     document.querySelector(".next").addEventListener("click", () => {
         date.setMonth(date.getMonth() + 1);
         renderCalendar();
+
+        let monthDifferenceNext = monthDiff((new Date()), date);
+
+        console.log(monthDifferenceNext);
 
         if (monthDiff((new Date()), date) > 2) {
             $('.next').addClass('d-none');
