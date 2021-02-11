@@ -3,8 +3,12 @@
 {% block title %}Profil{% endblock %}
 
 {% block stylesheets %}
+{# <link rel="stylesheet" href="{{asset('css/profil.css')}}"> #}
 <style type="text/css">
-
+.dropdown-toggle::after {
+   
+    content: none;
+}
 </style>
 {% endblock %}
 
@@ -115,6 +119,27 @@
                                         <td><strong>Pseudo :</strong></td>
                                         <td>{{ app.user.pseudo }}</td>
                                     </tr>
+                                    <tr>
+                                        <td><strong>Status  :</strong></td>
+                                        {% if getkycdoc %}
+                                            {% if usersmango.KYCLevel == 'REGULAR' %}
+                                                <td><span class="badge rounded-pill bg-success" style="color: white;">Compte vérifier</span></td>
+                                            {% elseif usersmango.KYCLevel == 'LIGHT' %}
+                                                <td><span class="badge rounded-pill bg-secondary" style="color: white;">Vérification en cours</span></td>
+                                            {% else %}
+                                                <td><span class="badge rounded-pill bg-warning" style="color: white;">Vérifier votre compte 
+                                                    <i class="fas fa-arrow-right" type="button" data-toggle="modal" data-target="#modalKYCpro"></i>
+                                                </span>
+                                                
+                                                </td>
+                                            {% endif %}
+                                        {% else %}
+                                            <td><span class="badge rounded-pill bg-warning" style="color: white;">Vérifier votre compte <i class="fas fa-arrow-right" type="button" data-toggle="modal" data-target="#modalKYCpro"></i></span>
+                                                
+                                                </td>
+                                        {% endif %}
+                                       {#  <td><span class="badge rounded-pill bg-info text-dark">Information</span></td> #}
+                                    </tr>
                                 </table>
                             </div>
 
@@ -159,34 +184,42 @@
                             <div class="col-12 my-3 d-flex justify-content-center">
                                 <a href="{{ path('user_edit', { id: app.user.id }) }}" class="btn btn-primary btn-block w-md-50">Modifier votre compte</a>
                             </div>
+                            <div class="btn-group col-12 justify-content-center">
+                                  <button type="button" class="btn btn-primary dropdown-toggle col-12 justify-content-center" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 9px;">
+                                    <i class="fas fa-plus-circle" style="font-size: 23px;"></i>
+                                  </button>
+                                  <div class="dropdown-menu dropdown-menu-center col-12 justify-content-center" style="width:807px;">
+                                    <div class="row pl-2 pr-2 mt-2">
+                                        <div class="col-lg-6  col-md-6 col-12 mb-3">
+                                            <a href="{{ path('mes_annonces_index') }}" class="btn btn-block h-100 btn-success"><i class="fas fa-bullhorn"></i> Mes annonces</a>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-12 mb-3">
+                                            <a href="{{ path('location_en_cours') }}" class="btn btn-block h-100 btn-success"><i class="fas fa-shopping-cart"></i> Locations en cours</a>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-12 mb-3">
+                                            <a href="{{ path('annonces_favoris') }}" class="btn btn-block h-100 btn-success"> <i class="fas fa-star"></i> Favoris</a>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-12 mb-3">
+                                            <a href="{{ path('kilouwers_favoris') }}" class="btn btn-block h-100 btn-success"><i class="fas fa-heart"></i> Kilouwers favoris</a>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-4 pl-2 pr-2">
+                                        <div class="col-lg-6 col-md-6 col-12 mb-3">
+                                            <a href="{{ path('compte_portefeuille') }}" class="btn btn-block h-100 btn-success"><i class="fas fa-euro-sign"></i> Mon Portefeuille</a>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-12 mb-3">
+                                            <a href="{{ path('compte_facture') }}" class="btn btn-block h-100 btn-success"><i class="fab fa-wpforms"></i> Mes Factures</a>
+                                        </div>
+                                        <div class="col-12 mb-3">
+                                            <a href="{{ path('mes_annonces_index') }}" class="btn btn-block h-100 btn-success"><i class="fas fa-sign-in-alt"></i> Abonnements</a>
+                                        </div>
+                                    </div>
+                                  </div>
+                            </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-lg-6  col-md-6 col-12 mb-3">
-                                <a href="{{ path('mes_annonces_index') }}" class="btn btn-block h-100 btn-success">Mes annonces</a>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-12 mb-3">
-                                <a href="{{ path('location_en_cours') }}" class="btn btn-block h-100 btn-success">Locations en cours</a>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-12 mb-3">
-                                <a href="{{ path('annonces_favoris') }}" class="btn btn-block h-100 btn-success">Favoris</a>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-12 mb-3">
-                                <a href="{{ path('kilouwers_favoris') }}" class="btn btn-block h-100 btn-success">Kilouwers favoris</a>
-                            </div>
-                        </div>
-
-                        <div class="row mt-4">
-                            <div class="col-lg-6 col-md-6 col-12 mb-3">
-                                <a href="{{ path('compte_portefeuille') }}" class="btn btn-block h-100 btn-success">Mon Portefeuille</a>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-12 mb-3">
-                                <a href="{{ path('compte_facture') }}" class="btn btn-block h-100 btn-success">Mes Factures</a>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-12 mb-3">
-                                <a href="{{ path('mes_annonces_index') }}" class="btn btn-block h-100 btn-success">Abonnements</a>
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -259,4 +292,10 @@
             });
         });
     </script>
+    {# dropdown #}
+    <script type="text/javascript">
+
+
+    </script>
+    {# dropdown #}
 {% endblock %}
