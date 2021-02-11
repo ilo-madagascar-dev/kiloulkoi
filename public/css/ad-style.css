@@ -18,13 +18,8 @@
             padding-top: 1.5rem !important;
         }
 
+        /* ad image */
         .card-body-ad-list img{
-         /*position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            margin: auto;*/
             /*line-height: 4rem;*/
             padding-top: 0.5rem;
         }
@@ -53,10 +48,10 @@
         padding-bottom: 20px;
     }*/
 
-    /*.card-body-ad-list img{
-        position:unset !important;
-        padding-top: 0.5rem !important;
-    }*/
+    .kiloukoisAdImage{
+       position:unset !important;
+        padding-top: 0.76rem !important;
+    }
 
     .img-logo-kilouks{
         width:89%;
@@ -92,6 +87,17 @@
         margin-top: 0 !important;
     }
     
+        /* ad image */
+        /*.card-body-ad-list img{
+            position: absolute;
+           top: 0;
+           bottom: 0;
+           left: 0;
+           right: 0;
+           margin: auto;
+           /*line-height: 4rem;*/
+           /*padding-top: 1.5rem;
+        }*/
 }
 
     
