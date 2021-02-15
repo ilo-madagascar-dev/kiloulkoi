@@ -118,17 +118,16 @@ class AuthController extends AbstractController
                 $birthday   = intval(strtotime($request->get('datenaissance')));
                 $nationality = "FR";
                 $countryOfResidence = "FR";
-                $occupation = $request->get('occupation');;
                
 
-                $mangoPayUserId = $mangoPayService->createUserParticulier($user->getEmail(), $nom, $prenom, $addr, $city, $region, $postalCode, $birthday, $nationality, $countryOfResidence, $occupation);
+                $mangoPayUserId = $mangoPayService->createUserParticulier($user->getEmail(), $nom, $prenom, $addr, $city, $region, $postalCode, $birthday, $nationality, $countryOfResidence);
             }
             else
             {
                 
                 $address = $user->getAdresse();
                 $city = $user->getVille();
-                $region = "FR" ;
+                $region = $request->get('region');
                 $postalCode = $user->getCp();
                 $legalPersonType = $request->get('legalType');
                 $name = $user->getRaisonSocial();

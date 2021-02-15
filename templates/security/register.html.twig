@@ -68,25 +68,21 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="datenaissance" class="required">Date de naissance</label>
-                                <input type="text" name="datenaissance" id="datepicker" class="form-control" required />
+                                <input type="text" name="datenaissance" placeholder="jj/mm/aaaa" id="datenaissance" class="form-control" required />
                             </div>
                             <div class="col-md-6">
                                 {{ form_row(registrationForm.telephone, { 'id': 'registration_phone'} ) }}
                             </div>
                         </div>
 
-                        {% if registrationForm.nom is defined %}
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label for="Occupation" class="required">Occupation</label>
-                                    <input type="text" name="occupation" class="form-control" required />
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="region" class="required">Région</label>
-                                    <input type="text" name="region" class="form-control" required/>
-                                </div>
-                            </div><br>
-                        {% endif %}
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="region" class="required">Région</label>
+                                <input type="text" name="region" id="region" class="form-control" required/>
+                            </div>
+                        </div><br>
+                        
 
                         <div class="row">
                             <div class="col-md-6">
@@ -126,22 +122,22 @@
                             </div><br>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label for="addressEntreprise" class="required">Addresse</label>
-                                    <input type="text" name="addressEntreprise" class="form-control" required />
+                                    <label for="villeEntreprise" class="required" >Ville</label>
+                                    <input type="text" name="villeEntreprise" id="villeEntreprise" class="form-control" required="" />
                                 </div>
                                 <div class="col-md-6">
                                     <label for="codepoEntreprise" class="required">Code postal</label>
-                                    <input type="text" name="codepoEntreprise" class="form-control" required />
+                                    <input type="text" name="codepoEntreprise" id="codepoEntreprise" class="form-control" required />
                                 </div>
                             </div><br>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label for="villeEntreprise" class="required" >Ville</label>
-                                    <input type="text" name="villeEntreprise" class="form-control" required="" />
+                                    <label for="addressEntreprise" class="required">Addresse</label>
+                                    <input type="text" name="addressEntreprise" class="form-control" required />
                                 </div>
                                 <div class="col-md-6">
                                     <label for="regionEntreprise" class="required">Région</label>
-                                    <input type="text" name="regionEntreprise" class="form-control" required />
+                                    <input type="text" name="regionEntreprise" id="regionEntreprise" class="form-control" required />
                                 </div>
                             </div>
                            
@@ -220,6 +216,60 @@
 
     });
     </script>
+    <script>
+  $( function() {
+    var availableTags = [
+      "Auvergne-Rhône-Alpes",
+      "Bourgogne-Franche-Comté",
+      "Bretagne",
+      "Centre-Val de Loire",
+      "Corse",
+      "Grand Est",
+      "Hauts-de-France",
+      "Île-de-France",
+      "Normandie",
+      "Nouvelle-Aquitaine",
+      "Occitanie",
+      "Pays de la Loire",
+      "Provence-Alpes-Côte d'Azur",
+      "Guadeloupe",
+      "Martinique",
+      "Guyane",
+      "La Réunion",
+      "Mayotte"
+    ];
+    $( "#region" ).autocomplete({
+      source: availableTags
+    });
+  } );
+  </script>
+  <script>
+  $( function() {
+    var availableTags = [
+      "Auvergne-Rhône-Alpes",
+      "Bourgogne-Franche-Comté",
+      "Bretagne",
+      "Centre-Val de Loire",
+      "Corse",
+      "Grand Est",
+      "Hauts-de-France",
+      "Île-de-France",
+      "Normandie",
+      "Nouvelle-Aquitaine",
+      "Occitanie",
+      "Pays de la Loire",
+      "Provence-Alpes-Côte d'Azur",
+      "Guadeloupe",
+      "Martinique",
+      "Guyane",
+      "La Réunion",
+      "Mayotte"
+    ];
+    $( "#regionEntreprise" ).autocomplete({
+      source: availableTags
+    });
+  } );
+  </script>
     <script src="{{ asset('/js/inscription.js') }}"></script>
     
 {% endblock %}
