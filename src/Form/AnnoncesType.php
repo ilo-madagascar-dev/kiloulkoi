@@ -73,7 +73,7 @@ class AnnoncesType extends AbstractType
             ->add('description', TextareaType::class, ['label' => 'Description'])
             ->add(
                 'caution',
-                TextType::class,
+                IntegerType::class,
                 [
                     'label' => 'Montant de la caution',
                     'attr' => [

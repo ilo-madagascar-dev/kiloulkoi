@@ -112,7 +112,7 @@
                                     </div>
                                 </div>
 
-                                <div class="offset-lg-1 col-lg-10 principales-caracteristiques-deux mb-2">
+                                <div class="offset-lg-1 col-lg-10 principales-caracteristiques-deux mb-2 text-justify">
                                     <!-- div class="col-lg-12" -->
                                         <p class="mt-2 mb-1">Référence</p>
                                         <ul class="w-100 pl-3">
@@ -124,6 +124,8 @@
                                                         <li>
                                                             {% if key|capitalize == "Modele" %}
                                                                 <strong>Modèle </strong>
+                                                            {% elseif key|capitalize == "Kilometrage"%}
+                                                                <strong>Kilométrage </strong>
                                                             {% else %}
                                                                 <strong>{{ key | capitalize }} </strong>
                                                             {% endif %}

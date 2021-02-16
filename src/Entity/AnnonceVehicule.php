@@ -26,6 +26,11 @@ class AnnonceVehicule extends Annonces
      */
     private $modele;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $kilometrage;
+
     public function getEnergie(): ?Energie
     {
         return $this->energie;
@@ -58,6 +63,18 @@ class AnnonceVehicule extends Annonces
     public function setModele(string $modele): self
     {
         $this->modele = $modele;
+
+        return $this;
+    }
+
+    public function getKilometrage(): ?int
+    {
+        return $this->kilometrage;
+    }
+
+    public function setKilometrage(?int $kilometrage): self
+    {
+        $this->kilometrage = $kilometrage;
 
         return $this;
     }
