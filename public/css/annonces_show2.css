@@ -1,9 +1,22 @@
-.principales-caracteristiques{
-    border-radius: 43px;
-    font-weight: bold;
+/* Affichage des icones favoris et partage */
+.fa-heart, .fa-share-alt {
+    width:2.57rem;
+    font-size: 1.7rem;
+}
+
+.title-icon {
+    padding:10px 5px;
+    border-radius: 50%;
+    height: 18px;
+    font-size: 1.7rem;
 }
 
 /* Affichage des caractéristiques */
+.principales-caracteristiques{
+    border-radius: 10px;
+    font-weight: bold;
+}
+
 .principales-caracteristiques-deux ul {
     text-align: left;
 }
@@ -11,6 +24,7 @@
         display: inline-block;
         list-style-type: disc;
         margin-right: 2rem;
+        margin-left:0;
     }
 
     .principales-caracteristiques-deux ul>li:before{
@@ -22,7 +36,7 @@
 
 
 .col-prix-ad {
-        border-right: 2px solid #dee2e6;
+    border-right: 1px solid #dee2e6;
 }
 
 /* .table thead th {
