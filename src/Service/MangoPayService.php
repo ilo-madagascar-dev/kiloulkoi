@@ -51,7 +51,7 @@ class MangoPayService
 		return $mangoUser->Id ;
 	}
 
-	public function createUserParticulier(string $email, string $nom, string $prenom, string $addr, string $city,string $region, string $postalCode, int $birthday,string $nationality, string $countryOfResidence, string $occupation): int
+	public function createUserParticulier(string $email, string $nom, string $prenom, string $addr, string $city,string $region, string $postalCode, int $birthday,string $nationality, string $countryOfResidence): int
 	{
 
 		try {
@@ -71,7 +71,6 @@ class MangoPayService
 			$UserNatural->Birthday = $birthday;
 			$UserNatural->Nationality = $nationality;
 			$UserNatural->CountryOfResidence = $countryOfResidence;
-			$UserNatural->Occupation = $occupation;
 			$UserNatural->Email = $email;
 			$UserNatural = $mangoPayApi->Users->Create($UserNatural);
 

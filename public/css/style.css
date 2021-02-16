@@ -134,6 +134,33 @@ label.required::before {
 	cursor: pointer;
 }
 
+/*villeEntreprise list*/
+#villeEntreprise-list {
+	list-style: none;
+	border: solid .5px var(--primary);
+	position: absolute;
+	width: 100%;
+	z-index: 12;
+	background:white;
+	padding: 0;
+}
+
+#villeEntreprise-list li:hover {
+	background-color: var(--success);
+	color: white;
+	cursor: pointer;
+
+}
+/*region list*/
+.ui-menu .ui-menu-item :hover {
+	background-color: var(--success);
+	color: white;
+	cursor: pointer;
+	border: solid .5px var(--success);
+}
+.ui-menu .ui-menu-item{
+	border: none;
+}
 .form-group {
 	position: relative;
 }

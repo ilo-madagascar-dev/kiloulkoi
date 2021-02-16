@@ -217,7 +217,7 @@ class CompteController extends AbstractController
     public function cardsStatus(Request $request,MangoPayService $mangoPayService): Response
     {
         
-        if ($request->get('boolean')  == "false") {
+        /*if ($request->get('boolean')  == "false") {
             
             $mangoPayService->statusCarte($request->get('id'),false);
             $this->addFlash('successPayin', 'La carte est désactivé');
@@ -226,8 +226,9 @@ class CompteController extends AbstractController
             
             $this->addFlash('errorCardActive', 'Vous ne pouvez plus réactiver la carte');
             
-        }
-
+        }*/
+        $mangoPayService->statusCarte($request->get('id'),false);
+            $this->addFlash('successPayin', 'La carte a été supprimer');
         
         return $this->redirectToRoute('compte_portefeuille');
     }

@@ -49,6 +49,15 @@ $(document).ready( function()
                 }
             ]
         },
+        {
+            fields: '#datenaissance',
+            rules : [
+                {
+                    regex: /^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|(([1][26]|[2468][048]|[3579][26])00))))$/,
+                    message: "Veuillez entrer une date valide."
+                }
+            ]
+        },
     ];
 
     validations.forEach( function(element, i)
@@ -225,6 +234,47 @@ $(document).ready( function()
         $('#code_postal').val(cp);
         $('#code_postal').trigger("change");
     })
+
+    /*ville entreprise*/
+    $(`<ul id="villeEntreprise-list" class="d-none"></ul>`).insertAfter( $('#villeEntreprise') );
+    $('#villeEntreprise').keyup(function(event)
+    {
+        var url = "https://datanova.legroupe.laposte.fr/api/records/1.0/search/?dataset=laposte_hexasmal&facet=nom_de_la_commune&facet=code_postal&q=" + $(this).val().trim();
+        $.get(url, function(data)
+        {
+            $('#villeEntreprise-list li').remove();
+            data.records.forEach( function(element, i)
+            {
+                $('#villeEntreprise-list').append(`
+                    <li class="px-2 py-1" data-codepoEntreprise="${ element.fields.code_postal }" data-villeEntreprise="${ element.fields.nom_de_la_commune }">${ element.fields.code_postal } - ${ element.fields.nom_de_la_commune }</li>
+                `);
+            });
+        })
+    });
+
+    $('#villeEntreprise').focusin( function()
+    {
+        $('#villeEntreprise-list').removeClass('d-none');
+    })
+
+    $('#villeEntreprise').focusout( function()
+    {
+        setTimeout( function()
+        {
+            $('#villeEntreprise-list').addClass('d-none');
+        }, 300)
+    })
+
+    $(document).on('click', '#villeEntreprise-list li', function()
+    {
+        $('#codepoEntreprise').removeClass('is-invalid');
+        var city = $(this).attr('data-villeEntreprise');
+        var cp   = $(this).attr('data-codepoEntreprise');
+        $('#villeEntreprise').val(city);
+        $('#codepoEntreprise').val(cp);
+        $('#codepoEntreprise').trigger("change");
+    })
+    /*ville entreprise*/
 
     $(document).on('change', '#registration_gender', function()
     {
