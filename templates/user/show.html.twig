@@ -14,212 +14,194 @@
 
 {% block body %}
 
-    <div class="container-fluid" id="tab">
-
+    <div class="container mt-4">
         <div class="row">
-            <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2 col-sm-12 bg-white rounded pb-3" style="margin-top: 50px;;">
-                <div class="text-center mb-3">
-                    <img src="{{ asset('uploads/avatar/') ~ app.user.avatar }}" class="bg-white" alt="" style="height: 150px;width:auto;margin-top:-60px;border-radius: 50%">
-                    <div class="text-center my-1 text-warning">
-                        {% set noteRounded = note|round(0, 'floor') %}
-                        {% if noteRounded == 5 %}
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        {% elseif noteRounded == 0 %}
-                            <i class="far fa-star"></i>
-                            <i class="far fa-star"></i>
-                            <i class="far fa-star"></i>
-                            <i class="far fa-star"></i>
-                            <i class="far fa-star"></i>
-                        {% else %}
-                            {% for i in range( noteRounded, 1) %}
-                                <i class="fas fa-star"></i>
-                            {% endfor %}
-
-                            {% for i in range( (5 - noteRounded), 1) %}
-                                <i class="far fa-star"></i>
-                            {% endfor %}
-                        {% endif %}
+            <div class="col-lg-10 offset-lg-1 col-md-12">
+                {% for message in app.flashes('compteIBANSuccess') %}
+                <div class="text-center alert alert-success">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% for message in app.flashes('compteIBAN') %}
+                <div class="text-center alert alert-danger">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                
+                <div class="mb-4">
+                    <div class="card shadow mb-2">
+                        <h1 class="h3 text-center text-muted pt-2">
+                            <span>Mon Profil Kiloukoi</span>
+                            <div class="position-absolute d-inline" style="right: .35rem; top: .35rem">
+                                <a href="{{ path('user_edit', { id: app.user.id }) }}" class="btn btn-primary btn-block w-md-50">Modifier</a>
+                            </div>
+                        </h1>
                     </div>
 
-                    <strong class="text-warning ml-2">({{ note|round(1, 'floor') }})</strong>
-
-					<div class="text-center text-secondary">
-                        <a href="{{ path('kilouwers_perso') }}">
-                            <strong id="kilouwers">{{ kilouwersCount }}</strong> Kilouwers
-                        </a>
-					</div>
-					<div class="text-center text-primary">
-						<strong>{{ annoncesCount }}</strong> annonces en ligne
-					</div>
-                </div>
-
-                <div class="card" style="min-height: calc(100vh - 310px);">
-                    <div class="card-body">
-                        <div class="card-title">
-                            <h2 class="text-success text-center">Mes infos</h2>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-lg-6 col-md-12">
-                                {% for message in app.flashes('addKYC') %}
-                                    <div class="alert alert-success">
-                                        {{ message }}
-                                    </div>
-                                {% endfor %}
-                                {% for message in app.flashes('warningKYC') %}
-                                    <div class="alert alert-danger">
-                                        {{ message }}
-                                    </div>
-                                {% endfor %}
-                                <table class="table table-borderless table-sm">
-                                    {% if app.user.nom is defined %}
-                                        <tr>
-                                            <td style="width: 120px"><strong>Nom :</strong></td>
-                                            <td>{{ app.user.nom }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Prénom :</strong></td>
-                                            <td>{{ app.user.prenom }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Téléphone :</strong></td>
-                                            <td>{{ app.user.telephone }}</td>
-                                        </tr>
-                                    {% endif %}
-
-                                    {% if app.user.raisonSocial is defined %}
-                                        <tr>
-                                            <td><strong>Raison social :</strong></td>
-                                            <td>{{ app.user.raisonSocial }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Siret :</strong></td>
-                                            <td>{{ app.user.Siret }}</td>
-                                        </tr>
-                                    {% endif %}
-
-                                    <tr>
-                                        <td><strong>Ville :</strong></td>
-                                        <td>{{ app.user.ville }} - {{ app.user.cp }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Mon adresse :</strong></td>
-                                        <td>{{ app.user.adresse }}</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td><strong>Mail :</strong></td>
-                                        <td>{{ app.user.email }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Pseudo :</strong></td>
-                                        <td>{{ app.user.pseudo }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Status  :</strong></td>
-                                        {% if getkycdoc %}
-                                            {% if usersmango.KYCLevel == 'REGULAR' %}
-                                                <td><span class="badge rounded-pill bg-success" style="color: white;">Compte vérifier</span></td>
-                                            {% elseif usersmango.KYCLevel == 'LIGHT' %}
-                                                <td><span class="badge rounded-pill bg-secondary" style="color: white;">Vérification en cours</span></td>
-                                            {% else %}
-                                                <td><span class="badge rounded-pill bg-warning" style="color: white;">Vérifier votre compte 
-                                                    <i class="fas fa-arrow-right" type="button" data-toggle="modal" data-target="#modalKYCpro"></i>
-                                                </span>
-                                                
-                                                </td>
-                                            {% endif %}
-                                        {% else %}
-                                            <td><span class="badge rounded-pill bg-warning" style="color: white;">Vérifier votre compte <i class="fas fa-arrow-right" type="button" data-toggle="modal" data-target="#modalKYCpro"></i></span>
-                                                
-                                                </td>
-                                        {% endif %}
-                                       {#  <td><span class="badge rounded-pill bg-info text-dark">Information</span></td> #}
-                                    </tr>
-                                </table>
-                            </div>
-
-                            {% if usersmango.KYCLevel == 'REGULAR' %}
-                                {% set classe = "success" %}
-                            {% elseif usersmango.KYCLevel == 'LIGHT' %}
-                                {% set classe = "primary" %}
-                            {% else %}
-                                {% set classe = "warning" %}
-                            {% endif %}
-
-                            <div class="col-lg-6 col-md-12">
-                                <div class="card h-100 border-{{ classe }} shadow mb-3" >
-                                    <div class="card-header border-bottom border-{{ classe }}">
-                                        <h5 class="m-0" style="text-align: center;">Vérification du compte</h5>
-                                    </div>
-                                    <div class="card-body text-center">
-                                        {% if getkycdoc %}
-                                            {% if usersmango.KYCLevel == 'REGULAR' %}
-                                                <p><span>La vérification de votre compte est: </span></p>
-                                                <strong class="text-success">Effectué</strong>
-                                            {% elseif usersmango.KYCLevel == 'LIGHT' %}
-                                                <p><span>La vérification de votre compte est: </span></p>
-                                                <strong class="text-primary">En cours</strong>
-                                            {% else %}
-                                                <p class="card-text">Votre compte est encore inactif.</p>
-                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalKYCpro" >
-                                                    ACTIVER MON COMPTE
-                                                </button>
-                                            {% endif %}
-                                        {% else %}
-                                                <p class="card-text">Votre compte est encore inactif.</p>
-                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalKYCpro" >
-                                                    ACTIVER MON COMPTE
-                                                </button>
-                                        {% endif %}
+                    <div class="card shadow">
+                        <div class="card-body p-0">
+                            <div class="row">
+                                <div class="col-lg-6 mt-2">
+                                    <div class="col-12 justify-content-center mt-4 border-right">
+                                        
+                                            <div class="col-12 mb-3">
+                                                <a href="{{ path('mes_annonces_index') }}" class="btn btn-block h-100 btn-success"><i class="fas fa-bullhorn"></i> Mes annonces</a>
+                                            </div>
+                                            <div class="col-12 mb-3">
+                                                <a href="{{ path('location_en_cours') }}" class="btn btn-block h-100 btn-success"><i class="fas fa-shopping-cart"></i> Locations en cours</a>
+                                            </div>
+                                            <div class="col-12 mb-3">
+                                                <a href="{{ path('annonces_favoris') }}" class="btn btn-block h-100 btn-success"> <i class="fas fa-star"></i> Favoris</a>
+                                            </div>
+                                            <div class="col-12 mb-3">
+                                                <a href="{{ path('kilouwers_favoris') }}" class="btn btn-block h-100 btn-success"><i class="fas fa-heart"></i> Kilouwers favoris</a>
+                                            </div>
+                                        
+                                            <div class="col-12 mb-3">
+                                                <a href="{{ path('compte_portefeuille') }}" class="btn btn-block h-100 btn-success"><i class="fas fa-euro-sign"></i> Mon Portefeuille</a>
+                                            </div>
+                                            <div class="col-12 mb-3">
+                                                <a href="{{ path('compte_facture') }}" class="btn btn-block h-100 btn-success"><i class="fab fa-wpforms"></i> Mes Factures</a>
+                                            </div>
+                                            <div class="col-12 mb-3">
+                                                <a href="{{ path('mes_annonces_index') }}" class="btn btn-block h-100 btn-success"><i class="fas fa-sign-in-alt"></i> Abonnements</a>
+                                            </div>
+                                        
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row mt-4">
-                            <div class="col-12 my-3 d-flex justify-content-center">
-                                <a href="{{ path('user_edit', { id: app.user.id }) }}" class="btn btn-primary btn-block w-md-50">Modifier votre compte</a>
-                            </div>
-                            <div class="btn-group col-12 justify-content-center">
-                                  <button type="button" class="btn btn-primary dropdown-toggle col-12 justify-content-center" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 9px;">
-                                    <i class="fas fa-plus-circle" style="font-size: 23px;"></i>
-                                  </button>
-                                  <div class="dropdown-menu dropdown-menu-center col-12 justify-content-center" style="width:807px;">
-                                    <div class="row pl-2 pr-2 mt-2">
-                                        <div class="col-lg-6  col-md-6 col-12 mb-3">
-                                            <a href="{{ path('mes_annonces_index') }}" class="btn btn-block h-100 btn-success"><i class="fas fa-bullhorn"></i> Mes annonces</a>
+                                <div class="col-lg-6">
+                                    <div class="row mb-3">
+                                        <div class="col-sm justify-content-center mt-2">
+                                            <img src="{{ asset('uploads/avatar/') ~ app.user.avatar }}" class="bg-white" alt="" style="height: 150px;width:auto;margin-top:-8px;border-radius: 50%">
+                                            {% if app.user.pseudo is defined %}
+                                                <div class="col-sm-8 text-center">
+                                                <span> {{ app.user.pseudo|capitalize }} </span>
+                                                </div>
+                                            {% endif %}
                                         </div>
-                                        <div class="col-lg-6 col-md-6 col-12 mb-3">
-                                            <a href="{{ path('location_en_cours') }}" class="btn btn-block h-100 btn-success"><i class="fas fa-shopping-cart"></i> Locations en cours</a>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6 col-12 mb-3">
-                                            <a href="{{ path('annonces_favoris') }}" class="btn btn-block h-100 btn-success"> <i class="fas fa-star"></i> Favoris</a>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6 col-12 mb-3">
-                                            <a href="{{ path('kilouwers_favoris') }}" class="btn btn-block h-100 btn-success"><i class="fas fa-heart"></i> Kilouwers favoris</a>
+                                        <div class="col-sm justify-content-center text-center mt-4">
+                                            <div class="text-center my-1 text-warning">
+                                                {% set noteRounded = note|round(0, 'floor') %}
+                                                {% if noteRounded == 5 %}
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                {% elseif noteRounded == 0 %}
+                                                    <i class="far fa-star"></i>
+                                                    <i class="far fa-star"></i>
+                                                    <i class="far fa-star"></i>
+                                                    <i class="far fa-star"></i>
+                                                    <i class="far fa-star"></i>
+                                                {% else %}
+                                                    {% for i in range( noteRounded, 1) %}
+                                                        <i class="fas fa-star"></i>
+                                                    {% endfor %}
+
+                                                    {% for i in range( (5 - noteRounded), 1) %}
+                                                        <i class="far fa-star"></i>
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </div>
+
+                                            <strong class="text-warning ml-2">({{ note|round(1, 'floor') }})</strong>
+
+                                            <div class="text-center text-secondary">
+                                                <a href="{{ path('kilouwers_perso') }}">
+                                                    <strong id="kilouwers">{{ kilouwersCount }}</strong> Kilouwers
+                                                </a>
+                                            </div>
+                                            <div class="text-center text-primary">
+                                                <strong>{{ annoncesCount }}</strong> annonces en ligne
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div class="row mt-4 pl-2 pr-2">
-                                        <div class="col-lg-6 col-md-6 col-12 mb-3">
-                                            <a href="{{ path('compte_portefeuille') }}" class="btn btn-block h-100 btn-success"><i class="fas fa-euro-sign"></i> Mon Portefeuille</a>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6 col-12 mb-3">
-                                            <a href="{{ path('compte_facture') }}" class="btn btn-block h-100 btn-success"><i class="fab fa-wpforms"></i> Mes Factures</a>
-                                        </div>
-                                        <div class="col-12 mb-3">
-                                            <a href="{{ path('mes_annonces_index') }}" class="btn btn-block h-100 btn-success"><i class="fas fa-sign-in-alt"></i> Abonnements</a>
+                                    <div class="row">
+                                        <div class="row col-lg-12">
+                                            
+                                                    {% for message in app.flashes('addKYC') %}
+                                                        <div class="alert alert-success">
+                                                            {{ message }}
+                                                        </div>
+                                                    {% endfor %}
+                                                    {% for message in app.flashes('warningKYC') %}
+                                                        <div class="alert alert-danger">
+                                                            {{ message }}
+                                                        </div>
+                                                    {% endfor %}
+                                                    <table class="table table-borderless table-sm">
+                                                        {% if app.user.nom is defined %}
+                                                            <tr>
+                                                                <td style="width: 120px"><strong>Nom :</strong></td>
+                                                                <td>{{ app.user.nom }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><strong>Prénom :</strong></td>
+                                                                <td>{{ app.user.prenom }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><strong>Téléphone :</strong></td>
+                                                                <td>{{ app.user.telephone }}</td>
+                                                                </tr>
+                                                        {% endif %}
+
+                                                        {% if app.user.raisonSocial is defined %}
+                                                            <tr>
+                                                                <td><strong>Raison social :</strong></td>
+                                                                <td>{{ app.user.raisonSocial }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><strong>Siret :</strong></td>
+                                                                <td>{{ app.user.Siret }}</td>
+                                                            </tr>
+                                                        {% endif %}
+
+                                                            <tr>
+                                                                <td><strong>Ville :</strong></td>
+                                                                <td>{{ app.user.ville }} - {{ app.user.cp }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><strong>Mon adresse :</strong></td>
+                                                                <td>{{ app.user.adresse }}</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td><strong>Mail :</strong></td>
+                                                                <td>{{ app.user.email }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><strong>Pseudo :</strong></td>
+                                                                <td>{{ app.user.pseudo }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><strong>Statut de votre compte :</strong></td>
+                                                                    {% if getkycdoc %}
+                                                                        {% if usersmango.KYCLevel == 'REGULAR' %}
+                                                                            <td><span class="badge rounded-pill bg-success" style="color: white;">Compte vérifier</span></td>
+                                                                        {% elseif usersmango.KYCLevel == 'LIGHT' %}
+                                                                            <td><span class="badge rounded-pill bg-secondary" style="color: white;">Vérification en cours</span></td>
+                                                                        {% else %}
+                                                                            <td><span class="badge rounded-pill bg-warning" type="button" data-toggle="modal" data-target="#modalKYCpro" style="color: white;">Vérifier votre compte 
+                                                                                <i class="fas fa-arrow-right" type="button" data-toggle="modal" data-target="#modalKYCpro"></i>
+                                                                            </span>
+                                                                            
+                                                                            </td>
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        <td><span class="badge rounded-pill bg-warning" type="button" data-toggle="modal" data-target="#modalKYCpro" style="color: white;">Vérifier votre compte <i class="fas fa-arrow-right" type="button" data-toggle="modal" data-target="#modalKYCpro"></i></span>
+                                                                            
+                                                                            </td>
+                                                                    {% endif %}
+                                                            </tr>
+                                                    </table>
+                                            
                                         </div>
                                     </div>
-                                  </div>
-                            </div>
+                                </div>
+                            </div>    
                         </div>
-
-                        
                     </div>
                 </div>
             </div>
@@ -229,8 +211,8 @@
     <div class="modal fade" id="modalKYCpro" tabindex="-1" role="dialog" aria-labelledby="modalUserLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalUserLabel" style="text-align: center;">Activer mon compte</h5>
+                <div class="modal-header text-center">
+                    <h5 class="modal-title w-100" id="modalUserLabel">Activer mon compte</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -240,24 +222,23 @@
                     <form action="{{path('uploadkyc')}}"  enctype="multipart/form-data" method="post" class="card-body">
 
                         <label class='w-100 __lk-fileInput mb-3'>
-                            <span data-default='Choose file' class="btn btn-info btn-block">TELECHARGER MA PIECE D’IDENTITE RECTO</span>
+                            <span data-default='Choose file' class="btn btn-success btn-block">TELECHARGER MA PIECE D’IDENTITE RECTO</span>
                             <input type="file" style="display: none;" name="kycfile[]">
                         </label>
 
                         <label class='w-100 __lk-fileInput mb-3'>
-                            <span data-default='Choose file' class="btn btn-info btn-block">TELECHARGER MA PIECE D’IDENTITE VERSO</span>
+                            <span data-default='Choose file' class="btn btn-success btn-block">TELECHARGER MA PIECE D’IDENTITE VERSO</span>
                             <input type="file" style="display: none;" name="kycfile[]">
                         </label>
                         {% if discr != false %}
                             <label class='w-100 __lk-fileInput mb-3'>
-                                <span data-default='Choose file' class="btn btn-info btn-block">TELECHARGER KBIS</span>
+                                <span data-default='Choose file' class="btn btn-success btn-block">TELECHARGER KBIS</span>
                                 <input type="file" style="display: none;" name="kycfile[]">
                             </label>
                         {% endif %}
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary w-100">ENVOYER</button>{# <button class="btn btn-success btn-block" style="background-color: #FF4500;border-color: #FF4500;" type="submit"><img src="{{ asset('image/mangopay.png') }}" class="mr-2 float-left" style="height: 25px">Envoyer
-                            </button> #}
+                            <button type="submit" class="btn btn-primary w-100">ENVOYER</button>
                         </div>
 
                     </form>
