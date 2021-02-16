@@ -18,6 +18,7 @@
             padding-top: 1.5rem !important;
         }
 
+        /* Images des annonces */
         .card-body-ad-list img{
             /* position: absolute;
             top: 0;
@@ -27,6 +28,17 @@
             margin: auto; */
             line-height: 4rem;
             padding-top: 0.5rem !important; /* Propriété à modifier pour le réajustement de la position verticale de l'image si besoin */
+        }
+
+        .ad-img-updated img {
+            width:100%;
+            position: absolute;
+            padding-top: 0 !important; /* Propriété à modifier pour le réajustement de la position verticale de l'image si besoin */
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
         }
 
         .img-logo-kilouks{
@@ -43,6 +55,10 @@
             padding-top: 1.2rem !important;
         }
         
+        /* Heart des annonces */
+        .fa-heart {
+            font-size: 1.5rem;
+        }
 
 @media screen and (max-width:1024px) {
     .padding-top-a-little-different {
@@ -62,8 +78,15 @@
         padding-top: 1.2rem !important;
     }
 
+    /* images */
+    .ad-img-updated img {
+        width:100%;
+        position: unset;
+        padding-top: 0.rem; /* Propriété à modifier pour le réajustement de la position verticale de l'image si besoin */
+    }
+
     .img-logo-kilouks{
-        width:89%;
+        width:70%;
         padding-top: unset !important; /* Propriété à modifier pour le réajustement de la position verticale de l'image si besoin */
         position: absolute !important;;
         top: 0;
@@ -75,8 +98,12 @@
 }
 
 @media screen and (max-width:768px) {
+    .padding-top-a-little-different {
+        padding-top: 0 !important;
+    }
+
     .img-logo-kilouks{
-        width:89%;
+        width:70%;
         padding-top: unset !important; /* Propriété à modifier pour le réajustement de la position verticale de l'image si besoin */
         position: absolute !important;;
         top: 0;
@@ -89,6 +116,24 @@
     .date-ad {
         display: none;
     }
+
+    /* Heart des annonces */
+    .fa-heart {
+        font-size: 1.25rem;
+        text-align: center !important;
+    }
+
+    .proprietary-name {
+        text-align:right;
+    }
+
+    .proprietary-name {
+        display: none;
+    }
+
+    /* .row_ad{
+        padding-bottom: 0.5rem;
+    } */
 }
 
     

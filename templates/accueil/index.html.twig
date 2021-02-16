@@ -8,6 +8,10 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('css/ad-list.css') }}">
     <style>
+        body {
+            background: #f8f9fa;
+        }
+
         #input-show-categorie {
             border: .5px lightgrey solid;
             cursor: text;
@@ -45,6 +49,32 @@
             font-size: 100%;
         }
 
+        #city, .form-control {
+            background-color: #e9ecef;
+        }
+
+        #city{
+            height:38px;
+        }
+        
+        /* select2 */
+        .select2-container .select2-selection--multiple {
+            border-top-left-radius: 1;
+            border-bottom-left-radius: 1;
+            background-color: #e9ecef !important;
+            border: .5px lightgrey solid;
+            height:38px;
+        }
+
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
+            background-color: white;
+        }
+
+        /* input-group-prepend */
+        .input-group-prepend i {
+            width: 1.7rem;
+        }
+
         /* card */
         /*.card-body {
             padding-bottom: unset;
@@ -57,6 +87,7 @@
         /*.card-footer {
             border-top: unset;
         }*/
+        
 
     </style>
 {% endblock %}
@@ -67,24 +98,23 @@
 
 <div class="container-fluid">
     <div class="row row_search_container">
-        <div class="col-lg-10 offset-lg-1 col-md-12 mt-5 mb-1">
+        <div class="col-lg-10 offset-lg-1 col-md-12 mb-1" style="margin-top: 0.95rem;">
             <div class="card p-3 shadow">
                 <div class="card-body py-0 px-0 px-md-3">
                     <form action="{{ path('annonces_filter') }}" method="post">
-                        <h1 class="text-primary py-3 text-center" >Recherche d'annonces</h1>
+                        <!-- h1 class="text-primary py-3 text-center" >Recherche d'annonces</h1 -->
 
-                        <div class="row row_for_fields">
+                        <div class="row row_for_fields mt-5">
                             <div class="form-group col-12 col-md-6">
                                 <input type="hidden" id="input-categorie" name="categories">
                                 {# <input type="text" id="input-show-categorie" class=" form-control" placeholder="Catégories"> #}
 
                                 <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-success text-white" id="basic-addon2"><i class="fa fa-list"></i></span>
+                                    </div>
                                     <div id="input-show-categorie" class="h-100 form-control rounded not-show-all">
                                         <p style="display: inline;" class="p-0 m-0 categorie-placeholder text-muted ml-2">Catégories</p>
-                                    </div>
-
-                                    <div class="input-group-append">
-                                        <span class="input-group-text bg-success text-white" id="basic-addon2"><i class="fa fa-list"></i></span>
                                     </div>
                                 </div>
 
@@ -158,10 +188,10 @@
                             </div>
                             <div class="form-group col-12 col-md-6">
                                 <div class="input-group">
-                                    <select id="city" name="ville[]" type="text" class="form-control" multiple="multiple" placeholder="Choisissez une ville" aria-describedby="ville-addon"></select>
-                                    <div class="input-group-append">
+                                    <div class="input-group-prepend">
                                         <span class="input-group-text bg-success text-white" id="ville-addon"><i class="fa fa-map-marker-alt"></i></span>
                                     </div>
+                                    <select id="city" name="ville[]" type="text" class="form-control" multiple="multiple" placeholder="Choisissez une ville" aria-describedby="ville-addon"></select>
                                 </div>
                             </div>
 
@@ -202,15 +232,15 @@
                             </div>
                         </div>
 
-                        <div class="row row-search-button">
-                            <div class="col-md-6 offset-md-3 mb-3">
+                        <div class="row row-search-button mt-3 mb-5">
+                            <div class="col-md-6">
                                 <button class="btn btn-primary btn-block">
                                     <i class="fa fa-search"></i> Rechercher
                                 </button>
                             </div>
-                        </div>
-                        <div class="row row-create-button">
-                            <div class="col-md-6 offset-md-3">
+                        <!-- /div>
+                        <div class="row row-create-button mb-4" -->
+                            <div class="col-md-6">
                                 <a class="btn btn-success btn-block text-white" href="{{ path('annonces_depos') }}">
                                     Déposer une annonce
                                 </a>
@@ -224,7 +254,7 @@
 </div>
 
 <div class="container pt-5">
-    <div class="row row-values-sentences">
+    <div class="row row-values-sentences mt-2 mb-2">
         <div class="col-lg-10 offset-lg-1">
             <div class="row row-sentences-container">
                 <div class="col-md-4 mb-4">

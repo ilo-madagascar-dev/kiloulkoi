@@ -292,7 +292,7 @@ class AnnoncesController extends AbstractController
             'photo', 'user', 'conversations', 'categorie', 'sousCategorie', 'locations',  // Relation to ignore
             'id', 'titre', 'description', 'prix', 'proucentageTva',                       //////////////
             'dateCreation', 'dateModification', 'statut',                                 // Annonce's parent attributes
-            'visite', 'slug', 'validationAdmin', 'type', 'userFavoris'                    //////////////
+            'visite', 'slug', 'validationAdmin', 'type', 'userFavoris', 'caution'                    //////////////
         ]]);
 
         $note = $noteRepository->getNote($proprietaire);

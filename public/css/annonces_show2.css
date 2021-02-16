@@ -1,0 +1,39 @@
+.principales-caracteristiques{
+    border-radius: 43px;
+    font-weight: bold;
+}
+
+/* Affichage des caractéristiques */
+.principales-caracteristiques-deux ul {
+    text-align: left;
+}
+    .principales-caracteristiques-deux li {
+        display: inline-block;
+        list-style-type: disc;
+        margin-right: 2rem;
+    }
+
+    .principales-caracteristiques-deux ul>li:before{
+        content: "";
+        display: list-item;
+        position: absolute;
+    }
+
+
+
+.col-prix-ad {
+        border-right: 2px solid #dee2e6;
+}
+
+/* .table thead th {
+    border-top:unset;
+    border-bottom:unset;
+}
+
+.table thead #ad-th-right {
+    border-right: 2px solid #dee2e6;
+} */
+
+/*  .table thead tr {
+    border-radius: 50px;
+} */
