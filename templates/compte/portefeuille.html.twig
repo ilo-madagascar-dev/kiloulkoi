@@ -62,46 +62,46 @@
 										<th>Fournisseurs</th>
 										<th>Code</th>
 										<th>Pays</th>
-										<th>Date de création</th>
-										<th>Transferer dans le portefeuille</th>
+										<th>Approvisionner mon portefeuille</th>
 										<th>Action</th>
 									</tr>
 								</thead>
 								<tbody>
 									{% for carte in cards %}
-									<tr data="{{ {carte: carte.Id, numero: carte.Alias, devise: carte.Currency }|json_encode() }}">
-										<td>{{carte.Alias}}</td>
-										<td>{{carte.CardProvider}}</td>
-										<td>{{carte.BankCode}}</td>
-										<td>{{carte.Country}}</td>
-										<td>{{ carte.CreationDate | date("d/m/Y") }}</td>
-										<td class="text-center">
-											<button class="btn btn-sm btn-primary btn-payin" data-toggle="modal" data-target="#modalPayIn">
-												<i class="fa fa-download"></i>
-											</button>
-										</td>
-										{# {% if carte.Validity == "INVALID" %}
-											<td class="text-center">
-												<button class="btn btn-sm btn-primary btn-payin" data-toggle="modal" data-target="#deletCards">
-													<i class="fa fa-trash"></i>
-												</button>
-											</td>
-										{% endif %} #}
-										<td class="text-center">
-											{# <button class="btn btn-sm btn-primary btn-payin" data-toggle="modal" data-target="#updateCards{{carte.Id}}">
-											<i class="fas fa-edit"></i>
-											</button> #}
-											{% if carte.Active == true %}
-												<a href="{{path('card_status' , {id:carte.Id , boolean:"false"} )}}" class="" title="déactiver la carte" ><label class="switch">
-													<input type="checkbox" class="input-check" checked  onclick="desactiveFunction({{carte.Id}})" data-active-cards="{{carte.Id}}"><span class="slider round"></span></label>
-												</a>
-											{% else %}
-												{# <i class="fas fa-toggle-off" style="font-size:46px; color:grey;" readonly></i> #}
-												<label class="switch" title="Vous ne pouvez plus réactiver la carte">
-													<input type="checkbox" checked  data-active-cards="{{carte.Id}}"><span class="slider round"></span></label>
-											{% endif %}
-										</td>
-									</tr>
+										{% if carte.Active == true %}
+											<tr data="{{ {carte: carte.Id, numero: carte.Alias, devise: carte.Currency }|json_encode() }}">
+												<td>{{carte.Alias}}</td>
+												<td>{{carte.CardProvider}}</td>
+												<td>{{carte.BankCode}}</td>
+												<td>{{carte.Country}}</td>
+												<td class="text-center">
+													<button class="btn btn-sm btn-primary btn-payin" data-toggle="modal" data-target="#modalPayIn">
+														<i class="fa fa-download"></i>
+													</button>
+												</td>
+												{# {% if carte.Validity == "INVALID" %}
+													<td class="text-center">
+														<button class="btn btn-sm btn-primary btn-payin" data-toggle="modal" data-target="#deletCards">
+															<i class="fa fa-trash"></i>
+														</button>
+													</td>
+												{% endif %} #}
+												<td class="text-center">
+													<button class="btn btn-sm btn-danger btn-payin" data-toggle="modal" data-target="#DeleteCards{{carte.Id}}">
+													<i class="fas fa-trash-alt"></i>
+													</button>
+													{# {% if carte.Active == true %}
+														<a href="{{path('card_status' , {id:carte.Id , boolean:"false"} )}}" class="" title="déactiver la carte" ><label class="switch">
+															<input type="checkbox" class="input-check" checked  onclick="desactiveFunction({{carte.Id}})" data-active-cards="{{carte.Id}}"><span class="slider round"></span></label>
+														</a>
+													{% else %}
+														<label class="switch" title="Vous ne pouvez plus réactiver la carte">
+															<input type="checkbox" checked  data-active-cards="{{carte.Id}}"><span class="slider round"></span>
+														</label>
+													{% endif %} #}
+												</td>
+											</tr>
+										{% endif %}
 									{% endfor %}
 								</tbody>
 							</table>
@@ -212,8 +212,8 @@
 	<div class="modal fade" id="modalAjoutCarte" tabindex="-1" role="dialog" aria-labelledby="modalAjoutCarteLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="modalAjoutCarteLabel">Mes Moyens de Paiements</h5>
+				<div class="modal-header text-center">
+					<h5 class="modal-title w-100" id="modalAjoutCarteLabel">Mes Moyens de Paiements</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -290,8 +290,8 @@
 	<div class="modal fade" id="modalPayIn" tabindex="-1" role="dialog" aria-labelledby="modalPayInLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<form class="modal-content" action="{{ path('portefeuille_payin') }}" method="POST">
-				<div class="modal-header">
-					<h5 class="modal-title" id="modalPayInLabel">Transfert d'argent vers le portefeuil</h5>
+				<div class="modal-header text-center">
+					<h5 class="modal-title w-100" id="modalPayInLabel">Transfert d'argent vers le portefeuil</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -323,8 +323,8 @@
 	<div class="modal fade" id="modacreatBank" tabindex="-1" role="dialog" aria-labelledby="modalUserLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="modalUserLabel">Créer un compte bancaire (de type IBAN)</h5>
+				<div class="modal-header text-center">
+					<h5 class="modal-title w-100" id="modalUserLabel">Créer un compte bancaire (de type IBAN)</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -361,8 +361,8 @@
 	<div class="modal fade" id="modalTransfer" tabindex="-1" role="dialog" aria-labelledby="modalUserLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="modalUserLabel">Transférer vers mon compte bancaire</h5>
+				<div class="modal-header text-center">
+					<h5 class="modal-title w-100" id="modalUserLabel">Transférer vers mon compte bancaire</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -464,6 +464,33 @@
 					</div>
 					<div class="modal-footer">
 			            <button type="submit" class="btn btn-primary">Désactiver</button>
+			            <button type="button" class="btn btn-default" data-dismiss="modal">Annuler
+			            </button>
+			        </div>
+		        </form>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+
+	<!-- Modal delete cards -->
+	{% for carte in cards %}
+	<div class="modal fade" id="DeleteCards{{carte.Id}}" tabindex="-1" role="dialog" aria-labelledby="modalAjoutCarteLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header text-center">
+					<h5 class="modal-title w-100" id="modalAjoutCarteLabel">Supprimer la carte</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<form action="{{path('card_status')}}" method="post" class="card-body">
+					<div class="modal-body">
+						<h4>Voulez-vous vraiment supprimer cette carte?</h4>
+						<input type="hidden" name="id" value="{{carte.Id}}">
+					</div>
+					<div class="modal-footer">
+			            <button type="submit" class="btn btn-danger">Supprimer</button>
 			            <button type="button" class="btn btn-default" data-dismiss="modal">Annuler
 			            </button>
 			        </div>
