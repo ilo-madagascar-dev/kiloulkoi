@@ -134,14 +134,14 @@ class LocationController extends AbstractController
             }
             else
             {
-                $this->addFlash('notCards', 'Vous n avez pas encore un moyen de paiement pour faire une location. ou vos documents ne sont pas encore valides');
+                $this->addFlash('notCards', "Vous n'avez pas encore un moyen de paiement pour faire une location. ou vos documents ne sont pas encore valides");
                 return $this->redirectToRoute('compte_portefeuille');
             }
         }
         else
         {
 
-            $this->addFlash('warning', 'Le proprietaire n as pas encore de document valide, la location est annuler');
+            $this->addFlash('warning', "Le proprietaire n'as pas encore de document valide, la location est annuler");
             return $this->redirectToRoute('location_en_cours');
 
             /*$url = $this->generateUrl('user_profil');

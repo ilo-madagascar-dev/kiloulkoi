@@ -17,12 +17,12 @@
     <div class="container mt-4">
         <div class="row">
             <div class="col-lg-10 offset-lg-1 col-md-12">
-                {% for message in app.flashes('compteIBANSuccess') %}
+                {% for message in app.flashes('success') %}
                 <div class="text-center alert alert-success">
                     {{ message }}
                 </div>
                 {% endfor %}
-                {% for message in app.flashes('compteIBAN') %}
+                {% for message in app.flashes('warning') %}
                 <div class="text-center alert alert-danger">
                     {{ message }}
                 </div>
