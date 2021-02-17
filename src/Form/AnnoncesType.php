@@ -81,6 +81,7 @@ class AnnoncesType extends AbstractType
                     ]
                 ],
             )
+            ->add('urgent')
             // ->add('location', LocationType::class, array('required' => false))
             // ->add('categorie', EntityType::class, [
             //     'class' => Categories::class,

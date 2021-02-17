@@ -105,8 +105,10 @@ class AnnoncesController extends AbstractController
     {
         $categories    = $this->repCategorie->findParents();
         $query         = $this->repAnnonce->findAnnonces($request->request->all());
+
         $annonces      = $paginator->paginate($query, $request->query->getInt('page', 1), 40);
         $annonce_titre = "Résultats des recherches";
+
 
         return $this->render('annonces/list-base.html.twig', [
             'categories' => $categories,

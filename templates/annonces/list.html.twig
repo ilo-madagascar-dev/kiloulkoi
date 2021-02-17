@@ -167,92 +167,85 @@
 							<div class="row">
 								{% for annonce in annonces %}
 									{% set slug = annonce.slug == '' ? 'annonces_' : annonce.slug %}
-									<div class="col-lg-12 col-md-12">
-										<div class="row">
-											{% for annonce in annonces %}
-												{% set slug = annonce.slug == '' ? 'annonces_' : annonce.slug %}
-												<div class="col-12 col-md-12 col-lg-12 mb-3">
-													<div class="card m-auto shadow-kiloukoi" style="">
-													<!-- div class="row px-0" -->
-														<div class="card-body card-body-ad-list">
-															<div class="row row_ad">
-																{% if annonce.photo|length > 0 %}
-																	<div class="col-lg-3 col-md-4 col-sm-4 col-5 text-center py-2 pb-3 ad-img-container" style="position:relative; background:url({{ asset("uploads/" ~ annonce.photo[0].url) }}); background-size:cover; background-position:center;">
-																		<!-- a href="{#{ path('annonces_show', {id: annonce.id, slug: slug }) }#}" style="" class="overflow-hidden text-center ad-img-updated">
-																			<img src="{#{ asset("uploads/" ~ annonce.photo[0].url) | imagine_filter('thumb') }#}" class="card-img-top w-100 m-auto kiloukoisAdImage" alt="...">
-																		</a -->
-																	</div>
-																{% else %}
-																	<div class="col-lg-3 col-md-4 col-sm-4 col-5 text-center bg-light py-2 pb-3 ad-img-container" style="position:relative;">
-																		<!--a href="{{ path('annonces_show', {id: annonce.id, slug: slug }) }}" style="line-height:" class="overflow-hidden text-center" -->
-																			<img src="{{ asset('image/logo-fond-blanc.png') }}" class="card-img-top m-auto p-3 img-logo-kilouks" style="" alt="...">
-																		<!-- /a -->
-																	</div>
-																{% endif %}
-																
-
-																<div class="col-lg-9 col-md-8 col-sm-8 col-7 padding-col-lg-nine pl-4"> 
-																	<!-- div class="card-body py-2 px-3 text-left" -->
-																	<div class="row">
-																		<div class="col-sm-10 col-8">
-																			<h3 class="card-title text-primary mb-2" style="font-size: 1.35rem;">
-																				<strong><a href="{{ path('annonces_show', {id: annonce.id, slug: slug }) }}" >{{ annonce.titre |capitalize }}</a></strong>
-																			</h3>
-																		</div>
-																		{% if app.user and app.user.id != annonce.user.id %}
-																			<div class="col-sm-2 col-4 text-right" title="Favoris">
-																				{% if annonce.userFavoris|length == 0 %}
-																					<span class="px-2 mr-2" data="{{ annonce.id }}">
-																						<i class="far fa-heart pt-2"></i>
-																					</span>
-																				{% else %}
-																					<span class="px-2 mr-2" data="{{ annonce.id }}">
-																						<i class="fa fa-heart text-danger pt-2"></i>
-																					</span>
-																				{% endif %}
-																			</div>
-																		{% endif %}
-																	</div>
-
-																	<div class="details pt-2" style="font-size: 1rem;position:relative;">
-																		<p class="card-text mb-0"><strong class="text-success">Prix : </strong>{{ annonce.prix }}€ /{{ annonce.type ? annonce.type.libelle : "mois" }}</p>
-																		<p class="card-text mb-0"><strong class="text-success">Caution : </strong>{{ annonce.caution }} €</p>
-																		<p class="card-text mb-0"> {{ annonce.categorie.libelle }} {% if annonce.sousCategorie is not null %}/ {{ annonce.sousCategorie.libelle }}{% endif %}</p>
-																		<!-- p class="card-text text-justify text-description-henintsoa mb-0 "><strong class="text-success">Description : </strong>  {#{ annonce.description | slice(0, 46) }#} {#% if annonce.description|length > 46 %} ... {% endif %#} </p -->
-																		<!-- p class="card-text mb-0"><strong class="text-success">Propriétaire : </strong><a href="{#{ path('proprietaire_annonce', {proprietaire: annonce.user.id, pseudo: annonce.user.pseudo}) }#}">{#{ annonce.user.pseudo }#}</a></p -->
-																	</div>
-
-																	<div class="row row_ad pt-2">
-																		{% if app.user and app.user.id == annonce.user.id %}
-																			<div class="col text-left mt-2 pl-0 pb-2 ad-form-modifs">
-																				<a href="{{ path('annonces_edit', {'id': annonce.id}) }}" class="p-0 btn btn-link text-info" style="font-size: .8rem;">Modifier</a>
-																				{{ include('annonces/_delete_form.html.twig') }}
-																			</div>
-																		{% else %}
-																			<div class="col text-left mt-2 pl-0">
-																				<span style="font-size:0.95rem;"><i class="fa fa-eye"></i> {{ annonce.visite | number_format }}</span>
-																			</div>
-																		{% endif %}
-																		<div class="col-lg-4 col-md-4 col-sm-4 col-6 mt-2 proprietary-name">
-																			<a class="" href="{{ path('proprietaire_annonce', {proprietaire: annonce.user.id, pseudo: annonce.user.pseudo}) }}"><small>{{ annonce.user.pseudo }}</small></a>
-																		</div>
-																		<div class="col-lg-2 col-md-3 col-sm-4 col-4 px-2 py-2 date-ad text-right">
-																			<small class="text-muted">{{ annonce.dateModification | date("d/m/Y") }}</small>
-																		</div>
-																	</div>
-																	<!-- /div -->
-
-																	<!-- /div -->
-																</div>
-															</div>
-															<!-- div class="card-footer text-right p-0 bg-white" style="font-size: .8rem;">
-																
-															</div -->
+									<div class="col-12 col-md-12 col-lg-12 mb-3">
+										<div class="card m-auto shadow-kiloukoi" style="">
+										<!-- div class="row px-0" -->
+											<div class="card-body card-body-ad-list">
+												<div class="row row_ad">
+													{% if annonce.photo|length > 0 %}
+														<div class="col-lg-3 col-md-4 col-sm-4 col-5 text-center py-2 pb-3 ad-img-container" style="position:relative; background:url({{ asset("uploads/" ~ annonce.photo[0].url) }}); background-size:cover; background-position:center;">
+															<!-- a href="{#{ path('annonces_show', {id: annonce.id, slug: slug }) }#}" style="" class="overflow-hidden text-center ad-img-updated">
+																<img src="{#{ asset("uploads/" ~ annonce.photo[0].url) | imagine_filter('thumb') }#}" class="card-img-top w-100 m-auto kiloukoisAdImage" alt="...">
+															</a -->
 														</div>
-													<!--/div-->
+													{% else %}
+														<div class="col-lg-3 col-md-4 col-sm-4 col-5 text-center bg-light py-2 pb-3 ad-img-container" style="position:relative;">
+															<!--a href="{{ path('annonces_show', {id: annonce.id, slug: slug }) }}" style="line-height:" class="overflow-hidden text-center" -->
+																<img src="{{ asset('image/logo-fond-blanc.png') }}" class="card-img-top m-auto p-3 img-logo-kilouks" style="" alt="...">
+															<!-- /a -->
+														</div>
+													{% endif %}
+													
+
+													<div class="col-lg-9 col-md-8 col-sm-8 col-7 padding-col-lg-nine pl-4"> 
+														<!-- div class="card-body py-2 px-3 text-left" -->
+														<div class="row">
+															<div class="col-sm-10 col-8">
+																<h3 class="card-title text-primary mb-2" style="font-size: 1.35rem;">
+																	<strong><a href="{{ path('annonces_show', {id: annonce.id, slug: slug }) }}" >{{ annonce.titre |capitalize }}</a></strong>
+																</h3>
+															</div>
+															{% if app.user and app.user.id != annonce.user.id %}
+																<div class="col-sm-2 col-4 text-right" title="Favoris">
+																	{% if annonce.userFavoris|length == 0 %}
+																		<span class="px-2 mr-2" data="{{ annonce.id }}">
+																			<i class="far fa-heart pt-2"></i>
+																		</span>
+																	{% else %}
+																		<span class="px-2 mr-2" data="{{ annonce.id }}">
+																			<i class="fa fa-heart text-danger pt-2"></i>
+																		</span>
+																	{% endif %}
+																</div>
+															{% endif %}
+														</div>
+
+														<div class="details pt-2" style="font-size: 1rem;position:relative;">
+															<p class="card-text mb-0"><strong class="text-success">Prix : </strong>{{ annonce.prix }}€ /{{ annonce.type ? annonce.type.libelle : "mois" }}</p>
+															<p class="card-text mb-0"><strong class="text-success">Caution : </strong>{{ annonce.caution }} €</p>
+															<p class="card-text mb-0"> {{ annonce.categorie.libelle }} {% if annonce.sousCategorie is not null %}/ {{ annonce.sousCategorie.libelle }}{% endif %}</p>
+															<!-- p class="card-text text-justify text-description-henintsoa mb-0 "><strong class="text-success">Description : </strong>  {#{ annonce.description | slice(0, 46) }#} {#% if annonce.description|length > 46 %} ... {% endif %#} </p -->
+															<!-- p class="card-text mb-0"><strong class="text-success">Propriétaire : </strong><a href="{#{ path('proprietaire_annonce', {proprietaire: annonce.user.id, pseudo: annonce.user.pseudo}) }#}">{#{ annonce.user.pseudo }#}</a></p -->
+														</div>
+
+														<div class="row row_ad pt-2">
+															{% if app.user and app.user.id == annonce.user.id %}
+																<div class="col text-left mt-2 pl-0 pb-2 ad-form-modifs">
+																	<a href="{{ path('annonces_edit', {'id': annonce.id}) }}" class="p-0 btn btn-link text-info" style="font-size: .8rem;">Modifier</a>
+																	{{ include('annonces/_delete_form.html.twig') }}
+																</div>
+															{% else %}
+																<div class="col text-left mt-2 pl-0">
+																	<span style="font-size:0.95rem;"><i class="fa fa-eye"></i> {{ annonce.visite | number_format }}</span>
+																</div>
+															{% endif %}
+															<div class="col-lg-4 col-md-4 col-sm-4 col-6 mt-2 proprietary-name">
+																<a class="" href="{{ path('proprietaire_annonce', {proprietaire: annonce.user.id, pseudo: annonce.user.pseudo}) }}"><small>{{ annonce.user.pseudo }}</small></a>
+															</div>
+															<div class="col-lg-2 col-md-3 col-sm-4 col-4 px-2 py-2 date-ad text-right">
+																<small class="text-muted">{{ annonce.dateModification | date("d/m/Y") }}</small>
+															</div>
+														</div>
+														<!-- /div -->
+
+														<!-- /div -->
 													</div>
 												</div>
-											{% endfor %}
+												<!-- div class="card-footer text-right p-0 bg-white" style="font-size: .8rem;">
+													
+												</div -->
+											</div>
+										<!--/div-->
 										</div>
 									</div>
 								{% endfor %}
