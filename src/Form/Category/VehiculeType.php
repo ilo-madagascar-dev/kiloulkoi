@@ -32,6 +32,7 @@ class VehiculeType extends AnnoncesType
                 'choice_label' => 'valeur'
             ])
             ->add('kilometrage', IntegerType::class, [
+                'label' => 'Kilométrage',
                 'required' => true,
                 'attr' => [
                     'min' => 0
