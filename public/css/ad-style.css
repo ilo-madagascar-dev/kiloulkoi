@@ -5,6 +5,10 @@
     padding-bottom:0;
 }
 
+    .shadow-kiloukoi {
+        box-shadow: .2rem .2rem .2rem rgba(0,0,0,.15)!important;
+    }
+
 .row_ad {
     margin-left: 0 !important;
     margin-right: 0 !important;
@@ -20,12 +24,6 @@
 
         /* Images des annonces */
         .card-body-ad-list img{
-            /* position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            margin: auto; */
             line-height: 4rem;
             padding-top: 0.5rem !important; /* Propriété à modifier pour le réajustement de la position verticale de l'image si besoin */
         }
