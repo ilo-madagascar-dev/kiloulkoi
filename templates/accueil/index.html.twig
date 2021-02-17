@@ -104,7 +104,7 @@
                     <form action="{{ path('annonces_filter') }}" method="post">
                         <!-- h1 class="text-primary py-3 text-center" >Recherche d'annonces</h1 -->
 
-                        <div class="row row_for_fields mt-5">
+                        <div class="row row_for_fields mt-4">
                             <div class="form-group col-12 col-md-6">
                                 <input type="hidden" id="input-categorie" name="categories">
                                 {# <input type="text" id="input-show-categorie" class=" form-control" placeholder="Catégories"> #}
@@ -209,16 +209,14 @@
                             <div class="col-sm-6 col-12 slider">
                                 <div class="form-group m-2" data-toggle="tooltip" data-placement="top" title="Prix">
                                     <div id="slider-range" class="mt-3"></div>
+                                    <div class="mt-2 text-muted">
+                                        <input type="text" id="amount" name="prix" readonly style="border:0; color:#007bff; font-weight:bold;" class="w-100 text-center">
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="col-sm-6">
                                 <div class="row row_range_values">
-                                    <div class="col-md-6 col-5">
-                                        <div class="mt-2 text-center text-muted">
-                                            <input type="text" id="amount" name="prix" readonly style="border:0; color:#007bff; font-weight:bold;" class="w-100 text-center">
-                                        </div>
-                                    </div>
                                     <div class="col-md-6 col-7">
                                         <div class="form-group">
                                             <select name="unite" id="prix-unite" class="custom-select" id="prix-unite" >
@@ -228,11 +226,18 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="offset-md-1 col-md-5 col-5">
+                                        <div class="form-group">
+                                            <input type="checkbox" checked name="utilisateur_professionnel" id="utilisateurProfessionnel" value="professionnel"> <label for="utilisateurProfessionnel"></label>Professionnel </br>
+                                            <input type="checkbox" checked name="utilisateur_particulier" id="utilisateurParticulier" value="particulier"> <label for="utilisateurParticulier"></label>Particulier </br>
+                                            <input type="checkbox" name="urgent" id="urgent" value="urgent"> <label for="urgent">Urgent</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="row row-search-button mt-3 mb-5">
+                        <div class="row row-search-button mt-1 mb-4">
                             <div class="col-md-6">
                                 <button class="btn btn-primary btn-block">
                                     <i class="fa fa-search"></i> Rechercher
