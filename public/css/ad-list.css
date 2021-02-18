@@ -1,5 +1,27 @@
+.input-group-append-small-screen {
+    display: none;
+}
+
 @media screen and (max-width:1023px){
     .card-info {
         display: none;
+    }
+
+    .input-group-append-small-screen span {
+        height: 100%;
+    }
+}
+
+@media screen and (max-width:768px){
+    .input-group-prepend-large-screen {
+        display: none;
+    }
+
+    .input-group-append-small-screen {
+        display: inline;
+    }
+
+    .row-search-button button {
+        margin-bottom: .5rem;
     }
 }
