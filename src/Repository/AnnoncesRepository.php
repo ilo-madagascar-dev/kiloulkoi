@@ -220,13 +220,13 @@ class AnnoncesRepository extends ServiceEntityRepository
                 ->andWhere('l.dateDebut >= :date or l.dateFin <= :date or l.id is null')->setParameter('date', $criteria['date']);
         }
 
-        if (!empty($criteria['utilisateur_professionnel'])) {
+        if (!empty($criteria['utilisateur_professionnel']) && empty($criteria['utilisateur_particulier'])) {
             $query->innerJoin('a.user', 'er', 'WITH', 'er INSTANCE OF App\Entity\Professionnel');
         }
 
-        /*if (!empty($criteria['utilisateur_particulier'])) {
-            $query->innerJoin('a.user', 'er', 'WITH', 'er.discr = Particulier');
-        } */
+        if (!empty($criteria['utilisateur_particulier']) && empty($criteria['utilisateur_professionnel'])) {
+            $query->innerJoin('a.user', 'er', 'WITH', 'er INSTANCE OF App\Entity\Particulier');
+        }
 
         /*if (!empty($criteria['particulier'])) {
             $query->andWhere('a.urgent = 1');
