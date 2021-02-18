@@ -2,6 +2,16 @@
     display: none;
 }
 
+.row_range_values input[type="checkbox" i] {
+    background-color: #00bf00;
+    cursor: default;
+    appearance: auto;
+    box-sizing: border-box;
+    margin: 3px 3px 3px 4px;
+    padding: initial;
+    border: initial;
+}
+
 @media screen and (max-width:1023px){
     .card-info {
         display: none;
@@ -21,7 +31,7 @@
         display: inline;
     }
 
-    .row-search-button button {
+    .row-search-button .btn {
         margin-bottom: .5rem;
     }
 }
