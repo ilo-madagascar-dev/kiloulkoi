@@ -2,7 +2,7 @@
     display: none;
 }
 
-.row_range_values input[type="checkbox" i] {
+/*.row_range_values input[type="checkbox" i] {
     background-color: #00bf00;
     cursor: default;
     appearance: auto;
@@ -10,7 +10,82 @@
     margin: 3px 3px 3px 4px;
     padding: initial;
     border: initial;
+}*/
+
+/*
+ * checkboxes
+ */
+
+/* SQUARED FOUR */
+/*input[type=checkbox] {
+	visibility: hidden;
 }
+
+.squaredFour {
+	width: 20px;	
+	margin: 20px auto;
+	position: relative;
+}
+
+.squaredFour label {
+	cursor: pointer;
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	top: 0;
+	border-radius: 4px;
+*/
+	/*-webkit-box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);
+	-moz-box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);
+	box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);
+	background: #fcfff4; */
+
+/*
+    background: #ffffff;;
+    border: 1px solid #b4b4b4;
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfff4', endColorstr='#b3bead',GradientType=0 );
+}
+*/
+/*
+.squaredFour label:after {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	filter: alpha(opacity=0);
+	opacity: 0;
+	content: '';
+	position: absolute;
+	width: 50%;
+	height: 5px;
+	background: transparent;
+	top: 5px;
+	left: 4px;
+	border: 3px solid rgb(255, 255, 255);
+	border-top: none;
+	border-right: none;
+
+	-webkit-transform: rotate(-45deg);
+	-moz-transform: rotate(-45deg);
+	-o-transform: rotate(-45deg);
+	-ms-transform: rotate(-45deg);
+	transform: rotate(-45deg);
+}
+
+.squaredFour label:hover::after {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
+	filter: alpha(opacity=30);
+	opacity: 0.5;
+    
+}
+
+.squaredFour input[type=checkbox]:checked + label:after {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	filter: alpha(opacity=100);
+	opacity: 1;
+}
+
+.squaredFour input[type=checkbox]:checked + .checkbox-label {
+    background: #faa302;
+}
+
 
 @media screen and (max-width:1023px){
     .card-info {
@@ -35,3 +110,4 @@
         margin-bottom: .5rem;
     }
 }
+*/
