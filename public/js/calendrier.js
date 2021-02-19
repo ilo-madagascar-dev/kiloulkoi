@@ -138,8 +138,6 @@ $(document).ready(function () {
 
             var user_eligibility = $('.user_eligibility').data('userEligibility');
 
-            console.log(user_eligibility);
-
             if (user_eligibility != 'REGULAR') {
                 $(span).addClass('interdit');
             }
@@ -202,6 +200,9 @@ $(document).ready(function () {
                     }
                 }
                 else if (before == after) {
+                    input_debut = before;
+                    input_fin = after;
+
                     $('#date-debut').val(moment(before).format("Do MMMM YYYY"));
                     $('#date-fin').val(moment(after).format("Do MMMM YYYY"));
                 }
