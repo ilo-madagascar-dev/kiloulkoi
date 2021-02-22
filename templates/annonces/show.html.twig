@@ -124,7 +124,7 @@
                                                         <li>
                                                             {% if key|capitalize == "Modele" %}
                                                                 <strong>Modèle </strong>
-                                                            {% elseif key|capitalize == "Kilometrage"%}
+                                                            {% elseif key|capitalize == "Kilometrage" %}
                                                                 <strong>Kilométrage </strong>
                                                             {% else %}
                                                                 <strong>{{ key | capitalize }} </strong>
@@ -133,6 +133,8 @@
                                                             <!--span class="pr-2"> </span -->
                                                             {% if value is iterable %}
                                                                 <span>{{ value.valeur is defined ? value.valeur : value.libelle }}</span>
+                                                            {% elseif key|capitalize == "Kilometrage" %}
+                                                                <span>{{ value | number_format(0, '', ' ')}}</span> km
                                                             {% else %}
                                                                 <span>{{ value }}</span>
                                                             {% endif %}

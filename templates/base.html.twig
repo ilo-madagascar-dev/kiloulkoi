@@ -2,7 +2,8 @@
 <html  lang="fr">
     <head>
         <meta charset="UTF-8">
-        
+        <meta name="viewport" content="width=device-width, maximum-scale=1.0">
+                
         <title>{% block title %}Welcome!{% endblock %}</title>
 
         <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"/>
@@ -21,7 +22,9 @@
         <!-- CSS des annonces -->
         <link rel="stylesheet" href="{{ asset('css/ad-style.css') }}">
         <!-- CSS des annonces -->
-        
+
+        <link rel="stylesheet" href="{{ asset('css/css_menu.css')}}">
+
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
         <style>
@@ -46,7 +49,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <a class="navbar-brand text-success mr-auto" href="{{ path('accueil') }}">
-                    <img src="{{ asset('image/kiloukoi.png') }}" class="mb-2" alt="Kiloukoi" style="height: 20px">
+                    <img src="{{ asset('image/kiloukoi.png') }}" class="mb-2" alt="Kiloukoi" style="" id="kiloukoi-logo-menu-left">
                 </a>
 
                 <div class="collapse navbar-collapse" id="navbarToggler">
@@ -79,11 +82,11 @@
 
                 {% if app.user %}
                     <ul class="navbar-nav ml-auto left-menu pt-1" style="flex-direction: row;">
-                        <li class="nav-item dropdown notifications-container">
+                        <li class="nav-item dropdown notifications-container nav-icons">
                             <a class="nav-link pt-0 text-white nav-icon text-center" id="btn-notifications" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="d-block fa fa-bell"></i>
                                 <small class="d-none unread">0</small>
-                                <span class="small">Notifications</span>
+                                <span class="small menu-right-icons-text">Notifications</span>
                             </a>
 
                             <div class="dropdown-menu small">
@@ -95,17 +98,17 @@
                             </div>
                         </li>
 
-                        <li class="nav-item text-center mr-1">
+                        <li class="nav-item text-center mr-1 nav-icons">
                             <a href="{{ path('annonces_favoris') }}" class="nav-link pt-0 text-white nav-icon favoris">
                                 <i class="d-block fa fa-heart" ></i>
-                                <span class="small">Favoris</span>
+                                <span class="small menu-right-icons-text">Favoris</span>
                             </a>
                         </li>
-                        <li class="nav-item text-center mr-1">
+                        <li class="nav-item text-center mr-1 nav-icons" id="message-item">
                             <a href="{{ path('conversation_index') }}" class="nav-link pt-0 text-white nav-icon messages">
                                 <i class="d-block fa fa-envelope" ></i>
                                 <span class="d-none unread">0</span>
-                                <span class="small">Messages</span>
+                                <span class="small menu-right-icons-text">Messages</span>
                             </a>
                         </li>
                         <li class="nav-item dropdown">
@@ -283,7 +286,7 @@
 
                 <div class="row border-top border-primary bg-white">
                     <div class="col text-right py-2">
-                        <img src="{{ asset('image/mangopay_power.png') }}" alt="Mangopay copyright" class="w-auto"  style="height: 40px">
+                        <img src="{{ asset('image/mangopay_power.png') }}" alt="Mangopay copyright" class="w-auto"  style="height: 40px" id="footer_image">
                     </div>
                 </div>
 

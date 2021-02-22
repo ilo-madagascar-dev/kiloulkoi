@@ -136,6 +136,11 @@ class Annonces
      */
     private $caution;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $urgent;
+
     public function __construct()
     {
         $this->photo = new ArrayCollection();
@@ -423,6 +428,18 @@ class Annonces
     public function setCaution(float $caution): self
     {
         $this->caution = $caution;
+
+        return $this;
+    }
+
+    public function getUrgent(): ?bool
+    {
+        return $this->urgent;
+    }
+
+    public function setUrgent(?bool $urgent): self
+    {
+        $this->urgent = $urgent;
 
         return $this;
     }
