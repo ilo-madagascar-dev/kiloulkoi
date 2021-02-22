@@ -98,7 +98,7 @@
 
 <div class="container-fluid">
     <div class="row row_search_container">
-        <div class="col-lg-10 offset-lg-1 col-md-12 mb-1" style="margin-top: 0.95rem;">
+        <div class="col-lg-10 offset-lg-1 col-md-12 mb-1 mt-3">
             <div class="card p-3 shadow">
                 <div class="card-body py-0 px-0 px-md-3">
                     <form action="{{ path('annonces_filter') }}" method="post">
@@ -111,13 +111,13 @@
 
                                 <div class="input-group">
                                     <div class="input-group-prepend input-group-prepend-large-screen">
-                                        <span class="input-group-text bg-success text-white" id="basic-addon2"><i class="fa fa-list"></i></span>
+                                        <button class="btn btn-success" id="basic-addon2"><i class="fa fa-list"></i></button>
                                     </div>
                                     <div id="input-show-categorie" class="h-100 form-control rounded not-show-all">
                                         <p style="display: inline;" class="p-0 m-0 categorie-placeholder text-muted ml-2">Catégories</p>
                                     </div>
                                     <div class="input-group-append input-group-append-small-screen">
-                                        <span class="input-group-text bg-success text-white"><i class="fa fa-list"></i></span>
+                                        <button class="btn btn-success"><i class="fa fa-list"></i></button>
                                     </div>
                                 </div>
 
@@ -185,18 +185,18 @@
                                 <div class="input-group">
                                     <input type="text" class="form-control" placeholder="Que cherchez vous?" aria-describedby="recherche-addon" name="titre">
                                     <div class="input-group-append">
-                                        <span class="input-group-text bg-success text-white" id="recherche-addon"><i class="fa fa-search"></i></span>
+                                        <button class="btn btn-success" id="recherche-addon"><i class="fa fa-search"></i></button>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group col-12 col-md-6">
                                 <div class="input-group">
                                     <div class="input-group-prepend input-group-prepend-large-screen">
-                                        <span class="input-group-text bg-success text-white" id="ville-addon"><i class="fa fa-map-marker-alt"></i></span>
+                                        <button class="input-group-text bg-success text-white" id="ville-addon"><i class="fa fa-map-marker-alt"></i></button>
                                     </div>
                                     <select id="city" name="ville[]" type="text" class="form-control" multiple="multiple" placeholder="Choisissez une ville" aria-describedby="ville-addon"></select>
                                     <div class="input-group-append input-group-append-small-screen">
-                                        <span class="input-group-text bg-success text-white" id="ville-addon"><i class="fa fa-map-marker-alt"></i></span>
+                                        <button class="input-group-text bg-success text-white" id="ville-addon" style="height:100%;"><i class="fa fa-map-marker-alt"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -205,7 +205,7 @@
                                 <div class="input-group">
                                     <input id="datepicker" class="form-control" placeholder="Disponibilité" name="date" readonly="true">
                                     <div class="input-group-append">
-                                        <span class="input-group-text bg-success text-white" id="ville-addon"><i class="fa fa-calendar"></i></span>
+                                        <button class="btn btn-success" id="ville-addon"><i class="fa fa-calendar"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -264,19 +264,18 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="row row-search-button mt-1 mb-4">
-                            <div class="col-md-6">
-                                <a class="btn btn-success btn-block text-white" href="{{ path('annonces_depos') }}">
-                                    Déposer une annonce
-                                </a>
-                            </div>
-                        <!-- /div -->
-                        <!-- div class="row row-create-button mb-4" -->
-                            <div class="col-md-6">
+                        <div class="row row-create-button mt-1 mb-2">
+                            <div class="offset-lg-3 col-lg-6 offset-md-1 col-md-10">
                                 <button class="btn btn-primary btn-block">
                                     <i class="fa fa-search"></i> Rechercher
                                 </button>
+                            </div>
+                        </div>
+                        <div class="row row-search-button mb-4">
+                            <div class="offset-lg-3 col-lg-6 offset-md-1 col-md-10">
+                                <a class="btn btn-success btn-block text-white" href="{{ path('annonces_depos') }}">
+                                    Déposer une annonce
+                                </a>
                             </div>
                         </div>
                     </form>

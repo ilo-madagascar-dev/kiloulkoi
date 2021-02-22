@@ -1,0 +1,48 @@
+#kiloukoi-logo-menu-left {
+    height: 20px;
+}
+
+@media screen and (max-width:1024px) {
+    /**
+     * Menu
+     */
+    .menu-right-icons-text {
+        display: none !important;
+    }
+
+        .nav-icons {
+            margin-right: 1.5rem !important;
+        }
+
+        #message-item {
+            margin-right: 2rem !important;
+        }
+}
+
+@media screen and (max-width:1024px) {
+    /**
+     * Menu
+     */
+
+    /**
+     *
+     */
+    .right-menu-text {
+        display: none;
+    }
+
+        .nav-icons {
+            margin-top: 0.6rem !important;
+            margin-right: 0.70rem !important;
+        }
+
+        #message-item {
+            margin-right: 0.98rem !important;
+        }
+}
+
+@media screen and (max-width:768px) {
+    #kiloukoi-logo-menu-left {
+        height: 15px;
+    }
+}
