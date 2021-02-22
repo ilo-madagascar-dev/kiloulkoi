@@ -25,7 +25,7 @@
         /* Images des annonces */
         .card-body-ad-list img{
             line-height: 4rem;
-            padding-top: 0.95rem !important; /* Propriété à modifier pour le réajustement de la position verticale de l'image si besoin */
+            /*padding-top: 0.95rem !important;*/ /* Propriété à modifier pour le réajustement de la position verticale de l'image si besoin */
         }
 
         .ad-img-updated img {
@@ -38,17 +38,6 @@
             right: 0;
             margin: auto;
         }
-            .fill {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                overflow: hidden
-            }
-            .fill img {
-                flex-shrink: 0;
-                min-width: 100%;
-                min-height: 100%
-            }
 
         .img-logo-kilouks{
             width:70%;
