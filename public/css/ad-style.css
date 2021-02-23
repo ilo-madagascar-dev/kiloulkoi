@@ -49,8 +49,8 @@
                 flex-shrink: 0;
                 min-width: 100%;
                 min-height: 100%;
-                object-fit: cover;
-                object-position: right bottom;
+                object-fit: cover !important;
+                object-position: 50% 50% !important;
             }
 
             .kiloukoisAdImage {
@@ -211,7 +211,7 @@
 
 @media screen and (max-width:476px) {
     .img-logo-kilouks{
-        width:62.5%;
+        width:60%;
         padding-top: 0.8rem !important;; /* Propriété à modifier pour le réajustement de la position verticale de l'image si besoin */
         position: absolute !important;;
         top: 0;
@@ -225,6 +225,20 @@
         height: 167.67px;
     }
 
+        .fill {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden
+        }
+        .fill img {
+            flex-shrink: 0;
+            min-width: 100%;
+            min-height: 100%;
+            object-fit: cover !important;
+            object-position: 50% 50% !important;
+        }
+        
     #footer_image {
         display: none;
     }
