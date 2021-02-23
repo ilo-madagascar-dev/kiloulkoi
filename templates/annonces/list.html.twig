@@ -2,7 +2,7 @@
 		<div class="row mb-3">
 			<div class="col-lg-10 offset-lg-1">
 				<div class="row">
-					<div class="col-lg-12 offset-lg-0 offset-md-0 offset-sm-0 offset-1 col-10">
+					<div class="offset-1 col-10 offset-sm-0 col-sm-12 offset-md-0 offset-lg-0 col-lg-12">
 						<div class="card shadow-kiloukoi">
 							
 							<h1 class="h3 text-center text-muted pt-2">{{ annonce_titre }}</h1>
@@ -30,22 +30,22 @@
 							<div class="row">
 								{% for annonce in annonces %}
 									{% set slug = annonce.slug == '' ? 'annonces_' : annonce.slug %}
-									<div class="col-10 offset-1 offset-sm-0 offset-md-0 offset-lg-0 col-md-12 col-lg-12 mb-3">
+									<div class="col-10 offset-1 offset-sm-0 col-sm-12 offset-md-0 offset-lg-0 col-md-12 col-lg-12 mb-3">
 										<div class="card m-auto shadow-kiloukoi" style="">
 										<!-- div class="row px-0" -->
 											<div class="card-body card-body-ad-list">
 												<div class="row row_ad">
 													{% if annonce.photo|length > 0 %}
-														<div class="col-lg-3 col-md-4 col-sm-4 col-12 text-center px-2 py-2 fill" style="">
+														<div class="col-lg-3 col-md-4 col-sm-4 col-12 text-center px-0 py-0 ad-img-container fill bg-light" style="">
 															<a href="{{ path('annonces_show', {id: annonce.id, slug: slug }) }}" style="" class="overflow-hidden text-center">
-																<img src="{{ asset("uploads/" ~ annonce.photo[0].url) | imagine_filter('thumb') }}" class="card-img-top w-100 m-auto kiloukoisAdImage" alt="...">
+																<img src="{{ asset("uploads/" ~ annonce.photo[0].url)| imagine_filter('thumb') }}" class="card-img-top m-auto kiloukoisAdImage" alt="...">
 															</a>
 														</div>
 													{% else %}
 														<div class="col-lg-3 col-md-4 col-sm-4 col-12 text-center bg-light px-2 py-2 ad-img-container" style="position:relative;">
-															<!--a href="{{ path('annonces_show', {id: annonce.id, slug: slug }) }}" style="line-height:" class="overflow-hidden text-center" -->
+															<a href="{{ path('annonces_show', {id: annonce.id, slug: slug }) }}" style="line-height:" class="overflow-hidden text-center">
 																<img src="{{ asset('image/logo-fond-blanc.png') }}" class="card-img-top m-auto p-3 img-logo-kilouks" style="" alt="...">
-															<!-- /a -->
+															</a>
 														</div>
 													{% endif %}
 													
@@ -114,94 +114,41 @@
 								{% endfor %}
 							</div>
 						</div>
-						<!-- div class="col-lg-3 col-md-12 col-sm-12 col-12 card-info">
-								<div class="row">
-									<div class="col-md-12">
-										<h3 class="text-center border bg-white py-2 text-muted"> A la une ! </h3>
-									</div>
-									{#% for mostViewed in mostViewedAds %#}
-											{#% set slug = mostViewed.slug == '' ? 'annonces_' : mostViewed.slug %#}
-											<div class="col-lg-12 mb-2 px-0">
-												<div class="card">
-													<div class="card-header py-0">
-														<a href="{#{ path('annonces_show', {id: mostViewed.id, slug: slug }) }#}" style="height: 185px;" class="overflow-hidden bg-light">
-															{#% if mostViewed.photo|length > 0 %#}
-																<img src="{#{ asset("uploads/" ~ mostViewed.photo[0].url) }#}" class="card-img-top w-100 m-auto" alt="..." style="width: 100%;">
-															{#% else %#}
-																<img src="{#{ asset('image/logo-fond-blanc.png') }#}" class="card-img-top m-auto p-3" style="width: 100%;" alt="...">
-															{#% endif %#}
-														</a>
-													</div>
-													<div class="card-body">
-														<h3 class="card-title text-primary mb-2" style="font-size: 1.35rem;">
-															<strong><a href="{#{ path('annonces_show', {id: mostViewed.id, slug: slug }) }#}" >{#{ mostViewed.titre |capitalize }#}</a></strong>
-														</h3>
-
-														<div class="details" style="font-size: 1rem;position:relative;">
-															<p class="card-text mb-0"><strong class="text-success">Prix : </strong>{#{ mostViewed.prix }#}€ /{#{ mostViewed.type ? mostViewed.type.libelle : "mois" }#}</p>
-															<p class="card-text mb-0"><strong class="text-success">Catégorie : </strong>{#{ mostViewed.categorie.libelle }#} {#% if mostViewed.sousCategorie is not null %#}/ {#{ mostViewed.sousCategorie.libelle }#}{#% endif %#}</p -->
-															<!-- p class="card-text text-justify mb-0"><strong class="text-success">Description : </strong> {#{ mostViewed.description | slice(0, 46) }#} ... </p -->
-															<!-- p class="card-text mb-0"><strong class="text-success">Propriétaire : </strong><a href="{#{ path('proprietaire_annonce', {proprietaire: mostViewed.user.id, pseudo: mostViewed.user.pseudo}) }#}">{#{ mostViewed.user.pseudo }#}</a></p -->
-														<!-- /div>
-													</div>
-													<div class="card-footer">
-														<div class="row">
-															{#% if app.user and app.user.id == mostViewed.user.id %#}
-																<div class="col text-left ml-2">
-																	<a href="{#{ path('annonces_edit', {'id': mostViewed.id}) }#}" class="p-0 btn btn-link text-info" style="font-size: .8rem;">Modifier</a>
-																	{#{ include('annonces/_delete_form.html.twig') }#}
-																</div>
-															{#% else %#}
-																<div class="col text-left ml-2">
-																	<span><i class="fa fa-eye"></i> {#{ mostViewed.visite | number_format }#}</span>
-																</div>
-															{#% endif %#}
-
-															<div class="col px-2 text-center">
-																<small class="text-muted">{#{ mostViewed.dateModification | date("d/m/Y") }#}</small>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div-->
-									{#% endfor %#}
-								</div>
-						</div>
 					{% else %}
 						<div class="col-lg-12 col-md-12">
 							<div class="row">
 								{% for annonce in annonces %}
 									{% set slug = annonce.slug == '' ? 'annonces_' : annonce.slug %}
-									<div class="col-12 col-md-12 col-lg-12 mb-3">
+									<div class="col-10 offset-1 offset-sm-0 col-sm-12 offset-md-0 offset-lg-0 col-md-12 col-lg-12 mb-3">
 										<div class="card m-auto shadow-kiloukoi" style="">
 										<!-- div class="row px-0" -->
 											<div class="card-body card-body-ad-list">
 												<div class="row row_ad">
 													{% if annonce.photo|length > 0 %}
-														<div class="col-lg-3 col-md-4 col-sm-4 col-5 text-center py-2 pb-3 ad-img-container" style="position:relative; background:url({{ asset("uploads/" ~ annonce.photo[0].url) }}); background-size:cover; background-position:center;">
-															<!-- a href="{#{ path('annonces_show', {id: annonce.id, slug: slug }) }#}" style="" class="overflow-hidden text-center ad-img-updated">
-																<img src="{#{ asset("uploads/" ~ annonce.photo[0].url) | imagine_filter('thumb') }#}" class="card-img-top w-100 m-auto kiloukoisAdImage" alt="...">
-															</a -->
+														<div class="col-lg-3 col-md-4 col-sm-4 col-12 text-center px-0 py-0 ad-img-container fill bg-light" style="">
+															<a href="{{ path('annonces_show', {id: annonce.id, slug: slug }) }}" style="" class="overflow-hidden text-center">
+																<img src="{{ asset("uploads/" ~ annonce.photo[0].url)| imagine_filter('thumb') }}" class="card-img-top m-auto kiloukoisAdImage" alt="...">
+															</a>
 														</div>
 													{% else %}
-														<div class="col-lg-3 col-md-4 col-sm-4 col-5 text-center bg-light py-2 pb-3 ad-img-container" style="position:relative;">
-															<!--a href="{{ path('annonces_show', {id: annonce.id, slug: slug }) }}" style="line-height:" class="overflow-hidden text-center" -->
+														<div class="col-lg-3 col-md-4 col-sm-4 col-12 text-center bg-light px-2 py-2 ad-img-container" style="position:relative;">
+															<a href="{{ path('annonces_show', {id: annonce.id, slug: slug }) }}" style="line-height:" class="overflow-hidden text-center">
 																<img src="{{ asset('image/logo-fond-blanc.png') }}" class="card-img-top m-auto p-3 img-logo-kilouks" style="" alt="...">
-															<!-- /a -->
+															</a>
 														</div>
 													{% endif %}
 													
 
-													<div class="col-lg-9 col-md-8 col-sm-8 col-7 padding-col-lg-nine pl-4"> 
+													<div class="col-lg-9 col-md-8 col-sm-8 col-12 padding-col-lg-nine pl-4"> 
 														<!-- div class="card-body py-2 px-3 text-left" -->
 														<div class="row">
-															<div class="col-sm-10 col-8">
+															<div class="col-sm-10 {% if app.user and app.user.id != annonce.user.id %}  col-9 {% else %} col-12 {% endif %}" >
 																<h3 class="card-title text-primary mb-2" style="font-size: 1.35rem;">
 																	<strong><a href="{{ path('annonces_show', {id: annonce.id, slug: slug }) }}" >{{ annonce.titre |capitalize }}</a></strong>
 																</h3>
 															</div>
 															{% if app.user and app.user.id != annonce.user.id %}
-																<div class="col-sm-2 col-4 text-right" title="Favoris">
+																<div class="col-sm-2 col-3 text-right" title="Favoris">
 																	{% if annonce.userFavoris|length == 0 %}
 																		<span class="px-2 mr-2" data="{{ annonce.id }}">
 																			<i class="far fa-heart pt-2"></i>

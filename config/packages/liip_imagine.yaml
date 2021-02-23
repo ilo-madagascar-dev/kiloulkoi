@@ -4,7 +4,7 @@ liip_imagine:
         thumb:
             quality: 75
             filters: 
-                thumbnail  : { size : [360, 295], mode : outbound}
+                thumbnail  : { size : [370, 295], mode : outbound}
                 #background : { size : [124, 94], position : center, color : '#000000' }
         medium:
             quality: 75

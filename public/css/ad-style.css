@@ -39,6 +39,23 @@
             margin: auto;
         }
 
+            .fill {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden
+            }
+            .fill img {
+                flex-shrink: 0;
+                min-width: 100%;
+                min-height: 100%;
+                object-fit: cover;
+            }
+
+            .kiloukoisAdImage {
+                padding-left: 0rem!important;
+            }
+
         .img-logo-kilouks{
             width:70%;
             padding-top: 0.5rem !important; /* Propriété à modifier pour le réajustement de la position verticale de l'image si besoin */
@@ -94,6 +111,11 @@
         right: 0;
         margin: auto;
     }
+
+    .kiloukoisAdImage {
+        padding-left: 1rem!important;
+        padding-right: 1rem!important;
+    }
 }
 
 @media screen and (max-width:768px) {
@@ -106,10 +128,15 @@
         padding-top: unset !important; /* Propriété à modifier pour le réajustement de la position verticale de l'image si besoin */
         position: absolute !important;;
         top: 0;
-        bottom: 0;
+        /*bottom: 0;*/
         left: 0;
         right: 0;
         margin: auto;
+    }
+
+    .kiloukoisAdImage {
+        padding-left: 0rem!important;
+        padding-right: 0rem!important;
     }
 
     .date-ad {
@@ -137,13 +164,21 @@
 @media screen and (max-width:576px) {
     .img-logo-kilouks{
         width:41.5%;
-        /*margin-top: 0.25rem !important; /* Propriété à modifier pour le réajustement de la position verticale de l'image si besoin */
-        position: absolute !important;;
+        padding-top: 0.8rem !important; /* Propriété à modifier pour le réajustement de la position verticale de l'image si besoin */
+        position: absolute !important;
         top: 0;
         bottom: 0;
         left: 0;
         right: 0;
         margin: auto;
+    }
+
+    .ad-img-container {
+        height: 191.67px;
+    }
+
+    #footer_image {
+        display: none;
     }
 }
 
@@ -151,7 +186,7 @@
 @media screen and (max-width:541px) {
     .img-logo-kilouks{
         width:49%;
-        /* margin-top: 0.25rem !important; /* Propriété à modifier pour le réajustement de la position verticale de l'image si besoin */
+        padding-top: 0.8rem !important; /* Propriété à modifier pour le réajustement de la position verticale de l'image si besoin */
         position: absolute !important;;
         top: 0;
         bottom: 0;
@@ -172,7 +207,7 @@
 @media screen and (max-width:476px) {
     .img-logo-kilouks{
         width:62.5%;
-        /*padding-top: 0.65rem*/; /* Propriété à modifier pour le réajustement de la position verticale de l'image si besoin */
+        padding-top: 0.8rem !important;; /* Propriété à modifier pour le réajustement de la position verticale de l'image si besoin */
         position: absolute !important;;
         top: 0;
         bottom: 0;
@@ -182,7 +217,7 @@
     }
 
     .ad-img-container {
-        height: 192.67px;
+        height: 167.67px;
     }
 
     #footer_image {

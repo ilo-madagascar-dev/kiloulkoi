@@ -37,17 +37,34 @@
 
 .col-prix-ad {
     border-right: 1px solid #dee2e6;
+    font-size: 1.31rem
 }
 
-/* .table thead th {
-    border-top:unset;
-    border-bottom:unset;
+.col-caution-ad {
+    font-size: 1.31rem;
 }
 
-.table thead #ad-th-right {
-    border-right: 2px solid #dee2e6;
-} */
+/* Réservation */
+#reservation-annonce {
+    margin-top: unset;
+    margin-bottom: unset;
+}
 
-/*  .table thead tr {
-    border-radius: 50px;
-} */
+@media screen and (max-width:768px) {
+    #bouton-signaler {
+        width: 100%;
+    }
+
+    #ad-heart {
+        width: unset;
+    }
+
+    #annonce-specifique-favoris .btn-lg {
+        padding: .5rem 0rem !important;
+    }
+
+    #reservation-annonce {
+        margin-top: 1.5rem!important;
+        margin-bottom: 1.25rem!important;
+    }
+}
