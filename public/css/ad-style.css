@@ -50,6 +50,7 @@
                 min-width: 100%;
                 min-height: 100%;
                 object-fit: cover;
+                object-position: right bottom;
             }
 
             .kiloukoisAdImage {
@@ -67,8 +68,12 @@
             margin: auto;
         }
 
+        .ad-img-container {
+            height: 180.19px;
+        }
+        
         .padding-col-lg-nine {
-            padding-top: 1.2rem !important;
+           margin-top: 1rem !important;
         }
         
         /* Heart des annonces */
@@ -78,7 +83,7 @@
 
 @media screen and (max-width:1024px) {
     .padding-top-a-little-different {
-        padding-top: 0.8rem !important;
+        margin-top: 0.8rem !important;
     }
     
     /*.card-body-ad-list .card-body{
@@ -88,10 +93,6 @@
     .ad-img-updated{
         position:unset !important;
         padding-top: 0.5rem !important;
-    }
-
-    .padding-col-lg-nine {
-        padding-top: 1.2rem !important;
     }
 
     /* images */
@@ -112,15 +113,19 @@
         margin: auto;
     }
 
-    .kiloukoisAdImage {
+    /*.kiloukoisAdImage {
         padding-left: 1rem!important;
         padding-right: 1rem!important;
+    }*/
+
+    .ad-img-container {
+        height: 180.19px;
     }
 }
 
 @media screen and (max-width:768px) {
     .padding-top-a-little-different {
-        padding-top: 0 !important;
+        margin-top: 0 !important;
     }
 
     .img-logo-kilouks{
