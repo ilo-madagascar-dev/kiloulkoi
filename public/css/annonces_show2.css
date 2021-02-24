@@ -18,20 +18,20 @@
 }
 
 .principales-caracteristiques-deux ul {
-    text-align: left;
+    text-align: center;
 }
     .principales-caracteristiques-deux li {
         display: inline-block;
-        list-style-type: disc;
-        margin-right: 4rem;
+        /*list-style-type: disc;*/
+        margin-right: 0.25rem;
         margin-left:0;
     }
 
-    .principales-caracteristiques-deux ul>li:before{
+    /*.principales-caracteristiques-deux ul>li:before{
         content: "";
         display: list-item;
         position: absolute;
-    }
+    }*/
 
 
 

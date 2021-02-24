@@ -31,7 +31,7 @@
         .ad-img-updated img {
             width:100%;
             position: absolute;
-            /*padding-top: 0;*/ /* Propriété à modifier pour le réajustement de la position verticale de l'image si besoin */
+            padding-top: 0; /* Propriété à modifier pour le réajustement de la position verticale de l'image si besoin */
             top: 0;
             bottom: 0;
             left: 0;
@@ -45,17 +45,18 @@
                 align-items: center;
                 overflow: hidden
             }
+
             .fill img {
                 flex-shrink: 0;
                 min-width: 100%;
                 min-height: 100%;
                 object-fit: cover !important;
-                object-position: 50% 50% !important;
+                object-position: -89px center !important;
             }
 
-            .kiloukoisAdImage {
+            /* .kiloukoisAdImage {
                 padding-left: 0rem!important;
-            }
+            } */
 
         .img-logo-kilouks{
             width:70%;
@@ -104,7 +105,7 @@
 
     .img-logo-kilouks{
         width:70%;
-        padding-top: unset !important; */ /* Propriété à modifier pour le réajustement de la position verticale de l'image si besoin */
+        padding-top: unset !important; /* Propriété à modifier pour le réajustement de la position verticale de l'image si besoin */
         position: absolute !important;
         top: 0;
         bottom: 0;
@@ -128,6 +129,7 @@
         margin-top: 0 !important;
     }
 
+    /* Images */
     .img-logo-kilouks{
         width:70%;
         padding-top: unset !important; /* Propriété à modifier pour le réajustement de la position verticale de l'image si besoin */
@@ -167,6 +169,7 @@
     } */
 }
 @media screen and (max-width:576px) {
+    /* Images */
     .img-logo-kilouks{
         width:41.5%;
         padding-top: 0.8rem !important; /* Propriété à modifier pour le réajustement de la position verticale de l'image si besoin */
@@ -180,6 +183,14 @@
 
     .ad-img-container {
         height: 191.67px;
+    }
+
+    .fill img {
+        flex-shrink: 0;
+        min-width: 100%;
+        min-height: 100%;
+        object-fit: cover !important;
+        object-position: center center !important;
     }
 
     #footer_image {

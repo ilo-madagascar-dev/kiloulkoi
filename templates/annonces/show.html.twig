@@ -112,32 +112,34 @@
                                     </div>
                                 </div>
 
-                                <div class="offset-lg-1 col-lg-10 principales-caracteristiques-deux mb-2 text-justify">
+                                <div class="offset-lg-1 col-lg-10 principales-caracteristiques-deux mb-2 text-center">
                                     <!-- div class="col-lg-12" -->
                                         <p class="mt-2 mb-1"> <strong>Référence</strong> </p>
                                         <ul class="w-100 pl-3">
-                                            <li> <strong>Catégorie</strong> {% if annonce.categorie.libelle is defined%} {{ annonce.categorie.libelle }} {% endif %}/ {% if annonce.sousCategorie.libelle is defined %} {{ annonce.sousCategorie.libelle }} {% endif %}</li>
+                                            <li> <span class="badge badge-pill badge-success p-1"><strong>Catégorie</strong> {% if annonce.categorie.libelle is defined%} {{ annonce.categorie.libelle }} {% endif %}/ {% if annonce.sousCategorie.libelle is defined %} {{ annonce.sousCategorie.libelle }} {% endif %} </span></li>
                                             {% if annonce_serialized|length > 1 %}
                                                 {#{ dump(annonce_serialized) }#}
                                                 {% for key, value in annonce_serialized %}
                                                     {% if value is not null %}
                                                         <li>
-                                                            {% if key|capitalize == "Modele" %}
-                                                                <strong>Modèle </strong>
-                                                            {% elseif key|capitalize == "Kilometrage" %}
-                                                                <strong>Kilométrage </strong>
-                                                            {% else %}
-                                                                <strong>{{ key | capitalize }} </strong>
-                                                            {% endif %}
+                                                            <span class="badge badge-pill badge-primary p-1">
+                                                                {% if key|capitalize == "Modele" %}
+                                                                    <strong>Modèle </strong>
+                                                                {% elseif key|capitalize == "Kilometrage" %}
+                                                                    <strong>Kilométrage </strong>
+                                                                {% else %}
+                                                                    <strong>{{ key | capitalize }} </strong>
+                                                                {% endif %}
 
-                                                            <!--span class="pr-2"> </span -->
-                                                            {% if value is iterable %}
-                                                                <span>{{ value.valeur is defined ? value.valeur : value.libelle }}</span>
-                                                            {% elseif key|capitalize == "Kilometrage" %}
-                                                                <span>{{ value | number_format(0, '', ' ')}}</span> km
-                                                            {% else %}
-                                                                <span>{{ value }}</span>
-                                                            {% endif %}
+                                                                <!--span class="pr-2"> </span -->
+                                                                {% if value is iterable %}
+                                                                    {{ value.valeur is defined ? value.valeur : value.libelle }}
+                                                                {% elseif key|capitalize == "Kilometrage" %}
+                                                                    {{ value | number_format(0, '', ' ')}} km
+                                                                {% else %}
+                                                                    {{ value }}
+                                                                {% endif %}
+                                                            </span>
                                                         </li>
                                                     {% endif %}
                                                 {% endfor %}
