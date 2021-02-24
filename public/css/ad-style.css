@@ -51,7 +51,7 @@
                 min-width: 100%;
                 min-height: 100%;
                 object-fit: cover !important;
-                object-position: -89px center !important;
+                object-position: -4.61rem center !important;
             }
 
             /* .kiloukoisAdImage {
@@ -141,10 +141,10 @@
         margin: auto;
     }
 
-    .kiloukoisAdImage {
-        padding-left: 0rem!important;
-        padding-right: 0rem!important;
-    }
+        .kiloukoisAdImage {
+            padding-left: 0rem!important;
+            padding-right: 0rem!important;
+        }
 
     .date-ad {
         display: none;
@@ -164,10 +164,23 @@
         display: none;
     }
 
-    /* .row_ad{
-        padding-bottom: 0.5rem;
-    } */
+    .row_ad{
+        position:relative;
+    }
+
+    /* Dernière ligne de l'annonce */
+    .row_ad_bottom{
+        position:absolute;
+        bottom: 0.9rem;
+    }
 }
+
+@media screen and (max-width:713px) {
+    .ad-img-container {
+        height: 211.67px;
+    }
+}
+
 @media screen and (max-width:576px) {
     /* Images */
     .img-logo-kilouks{
@@ -182,19 +195,26 @@
     }
 
     .ad-img-container {
-        height: 191.67px;
+        height: 211.67px;
     }
 
     .fill img {
-        flex-shrink: 0;
-        min-width: 100%;
-        min-height: 100%;
-        object-fit: cover !important;
         object-position: center center !important;
     }
 
     #footer_image {
         display: none;
+    }
+
+    .row_ad{
+        position:unset;
+    }
+
+    /* Dernière ligne de l'annonce */
+    .row_ad_bottom{
+        position:unset;
+        bottom: unset;
+        left : unset;
     }
 }
 
@@ -243,16 +263,24 @@
             overflow: hidden
         }
         .fill img {
-            flex-shrink: 0;
-            min-width: 100%;
-            min-height: 100%;
-            object-fit: cover !important;
-            object-position: 50% 50% !important;
+            object-position: -4.54rem !important;
         }
         
     #footer_image {
         display: none;
     }
+}
+
+@media screen and (max-width:450px) {
+    .fill img {
+        object-position: -2.52rem !important;
+    }      
+}
+
+@media screen and (max-width:400px) {
+    .fill img {
+        object-position: -3.41rem !important;
+    }      
 }
 
 

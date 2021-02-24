@@ -81,7 +81,7 @@
 															<!-- p class="card-text mb-0"><strong class="text-success">Propriétaire : </strong><a href="{#{ path('proprietaire_annonce', {proprietaire: annonce.user.id, pseudo: annonce.user.pseudo}) }#}">{#{ annonce.user.pseudo }#}</a></p -->
 														</div>
 
-														<div class="row row_ad pt-2">
+														<div class="row row_ad row_ad_bottom pt-2 mb-0">
 															{% if app.user and app.user.id == annonce.user.id %}
 																<div class="col text-left mt-2 pl-0 pb-2 ad-form-modifs">
 																	<a href="{{ path('annonces_edit', {'id': annonce.id}) }}" class="p-0 btn btn-link text-info" style="font-size: .8rem;">Modifier</a>
@@ -150,11 +150,11 @@
 															{% if app.user and app.user.id != annonce.user.id %}
 																<div class="col-sm-2 col-3 text-right" title="Favoris">
 																	{% if annonce.userFavoris|length == 0 %}
-																		<span class="px-2 mr-2" data="{{ annonce.id }}">
+																		<span class="px-2 mr-2 heart-icon" data="{{ annonce.id }}">
 																			<i class="far fa-heart padding-col-lg-nine"></i>
 																		</span>
 																	{% else %}
-																		<span class="px-2 mr-2" data="{{ annonce.id }}">
+																		<span class="px-2 mr-2 heart-icon" data="{{ annonce.id }}">
 																			<i class="fa fa-heart text-danger pt-2"></i>
 																		</span>
 																	{% endif %}
