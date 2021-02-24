@@ -17,15 +17,48 @@
     font-weight: bold;
 }
 
-.principales-caracteristiques-deux ul {
+/* .principales-caracteristiques-deux ul {
     text-align: center;
-}
+} */
     .principales-caracteristiques-deux li {
+        height: 39px;
         display: inline-block;
-        /*list-style-type: disc;*/
+        list-style-type: none;
         margin-right: 0.25rem;
         margin-left:0;
     }
+
+    .principales-caracteristiques-deux li div {
+        height: 100%;
+        color: white;
+        line-height: 2.1rem;
+        vertical-align: top;
+    }
+
+    .principales-caracteristiques-deux li .category-text-container {
+        background: #00cd9c;
+    }
+
+    .tag-head-conteneur {
+       text-align: right;
+       margin-right: 0;
+    }
+       .tag-head-conteneur img {
+            max-height: 100%;
+        }
+
+    .tag-head-conteneur {
+        width: 2.44rem;
+        background-size: cover;
+    }
+
+        .principales-caracteristiques-deux li {
+            width: 45%;
+        }
+
+        .principales-caracteristiques-deux li .caracteristiques-text-container, .principales-caracteristiques-deux li .category-text-container {
+            width: 80%;
+        }
 
     /*.principales-caracteristiques-deux ul>li:before{
         content: "";
@@ -66,5 +99,15 @@
     #reservation-annonce {
         margin-top: 1.5rem!important;
         margin-bottom: 1.25rem!important;
+    }
+}
+
+@media screen and (max-width:576px) {
+    .principales-caracteristiques-deux li {
+        width: 100%;
+    }
+
+    .principales-caracteristiques-deux li .caracteristiques-text-container, .principales-caracteristiques-deux li .category-text-container {
+        width: 80%;
     }
 }

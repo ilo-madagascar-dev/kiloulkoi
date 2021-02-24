@@ -175,7 +175,7 @@
     }
 }
 
-@media screen and (max-width:713px) {
+@media screen and (max-width:767px) {
     .ad-img-container {
         height: 211.67px;
     }
