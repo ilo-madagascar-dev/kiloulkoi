@@ -11,6 +11,11 @@
     font-size: 1.7rem;
 }
 
+/* Prix et caution */
+.a-la-ligne {
+    display: none;
+}
+
 /* Affichage des caractéristiques */
 .principales-caracteristiques{
     border-radius: 10px;
@@ -52,13 +57,13 @@
         background-size: cover;
     }
 
-        .principales-caracteristiques-deux li {
+         .principales-caracteristiques-deux li {
             width: 45%;
         }
 
         .principales-caracteristiques-deux li .caracteristiques-text-container, .principales-caracteristiques-deux li .category-text-container {
             width: 80%;
-        }
+        } 
 
     /*.principales-caracteristiques-deux ul>li:before{
         content: "";
@@ -83,6 +88,12 @@
     margin-bottom: unset;
 }
 
+@media screen and (max-width:1024px) {
+    .sous-categorie-text {
+        display: none;
+    }
+}
+
 @media screen and (max-width:768px) {
     #bouton-signaler {
         width: 100%;
@@ -103,11 +114,23 @@
 }
 
 @media screen and (max-width:576px) {
+    .reference-paragraph {
+        margin-bottom: 1rem !important;
+    }
+
+    /* Prix et caution */
+    .col-prix-ad, .col-caution-ad {
+        text-align: center;
+    }
+    .a-la-ligne {
+        display: inline;
+    }
+
     .principales-caracteristiques-deux li {
         width: 100%;
     }
 
     .principales-caracteristiques-deux li .caracteristiques-text-container, .principales-caracteristiques-deux li .category-text-container {
         width: 80%;
-    }
-}
+    } 
+} 
