@@ -27,10 +27,10 @@
                                     <p class="user_eligibility" data-user-eligibility="{{ eligibility }}"></p>
                                 </div>
                                 <div class="col-md-3 cols-m-7 text-right ads-icons-container" style="position:absolute; right:0;">
-                                    <a href="#" class="card-link more-icons-link">Actions :</a>
+                                    <a href="#annonce-specifique-favoris" class="card-link more-icons-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="annonce-specifique-favoris">Actions :</a>
                                     <hr class="hr collapse kiloukoi-show-icons">
                                     {% if app.user and app.user.id != annonce.user.id %}
-                                        <div title="Favoris" class="d-inline text-center kiloukoi-show-icons" id="annonce-specifique-favoris">
+                                        <div title="Favoris" class="d-inline text-center kiloukoi-show-icons collapse" id="annonce-specifique-favoris">
                                             {% if isFavoris %}
                                                 <a class="btn-heart btn btn-lg" data="{{ annonce.id }}">
                                                     <i class="fa fa-heart text-danger pl-2" id="ad-heart"></i>
