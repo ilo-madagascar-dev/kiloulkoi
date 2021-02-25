@@ -11,6 +11,14 @@
     font-size: 1.7rem;
 }
 
+.more-icons-link {
+    display: none;
+}
+
+.hr {
+    display: none;
+}
+
 /* Prix et caution */
 .a-la-ligne {
     display: none;
@@ -57,10 +65,10 @@
         background-size: cover;
     }
 
-         .principales-caracteristiques-deux li {
+        .principales-caracteristiques-deux li {
             width: 45%;
         }
-
+            
         .principales-caracteristiques-deux li .caracteristiques-text-container, .principales-caracteristiques-deux li .category-text-container {
             width: 80%;
         } 
@@ -114,7 +122,21 @@
 }
 
 @media screen and (max-width:576px) {
+    /* card des infos de l'annonce */
+    .ad-show-card {
+        margin-top: 2.3333rem;
+    }
+    
+    /* partie icônes */
+    /*.kiloukoi-show-icons {
+        display: none !important;
+    } */
+    .more-icons-link {
+        display: inline;
+    }
+
     .reference-paragraph {
+        margin-top: 1rem !important;
         margin-bottom: 1rem !important;
     }
 
@@ -132,5 +154,11 @@
 
     .principales-caracteristiques-deux li .caracteristiques-text-container, .principales-caracteristiques-deux li .category-text-container {
         width: 80%;
-    } 
+    }
+    
+    .ads-icons-container {
+        position: unset !important;
+        text-align: center !important;
+        font-weight: 1rem;
+    }
 } 

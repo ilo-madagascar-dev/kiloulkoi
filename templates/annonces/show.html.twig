@@ -17,7 +17,7 @@
                 <div class=" pt-3">
                     
                     {# Détail de l'annonce #}
-                    <div class="card shadow mb-3">
+                    <div class="card shadow ad-show-card mb-3">
                         <div class="card-header text-center">
                             <div class="row" style="position:relative;">
                                 <div class="col-12" style="">
@@ -26,9 +26,11 @@
                                     </h2>
                                     <p class="user_eligibility" data-user-eligibility="{{ eligibility }}"></p>
                                 </div>
-                                <div class="col-md-3 col-7 text-right" style="position:absolute; right:0;">
+                                <div class="col-md-3 cols-m-7 text-right ads-icons-container" style="position:absolute; right:0;">
+                                    <a href="#" class="card-link more-icons-link">Actions :</a>
+                                    <hr class="hr collapse kiloukoi-show-icons">
                                     {% if app.user and app.user.id != annonce.user.id %}
-                                        <div title="Favoris" class="d-inline text-center" id="annonce-specifique-favoris">
+                                        <div title="Favoris" class="d-inline text-center kiloukoi-show-icons" id="annonce-specifique-favoris">
                                             {% if isFavoris %}
                                                 <a class="btn-heart btn btn-lg" data="{{ annonce.id }}">
                                                     <i class="fa fa-heart text-danger pl-2" id="ad-heart"></i>
@@ -40,7 +42,7 @@
                                             {% endif %}
                                         </div>
                                     {% endif %}
-                                    <div title="Partager" class="d-inline dropdown">
+                                    <div title="Partager" class="d-inline dropdown kiloukoi-show-icons">
                                         <a class="btn btn-lg p-0" href="#" role="button" id="share-btn" data-toggle="dropdown">
                                             <i class="fa fa-share-alt"></i>
                                         </a>
@@ -147,63 +149,6 @@
                                         </ul>
                                     <!-- /div -->
                                 </div>
-                                <!-- table class="offset-lg-1 col-lg-10 pt-4 mt-5 mb-5 text-center table table-striped" style="font-size: 120%" id="table-details">
-                                    <div class="ad-thead-container mb-3">
-                                        <thead>
-                                            <tr style="font-size: 150%">
-                                                <th id="ad-th-right" class="pl-3 header-td" style=" width:50%; font-weight:normal;">
-                                                    <strong >Prix </strong>
-                                                </th>
-                                                <th class="header-td" style="width:50%; font-weight:normal;">
-                                                    <span class="pr-2"> </span>
-                                                    <span class="text-success">{#{ annonce.prix }#}€/{#{ annonce.type ? annonce.type.libelle : 'mois' }#}</span>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                    </div>
-                                    <tbody>
-                                        <tr>
-                                            <td class="pl-3">
-                                                <strong >Catégorie </strong>
-                                            </td>
-                                            <td>
-                                                <span class="pr-2"> </span>
-                                                <span class="text-success">{#% if annonce.categorie.libelle is defined%#} {#{ annonce.categorie.libelle }#} {#% endif %#}/ {#% if annonce.sousCategorie.libelle is defined %#} {#{ annonce.sousCategorie.libelle }#} {#% endif %#}</span>
-                                            </td>
-                                        </tr !-->
-
-                                        <!--tr>
-                                            <td colspan="2"><hr class="mt-2 mb-0"></td>
-                                        </tr-->
-                                        <!-- tr>
-                                            <td></td>
-                                        </tr -->
-
-                                        {#% if annonce_serialized|length > 1 %}
-                                            {% for key, value in annonce_serialized %}
-                                                {% if value is not null %}
-                                                    <tr>
-                                                        <td class="pb-1 pl-3">
-                                                            {% if key|capitalize == "Modele" %}
-                                                                <strong>Modèle</strong>
-                                                            {% else %}
-                                                                <strong>{{ key | capitalize }}</strong>
-                                                            {% endif %}
-                                                        </td>
-                                                        <td class="pl-1">
-                                                            <span class="pr-2"> </span>
-                                                            {% if value is iterable %}
-                                                                <span>{{ value.valeur is defined ? value.valeur : value.libelle }}</span>
-                                                            {% else %}
-                                                                <span>{{ value }}</span>
-                                                            {% endif %}
-                                                        </td>
-                                                    </tr>
-                                                {% endif %}
-                                            {% endfor %}
-                                        {% endif %#}
-                                    <!--/tbody>
-                                </table -->
                             </div>
 
                             <hr>
