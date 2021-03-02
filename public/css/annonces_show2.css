@@ -24,6 +24,10 @@
     display: none;
 }
 
+.par-du-prix {
+    display: none;
+}
+
 /* Affichage des caractéristiques */
 .principales-caracteristiques{
     border-radius: 10px;
@@ -125,11 +129,16 @@
     }
     
     /* partie icônes */
-    /*.kiloukoi-show-icons {
+    .kiloukoi-show-icons {
         display: none !important;
-    } */
+    }
+
     .more-icons-link {
         display: inline;
+    }
+
+    .hr {
+        display: block;
     }
 
     .reference-paragraph {
@@ -142,6 +151,13 @@
         text-align: center;
     }
     .a-la-ligne {
+        display: inline;
+    }
+
+    .slash-du-prix {
+        display: none;
+    }
+    .par-du-prix {
         display: inline;
     }
 
@@ -158,4 +174,15 @@
         text-align: center !important;
         font-weight: 1rem;
     }
+
+    /* classes diverses */
+    .display-none-anonces {
+        display: none !important;
+    }
+
+    .display-inline-anonces {
+        display: inline !important;
+        transition-timing-function: ease-in-out;
+    }
 } 
+

@@ -27,10 +27,11 @@
                                     <p class="user_eligibility" data-user-eligibility="{{ eligibility }}"></p>
                                 </div>
                                 <div class="col-md-3 cols-m-7 text-right ads-icons-container" style="position:absolute; right:0;">
-                                    <a href="#annonce-specifique-favoris" class="card-link more-icons-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="annonce-specifique-favoris">Actions :</a>
-                                    <hr class="hr collapse kiloukoi-show-icons">
+                                    <a id="button-ads-show" class="card-link more-icons-link"><i class="fa fa-sort-down"></i></a>
+                                    <br class="a-la-ligne">
+                                    <!-- hr class="hr kiloukoi-show-icons" -->
                                     {% if app.user and app.user.id != annonce.user.id %}
-                                        <div title="Favoris" class="d-inline text-center kiloukoi-show-icons collapse" id="annonce-specifique-favoris">
+                                        <div title="Favoris" class="d-inline text-center kiloukoi-show-icons collapse">
                                             {% if isFavoris %}
                                                 <a class="btn-heart btn btn-lg" data="{{ annonce.id }}">
                                                     <i class="fa fa-heart text-danger pl-2" id="ad-heart"></i>
@@ -42,7 +43,7 @@
                                             {% endif %}
                                         </div>
                                     {% endif %}
-                                    <div title="Partager" class="d-inline dropdown kiloukoi-show-icons">
+                                    <div title="Partager" class="d-inline dropdown kiloukoi-show-icons" id="annonce-specifique-favoris">
                                         <a class="btn btn-lg p-0" href="#" role="button" id="share-btn" data-toggle="dropdown">
                                             <i class="fa fa-share-alt"></i>
                                         </a>
@@ -104,10 +105,10 @@
                                 <div class=" mt-4 offset-lg-1 col-lg-10 text-center py-2">
                                     <div class="principales-caracteristiques border py-2 shadow-kiloukoi">
                                         <div class="row">
-                                            <div class="col-6 col-prix-ad">
-                                                Prix : <br class="a-la-ligne"> <span style="font-weight:lighter;">{{ annonce.prix }}€/{{ annonce.type ? annonce.type.libelle : 'mois' }}</span>
+                                            <div class="col-6 col-prix-ad pr-0">
+                                                Prix : <br class="a-la-ligne"> <span style="font-weight:lighter;">{{ annonce.prix }}€<br class="a-la-ligne"><span class="slash-du-prix">/</span><span class="par-du-prix">par </span>{{ annonce.type ? annonce.type.libelle : 'mois' }}</span>
                                             </div>
-                                            <div class="col-6 col-caution-ad">
+                                            <div class="col-6 col-caution-ad pl-0">
                                                 Caution : <br class="a-la-ligne"> <span style="font-weight:lighter;">{{ annonce.caution }}€</span>
                                             </div>
                                         </div>
@@ -150,7 +151,7 @@
                                     <!-- /div -->
                                 </div>
                             </div>
-
+                            
                             <hr>
 
                             <div class="offset-lg-1 col-lg-10 mt-4 mb-4 pl-0">
@@ -412,4 +413,5 @@
 		});
     </script>
     <script src="{{ asset('js/calendrier.js') }}"></script>
+    <script src="{{ asset('js/annoncesShow2.js') }}"></script>
 {% endblock %}
