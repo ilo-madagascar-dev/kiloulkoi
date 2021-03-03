@@ -119,19 +119,21 @@
                                     <!-- div class="col-lg-12" -->
                                         <p class="mt-2 mb-1 pl-3 reference-paragraph"> <strong>Référence</strong> </p>
                                         <ul class="w-100 pl-0">
-                                            <li><div class="d-inline-block tag-head-conteneur"><img src="{{ asset('icone/crea_012.png') }}" alt=""></div><div class="d-inline-block category-text-container px-2"><strong>Catégorie</strong> {% if annonce.categorie.libelle is defined%} {{ annonce.categorie.libelle }} {% endif %}<span class="sous-categorie-text">{% if annonce.sousCategorie.libelle is defined %}/ {{ annonce.sousCategorie.libelle }} {% endif %}</span> </div></li>
+                                            <li><div class="d-inline-block tag-head-conteneur"><img src="{{ asset('icone/crea_012.png') }}" alt=""></div><div class="d-inline-block category-text-container px-2 shadow" style="border-radius:0px 3px 3px 0px;">{% if annonce.categorie.libelle is defined%} {{ annonce.categorie.libelle }} {% endif %}<span class="sous-categorie-text">{% if annonce.sousCategorie.libelle is defined %}/ {{ annonce.sousCategorie.libelle }} {% endif %}</span> </div></li>
                                             {% if annonce_serialized|length > 1 %}
                                                 {#{ dump(annonce_serialized) }#}
                                                 {% for key, value in annonce_serialized %}
                                                     {% if value is not null %}
                                                         <li class="mt-3">
-                                                            <div class="d-inline-block tag-head-conteneur"><img src="{{ asset('icone/crea_f.png') }}" alt=""></div><div class="d-inline-block bg-primary caracteristiques-text-container px-2">
-                                                                {% if key|capitalize == "Modele" %}
-                                                                    <strong>Modèle </strong>
-                                                                {% elseif key|capitalize == "Kilometrage" %}
-                                                                    <strong>Kilométrage </strong>
-                                                                {% else %}
-                                                                    <strong>{{ key | capitalize }} </strong>
+                                                            <div class="d-inline-block tag-head-conteneur"><img src="{{ asset('icone/crea_f.png') }}" alt=""></div><div class="d-inline-block bg-primary caracteristiques-text-container px-2 shadow" style="border-radius:0px 3px 3px 0px;">
+                                                                {% if key|capitalize == "Urgent" %}
+                                                                    <strong>Urgent </strong>
+                                                                {#
+                                                                    {% elseif key|capitalize == "Kilometrage" %}
+                                                                        <strong>Kilométrage </strong>
+                                                                    {% else %}
+                                                                        <strong>{{ key | capitalize }} </strong>
+                                                                #}
                                                                 {% endif %}
 
                                                                 <!--span class="pr-2"> </span -->

@@ -172,6 +172,7 @@
     .row_ad_bottom{
         position:absolute;
         bottom: 0.9rem;
+        margin-bottom:unset;
     }
 }
 
@@ -215,6 +216,7 @@
         position:unset;
         bottom: unset;
         left : unset;
+        margin-bottom: 0.5rem !important;
     }
 }
 

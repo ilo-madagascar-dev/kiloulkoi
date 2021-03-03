@@ -67,7 +67,7 @@
                                             </td>
                                             <td>{{ location.dateDebut ? location.dateDebut|date('d/m/Y') : '' }}</td>
                                             <td>{{ location.dateFin ? location.dateFin|date('d/m/Y') : '' }}</td>
-                                            <td>{{ (difference * location.annonce.prix) |round(2, 'floor') }}</td>
+                                            <td>{{ (difference * location.annonce.prix) |round(2, 'floor') }}€</td>
                                             <td>{{ location.statutLocation.libelle }}</td>
                                             <td>
                                                 {% if location.statutLocation.id == 2 %} {# En Cours #}
@@ -142,28 +142,28 @@
                                                 </td>
                                                 <td>{{ location.dateDebut ? location.dateDebut|date('d/m/Y') : '' }}</td>
                                                 <td>{{ location.dateFin ? location.dateFin|date('d/m/Y') : '' }}</td>
-                                                <td>{{ (difference * location.annonce.prix) |round(2, 'floor') }}</td>
+                                                <td>{{ (difference * location.annonce.prix) |round(2, 'floor') }}€</td>
                                                 <td>{{ location.statutLocation.libelle }}</td>
                                                 <td>
-                                                    {% if location.statutLocation.id == 2 %}
-                                                        <button class="btn btn-info btn-sm btn-message" data-toggle="modal" data-target="#message-modal" data-user="{{ location.annonce.user.nomComplet }}" data-url="{{ path('conversation_messages_new', { location: location.id, destinataire: location.annonce.user.id }) }}">
-                                                            <i class="fa fa-comments"></i>
-                                                        </button>
-                                                    {% endif %}
-
                                                     {% if not plusOneDay and location.statutLocation.id != 3 %}
-                                                        <a class="btn btn-sm btn-warning" href="{{ path('location_accept', {id: location.id, etat: 'refuser'}) }}" title="Annuler">
-                                                            <i class="fa fa-times-circle"></i>
-                                                        </a>
-                                                    {% elseif plusOneDay %}
                                                         {% if location.note is null %}
                                                             <a class="btn btn-sm btn-success btn-note text-white" data-toggle="modal" data-target="#note-modal" title="Laisser une note..." data-url="{{ path('location_comment', { location: location.id }) }}">
                                                                 <i class="fa fa-star"></i>
                                                             </a>
                                                         {% endif %}
+                                                        <a class="btn btn-sm btn-warning" href="{{ path('location_accept', {id: location.id, etat: 'refuser'}) }}" title="Annuler">
+                                                            <i class="fa fa-times-circle"></i>
+                                                        </a>
+                                                    {% elseif plusOneDay %}
                                                         <a class="btn btn-sm btn-warning text-white" href="#" title="Ouvrire un litige">
                                                             <i class="fa fa-angry"></i>
                                                         </a>
+                                                    {% endif %}
+
+                                                    {% if location.statutLocation.id == 2 %}
+                                                        <button class="btn btn-info btn-sm btn-message" data-toggle="modal" data-target="#message-modal" data-user="{{ location.annonce.user.nomComplet }}" data-url="{{ path('conversation_messages_new', { location: location.id, destinataire: location.annonce.user.id }) }}">
+                                                            <i class="fa fa-comments"></i>
+                                                        </button>
                                                     {% endif %}
                                                 </td>
                                             </tr>
