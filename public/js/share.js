@@ -14,8 +14,13 @@ function init() {
     let url = encodeURI(document.location.href);
     let postTitle = encodeURI("Hi everyone, please check it out.");
 
-    facebookBtn.setAttribute("href", `https://www.facebook.com/sharer.php?u=${url}`);
-    twitterBtn.setAttribute("href", `https://twitter.com/share?url=${url}&text=${postTitle}`);
+    if (facebookBtn) {
+        facebookBtn.setAttribute("href", `https://www.facebook.com/sharer.php?u=${url}`);
+    }
+
+    if (twitterBtn) {
+        twitterBtn.setAttribute("href", `https://twitter.com/share?url=${url}&text=${postTitle}`);
+    }
 }
 
 init();
