@@ -110,13 +110,13 @@
                                 {# <input type="text" id="input-show-categorie" class=" form-control" placeholder="Catégories"> #}
 
                                 <div class="input-group">
-                                    <div class="input-group-prepend input-group-prepend-large-screen">
+                                    <div class="input-group-prepend input-group-prepend-large-screen input-group-show-categorie">
                                         <label for="input-show-categorie" class="input-group-text bg-success text-white" id="category-add-on-left"><i class="fa fa-list"></i></label>
                                     </div>
                                     <div id="input-show-categorie" class="h-100 form-control rounded not-show-all">
-                                        <p style="display: inline;" class="p-0 m-0 categorie-placeholder text-muted ml-2">Catégories</p>
+                                        <p style="display: inline;" class="p-0 m-0 categorie-placeholder text-muted ml-2" id="input-show-categorie-paragraph">Catégories</p>
                                     </div>
-                                    <div class="input-group-append input-group-append-small-screen">
+                                    <div class="input-group-append input-group-append-small-screen input-group-show-categorie">
                                         <label for="input-show-categorie" class="input-group-text bg-success text-white" id="category-addon-right"><i class="fa fa-list"></i></label>
                                     </div>
                                 </div>
@@ -335,4 +335,5 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/i18n/fr.js"></script>
 
     <script src="{{ asset('js/accueil.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/accueil2.js') }}" type="text/javascript"></script>
 {% endblock %}
