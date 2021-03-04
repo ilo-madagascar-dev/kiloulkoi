@@ -11,43 +11,178 @@
     font-size: 1.7rem;
 }
 
+.more-icons-link {
+    display: none;
+}
+
+.hr {
+    display: none;
+}
+
+/* Prix et caution */
+.a-la-ligne {
+    display: none;
+}
+
+.par-du-prix {
+    display: none;
+}
+
 /* Affichage des caractéristiques */
 .principales-caracteristiques{
     border-radius: 10px;
     font-weight: bold;
 }
 
-.principales-caracteristiques-deux ul {
-    text-align: left;
-}
     .principales-caracteristiques-deux li {
+        height: 39px;
         display: inline-block;
-        list-style-type: disc;
-        margin-right: 4rem;
+        list-style-type: none;
+        margin-right: 0.25rem;
         margin-left:0;
     }
 
-    .principales-caracteristiques-deux ul>li:before{
+    .principales-caracteristiques-deux li div {
+        height: 100%;
+        color: white;
+        line-height: 2.1rem;
+        vertical-align: top;
+    }
+
+    .principales-caracteristiques-deux li .category-text-container {
+        background: #00cd9c;
+    }
+
+    .tag-head-conteneur {
+       text-align: right;
+       margin-right: 0;
+    }
+       .tag-head-conteneur img {
+            max-height: 100%;
+        }
+
+    .tag-head-conteneur {
+        width: 2.44rem;
+        background-size: cover;
+    }
+
+        .principales-caracteristiques-deux li {
+            width: 45%;
+        }
+            
+        .principales-caracteristiques-deux li .caracteristiques-text-container, .principales-caracteristiques-deux li .category-text-container {
+            width: 80%;
+        } 
+
+    /*.principales-caracteristiques-deux ul>li:before{
         content: "";
         display: list-item;
         position: absolute;
-    }
+    }*/
 
 
 
 .col-prix-ad {
     border-right: 1px solid #dee2e6;
+    font-size: 1.31rem
 }
 
-/* .table thead th {
-    border-top:unset;
-    border-bottom:unset;
+.col-caution-ad {
+    font-size: 1.31rem;
 }
 
-.table thead #ad-th-right {
-    border-right: 2px solid #dee2e6;
-} */
+/* Réservation */
+#reservation-annonce {
+    margin-top: unset;
+    margin-bottom: unset;
+}
 
-/*  .table thead tr {
-    border-radius: 50px;
-} */
+@media screen and (max-width:1024px) {
+    .sous-categorie-text {
+        display: none;
+    }
+}
+
+@media screen and (max-width:768px) {
+    #bouton-signaler {
+        width: 100%;
+    }
+
+    #ad-heart {
+        width: unset;
+    }
+
+    #annonce-specifique-favoris .btn-lg {
+        padding: .5rem 0rem !important;
+    }
+
+    #reservation-annonce {
+        margin-top: 1.5rem!important;
+        margin-bottom: 1.25rem!important;
+    }
+}
+
+@media screen and (max-width:576px) {
+    /* card des infos de l'annonce */
+    .ad-show-card {
+        margin-top: 2.3333rem;
+    }
+    
+    /* partie icônes */
+    .kiloukoi-show-icons {
+        display: none !important;
+    }
+
+    .more-icons-link {
+        display: inline;
+    }
+
+    .hr {
+        display: block;
+    }
+
+    .reference-paragraph {
+        margin-top: 1rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    /* Prix et caution */
+    .col-prix-ad, .col-caution-ad {
+        text-align: center;
+    }
+    .a-la-ligne {
+        display: inline;
+    }
+
+    .slash-du-prix {
+        display: none;
+    }
+    .par-du-prix {
+        display: inline;
+    }
+
+    .principales-caracteristiques-deux li {
+        width: 100%;
+    }
+
+    .principales-caracteristiques-deux li .caracteristiques-text-container, .principales-caracteristiques-deux li .category-text-container {
+        width: 80%;
+    }
+    
+    .ads-icons-container {
+        position: unset !important;
+        text-align: center !important;
+        font-weight: 1rem;
+    }
+
+    /* classes diverses */
+    .display-none-anonces {
+        display: none !important;
+    }
+
+    .display-inline-anonces {
+        display: inline !important;
+        transition-timing-function: ease-in-out;
+    }
+} 
+

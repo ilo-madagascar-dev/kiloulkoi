@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Service;
 
 use App\Entity\Notification;
@@ -38,11 +39,12 @@ class NotificationService
         ]);
 
         try {
-            ($this->publisher)( new Update(
-                [ "http://127.0.0.1:8080/event/" . $destinataire->getId() ],
+            ($this->publisher)(new Update(
+                [$_ENV['KILOUKOI_S_MERCURE_SUBSCRIBER_URL'] . $destinataire->getId()],
                 $serialized,
                 true,
             ));
-        } catch( Exception $e ) {}
+        } catch (Exception $e) {
+        }
     }
 }

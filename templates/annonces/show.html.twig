@@ -17,7 +17,7 @@
                 <div class=" pt-3">
                     
                     {# Détail de l'annonce #}
-                    <div class="card shadow mb-3">
+                    <div class="card shadow ad-show-card mb-3">
                         <div class="card-header text-center">
                             <div class="row" style="position:relative;">
                                 <div class="col-12" style="">
@@ -26,21 +26,24 @@
                                     </h2>
                                     <p class="user_eligibility" data-user-eligibility="{{ eligibility }}"></p>
                                 </div>
-                                <div class="col-md-3 col-6 text-right" style="position:absolute; right:0;">
+                                <div class="col-md-3 cols-m-7 text-right ads-icons-container" style="position:absolute; right:0;">
+                                    <a id="button-ads-show" class="card-link more-icons-link"><i class="fa fa-sort-down"></i></a>
+                                    <br class="a-la-ligne">
+                                    <!-- hr class="hr kiloukoi-show-icons" -->
                                     {% if app.user and app.user.id != annonce.user.id %}
-                                        <div title="Favoris" class="d-inline text-center">
+                                        <div title="Favoris" class="d-inline text-center kiloukoi-show-icons collapse">
                                             {% if isFavoris %}
                                                 <a class="btn-heart btn btn-lg" data="{{ annonce.id }}">
-                                                    <i class="fa fa-heart text-danger pl-2"></i>
+                                                    <i class="fa fa-heart text-danger pl-2" id="ad-heart"></i>
                                                 </a>
                                             {% else %}
                                                 <a class="btn-heart btn btn-lg" data="{{ annonce.id }}">
-                                                    <i class="far fa-heart pl-1"></i>
+                                                    <i class="far fa-heart pl-1" id="ad-heart"></i>
                                                 </a>
                                             {% endif %}
                                         </div>
                                     {% endif %}
-                                    <div title="Partager" class="d-inline dropdown">
+                                    <div title="Partager" class="d-inline dropdown kiloukoi-show-icons" id="annonce-specifique-favoris">
                                         <a class="btn btn-lg p-0" href="#" role="button" id="share-btn" data-toggle="dropdown">
                                             <i class="fa fa-share-alt"></i>
                                         </a>
@@ -51,10 +54,10 @@
                                             <a class="dropdown-item py-2" href="#">
                                                 <i style="width: 15px" class="fa mr-2 fa-envelope"></i> E-mail
                                             </a>
-                                            <a class="dropdown-item py-2" href="#">
+                                            <a class="facebook-btn dropdown-item py-2" href="#">
                                                 <i style="width: 15px" class="fab mr-2 fa-facebook-f"></i> Facebook
                                             </a>
-                                            <a class="dropdown-item py-2" href="#">
+                                            <a class="twitter-btn dropdown-item py-2" href="#">
                                                 <i style="width: 15px" class="fab mr-2 fa-twitter"></i> Twitter
                                             </a>
                                         </div>
@@ -100,44 +103,48 @@
                             <!-- Caractéristiques de l'annonces -->
                                 <!-- div class="row" -->
                                 <div class=" mt-4 offset-lg-1 col-lg-10 text-center py-2">
-                                    <div class="principales-caracteristiques border py-2">
+                                    <div class="principales-caracteristiques border py-2 shadow-kiloukoi">
                                         <div class="row">
-                                            <div class="col-6 col-prix-ad">
-                                                Prix : <span>{{ annonce.prix }}€/{{ annonce.type ? annonce.type.libelle : 'mois' }}</span>
+                                            <div class="col-6 col-prix-ad pr-0">
+                                                Prix : <br class="a-la-ligne"> <span style="font-weight:lighter;">{{ annonce.prix }}€<br class="a-la-ligne"><span class="slash-du-prix">/</span><span class="par-du-prix">par </span>{{ annonce.type ? annonce.type.libelle : 'mois' }}</span>
                                             </div>
-                                            <div class="col-6">
-                                                Caution: <span>{{ annonce.caution }}€</span>
+                                            <div class="col-6 col-caution-ad pl-0">
+                                                Caution : <br class="a-la-ligne"> <span style="font-weight:lighter;">{{ annonce.caution }}€</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="offset-lg-1 col-lg-10 principales-caracteristiques-deux mb-2 text-justify">
+                                <div class="offset-lg-1 col-lg-10 principales-caracteristiques-deux mb-2">
                                     <!-- div class="col-lg-12" -->
-                                        <p class="mt-2 mb-1">Référence</p>
-                                        <ul class="w-100 pl-3">
-                                            <li> <strong>Catégorie</strong> {% if annonce.categorie.libelle is defined%} {{ annonce.categorie.libelle }} {% endif %}/ {% if annonce.sousCategorie.libelle is defined %} {{ annonce.sousCategorie.libelle }} {% endif %}</li>
+                                        <p class="mt-2 mb-1 pl-3 reference-paragraph"> <strong>Référence</strong> </p>
+                                        <ul class="w-100 pl-0">
+                                            <li><div class="d-inline-block tag-head-conteneur"><img src="{{ asset('icone/crea_012.png') }}" alt=""></div><div class="d-inline-block category-text-container px-2 shadow" style="border-radius:0px 3px 3px 0px;">{% if annonce.categorie.libelle is defined%} {{ annonce.categorie.libelle }} {% endif %}<span class="sous-categorie-text">{% if annonce.sousCategorie.libelle is defined %}/ {{ annonce.sousCategorie.libelle }} {% endif %}</span> </div></li>
                                             {% if annonce_serialized|length > 1 %}
                                                 {#{ dump(annonce_serialized) }#}
                                                 {% for key, value in annonce_serialized %}
                                                     {% if value is not null %}
-                                                        <li>
-                                                            {% if key|capitalize == "Modele" %}
-                                                                <strong>Modèle </strong>
-                                                            {% elseif key|capitalize == "Kilometrage" %}
-                                                                <strong>Kilométrage </strong>
-                                                            {% else %}
-                                                                <strong>{{ key | capitalize }} </strong>
-                                                            {% endif %}
+                                                        <li class="mt-3">
+                                                            <div class="d-inline-block tag-head-conteneur"><img src="{{ asset('icone/crea_f.png') }}" alt=""></div><div class="d-inline-block bg-primary caracteristiques-text-container px-2 shadow" style="border-radius:0px 3px 3px 0px;">
+                                                                {% if key|capitalize == "Urgent" %}
+                                                                    <strong>Urgent </strong>
+                                                                {#
+                                                                    {% elseif key|capitalize == "Kilometrage" %}
+                                                                        <strong>Kilométrage </strong>
+                                                                    {% else %}
+                                                                        <strong>{{ key | capitalize }} </strong>
+                                                                #}
+                                                                {% endif %}
 
-                                                            <!--span class="pr-2"> </span -->
-                                                            {% if value is iterable %}
-                                                                <span>{{ value.valeur is defined ? value.valeur : value.libelle }}</span>
-                                                            {% elseif key|capitalize == "Kilometrage" %}
-                                                                <span>{{ value | number_format(0, '', ' ')}}</span> km
-                                                            {% else %}
-                                                                <span>{{ value }}</span>
-                                                            {% endif %}
+                                                                <!--span class="pr-2"> </span -->
+                                                                {% if value is iterable %}
+                                                                    {{ value.valeur is defined ? value.valeur : value.libelle }}
+                                                                {% elseif key|capitalize == "Kilometrage" %}
+                                                                    {{ value | number_format(0, '', ' ')}} km
+                                                                {% else %}
+                                                                    {{ value }}
+                                                                {% endif %}
+                                                            </div>
                                                         </li>
                                                     {% endif %}
                                                 {% endfor %}
@@ -145,65 +152,8 @@
                                         </ul>
                                     <!-- /div -->
                                 </div>
-                                <!-- table class="offset-lg-1 col-lg-10 pt-4 mt-5 mb-5 text-center table table-striped" style="font-size: 120%" id="table-details">
-                                    <div class="ad-thead-container mb-3">
-                                        <thead>
-                                            <tr style="font-size: 150%">
-                                                <th id="ad-th-right" class="pl-3 header-td" style=" width:50%; font-weight:normal;">
-                                                    <strong >Prix </strong>
-                                                </th>
-                                                <th class="header-td" style="width:50%; font-weight:normal;">
-                                                    <span class="pr-2"> </span>
-                                                    <span class="text-success">{#{ annonce.prix }#}€/{#{ annonce.type ? annonce.type.libelle : 'mois' }#}</span>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                    </div>
-                                    <tbody>
-                                        <tr>
-                                            <td class="pl-3">
-                                                <strong >Catégorie </strong>
-                                            </td>
-                                            <td>
-                                                <span class="pr-2"> </span>
-                                                <span class="text-success">{#% if annonce.categorie.libelle is defined%#} {#{ annonce.categorie.libelle }#} {#% endif %#}/ {#% if annonce.sousCategorie.libelle is defined %#} {#{ annonce.sousCategorie.libelle }#} {#% endif %#}</span>
-                                            </td>
-                                        </tr !-->
-
-                                        <!--tr>
-                                            <td colspan="2"><hr class="mt-2 mb-0"></td>
-                                        </tr-->
-                                        <!-- tr>
-                                            <td></td>
-                                        </tr -->
-
-                                        {#% if annonce_serialized|length > 1 %}
-                                            {% for key, value in annonce_serialized %}
-                                                {% if value is not null %}
-                                                    <tr>
-                                                        <td class="pb-1 pl-3">
-                                                            {% if key|capitalize == "Modele" %}
-                                                                <strong>Modèle</strong>
-                                                            {% else %}
-                                                                <strong>{{ key | capitalize }}</strong>
-                                                            {% endif %}
-                                                        </td>
-                                                        <td class="pl-1">
-                                                            <span class="pr-2"> </span>
-                                                            {% if value is iterable %}
-                                                                <span>{{ value.valeur is defined ? value.valeur : value.libelle }}</span>
-                                                            {% else %}
-                                                                <span>{{ value }}</span>
-                                                            {% endif %}
-                                                        </td>
-                                                    </tr>
-                                                {% endif %}
-                                            {% endfor %}
-                                        {% endif %#}
-                                    <!--/tbody>
-                                </table -->
                             </div>
-
+                            
                             <hr>
 
                             <div class="offset-lg-1 col-lg-10 mt-4 mb-4 pl-0">
@@ -218,10 +168,16 @@
                                 </p>
                             </div>
 
-                            <div class="col-12 m-auto text-right mt-4">
-                                {% if app.user %}
+                            <div class="offset-lg-1 col-lg-10 m-auto text-right mt-4">
+                                {% if app.user and app.user.id == annonce.user.id %}
+									<div class="col center mt-2 pl-0 pb-2 ad-form-modifs">
+										<a href="{{ path('annonces_edit', {'id': annonce.id}) }}" class="p-0 btn btn-link text-info" style="font-size: .8rem;">Modifier</a>
+										{{ include('annonces/_delete_form.html.twig') }}
+									</div>
+								{% endif %}
+                                {% if app.user and app.user.id != annonce.user.id %}
                                     <div class="mt-4">
-                                        <button class="btn btn-warning" style="color:white; ">Signaler cette annonce</button>
+                                        <button class="btn btn-warning" id="bouton-signaler" style="color:white;">Signaler cette annonce</button>
                                     </div>
                                 {% endif %}
                             </div>
@@ -264,7 +220,7 @@
                                         </div>
 
                                         {% if not (app.user and app.user.id == annonce.user.id) %}
-                                            <div class="col-lg-6 d-flex align-items-end justify-content-center">
+                                            <div class="col-lg-6 d-flex align-items-end justify-content-center" id="reservation-annonce">
                                                 <div class="mx-auto">
                                                     <h3 class="text-center mb-4">Réservation:</h3>
                                                     <div class="form-group">
@@ -459,4 +415,5 @@
 		});
     </script>
     <script src="{{ asset('js/calendrier.js') }}"></script>
+    <script src="{{ asset('js/annoncesShow2.js') }}"></script>
 {% endblock %}
