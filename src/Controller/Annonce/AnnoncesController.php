@@ -167,13 +167,31 @@ class AnnoncesController extends AbstractController
     /**
      * @Route("/deposer", name="annonces_depos", methods={"GET"})
      */
-    public function deposer()
+    public function deposer(MangoPayService $mangoPayService)
     {
-        $categories = $this->repCategorie->findParents();
+        if ($this->getUser()) {
+            //vérify éligibility and cards
+            $eligibility = $mangoPayService->verifyKYCBANK($this->getUser()->getMangoPayId());
 
-        return $this->render('annonces/depos.html.twig', [
-            'categories' => $categories,
-        ]);
+            if ($eligibility == true) 
+            {
+                $categories = $this->repCategorie->findParents();
+
+                return $this->render('annonces/depos.html.twig', [
+                    'categories' => $categories,
+                ]);
+            }else{
+                $this->addFlash('warning', "Vous n ' avez pas encore un moyen de paiement pour faire une location. Ou vos documents ne sont pas encore valides");
+                    return $this->redirectToRoute('user_profil');
+            }
+        }else{
+            $categories = $this->repCategorie->findParents();
+
+            return $this->render('annonces/depos.html.twig', [
+                    'categories' => $categories,
+                ]);
+        }
+        
     }
 
     /**
