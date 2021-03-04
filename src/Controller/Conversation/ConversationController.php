@@ -39,16 +39,13 @@ class ConversationController extends AbstractController
         $user          = $this->getUser();
         $conversations = $this->conversationRepo->findByUserQuery($user->getId())->getResult();
 
-        if( count($conversations) > 0 )
-        {
+        if (count($conversations) > 0) {
             /**
              * @var(Conversation $conversationEncours)
              */
             $conversationEncours = $conversations[0];
             return $this->showConversation($conversationEncours, $conversations);
-        }
-        else
-        {
+        } else {
             return $this->render('conversation/erreur.html.twig', [
                 'error' => "Vous n'avez aucune conversation!"
             ]);
@@ -61,8 +58,7 @@ class ConversationController extends AbstractController
     public function nouveauMessage(Location $location, User $destinataire, Request $request, PublisherInterface $publisher, SerializerInterface $serializer)
     {
         $expediteur = $this->getUser();
-        if( $destinataire->getId() == $expediteur->getId() )
-        {
+        if ($destinataire->getId() == $expediteur->getId()) {
             return $this->render('conversation/erreur.html.twig', [
                 'error' => "Vous ne pouvez pas envoyer un message à vous même!"
             ]);
@@ -70,30 +66,23 @@ class ConversationController extends AbstractController
 
         $message      = new Message();
         $conversation = $this->conversationRepo->findOneWith($destinataire->getId(), $expediteur->getId());
-        if( $conversation == null )
-        {
+        if ($conversation == null) {
             $conversation = new Conversation();
 
             $conversation->setUser1($expediteur);
             $conversation->setUser2($destinataire);
             $conversation->addLocation($location);
-        }
-        else
-        {
-            if( !$conversation->getLocations()->contains($location) )
-            {
+        } else {
+            if (!$conversation->getLocations()->contains($location)) {
                 $conversation->addLocation($location);
             }
         }
 
         // mark conversation as read by the sender and unread by the receiver
-        if( $conversation->getUser1()->getId() == $expediteur->getId() )
-        {
+        if ($conversation->getUser1()->getId() == $expediteur->getId()) {
             $conversation->setLu1(true);
             $conversation->setLu2(false);
-        }
-        else
-        {
+        } else {
             $conversation->setLu1(false);
             $conversation->setLu2(true);
         }
@@ -108,7 +97,7 @@ class ConversationController extends AbstractController
         $entityManager->flush();
 
         $conversation->getMessages()->add($message);
-        $serialized = $serializer->serialize( [
+        $serialized = $serializer->serialize([
             'user' => [
                 'id'       => $expediteur->getId(),
                 'avatar'   =>  '/uploads/avatar/' . $expediteur->getAvatar(),
@@ -117,23 +106,20 @@ class ConversationController extends AbstractController
             'content' => $message->getContenue(),
             'date'    => $message->getDate()->format('d/m/Y | H:m'),
             'conversation' => $conversation->getId(),
-            'path'    => $this->generateUrl('conversation_show', ['id' => $conversation->getId()] ),
+            'path'    => $this->generateUrl('conversation_show', ['id' => $conversation->getId()]),
             'unread'  => $this->conversationRepo->countUnreadBy($destinataire),
             'type'    => 'message',
         ], 'json');
 
-        $publisher( new Update(
-            [ "http://127.0.0.1:8080/event/" . $destinataire->getId() ],
+        $publisher(new Update(
+            [$_ENV['KILOUKOI_S_MERCURE_SUBSCRIBER_URL'] . $destinataire->getId()],
             $serialized,
             true,
         ));
 
-        if ( $request->isXmlHttpRequest() ) 
-        {
-            return new Response( $serialized );
-        }
-        else
-        {
+        if ($request->isXmlHttpRequest()) {
+            return new Response($serialized);
+        } else {
             return $this->redirectToRoute('conversation_show', ['id' => $conversation->getId()]);
         }
     }
@@ -143,13 +129,10 @@ class ConversationController extends AbstractController
      */
     public function getUnreadMessages(Request $request): Response
     {
-        if ( $request->isXmlHttpRequest() ) 
-        {
-            $unread = $this->conversationRepo->countUnreadBy( $this->getUser() );
+        if ($request->isXmlHttpRequest()) {
+            $unread = $this->conversationRepo->countUnreadBy($this->getUser());
             return new Response(json_encode(['unread' => $unread]));
-        }
-        else
-        {
+        } else {
             return new Response(null);
         }
     }
@@ -167,8 +150,7 @@ class ConversationController extends AbstractController
      */
     public function delete(Request $request, Conversation $conversation): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$conversation->getId(), $request->request->get('_token')))
-        {
+        if ($this->isCsrfTokenValid('delete' . $conversation->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($conversation);
             $entityManager->flush();
@@ -177,27 +159,23 @@ class ConversationController extends AbstractController
         return $this->redirectToRoute('conversation_index');
     }
 
-    private function showConversation(Conversation $conversationEncours, Array $conversations = []): Response
+    private function showConversation(Conversation $conversationEncours, array $conversations = []): Response
     {
         $user         = $this->getUser();
         $messages     = $this->messageRepo->findByConversation($conversationEncours->getId())->getResult();
         $destinataire = ($user->getId() == $conversationEncours->getUser1()->getId()) ? $conversationEncours->getUser2() : $conversationEncours->getUser1();
 
-        if( empty($conversations) )
-        {
+        if (empty($conversations)) {
             $conversations = $this->conversationRepo->findByUserQuery($user->getId())->getResult();
         }
 
         // mark conversation as read if it is not
-        if( $conversationEncours->getUser1()->getId() == $user->getId() && !$conversationEncours->getLu1() )
-        {
+        if ($conversationEncours->getUser1()->getId() == $user->getId() && !$conversationEncours->getLu1()) {
             $conversationEncours->setLu1(true);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($conversationEncours);
             $entityManager->flush();
-        }
-        else if( $conversationEncours->getUser2()->getId() == $user->getId() && !$conversationEncours->getLu2() )
-        {
+        } else if ($conversationEncours->getUser2()->getId() == $user->getId() && !$conversationEncours->getLu2()) {
             $conversationEncours->setLu2(true);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($conversationEncours);

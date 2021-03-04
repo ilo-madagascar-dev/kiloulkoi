@@ -22,7 +22,7 @@ class MercureCookieGenerator
     public function generate(User $user)
     {
         $token = (new Builder())
-            ->set('mercure', ['subscribe' => ["http://127.0.0.1:8080/event/{$user->getId()}"]])
+            ->set('mercure', ['subscribe' => [$_ENV['KILOUKOI_S_MERCURE_SUBSCRIBER_URL'] . $user->getId()]])
             ->sign(new Sha256(), $this->secret)
             ->getToken();
 
