@@ -111,13 +111,13 @@
 
                                 <div class="input-group">
                                     <div class="input-group-prepend input-group-prepend-large-screen">
-                                        <button class="btn btn-success" id="basic-addon2"><i class="fa fa-list"></i></button>
+                                        <label for="input-show-categorie" class="input-group-text bg-success text-white" id="basic-addon2"><i class="fa fa-list"></i></label>
                                     </div>
                                     <div id="input-show-categorie" class="h-100 form-control rounded not-show-all">
                                         <p style="display: inline;" class="p-0 m-0 categorie-placeholder text-muted ml-2">Catégories</p>
                                     </div>
                                     <div class="input-group-append input-group-append-small-screen">
-                                        <button class="btn btn-success"><i class="fa fa-list"></i></button>
+                                        <label for="input-show-categorie" class="input-group-text bg-success text-white" id="basic-addon2"><i class="fa fa-list"></i></label>
                                     </div>
                                 </div>
 
@@ -183,20 +183,20 @@
                             </div>
                             <div class="form-group col-12 col-md-6">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Que cherchez vous?" aria-describedby="recherche-addon" name="titre">
+                                    <input type="text" id="specific-search" class="form-control" placeholder="Que cherchez vous?" aria-describedby="recherche-addon" name="titre">
                                     <div class="input-group-append">
-                                        <button class="btn btn-success" id="recherche-addon"><i class="fa fa-search"></i></button>
+                                        <label for="specific-search" class="input-group-text bg-success text-white" id="basic-addon2"><i class="fa fa-search"></i></label>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group col-12 col-md-6">
                                 <div class="input-group">
                                     <div class="input-group-prepend input-group-prepend-large-screen">
-                                        <button class="input-group-text bg-success text-white" id="ville-addon"><i class="fa fa-map-marker-alt"></i></button>
+                                        <label for="city" class="input-group-text bg-success text-white" id="ville-addon"><i class="fa fa-map-marker-alt"></i></label>
                                     </div>
                                     <select id="city" name="ville[]" type="text" class="form-control" multiple="multiple" placeholder="Choisissez une ville" aria-describedby="ville-addon"></select>
                                     <div class="input-group-append input-group-append-small-screen">
-                                        <button class="input-group-text bg-success text-white" id="ville-addon" style="height:100%;"><i class="fa fa-map-marker-alt"></i></button>
+                                        <label for="city" class="input-group-text bg-success text-white" id="ville-addon" style="height:100%;"><i class="fa fa-map-marker-alt"></i></label>
                                     </div>
                                 </div>
                             </div>
@@ -205,7 +205,8 @@
                                 <div class="input-group">
                                     <input id="datepicker" class="form-control" placeholder="Disponibilité" name="date" readonly="true">
                                     <div class="input-group-append">
-                                        <button class="btn btn-success" id="ville-addon"><i class="fa fa-calendar"></i></button>
+                                        <label for="datepicker" class="input-group-text bg-success text-white" id="ville-addon" style="height:100%;"><i class="fa fa-calendar"></i></label>
+                                        <!-- button class="btn btn-success" id="ville-addon"><i class="fa fa-calendar"></i></button -->
                                     </div>
                                 </div>
                             </div>
