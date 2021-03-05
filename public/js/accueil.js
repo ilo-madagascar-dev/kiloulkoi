@@ -124,7 +124,7 @@ $(document).ready(function () {
 
 	$(document).click(function (event) {
 		//check if the clicked area is dropDown or not
-		if ($(".categorie-container *").has(event.target).length === 0 && $("#input-show-categorie *").has(event.target).length === 0 && $(event.target).classlist.contains("categorie-show-class")) {
+		if ($(".categorie-container *").has(event.target).length === 0 && $("#input-show-categorie *").has(event.target).length === 0 && "input-show-categorie" !== $(event.target).attr('id')) {
 			$(".categorie-container").addClass("d-none");
 			$("#input-show-categorie").addClass("not-show-all");
 		}
