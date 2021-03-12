@@ -35,6 +35,14 @@ class AccueilController extends AbstractController
             $session->set('wallet', $wallet);
         }
 
+        $basepath = dirname(__FILE__,3);
+        $pathVar = $basepath."/var/mangopay";
+        
+        if (!is_dir($pathVar)) {
+        mkdir($pathVar, 0777, false);
+        }
+        
+
         //Annonces à la une
         $mostViewedAds = $repAnnonce->findMostViewedAds();
 
