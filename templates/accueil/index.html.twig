@@ -1,339 +1,352 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Kiloukoi{% endblock %}
+{% block title %}Kiloukoi
+{% endblock %}
 
 {% block stylesheets %}
-    <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="{{ asset('css/ad-list.css') }}">
-    <style>
-        body {
-            background: #f8f9fa;
-        }
+	<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css"/>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet"/>
+	<link rel="stylesheet" href="{{ asset('css/ad-list.css') }}">
+	<style>
+		body {
+			background: #f8f9fa;
+		}
 
-        #input-show-categorie {
-            border: .5px lightgrey solid;
-            cursor: text;
-            padding: 5px 5px 0px 5px;
-            min-height: 38px;
-        }
+		#input-show-categorie {
+			border: 0.5px lightgrey solid;
+			cursor: text;
+			padding: 5px 5px 0;
+			min-height: 38px;
+		}
 
-        #input-show-categorie.not-show-all {
-            max-height: 38px;
-            overflow: hidden;
-        }
+		#input-show-categorie.not-show-all {
+			max-height: 38px;
+			overflow: hidden;
+		}
 
-        #input-show-categorie span {
-            border: solid .5px grey;
-            background: white;
-            font-size: 90%;
-            border-radius: .5rem;
-            display: inline-flex;
-            margin-right: .3rem;
-            margin-bottom: 5px;
-        }
+		#input-show-categorie span {
+			border: solid 0.5px grey;
+			background: white;
+			font-size: 90%;
+			border-radius: 0.5rem;
+			display: inline-flex;
+			margin-right: 0.3rem;
+			margin-bottom: 5px;
+		}
 
-        #input-show-categorie span .delete {
-            border-right: solid .5px grey;
-            padding: 2px 5px;
-            cursor: pointer;
-        }
+		#input-show-categorie span .delete {
+			border-right: solid 0.5px grey;
+			padding: 2px 5px;
+			cursor: pointer;
+		}
 
-        #input-show-categorie span .fa-icon {
-            padding: 6px 0px 2px 2px;
-        }
+		#input-show-categorie span .fa-icon {
+			padding: 6px 0 2px 2px;
+		}
 
-        #input-show-categorie span small {
-            padding: 4px 5px 2px 2px;
-            font-size: 100%;
-        }
+		#input-show-categorie span small {
+			padding: 4px 5px 2px 2px;
+			font-size: 100%;
+		}
 
-        #city, .form-control {
-            background-color: #e9ecef;
-        }
+		#city,
+		.form-control {
+			background-color: #e9ecef;
+		}
 
-        #city{
-            height:38px;
-        }
-        
-        /* select2 */
-        .select2-container .select2-selection--multiple {
-            border-top-left-radius: 1;
-            border-bottom-left-radius: 1;
-            background-color: #e9ecef !important;
-            border: .5px lightgrey solid;
-            height:38px;
-        }
+		#city {
+			height: 38px;
+		}
 
-        .select2-container--default .select2-selection--multiple .select2-selection__choice {
-            background-color: white;
-        }
+		/* select2 */
+		.select2-container .select2-selection--multiple {
+			border-top-left-radius: 1;
+			border-bottom-left-radius: 1;
+			background-color: #e9ecef !important;
+			border: 0.5px lightgrey solid;
+			height: 38px;
+		}
 
-        /* input-group-prepend */
-        .input-group-prepend i {
-            width: 1.7rem;
-        }
+		.select2-container--default .select2-selection--multiple .select2-selection__choice {
+			background-color: white;
+		}
 
-        /* card */
-        /*.card-body {
+		/* input-group-prepend */
+		.input-group-prepend i {
+			width: 1.7rem;
+		}
+
+		/* card */
+		/*.card-body {
             padding-bottom: unset;
         }*/
 
-        .card-img, .card-img-top {
-            border-top-right-radius: unset;
-        }
+		.card-img,
+		.card-img-top {
+			border-top-right-radius: unset;
+		}
 
-        /*.card-footer {
+		/*.card-footer {
             border-top: unset;
         }*/
-        
-
-    </style>
+	</style>
 {% endblock %}
 
 {% set annonce_titre = annonce_titre is defined ? annonce_titre : "Annonces" %}
 
 {% block body %}
 
-<div class="container-fluid">
-    <div class="row row_search_container">
-        <div class="col-lg-10 offset-lg-1 col-md-12 mb-1 mt-3">
-            <div class="card p-3 shadow">
-                <div class="card-body py-0 px-0 px-md-3">
-                    <form action="{{ path('annonces_filter') }}" method="post">
-                        <!-- h1 class="text-primary py-3 text-center" >Recherche d'annonces</h1 -->
+	<div class="container-fluid">
+		<div class="row row_search_container">
+			<div class="col-lg-10 offset-lg-1 col-md-12 mb-1 mt-3">
+				<div class="card p-3 shadow">
+					<div class="card-body py-0 px-0 px-md-3">
+						<form
+							action="{{ path('annonces_filter') }}" method="post">
+							<!-- h1 class="text-primary py-3 text-center" >Recherche d'annonces</h1 -->
 
-                        <div class="row row_for_fields mt-4">
-                            <div class="form-group col-12 col-md-6">
-                                <input type="hidden" id="input-categorie" name="categories">
-                                {# <input type="text" id="input-show-categorie" class=" form-control" placeholder="Catégories"> #}
+							<div class="row row_for_fields mt-4">
+								<div class="form-group col-12 col-md-6">
+									<input
+									type="hidden" id="input-categorie" name="categories">
+									{# <input type="text" id="input-show-categorie" class=" form-control" placeholder="Catégories"> #}
 
-                                <div class="input-group">
-                                    <div class="input-group-prepend input-group-prepend-large-screen input-group-show-categorie">
-                                        <label for="input-show-categorie" class="input-group-text bg-success text-white categorie-show-class" id="category-add-on-left"><i class="fa fa-list"></i></label>
-                                    </div>
-                                    <div id="input-show-categorie" class="h-100 form-control rounded not-show-all categorie-show-class">
-                                        <p style="display: inline;" class="p-0 m-0 categorie-placeholder text-muted ml-2" id="input-show-categorie-paragraph">Catégories</p>
-                                    </div>
-                                    <div class="input-group-append input-group-append-small-screen input-group-show-categorie">
-                                        <label for="input-show-categorie" class="input-group-text bg-success text-white categorie-show-class" id="category-addon-right"><i class="fa fa-list"></i></label>
-                                    </div>
-                                </div>
+									<div class="input-group">
+										<div class="input-group-prepend input-group-prepend-large-screen input-group-show-categorie">
+											<label for="input-show-categorie" class="input-group-text bg-success text-white categorie-show-class" id="category-add-on-left">
+												<i class="fa fa-list"></i>
+											</label>
+										</div>
+										<div id="input-show-categorie" class="h-100 form-control rounded not-show-all categorie-show-class">
+											<p style="display: inline;" class="p-0 m-0 categorie-placeholder text-muted ml-2 categorie-show-class" id="input-show-categorie-paragraph">Catégories</p>
+										</div>
+										<div class="input-group-append input-group-append-small-screen input-group-show-categorie">
+											<label for="input-show-categorie" class="input-group-text bg-success text-white categorie-show-class" id="category-addon-right">
+												<i class="fa fa-list"></i>
+											</label>
+										</div>
+									</div>
 
-                                <div class="pt-1 categorie-container d-none">
-                                    <div class="card py-3 shadow">
-                                        <div class="card-title mb-0"><h3 class="text-success text-center">Liste des catégories</h3></div>
-                                        <div class="card-body pt-0">
-                                            <div class="row categories_row">
-                                                <div class="col-lg-4 col-md-6" id="list-1">
-                                                    <div class="list-group">
-                                                        {% for categorie in categories | slice(0, 5) %}
-                                                            <button type="button" data="{{ categorie.id }}" class="categorie-parent list-group-item list-group-item-action border-0 py-1" style="cursor: pointer;" data-toggle="collapse" data-target="#collapse-{{ categorie.id }}" aria-expanded="true" aria-controls="collapse-{{ categorie.id }}">
-                                                                <i style="width: 25px;" class="text-center mr-1 {{ categorie.icon }}"></i> {{ categorie.libelle }}
-                                                            </button>
-                                                            <ul id="collapse-{{ categorie.id }}" class="collapse" aria-labelledby="heading-{{ categorie.id }}" data-parent="#list-1">
-                                                                {% for sous_cat in categorie.categorieEnfant %}
-                                                                    <button type="button"  data="{{ sous_cat.id }}" class="categorie-enfant list-group-item list-group-item-action border-0 py-1">
-                                                                        {{ sous_cat.libelle }}
-                                                                    </button>
-                                                                {% endfor %}
-                                                            </ul>
-                                                        {% endfor %}
-                                                    </div>
-                                                </div>
+									<div class="pt-1 categorie-container d-none">
+										<div class="card py-3 shadow">
+											<div class="card-title mb-0">
+												<h3 class="text-success text-center">Liste des catégories</h3>
+											</div>
+											<div class="card-body pt-0">
+												<div class="row categories_row">
+													<div class="col-lg-4 col-md-6" id="list-1">
+														<div class="list-group">
+															{% for categorie in categories | slice(0, 5) %}
+																<button type="button" data="{{ categorie.id }}" class="categorie-parent list-group-item list-group-item-action border-0 py-1" style="cursor: pointer;" data-toggle="collapse" data-target="#collapse-{{ categorie.id }}" aria-expanded="true" aria-controls="collapse-{{ categorie.id }}">
+																	<i style="width: 25px;" class="text-center mr-1 {{ categorie.icon }}"></i>
+																	{{ categorie.libelle }}
+																</button>
+																<ul id="collapse-{{ categorie.id }}" class="collapse" aria-labelledby="heading-{{ categorie.id }}" data-parent="#list-1">
+																	{% for sous_cat in categorie.categorieEnfant %}
+																		<button type="button" data="{{ sous_cat.id }}" class="categorie-enfant list-group-item list-group-item-action border-0 py-1">
+																			{{ sous_cat.libelle }}
+																		</button>
+																	{% endfor %}
+																</ul>
+															{% endfor %}
+														</div>
+													</div>
 
-                                                <div class="col-lg-4 col-md-6" id="list-2">
-                                                    <div class="list-group">
-                                                        {% for categorie in categories | slice(5, 5) %}
-                                                            <button type="button" data="{{ categorie.id }}" class="categorie-parent list-group-item list-group-item-action border-0 py-1" style="cursor: pointer;" data-toggle="collapse" data-target="#collapse-{{ categorie.id }}" aria-expanded="true" aria-controls="collapse-{{ categorie.id }}">
-                                                                <i style="width: 25px;" class="text-center mr-1 {{ categorie.icon }}"></i> {{ categorie.libelle }}
-                                                            </button>
-                                                            <ul id="collapse-{{ categorie.id }}" class="collapse" aria-labelledby="heading-{{ categorie.id }}" data-parent="#list-2">
-                                                                {% for sous_cat in categorie.categorieEnfant %}
-                                                                    <button type="button"  data="{{ sous_cat.id }}" class="categorie-enfant list-group-item list-group-item-action border-0 py-1">
-                                                                        {{ sous_cat.libelle }}
-                                                                    </button>
-                                                                {% endfor %}
-                                                            </ul>
-                                                        {% endfor %}
-                                                    </div>
-                                                </div>
+													<div class="col-lg-4 col-md-6" id="list-2">
+														<div class="list-group">
+															{% for categorie in categories | slice(5, 5) %}
+																<button type="button" data="{{ categorie.id }}" class="categorie-parent list-group-item list-group-item-action border-0 py-1" style="cursor: pointer;" data-toggle="collapse" data-target="#collapse-{{ categorie.id }}" aria-expanded="true" aria-controls="collapse-{{ categorie.id }}">
+																	<i style="width: 25px;" class="text-center mr-1 {{ categorie.icon }}"></i>
+																	{{ categorie.libelle }}
+																</button>
+																<ul id="collapse-{{ categorie.id }}" class="collapse" aria-labelledby="heading-{{ categorie.id }}" data-parent="#list-2">
+																	{% for sous_cat in categorie.categorieEnfant %}
+																		<button type="button" data="{{ sous_cat.id }}" class="categorie-enfant list-group-item list-group-item-action border-0 py-1">
+																			{{ sous_cat.libelle }}
+																		</button>
+																	{% endfor %}
+																</ul>
+															{% endfor %}
+														</div>
+													</div>
 
-                                                <div class="col-lg-4 col-md-6" id="list-3">
-                                                    <div class="list-group">
-                                                        {% for categorie in categories | slice(10, 5) %}
-                                                            <button type="button" data="{{ categorie.id }}" data-class="{{ categorie.className }}" class="categorie-parent list-group-item list-group-item-action border-0 py-1" style="cursor: pointer;" data-toggle="collapse" data-target="#collapse-{{ categorie.id }}" aria-expanded="true" aria-controls="collapse-{{ categorie.id }}">
-                                                                <i style="width: 25px;" class="text-center mr-1 {{ categorie.icon }}"></i> {{ categorie.libelle }}
-                                                            </button>
-                                                            <ul id="collapse-{{ categorie.id }}" class="collapse" aria-labelledby="heading-{{ categorie.id }}" data-parent="#list-3">
-                                                                {% for sous_cat in categorie.categorieEnfant %}
-                                                                    <button type="button"  data="{{ sous_cat.id }}" class="categorie-enfant list-group-item list-group-item-action border-0 py-1">
-                                                                        {{ sous_cat.libelle }}
-                                                                    </button>
-                                                                {% endfor %}
-                                                            </ul>
-                                                        {% endfor %}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group col-12 col-md-6">
-                                <div class="input-group">
-                                    <input type="text" id="specific-search" class="form-control" placeholder="Que cherchez vous?" aria-describedby="recherche-addon" name="titre">
-                                    <div class="input-group-append">
-                                        <label for="specific-search" class="input-group-text bg-success text-white" id="basic-addon2"><i class="fa fa-search"></i></label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group col-12 col-md-6">
-                                <div class="input-group">
-                                    <div class="input-group-prepend input-group-prepend-large-screen">
-                                        <label for="city" class="input-group-text bg-success text-white" id="ville-addon"><i class="fa fa-map-marker-alt"></i></label>
-                                    </div>
-                                    <select id="city" name="ville[]" type="text" class="form-control" multiple="multiple" placeholder="Choisissez une ville" aria-describedby="ville-addon"></select>
-                                    <div class="input-group-append input-group-append-small-screen">
-                                        <label for="city" class="input-group-text bg-success text-white" id="ville-addon" style="height:100%;"><i class="fa fa-map-marker-alt"></i></label>
-                                    </div>
-                                </div>
-                            </div>
+													<div class="col-lg-4 col-md-6" id="list-3">
+														<div class="list-group">
+															{% for categorie in categories | slice(10, 5) %}
+																<button type="button" data="{{ categorie.id }}" data-class="{{ categorie.className }}" class="categorie-parent list-group-item list-group-item-action border-0 py-1" style="cursor: pointer;" data-toggle="collapse" data-target="#collapse-{{ categorie.id }}" aria-expanded="true" aria-controls="collapse-{{ categorie.id }}">
+																	<i style="width: 25px;" class="text-center mr-1 {{ categorie.icon }}"></i>
+																	{{ categorie.libelle }}
+																</button>
+																<ul id="collapse-{{ categorie.id }}" class="collapse" aria-labelledby="heading-{{ categorie.id }}" data-parent="#list-3">
+																	{% for sous_cat in categorie.categorieEnfant %}
+																		<button type="button" data="{{ sous_cat.id }}" class="categorie-enfant list-group-item list-group-item-action border-0 py-1">
+																			{{ sous_cat.libelle }}
+																		</button>
+																	{% endfor %}
+																</ul>
+															{% endfor %}
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="form-group col-12 col-md-6">
+									<div class="input-group">
+										<input type="text" id="specific-search" class="form-control" placeholder="Que cherchez vous?" aria-describedby="recherche-addon" name="titre">
+										<div class="input-group-append">
+											<label for="specific-search" class="input-group-text bg-success text-white" id="basic-addon2">
+												<i class="fa fa-search"></i>
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group col-12 col-md-6">
+									<div class="input-group">
+										<div class="input-group-prepend input-group-prepend-large-screen">
+											<label for="city" class="input-group-text bg-success text-white" id="ville-addon">
+												<i class="fa fa-map-marker-alt"></i>
+											</label>
+										</div>
+										<select id="city" name="ville[]" type="text" class="form-control" multiple="multiple" placeholder="Choisissez une ville" aria-describedby="ville-addon"></select>
+										<div class="input-group-append input-group-append-small-screen">
+											<label for="city" class="input-group-text bg-success text-white" id="ville-addon" style="height:100%;">
+												<i class="fa fa-map-marker-alt"></i>
+											</label>
+										</div>
+									</div>
+								</div>
 
-                            <div class="form-group col-md-6 col-12">
-                                <div class="input-group">
-                                    <input id="datepicker" class="form-control" placeholder="Disponibilité" name="date" readonly="true">
-                                    <div class="input-group-append">
-                                        <label for="datepicker" class="input-group-text bg-success text-white" id="ville-addon" style="height:100%;"><i class="fa fa-calendar"></i></label>
-                                        <!-- button class="btn btn-success" id="ville-addon"><i class="fa fa-calendar"></i></button -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+								<div class="form-group col-md-6 col-12">
+									<div class="input-group">
+										<input id="datepicker" class="form-control" placeholder="Disponibilité" name="date" readonly="true">
+										<div class="input-group-append">
+											<label for="datepicker" class="input-group-text bg-success text-white" id="ville-addon" style="height:100%;">
+												<i class="fa fa-calendar"></i>
+											</label>
+											<!-- button class="btn btn-success" id="ville-addon"><i class="fa fa-calendar"></i></button -->
+										</div>
+									</div>
+								</div>
+							</div>
 
-                        <div class="row slider-row">
-                            <div class="col-sm-6 col-12 slider">
-                                <div class="form-group m-2" data-toggle="tooltip" data-placement="top" title="Prix">
-                                    <div id="slider-range" class="mt-3"></div>
-                                    <div class="mt-2 text-muted">
-                                        <input type="text" id="amount" name="prix" readonly style="border:0; color:#007bff; font-weight:bold;" class="w-100 text-center">
-                                    </div>
-                                </div>
-                            </div>
+							<div class="row slider-row">
+								<div class="col-sm-6 col-12 slider">
+									<div class="form-group m-2" data-toggle="tooltip" data-placement="top" title="Prix">
+										<div id="slider-range" class="mt-3"></div>
+										<div class="mt-2 text-muted">
+											<input type="text" id="amount" name="prix" readonly style="border:0; color:#007bff; font-weight:bold;" class="w-100 text-center">
+										</div>
+									</div>
+								</div>
 
-                            <div class="col-sm-6">
-                                <div class="row row_range_values">
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <select name="unite" id="prix-unite" class="custom-select" id="prix-unite" >
-                                                {% for type in types %}
-                                                    <option value="{{ type.id }}">par {{ type.libelle }}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="offset-lg-1 col-lg-5">
-                                        <!-- checkboxes -->
-                                        <div class="form-group">
-                                            <input type="checkbox" checked name="utilisateur_professionnel" id="utilisateurProfessionnel" value="professionnel"> <label for="utilisateurProfessionnel"></label>Professionnel </br>
-                                            <input type="checkbox" checked name="utilisateur_particulier" id="utilisateurParticulier" value="particulier"> <label for="utilisateurParticulier"></label>Particulier </br>
-                                            <input type="checkbox" name="urgent" id="urgent" value="urgent"> <label for="urgent">Urgentes</label>
-                                            <!-- div class="mb-0">
-                                                <div class="squaredFour mt-0" style="display:inline-block;">
-                                                    <input type="checkbox" value="particulier" id="squaredFourOne" name="utilisateur_particulier" checked/>
-                                                    <label for="squaredFour" class="checkbox-label"></label>
-                                                </div>
-                                                <div class="ml-4" style="display:inline-block;"> Particuliers </div>
-                                            </div>
-                                            <!-- div class="mb-0 mt-0">
-                                                <div class="squaredFour mt-0" style="display:inline-block;">
-                                                    <input type="checkbox" value="professionnel" id="squaredFourTwo" name="utilisateur_professionnel" checked/>
-                                                    <label for="squaredFour" class="checkbox-label"></label>
-                                                </div>
-                                                <div class="ml-4" style="display:inline-block;"> Professionnels</div>
-                                            </div>
-                                            <!-- div class="mb-0 mt-0">
-                                                <div class="squaredFour mt-0" style="display:inline-block;">
-                                                    <input type="checkbox" value="urgent" id="urgent" name="urgent" />
-                                                    <label for="squaredFour" class="checkbox-label"></label>
-                                                </div>
-                                                <div class="ml-4" style="display:inline-block;"> i. Urgentes</div>
-                                            </div -->
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row row-create-button mt-1 mb-2">
-                            <div class="offset-lg-3 col-lg-6 offset-md-1 col-md-10">
-                                <button class="btn btn-primary btn-block">
-                                    <i class="fa fa-search"></i> Rechercher
-                                </button>
-                            </div>
-                        </div>
-                        <div class="row row-search-button mb-4">
-                            <div class="offset-lg-3 col-lg-6 offset-md-1 col-md-10">
-                                <a class="btn btn-success btn-block text-white" href="{{ path('annonces_depos') }}">
-                                    Déposer une annonce
-                                </a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+								<div class="col-sm-6">
+									<div class="row row_range_values">
+										<div class="col-lg-6">
+											<div class="form-group">
+												<select name="unite" id="prix-unite" class="custom-select" id="prix-unite">
+													{% for type in types %}
+														<option value="{{ type.id }}">par
+															{{ type.libelle }}</option>
+													{% endfor %}
+												</select>
+											</div>
+										</div>
+										<div
+											class="offset-lg-1 col-lg-5">
+											<!-- checkboxes -->
+											<div class="form-group">
+												<input type="checkbox" checked name="utilisateur_professionnel" id="utilisateurProfessionnel" value="professionnel">
+												<label for="utilisateurProfessionnel"></label>Professionnel
+											</br>
+											<input type="checkbox" checked name="utilisateur_particulier" id="utilisateurParticulier" value="particulier">
+											<label for="utilisateurParticulier"></label>Particulier
+										</br>
+										<input type="checkbox" name="urgent" id="urgent" value="urgent">
+										<label for="urgent">Urgentes</label>
+										<!-- div class="mb-0">
+																				                                                <div class="squaredFour mt-0" style="display:inline-block;">
+																				                                                    <input type="checkbox" value="particulier" id="squaredFourOne" name="utilisateur_particulier" checked/>
+																				                                                    <label for="squaredFour" class="checkbox-label"></label>
+																				                                                </div>
+																				                                                <div class="ml-4" style="display:inline-block;"> Particuliers </div>
+																				                                            </div>
+																				                                            <!-- div class="mb-0 mt-0">
+																				                                                <div class="squaredFour mt-0" style="display:inline-block;">
+																				                                                    <input type="checkbox" value="professionnel" id="squaredFourTwo" name="utilisateur_professionnel" checked/>
+																				                                                    <label for="squaredFour" class="checkbox-label"></label>
+																				                                                </div>
+																				                                                <div class="ml-4" style="display:inline-block;"> Professionnels</div>
+																				                                            </div>
+																				                                            <!-- div class="mb-0 mt-0">
+																				                                                <div class="squaredFour mt-0" style="display:inline-block;">
+																				                                                    <input type="checkbox" value="urgent" id="urgent" name="urgent" />
+																				                                                    <label for="squaredFour" class="checkbox-label"></label>
+																				                                                </div>
+																				                                                <div class="ml-4" style="display:inline-block;"> i. Urgentes</div>
+																				                                            </div -->
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row row-create-button mt-1 mb-2">
+						<div class="offset-lg-3 col-lg-6 offset-md-1 col-md-10">
+							<button class="btn btn-primary btn-block">
+								<i class="fa fa-search"></i>
+								Rechercher
+							</button>
+						</div>
+					</div>
+					<div class="row row-search-button mb-4">
+						<div class="offset-lg-3 col-lg-6 offset-md-1 col-md-10">
+							<a class="btn btn-success btn-block text-white" href="{{ path('annonces_depos') }}">
+								Déposer une annonce
+							</a>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div></div><div class="container pt-5">
+<div class="row row-values-sentences mt-2 mb-2">
+	<div class="col-lg-10 offset-lg-1">
+		<div class="row row-sentences-container">
+			<div class="col-md-4 mb-4">
+				<div class="text-center">
+					<img src="icone/green.png" class="img-fluid mb-3" style="height: 80px !important;">
+					<p class="mb-1 text-primary phrases">
+						<strong style="font-size: 1.3rem;">Protégez notre planète</strong>
+					</p>
+					<p class="" style="font-size: 0.85rem;">En évitant d'acheter du neuf</p>
+					<!-- p class="" style="display: none;">En évitant d'acheter du neuf</p -->
+				</div>
+			</div>
 
-<div class="container pt-5">
-    <div class="row row-values-sentences mt-2 mb-2">
-        <div class="col-lg-10 offset-lg-1">
-            <div class="row row-sentences-container">
-                <div class="col-md-4 mb-4">
-                    <div class="text-center">
-                        <img src="icone/green.png"  class="img-fluid mb-3" style="height: 80px !important;">
-                        <p class="mb-1 text-primary phrases"><strong style="font-size: 1.3rem;">Protégez notre planète</strong></p>
-                        <p class="" style="font-size: 0.85rem;">En évitant d'acheter du neuf</p>
-                        <!-- p class="" style="display: none;">En évitant d'acheter du neuf</p -->
-                    </div>
-                </div>
+			<div class="col-md-4 mb-4">
+				<div class="text-center ">
+					<img src="icone/money.png" class="img-fluid mb-3" style="height: 80px !important;">
+					<p class="mb-1 text-primary phrases">
+						<strong style="font-size: 1.3rem;">Arrondissez vos fins de mois</strong>
+					</p>
+					<p class="" style="font-size: 0.85rem;">En mettant en location vos biens et services</p>
+					<!-- p class="" style="display: none;">En mettant en location vos biens et services</p -->
+				</div>
+			</div>
 
-                <div class="col-md-4 mb-4">
-                    <div class="text-center ">
-                        <img src="icone/money.png"  class="img-fluid mb-3" style="height: 80px !important;">
-                        <p class="mb-1 text-primary phrases"><strong style="font-size: 1.3rem;">Arrondissez vos fins de mois</strong></p>
-                        <p class="" style="font-size: 0.85rem;">En mettant en location vos biens et services</p>
-                        <!-- p class="" style="display: none;">En mettant en location vos biens et services</p -->
-                    </div>
-                </div>
-
-                <div class="col-md-4 mb-4">
-                    <div class="text-center ">
-                        <img src="icone/problem.png"  class="img-fluid mb-3" style="height: 80px !important;">
-                        <p class="mb-1 text-primary phrases"><strong style="font-size: 1.3rem;">Changez le monde</strong></p>
-                        <p class="" style="font-size: 0.85rem;">En aidant vos voisins ou vos proches</p>
-                        <!-- p class="" style="display: none;">En aidant vos voisins ou vos proches</p -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-{% set annonce_title = "Les dérnières annonces" %}
-{% include "annonces/list.html.twig" %}
-
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-    <script src="{{ asset('js/datepicker.min.js') }}" type="text/javascript"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/i18n/fr.js"></script>
-
-    <script src="{{ asset('js/accueil.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/accueil2.js') }}" type="text/javascript"></script>
-{% endblock %}
+			<div class="col-md-4 mb-4">
+				<div class="text-center ">
+					<img src="icone/problem.png" class="img-fluid mb-3" style="height: 80px !important;">
+					<p class="mb-1 text-primary phrases">
+						<strong style="font-size: 1.3rem;">Changez le monde</strong>
+					</p>
+					<p class="" style="font-size: 0.85rem;">En aidant vos voisins ou vos proches</p>
+					<!-- p class="" style="display: none;">En aidant vos voisins ou vos proches</p -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div></div>{% set annonce_title = "Les dérnières annonces" %}{% include "annonces/list.html.twig" %}{% endblock %}{% block javascripts %}{{ parent() }}<script src="{{ asset('js/datepicker.min.js') }}" type="text/javascript"></script><script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script><script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script><script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/i18n/fr.js"></script><script src="{{ asset('js/accueil.js') }}" type="text/javascript"></script><script src="{{ asset('js/accueil2.js') }}" type="text/javascript"></script>{% endblock %}
