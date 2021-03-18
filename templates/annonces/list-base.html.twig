@@ -1,28 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% set annonce_title = annonce_title is defined ? annonce_title : "Mes annonces" %}
-{% block title %}{{ annonce_title }}{% endblock %}
+{% set annonce_titre = annonce_titre is defined ? annonce_titre : "Mes annonces" %}
+{% block title %}
+	{{ annonce_titre }}
+{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('css/ad-list.css') }}">
-    <link rel="stylesheet" href="{{ asset('../css/ad-style.css') }}">
-    <style>
-        .card-body-ad-list{
-            padding-top:0;
-            padding-left:0;
-            padding-right:0;
-        }
+	<link rel="stylesheet" href="{{ asset('css/ad-list.css') }}">
+	<link rel="stylesheet" href="{{ asset('../css/ad-style.css') }}">
+	<style>
+		.card-body-ad-list {
+			padding-top: 0;
+			padding-left: 0;
+			padding-right: 0;
+		}
 
-        .row_ad {
-            margin-left: 0 !important;
-            margin-right: 0 !important;
-        }
-    </style>
-    
+		.row_ad {
+			margin-left: 0 !important;
+			margin-right: 0 !important;
+		}
+	</style>
+
 {% endblock %}
 
 {% block body %}
-    <div class="mt-5"></div>
-   {% include "annonces/list.html.twig" %}
+	<div class="mt-5"></div>
+	{% include "annonces/list.html.twig" %}
 
 {% endblock %}
