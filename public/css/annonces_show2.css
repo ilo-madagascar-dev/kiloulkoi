@@ -66,13 +66,13 @@
         background-size: cover;
     }
 
-        .principales-caracteristiques-deux li {
+        /*.principales-caracteristiques-deux li {
             width: 45%;
-        }
+        }*/
             
-        .principales-caracteristiques-deux li .caracteristiques-text-container, .principales-caracteristiques-deux li .category-text-container {
+        /*.principales-caracteristiques-deux li .caracteristiques-text-container, .principales-caracteristiques-deux li .category-text-container {
             width: 80%;
-        } 
+        } */
 
     /*.principales-caracteristiques-deux ul>li:before{
         content: "";
