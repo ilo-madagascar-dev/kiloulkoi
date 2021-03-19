@@ -164,6 +164,8 @@ class ConversationController extends AbstractController
         $user         = $this->getUser();
         $messages     = $this->messageRepo->findByConversation($conversationEncours->getId())->getResult();
         $destinataire = ($user->getId() == $conversationEncours->getUser1()->getId()) ? $conversationEncours->getUser2() : $conversationEncours->getUser1();
+        $mercureHubUrlDeux = $_ENV['KILOUKOI_MERCURE_HUB_URL_TWO'];
+        $mercureGeneralSubscriberUrl = $_ENV['MERCURE_GENERAL_PUBLISH_URL'];
 
         if (empty($conversations)) {
             $conversations = $this->conversationRepo->findByUserQuery($user->getId())->getResult();
@@ -187,7 +189,9 @@ class ConversationController extends AbstractController
             'conversationEncours' => $conversationEncours,
             'messages'            => $messages,                               // Messages de la conversation en cours
             'location'            => $conversationEncours->getLocations()[0], // Location raccorder à la conversation en cours
-            'destinataire'        => $destinataire                            // Déstinataire des messages de la conversation en cours
+            'destinataire'        => $destinataire,                            // Déstinataire des messages de la conversation en cours
+            'mercureHubUrlDeux' => $mercureHubUrlDeux,
+            'mercureGeneralSubscriberUrl' => $mercureGeneralSubscriberUrl
         ]);
     }
 }
