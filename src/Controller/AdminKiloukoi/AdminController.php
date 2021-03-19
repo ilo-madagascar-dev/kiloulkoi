@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin;
+namespace App\Controller\AdminKiloukoi;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -8,11 +8,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminController extends AbstractController
 {
     /**
-     * @Route("/admin",name="admin")
+     * @Route("/admin_kiloukoi",name="admin_kiloukoi")
      */
     public function index()
     {
-        return $this->render('admin/index.html.twig', [
+        return $this->render('admin_kiloukoi/index.html.twig', [
             'controller_name' => 'AdminController',
         ]);
     }
