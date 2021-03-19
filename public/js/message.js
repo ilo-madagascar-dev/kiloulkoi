@@ -9,6 +9,11 @@ $(document).ready(function () {
         return (str + '')
             .replace(/(\r\n|\n\r|\r|\n)/g, breakTag + '$1')
     }
+    var mercureHubUrlDeux = $(".envParameters").data('mercureHubUrlDeux');
+    var mercureGeneralSubscriberUrl = $(".envParameters").data('mercureGeneralSubscriberUrl');
+    console.log(typeof mercureHubUrlDeux);
+    console.log(typeof mercureGeneralSubscriberUrl);
+
 
     if ($('#messageBody').length)
         $('#messageBody').animate({ scrollTop: $('#messageBody')[0].scrollHeight }, 0);
@@ -58,9 +63,11 @@ $(document).ready(function () {
     })
 
     // URL is a built-in JavaScript class to manipulate URLs
-    const url = new URL('http://localhost:3000/.well-known/mercure');
+    console.log(`${mercureHubUrlDeux} et ${mercureGeneralSubscriberUrl}`);
 
-    url.searchParams.append('topic', "http://127.0.0.1:8080/event/{id}");
+    const url = new URL(mercureHubUrlDeux);
+
+    url.searchParams.append('topic', mercureGeneralSubscriberUrl);
 
     const eventSource = new EventSource(url, { withCredentials: true });
     eventSource.onmessage = event => {

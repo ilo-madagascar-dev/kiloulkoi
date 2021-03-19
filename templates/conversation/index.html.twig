@@ -4,28 +4,31 @@
 	<link rel="stylesheet" href="{{ asset('/css/conversation.css') }}">
 {% endblock %}
 
-{% block title %}Messages{% endblock %}
+{% block title %}Messages
+{% endblock %}
 
 {% block body %}
 
 
 	<div class="row mt-2">
 		<div class="col-lg-10 offset-lg-1 col-md-12">
-			<div class="row rounded-lg overflow-hidden">
+			<div
+				class="row rounded-lg overflow-hidden">
 				<!-- Users box-->
 				<div class="col-12 col-md-5 col-lg-4">
+					<div class="envParameters" data-mercure-hub-url-deux="{{ mercureHubUrlDeux }}" data-mercure-general-subscriber-url="{{ mercureGeneralSubscriberUrl }}"></div>
 					<div class="conversation-conatainer">
 						<div class="p-3 text-center bg-primary text-white border-bottom border-secondary">
 							<h2 class="h5 mb-0 font-weight-bold">Messages</h2>
 						</div>
-			
+
 						<div class="messages-box">
 							<div id="conversations" class="list-group rounded-0">
-			
+
 								{% for conversation in conversations %}
 									{% set active = (conversationEncours.id == conversation.id) %}
 									{% set read   = (app.user.id == conversation.user1.id and conversation.lu1) or (app.user.id == conversation.user2.id and conversation.lu2) %}
-			
+
 									<a id="conversation-{{ conversation.id }}" href="{{ path('conversation_show', {'id': conversation.id}) }}" class="list-group-item list-group-item-action rounded-0 {{ active ? 'list-group-item-primary' : (read ? 'list-group-item-light text-muted ' : 'list-group-item-info text-muted ') }}">
 										<div class="media">
 											{% if conversation.user1.id == app.user.id %}
@@ -33,7 +36,7 @@
 											{% else %}
 												<img src="{{ asset('uploads/avatar/') ~ conversation.user1.avatar }}" alt="user" width="40" height="40" class="rounded-circle bg-white">
 											{% endif %}
-											
+
 											<div class="media-body ml-3">
 												<div class="d-flex align-items-center justify-content-between mb-0">
 													{% if conversation.user1.id == app.user.id %}
@@ -45,30 +48,35 @@
 												</div>
 												<p class="font-italic mb-0 text-small conversation-content">
 													{% if conversation.messages[0].user.id == app.user.id %}
-														<small style="font-weight: bold;">Moi: </small>
+														<small style="font-weight: bold;">Moi:
+														</small>
 													{% endif %}
-													<small>{{ conversation.messages[0].contenue | slice(0, 40) }} {% if conversation.messages[0].contenue|length > 40 %}...{% endif %}</small>
+													<small>{{ conversation.messages[0].contenue | slice(0, 40) }}
+														{% if conversation.messages[0].contenue|length > 40 %}...
+														{% endif %}
+													</small>
 												</p>
 											</div>
 										</div>
 									</a>
-									
+
 									{% set i = 1 %}
 								{% endfor %}
-								
+
 							</div>
 						</div>
 					</div>
 				</div>
 
 				<!-- Chat Box-->
-				<div class="col-12 col-md-7 col-lg-8">
+				<div
+					class="col-12 col-md-7 col-lg-8">
 					{# Reciever name #}
 					<div class="conversation-conatainer">
 						<div class="row border-bottom border-secondary">
 							<div class="media py-2 col-6">
 								<img src="{{ asset('uploads/avatar/') ~ destinataire.avatar }}" alt="user" width="40" height="40" class="rounded-circle bg-white ml-3">
-								
+
 								<div class="media-body ml-3">
 									<div class="d-flex align-items-center justify-content-between mb-0">
 										<h6 class="mb-0 text-white font-weight-bold">{{ destinataire.nomComplet }}</h6>
@@ -80,7 +88,7 @@
 							<div class="col-6"></div>
 						</div>
 
-						<div class="chat-box w-100" >
+						<div class="chat-box w-100">
 							<div id="messageBody" data="chat-{{ conversationEncours.id }}" class="px-4 py-2">
 								{% for message in messages %}
 									{% if message.user.id == app.user.id %}
@@ -110,7 +118,7 @@
 
 							<!-- Typing area -->
 							<form id="message-form" method="POST" action="{{ path('conversation_messages_new', { location: location.id, destinataire: destinataire.id }) }}" class="bg-light border border-primary rounded-right w-100">
-								<div class="input-group" >
+								<div class="input-group">
 									<textarea type="text" placeholder="Type a message" name="contenue" aria-describedby="message-submit" class="message-content form-control rounded-0 border-0 py-2 bg-light"></textarea>
 									<div class="input-group-append">
 										<button id="message-submit" type="submit" class="btn btn-primary">
@@ -130,6 +138,6 @@
 {% endblock %}
 
 {% block javascripts %}
-	 {{ parent() }}
-	 <script src="{{ asset('/js/message.js') }}"></script>
+	{{ parent() }}
+	<script src="{{ asset('/js/message.js') }}"></script>
 {% endblock %}
