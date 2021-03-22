@@ -16,6 +16,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Validator\Constraints\File;
 
 class AnnoncesType extends AbstractType
@@ -38,7 +39,19 @@ class AnnoncesType extends AbstractType
                 'attr' => [
                     'class' => 'sous-categorie'
                 ]
-            ]);
+            ])
+                ->add('heureDebut', TimeType::class, [
+                    'label' => 'Heure du début de la location',
+                    'input'  => 'datetime',
+                    'widget' => 'choice',
+                    'hours' => [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+                ])
+                ->add('heureFin', TimeType::class, [
+                    'label' => 'Heure de la fin de la location',
+                    'input'  => 'datetime',
+                    'widget' => 'choice',
+                    'hours' => [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+                ]);
         }
 
         $builder->add('photo', CollectionType::class, [

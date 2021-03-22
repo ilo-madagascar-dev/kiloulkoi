@@ -140,7 +140,7 @@
                                                                 {% if value is iterable %}
                                                                     {{ value.valeur is defined ? value.valeur : value.libelle }}
                                                                 {% elseif key|capitalize == "Kilometrage" %}
-                                                                    {{ value | number_format(0, '', ' ')}} km
+                                                                    {{ value | number_format(0, '', ' ')}} kmd
                                                                 {% else %}
                                                                     {{ value }}
                                                                 {% endif %}
