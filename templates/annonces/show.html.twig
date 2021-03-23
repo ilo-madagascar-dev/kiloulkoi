@@ -23,7 +23,7 @@
 						<div class="card-header text-center">
 							<div class="row" style="position:relative;">
 								<div class="col-12" style="">
-									<h2 class="mb-0 text-center">
+									<h2 class="mt-2 mb-0 text-center">
 										<strong>{{ annonce.titre }}</strong>
 									</h2>
 									<p class="user_eligibility" data-user-eligibility="{{ eligibility }}"></p>
@@ -167,7 +167,11 @@
 															{% elseif (key == "heureDebut" or key =='heureFin') %}
 																{{ value | date('H:i') }}
                                                             {% elseif (key == "surface" or key =='etage' or key =='chambre') %}
-																<strong>{{ key|capitalize }}</strong> {{ value }}
+																{% if key == "surface" %}
+                                                                  <strong>{{ key|capitalize }}</strong> {{ value }} m²
+                                                                {% else %}
+                                                                    <strong>{{ key|capitalize }}</strong> {{ value }}
+                                                                {% endif %}
 															{% else %}
 																{{ value }}
 															{% endif %}
