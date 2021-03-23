@@ -86,6 +86,7 @@ class LocationController extends AbstractController
                         $em      = $this->getDoctrine()->getManager();
 
                         $reservations = json_decode($request->request->get('reservations'));
+
                         $disponible   = $locationRepository->checkDates($reservations, $annonce->getId());
 
                         if ($disponible && $annonce) {
@@ -125,10 +126,7 @@ class LocationController extends AbstractController
                     $this->addFlash('notCards', 'Le Solde dans votre portefeuille est insuffisant pour cette location');
                     return $this->redirectToRoute('compte_portefeuille');
                 }
-
-            }
-            else
-            {
+            } else {
                 $this->addFlash('notCards', "Vous n'avez pas encore un moyen de paiement pour faire une location. ou vos documents ne sont pas encore valides");
 
                 return $this->redirectToRoute('compte_portefeuille');

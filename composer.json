@@ -6,6 +6,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "doctrine/annotations": "^1.0",
+        "easycorp/easyadmin-bundle": "^3.2",
         "knpuniversity/oauth2-client-bundle": "^2.2",
         "lcobucci/jwt": "^3.3",
         "league/oauth2-facebook": "^2.0",
