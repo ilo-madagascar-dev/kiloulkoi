@@ -32,24 +32,23 @@
 									<a id="button-ads-show" class="card-link more-icons-link">
 										<i class="fa fa-sort-down"></i>
 									</a>
-									<br
-									class="a-la-ligne">
+									<br class="a-la-ligne">
 									<!-- hr class="hr kiloukoi-show-icons" -->
 									{% if app.user and app.user.id != annonce.user.id %}
-										<div title="Favoris" class="d-inline text-center kiloukoi-show-icons collapse">
+										<div title="Favoris" class="d-inline text-center kiloukoi-show-icons">
 											{% if isFavoris %}
-												<a class="btn-heart btn btn-lg" data="{{ annonce.id }}">
+												<a class="btn-heart btn btn-lg px-0" data="{{ annonce.id }}">
 													<i class="fa fa-heart text-danger pl-2" id="ad-heart"></i>
 												</a>
 											{% else %}
-												<a class="btn-heart btn btn-lg" data="{{ annonce.id }}">
+												<a class="btn-heart btn btn-lg px-0" data="{{ annonce.id }}">
 													<i class="far fa-heart pl-1" id="ad-heart"></i>
 												</a>
 											{% endif %}
 										</div>
 									{% endif %}
 									<div title="Partager" class="d-inline dropdown kiloukoi-show-icons" id="annonce-specifique-favoris">
-										<a class="btn btn-lg p-0" href="#" role="button" id="share-btn" data-toggle="dropdown">
+										<a class="btn btn-lg px-0" href="#" role="button" id="share-btn" data-toggle="dropdown">
 											<i class="fa fa-share-alt"></i>
 										</a>
 										<div class="dropdown-menu" aria-labelledby="share-btn">
