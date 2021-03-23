@@ -26,24 +26,38 @@
         </div>
 
         <div class="tab-pane fade show active" id="pills-detail" role="tabpanel" aria-labelledby="pills-detail-tab">
-
+            
             {{ form_row(form.titre) }}
 
-            {# render the the rest, except submit button #}
-            {% for child in form %}
-                {% if child.vars.name not in ['prix', 'type', 'description', 'caution', 'urgent'] %}
-                    {{ form_row(child) }}
-                {% endif %}
-            {% endfor %}
+            <div class="row">
+                {# render the the rest, except submit button #}
+                {% for child in form %}
+                    {% if child.vars.name not in ['prix', 'type', 'description', 'caution', 'urgent', 'heureDebut', 'heureFin'] %}
+                        <div class="col-lg-12">
+                            {{ form_row(child) }}
+                        </div>
+                    {% endif %}
+                    {% if (child.vars.name == 'heureDebut') %}
+                        <div class="col-lg-6">
+                            {{ form_row(form.heureDebut) }}
+                        </div>
+                    {% endif %}
+                    {% if (child.vars.name == 'heureFin') %}
+                        <div class="col-lg-6">
+                            {{ form_row(form.heureFin) }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
 
             <div class="row">
-                <div class="col-4">
+                <div class="col-lg-4">
                     {{ form_row(form.prix, {'attr': {'autocomplete': 'off'} }) }}
                 </div>
-                <div class="col-4">
+                <div class="col-lg-4">
                     {{ form_row(form.caution, {'attr': {'autocomplete': 'off'} }) }}
                 </div>
-                <div class="col-4">
+                <div class="col-lg-4">
                     {{ form_row(form.type) }}
                 </div>
             </div>
