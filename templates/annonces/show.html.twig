@@ -1,419 +1,452 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.css">
-    <link rel="stylesheet" href="{{ asset('/css/calendrier.css') }}">
-    <link rel="stylesheet" href="{{ asset('/css/annonces-show.css') }}">
-    <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="{{ asset('css/annonces_show2.css') }}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.css">
+	<link rel="stylesheet" href="{{ asset('/css/calendrier.css') }}">
+	<link rel="stylesheet" href="{{ asset('/css/annonces-show.css') }}">
+	<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css"/>
+	<link rel="stylesheet" href="{{ asset('css/annonces_show2.css') }}">
 {% endblock %}
 
-{% block title %}Details annonces{% endblock %}
+{% block title %}Details annonces
+{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-10 offset-lg-1 col-md-12 mt-4">
-                <div class=" pt-3">
-                    
-                    {# Détail de l'annonce #}
-                    <div class="card shadow ad-show-card mb-3">
-                        <div class="card-header text-center">
-                            <div class="row" style="position:relative;">
-                                <div class="col-12" style="">
-                                    <h2 class="mb-0 text-center">
-                                        <strong>{{ annonce.titre }}</strong>
-                                    </h2>
-                                    <p class="user_eligibility" data-user-eligibility="{{ eligibility }}"></p>
-                                </div>
-                                <div class="col-md-3 cols-m-7 text-right ads-icons-container" style="position:absolute; right:0;">
-                                    <a id="button-ads-show" class="card-link more-icons-link"><i class="fa fa-sort-down"></i></a>
-                                    <br class="a-la-ligne">
-                                    <!-- hr class="hr kiloukoi-show-icons" -->
-                                    {% if app.user and app.user.id != annonce.user.id %}
-                                        <div title="Favoris" class="d-inline text-center kiloukoi-show-icons collapse">
-                                            {% if isFavoris %}
-                                                <a class="btn-heart btn btn-lg" data="{{ annonce.id }}">
-                                                    <i class="fa fa-heart text-danger pl-2" id="ad-heart"></i>
-                                                </a>
-                                            {% else %}
-                                                <a class="btn-heart btn btn-lg" data="{{ annonce.id }}">
-                                                    <i class="far fa-heart pl-1" id="ad-heart"></i>
-                                                </a>
-                                            {% endif %}
-                                        </div>
-                                    {% endif %}
-                                    <div title="Partager" class="d-inline dropdown kiloukoi-show-icons" id="annonce-specifique-favoris">
-                                        <a class="btn btn-lg p-0" href="#" role="button" id="share-btn" data-toggle="dropdown">
-                                            <i class="fa fa-share-alt"></i>
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="share-btn">
-                                            <a class="dropdown-item py-2" href="#" onclick="copyUrl()">
-                                                <i style="width: 15px" class="fa mr-2 fa-copy"></i> Copier le lien
-                                            </a>
-                                            <a class="dropdown-item py-2" href="#">
-                                                <i style="width: 15px" class="fa mr-2 fa-envelope"></i> E-mail
-                                            </a>
-                                            <a class="facebook-btn dropdown-item py-2" href="#">
-                                                <i style="width: 15px" class="fab mr-2 fa-facebook-f"></i> Facebook
-                                            </a>
-                                            <a class="twitter-btn dropdown-item py-2" href="#">
-                                                <i style="width: 15px" class="fab mr-2 fa-twitter"></i> Twitter
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="row mt-4">
-                                <div class="col-lg-10 offset-lg-1">
-                                    {% if annonce.photo | length == 0 %}
-                                        <div class="text-center jumbotron">
-                                            <div>
-										        <img src="{{ asset('image/logo-fond-blanc.png') }}" class="card-img-top m-auto p-2" style="width: auto;height: 175px;" alt="...">
-                                            </div>
-                                            <div>
-                                                <strong class="text-success">Aucune photo disponible.</strong>
-                                            </div>
-                                        </div>
-                                    {% else %}
-                                        <div class="tz-gallery">
-                                            {% set firstPhoto = annonce.photo[0] %}
-                                            <div class="p-1 overflow-hidden" id="ad-picture" data-toggle="tooltip" data-placement="top" title="{{ firstPhoto.description }}" style="overflow-y:hidden;">
-                                                <a href="{{ asset('uploads/') ~ firstPhoto.url }}" class="lightbox">
-                                                    <img id="photo-{{ firstPhoto.id }}" src="{{ asset("uploads/" ~ firstPhoto.url) | imagine_filter('medium') }}" class="w-100" alt="{{ firstPhoto.description }}">
-                                                </a>
-                                            </div>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-10 offset-lg-1 col-md-12 mt-4">
+				<div
+					class=" pt-3">
 
-                                            <div class="row px-3">
-                                                {% for photo in annonce.photo | slice(1, 100)%}
-                                                    <div class="p-1 overflow-hidden" data-toggle="tooltip" data-placement="top" title="{{ photo.description }}">
-                                                        <a href="{{ asset('uploads/') ~ photo.url }}" class="lightbox">
-                                                            <img id="photo-{{ photo.id }}" src="{{ asset("uploads/" ~ photo.url) | imagine_filter('medium') }}" class="" style="height: 50px;width: auto" alt="{{ photo.description }}">
-                                                        </a>
-                                                    </div>
-                                                {% endfor %}
-                                            </div>
-                                        </div>
-                                    {% endif %}
-                                </div>
-                            <!-- /div -->
+					{# Détail de l'annonce #}
+					<div class="card shadow ad-show-card mb-3">
+						<div class="card-header text-center">
+							<div class="row" style="position:relative;">
+								<div class="col-12" style="">
+									<h2 class="mt-2 mb-0 text-center">
+										<strong>{{ annonce.titre }}</strong>
+									</h2>
+									<p class="user_eligibility" data-user-eligibility="{{ eligibility }}"></p>
+								</div>
+								<div class="mt-1 col-md-3 cols-m-7 text-right ads-icons-container" style="position:absolute; right:0;">
+									<a id="button-ads-show" class="card-link more-icons-link">
+										<i class="fa fa-sort-down"></i>
+									</a>
+									<br class="a-la-ligne">
+									<!-- hr class="hr kiloukoi-show-icons" -->
+									{% if app.user and app.user.id != annonce.user.id %}
+										<div title="Favoris" class="d-inline text-center kiloukoi-show-icons">
+											{% if isFavoris %}
+												<a class="btn-heart btn btn-lg px-0" data="{{ annonce.id }}">
+													<i class="fa fa-heart text-danger pl-2" id="ad-heart"></i>
+												</a>
+											{% else %}
+												<a class="btn-heart btn btn-lg px-0" data="{{ annonce.id }}">
+													<i class="far fa-heart pl-1" id="ad-heart"></i>
+												</a>
+											{% endif %}
+										</div>
+									{% endif %}
+									<div title="Partager" class="d-inline dropdown kiloukoi-show-icons" id="annonce-specifique-favoris">
+										<a class="btn btn-lg px-0" href="#" role="button" id="share-btn" data-toggle="dropdown">
+											<i class="fa fa-share-alt"></i>
+										</a>
+										<div class="dropdown-menu" aria-labelledby="share-btn">
+											<a class="dropdown-item py-2" href="#" onclick="copyUrl()">
+												<i style="width: 15px" class="fa mr-2 fa-copy"></i>
+												Copier le lien
+											</a>
+											<a class="dropdown-item py-2" href="#">
+												<i style="width: 15px" class="fa mr-2 fa-envelope"></i>
+												E-mail
+											</a>
+											<a class="facebook-btn dropdown-item py-2" href="#">
+												<i style="width: 15px" class="fab mr-2 fa-facebook-f"></i>
+												Facebook
+											</a>
+											<a class="twitter-btn dropdown-item py-2" href="#">
+												<i style="width: 15px" class="fab mr-2 fa-twitter"></i>
+												Twitter
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="card-body">
+							<div class="row mt-4">
+								<div class="col-lg-10 offset-lg-1">
+									{% if annonce.photo | length == 0 %}
+										<div class="text-center jumbotron">
+											<div>
+												<img src="{{ asset('image/logo-fond-blanc.png') }}" class="card-img-top m-auto p-2" style="width: auto;height: 175px;" alt="...">
+											</div>
+											<div>
+												<strong class="text-success">Aucune photo disponible.</strong>
+											</div>
+										</div>
+									{% else %}
+										<div class="tz-gallery">
+											{% set firstPhoto = annonce.photo[0] %}
+											<div class="p-1 overflow-hidden" id="ad-picture" data-toggle="tooltip" data-placement="top" title="{{ firstPhoto.description }}" style="overflow-y:hidden;">
+												<a href="{{ asset('uploads/') ~ firstPhoto.url }}" class="lightbox">
+													<img id="photo-{{ firstPhoto.id }}" src="{{ asset("uploads/" ~ firstPhoto.url) | imagine_filter('medium') }}" class="w-100" alt="{{ firstPhoto.description }}">
+												</a>
+											</div>
 
-                            <!-- Caractéristiques de l'annonces -->
-                                <!-- div class="row" -->
-                                <div class=" mt-4 offset-lg-1 col-lg-10 text-center py-2">
-                                    <div class="principales-caracteristiques border py-2 shadow-kiloukoi">
-                                        <div class="row">
-                                            <div class="col-6 col-prix-ad pr-0">
-                                                Prix : <br class="a-la-ligne"> <span style="font-weight:lighter;">{{ annonce.prix }}€<br class="a-la-ligne"><span class="slash-du-prix">/</span><span class="par-du-prix">par </span>{{ annonce.type ? annonce.type.libelle : 'mois' }}</span>
-                                            </div>
-                                            <div class="col-6 col-caution-ad pl-0">
-                                                Caution : <br class="a-la-ligne"> <span style="font-weight:lighter;">{{ annonce.caution }}€</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+											<div class="row px-3">
+												{% for photo in annonce.photo | slice(1, 100)%}
+													<div class="p-1 overflow-hidden" data-toggle="tooltip" data-placement="top" title="{{ photo.description }}">
+														<a href="{{ asset('uploads/') ~ photo.url }}" class="lightbox">
+															<img id="photo-{{ photo.id }}" src="{{ asset("uploads/" ~ photo.url) | imagine_filter('medium') }}" class="" style="height: 50px;width: auto" alt="{{ photo.description }}">
+														</a>
+													</div>
+												{% endfor %}
+											</div>
+										</div>
+									{% endif %}
+								</div>
+								<!-- /div -->
 
-                                <div class="offset-lg-1 col-lg-10 principales-caracteristiques-deux mb-2">
-                                    <!-- div class="col-lg-12" -->
-                                        <p class="mt-2 mb-1 pl-3 reference-paragraph"> <strong>Référence</strong> </p>
-                                        <ul class="w-100 pl-0">
-                                            <li><div class="d-inline-block tag-head-conteneur"><img src="{{ asset('icone/crea_012.png') }}" alt=""></div><div class="d-inline-block category-text-container px-2 shadow" style="border-radius:0px 3px 3px 0px;">{% if annonce.categorie.libelle is defined%} {{ annonce.categorie.libelle }} {% endif %}<span class="sous-categorie-text">{% if annonce.sousCategorie.libelle is defined %}/ {{ annonce.sousCategorie.libelle }} {% endif %}</span> </div></li>
-                                            {% if annonce_serialized|length > 1 %}
-                                                {#{ dump(annonce_serialized) }#}
-                                                {% for key, value in annonce_serialized %}
-                                                    {% if value is not null %}
-                                                        <li class="mt-3">
-                                                            <div class="d-inline-block tag-head-conteneur"><img src="{{ asset('icone/crea_f.png') }}" alt=""></div><div class="d-inline-block bg-primary caracteristiques-text-container px-2 shadow" style="border-radius:0px 3px 3px 0px;">
-                                                                {% if key|capitalize == "Urgent" %}
-                                                                    <strong>Urgent </strong>
-                                                                {#
-                                                                    {% elseif key|capitalize == "Kilometrage" %}
-                                                                        <strong>Kilométrage </strong>
-                                                                    {% else %}
-                                                                        <strong>{{ key | capitalize }} </strong>
-                                                                #}
-                                                                {% endif %}
+								<!-- Caractéristiques de l'annonces -->
+								<!-- div class="row" -->
+									<div class=" mt-4 offset-lg-1 col-lg-10 text-center py-2"> <div class="principales-caracteristiques border py-2 shadow-kiloukoi">
+										<div class="row">
+											<div class="col-6 col-prix-ad pr-0">
+												Prix :
+												<br class="a-la-ligne">
+												<span style="font-weight:lighter;">{{ annonce.prix }}€<br class="a-la-ligne"><span class="slash-du-prix">/</span>
+													<span class="par-du-prix">par
+													</span>
+													{{ annonce.type ? annonce.type.libelle : 'mois' }}</span>
+											</div>
+											<div class="col-6 col-caution-ad pl-0">
+												Caution :
+												<br class="a-la-ligne">
+												<span style="font-weight:lighter;">{{ annonce.caution }}€</span>
+											</div>
+										</div>
+									</div>
+								</div>
 
-                                                                <!--span class="pr-2"> </span -->
-                                                                {% if value is iterable %}
-                                                                    {{ value.valeur is defined ? value.valeur : value.libelle }}
-                                                                {% elseif key|capitalize == "Kilometrage" %}
-                                                                    {{ value | number_format(0, '', ' ')}} kmd
+								<div
+									class="offset-lg-1 col-lg-10 principales-caracteristiques-deux mb-2">
+									<!-- div class="col-lg-12" -->
+									<p class="mt-2 mb-1 pl-3 reference-paragraph">
+										<strong>Référence</strong>
+									</p>
+									<ul class="w-100 pl-0">
+										<li>
+											<div class="d-inline-block tag-head-conteneur"><img src="{{ asset('icone/crea_012.png') }}" alt=""></div><div class="d-inline-block category-text-container px-2 shadow" style="border-radius:0px 3px 3px 0px;">
+												{% if annonce.categorie.libelle is defined%}
+													{{ annonce.categorie.libelle }}
+												{% endif %}
+												<span class="sous-categorie-text">
+													{% if annonce.sousCategorie.libelle is defined %}/
+														{{ annonce.sousCategorie.libelle }}
+													{% endif %}
+												</span>
+											</div>
+										</li>
+										{% if annonce_serialized|length > 1 %}
+											{#{ dump(annonce_serialized) }#}
+											{% for key, value in annonce_serialized %}
+												{% if value is not null %}
+													<li class="mt-3">
+														<div class="d-inline-block tag-head-conteneur"><img src="{{ asset('icone/crea_f.png') }}" alt=""></div><div class="d-inline-block bg-primary caracteristiques-text-container px-2 shadow" style="border-radius:0px 3px 3px 0px;">
+															{% if key|capitalize == "Urgent" %}
+																<strong>Urgent</strong>																																																																																																																																																																																	                                                                
+															{% endif %}
+
+															<!--span class="pr-2"> </span -->
+															{% if value is iterable %}
+																{{ value.valeur is defined ? value.valeur : value.libelle }}
+															{% elseif key|capitalize == "Kilometrage" %}
+																{{ value | number_format(0, '', ' ')}}
+															{% elseif (key == "heureDebut" or key =='heureFin') %}
+																{{ value | date('H:i') }}
+                                                            {% elseif (key == "surface" or key =='etage' or key =='chambre') %}
+																{% if key == "surface" %}
+                                                                  <strong>{{ key|capitalize }}</strong> {{ value }} m²
                                                                 {% else %}
-                                                                    {{ value }}
+                                                                    <strong>{{ key|capitalize }}</strong> {{ value }}
                                                                 {% endif %}
-                                                            </div>
-                                                        </li>
-                                                    {% endif %}
-                                                {% endfor %}
-                                            {% endif %}
-                                        </ul>
-                                    <!-- /div -->
-                                </div>
-                            </div>
-                            
-                            <hr>
+															{% else %}
+																{{ value }}
+															{% endif %}
+														</div>
+													</li>
+												{% endif %}
+											{% endfor %}
+										{% endif %}
+									</ul>
+									<!-- /div -->
+								</div>
+							</div>
 
-                            <div class="offset-lg-1 col-lg-10 mt-4 mb-4 pl-0">
-                                <h3 style="font-size: 1.2rem;"><strong>Description</strong></h3>
-                                <p class="mb-5 text-justify ">
-                                    <span class="collapse show descriptionCollapse">
-                                       {{ annonce.description | slice(0, 100) | nl2br  }} {% if annonceDescriptionLength > 21 %} <a data-toggle="collapse" href=".descriptionCollapse" class="card-link">...afficher plus.</a> {% endif %}
-                                    </span>
-                                    <span class="collapse descriptionCollapse">
-                                        {{ annonce.description | nl2br }}  <a data-toggle="collapse" href=".descriptionCollapse" class="card-link">...afficher moins.</a>
-                                    </span>
-                                </p>
-                            </div>
+							<hr>
 
-                            <div class="offset-lg-1 col-lg-10 m-auto text-right mt-4">
-                                {% if app.user and app.user.id == annonce.user.id %}
+							<div class="offset-lg-1 col-lg-10 mt-4 mb-4 pl-0">
+								<h3 style="font-size: 1.2rem;">
+									<strong>Description</strong>
+								</h3>
+								<p class="mb-5 text-justify ">
+									<span class="collapse show descriptionCollapse">
+										{{ annonce.description | slice(0, 100) | nl2br  }}
+										{% if annonceDescriptionLength > 21 %}
+											<a data-toggle="collapse" href=".descriptionCollapse" class="card-link">...afficher plus.</a>
+										{% endif %}
+									</span>
+									<span class="collapse descriptionCollapse">
+										{{ annonce.description | nl2br }}
+										<a data-toggle="collapse" href=".descriptionCollapse" class="card-link">...afficher moins.</a>
+									</span>
+								</p>
+							</div>
+
+							<div class="offset-lg-1 col-lg-10 m-auto text-right mt-4">
+								{% if app.user and app.user.id == annonce.user.id %}
 									<div class="col center mt-2 pl-0 pb-2 ad-form-modifs">
 										<a href="{{ path('annonces_edit', {'id': annonce.id}) }}" class="p-0 btn btn-link text-info" style="font-size: .8rem;">Modifier</a>
 										{{ include('annonces/_delete_form.html.twig') }}
 									</div>
 								{% endif %}
-                                {% if app.user and app.user.id != annonce.user.id %}
-                                    <div class="mt-4">
-                                        <button class="btn btn-warning" id="bouton-signaler" style="color:white;">Signaler cette annonce</button>
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    {# Fin - Détail de l'annonce #}
+								{% if app.user and app.user.id != annonce.user.id %}
+									<div class="mt-4">
+										<button class="btn btn-warning" id="bouton-signaler" style="color:white;">Signaler cette annonce</button>
+									</div>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+					{# Fin - Détail de l'annonce #}
 
-                    <div class="row">
-                        {# Calendrier #}
-                        <div class="col-md-7">
-                            <div class="card shadow mb-3">
-                                {#
-                                    <div class="card-header">
-                                        <h2 class="mb-0 text-center" ><strong>Disponibilités</strong></h2>
-                                    </div>
-                                #}
-                                <div class="card-body px-1 py-3">
-                                    <div class="row">
-                                        <div class="col-lg-6 {% if app.user and app.user.id == annonce.user.id %} offset-lg-3 {% endif %}">
-                                            <div class="calendar">
-                                                <div class="month row py-1 bg-success text-white border border-success">
-                                                    <div class="col-2 m-auto p-0 text-right">
-                                                        <i class=" display-4 fas fa-angle-left prev"></i>
-                                                    </div>
-                                                    <div class="col-8">
-                                                        <div class="date">
-                                                            <h3 class="month-name text-center"></h3>
-                                                            <p class="text-center m-0"></p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-2 m-auto p-0 text-left">
-                                                        <i class=" display-4 fas fa-angle-right next"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="weekdays border border-success  border-bottom-0">
-                                                    <span>Dim</span><span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span>
-                                                </div>
-                                                <div class="days border border-success"></div>
-                                            </div>
-                                        </div>
+					<div
+						class="row">
+						{# Calendrier #}
+						<div class="col-md-7">
+							<div
+								class="card shadow mb-3">
+								{#
+																																																																																																                                    <div class="card-header">
+																																																																																																                                        <h2 class="mb-0 text-center" ><strong>Disponibilités</strong></h2>
+																																																																																																                                    </div>
+																																																																																																                                #}
+								<div class="card-body px-1 py-3">
+									<div class="row">
+										<div class="col-lg-6 {% if app.user and app.user.id == annonce.user.id %} offset-lg-3 {% endif %}">
+											<div class="calendar">
+												<div class="month row py-1 bg-success text-white border border-success">
+													<div class="col-2 m-auto p-0 text-right">
+														<i class=" display-4 fas fa-angle-left prev"></i>
+													</div>
+													<div class="col-8">
+														<div class="date">
+															<h3 class="month-name text-center"></h3>
+															<p class="text-center m-0"></p>
+														</div>
+													</div>
+													<div class="col-2 m-auto p-0 text-left">
+														<i class=" display-4 fas fa-angle-right next"></i>
+													</div>
+												</div>
+												<div class="weekdays border border-success  border-bottom-0">
+													<span>Dim</span><span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span>
+												</div>
+												<div class="days border border-success"></div>
+											</div>
+										</div>
 
-                                        {% if not (app.user and app.user.id == annonce.user.id) %}
-                                            <div class="col-lg-6 d-flex align-items-end justify-content-center" id="reservation-annonce">
-                                                <div class="mx-auto">
-                                                    <h3 class="text-center mb-4">Réservation:</h3>
-                                                    <div class="form-group">
-                                                        <label for="date-debut">Date du début:</label>
-                                                        <input readonly autocomplete="off" id="date-debut" min="{{ date() | date('Y-m-d') }}" class="form-control" name="debut">
-                                                    </div>
-                                                    <div class="form-group mb-0">
-                                                        <label for="date-fin">Date du fin:</label>
-                                                        <input readonly autocomplete="off" id="date-fin" min="{{ date() | date('Y-m-d') }}" class="form-control" name="fin">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-12 mt-3 px-4 calendar-action text-center">
-                                                <button id="reserver" class="btn btn-block btn-success" type="button" data-toggle="modal" data-target="#reservationModal">Vérifier la disponibilité</button>
-                                            </div>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {# Fin - Calendrier #}
+										{% if not (app.user and app.user.id == annonce.user.id) %}
+											<div class="col-lg-6 d-flex align-items-end justify-content-center" id="reservation-annonce">
+												<div class="mx-auto">
+													<h3 class="text-center mb-4">Réservation:</h3>
+													<div class="form-group">
+														<label for="date-debut">Date du début:</label>
+														<input readonly autocomplete="off" id="date-debut" min="{{ date() | date('Y-m-d') }}" class="form-control" name="debut">
+													</div>
+													<div class="form-group mb-0">
+														<label for="date-fin">Date du fin:</label>
+														<input readonly autocomplete="off" id="date-fin" min="{{ date() | date('Y-m-d') }}" class="form-control" name="fin">
+													</div>
+												</div>
+											</div>
+											<div class="col-12 mt-3 px-4 calendar-action text-center">
+												<button id="reserver" class="btn btn-block btn-success" type="button" data-toggle="modal" data-target="#reservationModal">Vérifier la disponibilité</button>
+											</div>
+										{% endif %}
+									</div>
+								</div>
+							</div>
+						</div>
+						{# Fin - Calendrier #}
 
-                        {# Profil propriétaire #}
-                        <div class="col-md-5 pl-md-0 mb-3">
-                            <div class="card shadow h-100">
-                                <div class="card-body px-1 py-3 d-flex align-items-end flex-column">
-                                    <div class="row">
-                                        <div class="col-4 pl-4 pr-0 text-center">
-                                            <img src="{{ asset('uploads/avatar/') ~ proprietaire.avatar }}" class="my-2 rounded-circle img-fluid bg-primary" width="175px" height="175px">
-                                        </div>
-                                        <div class="col-8 py-2">
-                                            <h3 class="text-capitalize">
-                                                <a href="{{ path('proprietaire_annonce', {proprietaire: annonce.user.id, pseudo: annonce.user.pseudo}) }}">
-                                                    <strong>{{ proprietaire.nomComplet }}</strong>
-                                                </a>
-                                            </h3>
-                                            {% set noteRounded = note|round(0, 'floor') %}
-                                            <p class="mt-1 text-warning">
-                                                {% if noteRounded == 5 %}
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                {% elseif noteRounded == 0 %}
-                                                    <i class="far fa-star"></i>
-                                                    <i class="far fa-star"></i>
-                                                    <i class="far fa-star"></i>
-                                                    <i class="far fa-star"></i>
-                                                    <i class="far fa-star"></i>
-                                                {% else %}
-                                                    {% for i in range( noteRounded, 1) %}
-                                                        <i class="fas fa-star"></i>
-                                                    {% endfor %}
+						{# Profil propriétaire #}
+						<div class="col-md-5 pl-md-0 mb-3">
+							<div class="card shadow h-100">
+								<div class="card-body px-1 py-3 d-flex align-items-end flex-column">
+									<div class="row">
+										<div class="col-4 pl-4 pr-0 text-center">
+											<img src="{{ asset('uploads/avatar/') ~ proprietaire.avatar }}" class="my-2 rounded-circle img-fluid bg-primary" width="175px" height="175px">
+										</div>
+										<div class="col-8 py-2">
+											<h3 class="text-capitalize">
+												<a href="{{ path('proprietaire_annonce', {proprietaire: annonce.user.id, pseudo: annonce.user.pseudo}) }}">
+													<strong>{{ proprietaire.nomComplet }}</strong>
+												</a>
+											</h3>
+											{% set noteRounded = note|round(0, 'floor') %}
+											<p class="mt-1 text-warning">
+												{% if noteRounded == 5 %}
+													<i class="fas fa-star"></i>
+													<i class="fas fa-star"></i>
+													<i class="fas fa-star"></i>
+													<i class="fas fa-star"></i>
+													<i class="fas fa-star"></i>
+												{% elseif noteRounded == 0 %}
+													<i class="far fa-star"></i>
+													<i class="far fa-star"></i>
+													<i class="far fa-star"></i>
+													<i class="far fa-star"></i>
+													<i class="far fa-star"></i>
+												{% else %}
+													{% for i in range( noteRounded, 1) %}
+														<i class="fas fa-star"></i>
+													{% endfor %}
 
-                                                    {% for i in range( (5 - noteRounded), 1) %}
-                                                        <i class="far fa-star"></i>
-                                                    {% endfor %}
-                                                {% endif %}
-                                                <strong class="text-warning ml-2">({{ note|round(1, 'floor') }})</strong>
-                                            </p>
-                                        </div>
-                                    </div>
+													{% for i in range( (5 - noteRounded), 1) %}
+														<i class="far fa-star"></i>
+													{% endfor %}
+												{% endif %}
+												<strong class="text-warning ml-2">({{ note|round(1, 'floor') }})</strong>
+											</p>
+										</div>
+									</div>
 
-                                    <div class="row w-100">
-                                        <div class="col-12">
-                                            <div class="mx-3 text-center">
-                                                <p class="text-secondary py-0 mb-1">
-                                                    <strong id="kilouwers">{{ kilouwersCount }}</strong> Kilouwers
-                                                </p>
-                                                <p class="text-primary py-0 mb-3 ">
-                                                    <strong>{{ annoncesCount }}</strong> annonces en ligne
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
+									<div class="row w-100">
+										<div class="col-12">
+											<div class="mx-3 text-center">
+												<p class="text-secondary py-0 mb-1">
+													<strong id="kilouwers">{{ kilouwersCount }}</strong>
+													Kilouwers
+												</p>
+												<p class="text-primary py-0 mb-3 ">
+													<strong>{{ annoncesCount }}</strong>
+													annonces en ligne
+												</p>
+											</div>
+										</div>
+									</div>
 
-                                    <div class="w-100 mt-auto">
-                                        <div class="col-12">
-                                            <div class="mx-3">
-                                                {% if app.user and app.user.id != proprietaire.id %}
-                                                    {% if followed %}
-                                                        <button class="btn-follow btn btn-block btn-success">
-                                                            <span class="spinner-border spinner-border-sm d-none"></span>
-                                                            <span class="text-follow">Ne plus suivre</span>
-                                                        </button>
-                                                    {% else %}
-                                                        <button class="btn-follow btn btn-block btn-primary">
-                                                            <span class="spinner-border spinner-border-sm d-none"></span>
-                                                            <span class="text-follow">Suivre</span>
-                                                        </button>
-                                                    {% endif %}
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {# Fin - Profil propriétaire #}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+									<div class="w-100 mt-auto">
+										<div class="col-12">
+											<div class="mx-3">
+												{% if app.user and app.user.id != proprietaire.id %}
+													{% if followed %}
+														<button class="btn-follow btn btn-block btn-success">
+															<span class="spinner-border spinner-border-sm d-none"></span>
+															<span class="text-follow">Ne plus suivre</span>
+														</button>
+													{% else %}
+														<button class="btn-follow btn btn-block btn-primary">
+															<span class="spinner-border spinner-border-sm d-none"></span>
+															<span class="text-follow">Suivre</span>
+														</button>
+													{% endif %}
+												{% endif %}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						{# Fin - Profil propriétaire #}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="reservationModal" tabindex="-1" role="dialog" aria-labelledby="reservationModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title" id="reservationModalLabel">Réservation</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="liste-reservation d-none">
-                        <strong class="">Les dates disponibles sont:</strong>
-                        <ol class="list-group mt-2">
-                        </ol>
-                    </div>
-                    <div class="alert alert-warning text-center d-none alert-indisponible">
-                        Les dates que vous avez séléctionnées sont indisponible.
-                    </div>
-                    <div class="alert alert-warning text-center d-none alert-selection">
-                        Veuillez séléctionner la date du debut et la date du fin.
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <form action="{{ path('location_new') }}" method="POST">
-                        <input type="hidden" name="token" value="{{ csrf_token('new_location') }}" >
-                        <input type="hidden" name="reservations" id="input-reservation">
-                        <input type="hidden" name="annonce" value="{{ annonce.id }}">
+	<!-- Modal -->
+	<div class="modal fade" id="reservationModal" tabindex="-1" role="dialog" aria-labelledby="reservationModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header bg-success text-white">
+					<h5 class="modal-title" id="reservationModalLabel">Réservation</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="liste-reservation d-none">
+						<strong class="">Les dates disponibles sont:</strong>
+						<ol class="list-group mt-2"></ol>
+					</div>
+					<div class="alert alert-warning text-center d-none alert-indisponible">
+						Les dates que vous avez séléctionnées sont indisponible.
+					</div>
+					<div class="alert alert-warning text-center d-none alert-selection">
+						Veuillez séléctionner la date du debut et la date du fin.
+					</div>
+				</div>
+				<div class="modal-footer">
+					<form action="{{ path('location_new') }}" method="POST">
+						<input type="hidden" name="token" value="{{ csrf_token('new_location') }}">
+						<input type="hidden" name="reservations" id="input-reservation">
+						<input type="hidden" name="annonce" value="{{ annonce.id }}">
 
-                        <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Annuler</button>
-                        <button type="submit" class="btn btn-outline-success">Réserver</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+						<button type="button" class="btn btn-outline-danger" data-dismiss="modal">Annuler</button>
+						<button type="submit" class="btn btn-outline-success">Réserver</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
+	{{ parent() }}
 
-    {% set locations = [] %}
-    {% for location in annonce.locations %}
-        {% set locations = locations|merge([{debut: location.dateDebut, fin: location.dateFin, statut: location.statutLocation.id }]) %}
-    {% endfor %}
+	{% set locations = [] %}
+	{% for location in annonce.locations %}
+		{% set locations = locations|merge([{debut: location.dateDebut, fin: location.dateFin, statut: location.statutLocation.id }]) %}
+	{% endfor %}
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.js"></script>
-    <script>
-        var locations = {{ locations|json_encode|raw }};
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.js"></script>
+	<script>
+		var locations = {{ locations|json_encode|raw }};
 
-        baguetteBox.run('.tz-gallery', {
-            captions: function(element) {
-                return element.getElementsByTagName('img')[0].alt;
-            }
-        });
+baguetteBox.run('.tz-gallery', {
+captions: function (element) {
+return element.getElementsByTagName('img')[0].alt;
+}
+});
 
-		$(document).ready( function ()
-		{
-			var url = "{{ path('proprietaire_follow', { proprietaire: proprietaire.id }) }}";
+$(document).ready(function () {
+var url = "{{ path('proprietaire_follow', { proprietaire: proprietaire.id }) }}";
 
-			$('.btn-follow').click( function ()
-			{
-				var that = this;
-				$('.btn-follow .spinner-border').removeClass('d-none');
-				$.get( url, function (reponse)
-				{
-					reponse = JSON.parse(reponse);
-					if( parseInt(reponse.status) == 0 )
-					{
-						$(that).addClass('btn-primary');
-						$(that).removeClass('btn-success');
-						$('.btn-follow .text-follow').text('Suivre');
-					}
-					else
-					{
-						$(that).addClass('btn-success');
-						$(that).removeClass('btn-primary');
-						$('.btn-follow .text-follow').text('Ne plus suivre');
-					}
+$('.btn-follow').click(function () {
+var that = this;
+$('.btn-follow .spinner-border').removeClass('d-none');
+$.get(url, function (reponse) {
+reponse = JSON.parse(reponse);
+if (parseInt(reponse.status) == 0) {
+$(that).addClass('btn-primary');
+$(that).removeClass('btn-success');
+$('.btn-follow .text-follow').text('Suivre');
+} else {
+$(that).addClass('btn-success');
+$(that).removeClass('btn-primary');
+$('.btn-follow .text-follow').text('Ne plus suivre');
+}
 
-					$('#kilouwers').text(reponse.kilouwers);
-					$('.btn-follow .spinner-border').addClass('d-none');
-				});
-			});
-		});
-    </script>
-    <script src="{{ asset('js/calendrier.js') }}"></script>
-    <script src="{{ asset('js/annoncesShow2.js') }}"></script>
+$('#kilouwers').text(reponse.kilouwers);
+$('.btn-follow .spinner-border').addClass('d-none');
+});
+});
+});
+	</script>
+	<script src="{{ asset('js/calendrier.js') }}"></script>
+	<script src="{{ asset('js/annoncesShow2.js') }}"></script>
 {% endblock %}

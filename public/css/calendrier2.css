@@ -1,0 +1,11 @@
+.calendar .month, .weekdays, .days {
+    width: 14.2rem;
+    margin: auto;
+}
+
+@media screen and (max-width: 1024px){
+    .calendar .month, .weekdays, .days {
+        width: 13.7rem;
+        margin: auto;
+    }
+}
