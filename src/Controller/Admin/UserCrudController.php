@@ -35,12 +35,14 @@ class UserCrudController extends AbstractCrudController
             IdField::new('id'),
             TextField::new('email'),
             TextField::new('pseudo'),
-            BooleanField::new('actif')
+            BooleanField::new('actif'),
         ];
 
         if ($pageName == Crud::PAGE_INDEX || $pageName == Crud::PAGE_DETAIL) {
             $fields[] = $image;
         }
+
+        $fields[] = DateTimeField::new('date_creation');
 
         return $fields;
     }

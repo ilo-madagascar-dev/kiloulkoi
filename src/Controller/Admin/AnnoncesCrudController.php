@@ -29,7 +29,8 @@ class AnnoncesCrudController extends AbstractCrudController
             NumberField::new('prix'),
             NumberField::new('proucentageTva'),
             AssociationField::new('categorie'),
-            AssociationField::new('user')
+            AssociationField::new('user'),
+            DateTimeField::new('dateCreation')
         ];
     }
 
