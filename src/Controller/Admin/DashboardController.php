@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Annonces;
 use App\Entity\Categories;
+use App\Entity\Location;
 use App\Entity\User;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,6 +38,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Global');
         yield MenuItem::linkToCrud('Annonces', 'fas fa-bookmark', Annonces::class);
         yield MenuItem::linkToCrud('Catégories', 'fas fa-list', Categories::class);
+        yield MenuItem::linkToCrud('Locations', 'fas fa-universal-access', Location::class);
         yield MenuItem::section('Utilisateurs');
         yield MenuItem::linkToCrud('Tous les utilisateurs', 'fas fa-user', User::class);
     }

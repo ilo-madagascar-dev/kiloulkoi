@@ -25,10 +25,9 @@ class UserCrudController extends AbstractCrudController
         return $actions
             ->remove(Crud::PAGE_INDEX, Action::NEW)
             ->remove(Crud::PAGE_INDEX, Action::DELETE)
-            ->remove(Crud::PAGE_INDEX, Action::EDIT)
-        ;
+            ->remove(Crud::PAGE_INDEX, Action::EDIT);
     }
-    
+
     public function configureFields(string $pageName): iterable
     {
         $image = ImageField::new('avatar')->setBasePath('/uploads/avatar');
