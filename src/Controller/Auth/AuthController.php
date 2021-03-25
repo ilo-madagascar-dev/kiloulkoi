@@ -22,6 +22,7 @@ use App\Security\UserAuthenticator;
 use App\Service\FileUploader;
 use App\Service\MangoPayService;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
 class AuthController extends AbstractController
 {
@@ -206,5 +207,90 @@ class AuthController extends AbstractController
             return new Response('1');
         else
             return new Response('0');
+    }
+
+    /**
+     * @Route("/creation-temporaire-admin", name="creation_temporaire_admin")
+     */
+    public function creationTemporaireDadmin(Request $request, UserPasswordEncoderInterface $passwordEncoder, FileUploader $uploader, MangoPayService $mangoPayService, GuardAuthenticatorHandler $guardHandler, UserAuthenticator $authenticator){
+        $user = new Particulier();
+        $form = $this->createForm(ParticulierType::class, $user);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid() )
+        {
+            // encode the plain password
+            $user->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $form->get('password')->getData()
+                )
+            );
+
+            $uploader->setTargetDirectory($this->getParameter('avatar_directory'));
+
+            $avatar_file = $form->get('avatar')->getData();
+            if( $avatar_file )
+            {
+                $avatar_url  = $uploader->upload($avatar_file);
+                $user->setAvatar($avatar_url);
+            }
+            else
+            {
+                if( $user->getGenre() == 1 )
+                {
+                    $user->setAvatar('default-men.png');
+                }
+                else
+                {
+                    $user->setAvatar('default-women.png');
+                }
+            }
+
+            $user->setDateCreation();
+            $user->setDateMiseAJour();
+            $user->setActif(true);
+            
+            //Rôle de l'admin
+            $role = ['ROLE_ADMIN'];
+            
+            $user->setRoles($role);
+
+            //Organisation des différentes informations
+                $nom        = $user->getNom();
+                $prenom     = $user->getPrenom();
+                $addr       = $user->getAdresse();
+                $city       = $user->getVille();
+                $region     = $request->get('region');
+                $postalCode = $user->getCp();
+                $birthday   = intval(strtotime($request->get('datenaissance')));
+                $nationality = "FR";
+                $countryOfResidence = "FR";
+               
+
+                $mangoPayUserId = $mangoPayService->createUserParticulier($user->getEmail(), $nom, $prenom, $addr, $city, $region, $postalCode, $birthday, $nationality, $countryOfResidence);
+
+            //$mangoPayUserId = $mangoPayService->setUserMangoPay($user->getEmail(), $nom, $prenom);
+            //$mangoPayService->setUserMangoPayKYC($mangoPayUserId);
+
+            $user->setMangoPayId( $mangoPayUserId );
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+
+            return $guardHandler->authenticateUserAndHandleSuccess(
+                $user,
+                $request,
+                $authenticator,
+                'main' // firewall name in security.yaml
+            );
+        }
+
+        return $this->render('security/adminExample.html.twig', [
+            'registrationForm' => $form->createView(),
+        ]);
     }
 }
