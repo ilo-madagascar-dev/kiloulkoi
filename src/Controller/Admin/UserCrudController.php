@@ -32,16 +32,16 @@ class UserCrudController extends AbstractCrudController
     {
         $image = ImageField::new('avatar')->setBasePath('/uploads/avatar');
         $fields = [
-            IdField::new('id'),
-            TextField::new('email'),
-            TextField::new('pseudo'),
-            BooleanField::new('actif'),
+            IdField::new('id')
         ];
 
         if ($pageName == Crud::PAGE_INDEX || $pageName == Crud::PAGE_DETAIL) {
             $fields[] = $image;
         }
 
+        $fields[] = TextField::new('email');
+        $fields[] = TextField::new('pseudo');
+        $fields[] = BooleanField::new('actif');
         $fields[] = DateTimeField::new('date_creation');
 
         return $fields;
