@@ -43,7 +43,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Locations', 'fas fa-universal-access', Location::class);
         yield MenuItem::linkToCrud('Conversations', 'fas fa-comment', Conversation::class);
         yield MenuItem::section('Utilisateurs');
-        yield MenuItem::linkToCrud('Tous les utilisateurs', 'fas fa-user', User::class);
+        yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-user', User::class);
     }
 
     public function configureAssets(): Assets
