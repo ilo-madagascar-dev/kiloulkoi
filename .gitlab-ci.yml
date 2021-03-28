@@ -9,7 +9,7 @@ stages:
   - code_analysis
 
 build:
-  image: composer:1
+  image: composer:1.10.17
   stage: build
   script:
     - composer install --prefer-dist --no-ansi --no-interaction --no-progress
