@@ -181,7 +181,7 @@ class LocationController extends AbstractController
 
                 $this->getDoctrine()->getManager()->persist($notification);
 
-                //status
+                 //status
                 $statut    = $statutReposistory->find(2); // Statut en cours
                 $location->setStatutLocation($statut);
                 $this->getDoctrine()->getManager()->flush();
