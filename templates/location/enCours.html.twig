@@ -126,7 +126,7 @@
                                             {% set plusOneDay   = location.dateFin|date_modify("+24 hour") > date() %}
 
                                             {% if location.annonce.type.id == 1 %}
-                                                {% set difference = periodeTotal.hours + 1 %}
+                                                {% set difference = periodeTotal.hours is defined ? periodeTotal.hours + 1 : 1 %}
                                             {% elseif location.annonce.type.id == 2 %}
                                                 {% set difference = periodeTotal.days + 1 %}
                                             {% elseif location.annonce.type.id == 3 %}

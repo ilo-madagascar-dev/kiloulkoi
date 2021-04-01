@@ -6,6 +6,8 @@
 	<link rel="stylesheet" href="{{ asset('/css/annonces-show.css') }}">
 	<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css"/>
 	<link rel="stylesheet" href="{{ asset('css/annonces_show2.css') }}">
+
+	<link rel="stylesheet" href="{{ asset('css/jquery.datetimepicker.min.css') }}">
 {% endblock %}
 
 {% block title %}Details annonces
@@ -225,55 +227,80 @@
 						class="row">
 						{# Calendrier #}
 						<div class="col-md-7">
-							<div
-								class="card shadow mb-3">
-								{#
-																																																																																																                                    <div class="card-header">
-																																																																																																                                        <h2 class="mb-0 text-center" ><strong>Disponibilités</strong></h2>
-																																																																																																                                    </div>
-																																																																																																                                #}
+							<div class="card shadow mb-3">
+								{#																																																																																																                                #}
 								<div class="card-body px-1 py-3">
 									<div class="row">
-										<div class="col-lg-6 {% if app.user and app.user.id == annonce.user.id %} offset-lg-3 {% endif %}">
-											<div class="calendar">
-												<div class="month row py-1 bg-success text-white border border-success">
-													<div class="col-2 m-auto p-0 text-right">
-														<i class=" display-4 fas fa-angle-left prev"></i>
-													</div>
-													<div class="col-8">
-														<div class="date">
-															<h3 class="month-name text-center"></h3>
-															<p class="text-center m-0"></p>
+										{# Si la catégorie de l'annonce n'est pas 'SERVICES' #}
+										{% if annonce.categorie.libelle != 'SERVICES' %}
+											<div class="col-lg-6 {% if app.user and app.user.id == annonce.user.id %} offset-lg-3 {% endif %}">
+												<div class="calendar">
+													<div class="month row py-1 bg-success text-white border border-success">
+														<div class="col-2 m-auto p-0 text-right">
+															<i class=" display-4 fas fa-angle-left prev"></i>
+														</div>
+														<div class="col-8">
+															<div class="date">
+																<h3 class="month-name text-center"></h3>
+																<p class="text-center m-0"></p>
+															</div>
+														</div>
+														<div class="col-2 m-auto p-0 text-left">
+															<i class=" display-4 fas fa-angle-right next"></i>
 														</div>
 													</div>
-													<div class="col-2 m-auto p-0 text-left">
-														<i class=" display-4 fas fa-angle-right next"></i>
+													<div class="weekdays border border-success  border-bottom-0">
+														<span>Dim</span><span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span>
 													</div>
+													<div class="days border border-success"></div>
 												</div>
-												<div class="weekdays border border-success  border-bottom-0">
-													<span>Dim</span><span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span>
-												</div>
-												<div class="days border border-success"></div>
 											</div>
-										</div>
 
-										{% if not (app.user and app.user.id == annonce.user.id) %}
-											<div class="col-lg-6 d-flex align-items-end justify-content-center" id="reservation-annonce">
-												<div class="mx-auto">
-													<h3 class="text-center mb-4">Réservation:</h3>
-													<div class="form-group">
-														<label for="date-debut">Date du début:</label>
-														<input readonly autocomplete="off" id="date-debut" min="{{ date() | date('Y-m-d') }}" class="form-control" name="debut">
-													</div>
-													<div class="form-group mb-0">
-														<label for="date-fin">Date du fin:</label>
-														<input readonly autocomplete="off" id="date-fin" min="{{ date() | date('Y-m-d') }}" class="form-control" name="fin">
+											{% if not (app.user and app.user.id == annonce.user.id) %}
+												<div class="col-lg-6 d-flex align-items-end justify-content-center" id="reservation-annonce">
+													<div class="mx-auto">
+														<h3 class="text-center mb-4">Réservation:</h3>
+														<div class="form-group">
+															<label for="date-debut">Date du début:</label>
+															<input readonly autocomplete="off" id="date-debut" min="{{ date() | date('Y-m-d') }}" class="form-control" name="debut">
+														</div>
+														<div class="form-group mb-0">
+															<label for="date-fin">Date du fin:</label>
+															<input readonly autocomplete="off" id="date-fin" min="{{ date() | date('Y-m-d') }}" class="form-control" name="fin">
+														</div>
 													</div>
 												</div>
+												<div class="col-12 mt-3 px-4 calendar-action text-center">
+													<button id="reserver" class="btn btn-block btn-success" type="button" data-toggle="modal" data-target="#reservationModal">Vérifier la disponibilité</button>
+												</div>
+											{% endif %}
+										{# Si la catégorie de l'annonce est 'SERVICES' #}
+										{% elseif app.user and annonce.categorie.libelle == 'SERVICES' %}
+											<div class="col-lg-12 px-5" style="min-height:270px;">
+												<h3 class="text-center mb-4 mt-2">Réservation:</h3>
+												<div class="form-group">
+													<label for="#dateTimePicker">Date début : </label>
+													<input type="text" class="form-control" id="dateTimePicker">
+												</div>
+												<div class="form-group">
+													<label for="#dateTimePicker1">Date fin : </label>
+													<input type="text" class="form-control" id="dateTimePicker1">
+												</div>
+												<button id="reserver1" class="btn btn-success mb-2" type="button" data-toggle="modal" data-target="#reservationModal">Réserver</button>
 											</div>
-											<div class="col-12 mt-3 px-4 calendar-action text-center">
-												<button id="reserver" class="btn btn-block btn-success" type="button" data-toggle="modal" data-target="#reservationModal">Vérifier la disponibilité</button>
-											</div>
+										{% else %}
+											<div class="col-lg-12 px-5" style="min-height:270px;">
+												<h3 class="text-center mb-4 mt-2">Réservation:</h3>
+												<div class="form-group">
+													<label for="#dateTimePicker">Date début : </label>
+													<input type="text" class="form-control" id="date1" readonly>
+												</div>
+												<div class="form-group">
+													<label for="#dateTimePicker1">Date fin : </label>
+													<input type="text" class="form-control" id="date2" readonly>
+												</div>
+												<button id="reserver1" class="btn btn-success mb-2">Réserver</button>
+											</div>			
 										{% endif %}
 									</div>
 								</div>
@@ -414,6 +441,11 @@
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.js"></script>
+	<script src="{{ asset('/js/jquery.js') }}"></script>
+	<script src="{{ asset('/js/jquery.datetimepicker.full.js') }}"></script>
+	<!-- script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script -->
+	<!-- script src="{{ asset('js/datepicker.min.js') }}" type="text/javascript"></script-->
+	<!-- script src="http://trentrichardson.com/examples/timepicker/js/jquery-ui-timepicker-addon.js" type="text/javascript"></script -->
 	<script>
 		var locations = {{ locations|json_encode|raw }};
 
@@ -447,6 +479,10 @@ $('.btn-follow .spinner-border').addClass('d-none');
 });
 });
 	</script>
-	<script src="{{ asset('js/calendrier.js') }}"></script>
+	{% if annonce.categorie.libelle != 'SERVICES' %}
+		<script src="{{ asset('js/calendrier.js') }}"></script>
+	{% else %}
+		<script src="{{ asset('js/calendrier2.js') }}"></script>
+	{% endif %}
 	<script src="{{ asset('js/annoncesShow2.js') }}"></script>
 {% endblock %}

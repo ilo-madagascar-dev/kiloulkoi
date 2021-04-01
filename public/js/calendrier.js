@@ -276,6 +276,7 @@ $(document).ready(function () {
                 $('#reservationModal .liste-reservation').removeClass("d-none");
                 $('#reservationModal .modal-footer').removeClass("d-none");
                 $('#reservationModal .alert').addClass("d-none");
+                console.log(JSON.stringify(demandes));
 
                 $('#input-reservation').val(JSON.stringify(demandes));
             }
