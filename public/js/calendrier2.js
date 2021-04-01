@@ -2,20 +2,43 @@ $(document).ready(function () {
     $.datetimepicker.setLocale('fr');
 
     $('#dateTimePicker').datetimepicker({
-        format: 'm/d/Y H:i',
+        format: 'd/m/Y H:i',
         locale: 'fr'
     });
 
     $('#dateTimePicker1').datetimepicker({
-        format: 'm/d/Y H:i',
+        format: 'd/m/Y H:i',
         lang: 'fr'
     });
 });
 
 $('#reserver1').click(function () {
     // Demande de reservation de l'utilisateur
-    let demande_debut = $('#dateTimePicker').val();
-    let demande_fin = $('#dateTimePicker1').val();
+    let date_debut = $('#dateTimePicker').val();
+    let date_fin = $('#dateTimePicker1').val();
+    
+    //split début
+    let debut_split = date_debut.split(" ");
+    let debut_split1 = debut_split[0].split("/");
+    let debut_split2 = debut_split[1].split(":");
+
+    //split fin
+    let fin_split = date_fin.split(" ");
+    let fin_split1 = fin_split[0].split("/");
+    let fin_split2 = fin_split[1].split(":");
+
+    //Création des objets Date()
+    let demande_debut = new Date(debut_split1[2], debut_split1[1] -1, debut_split1[0], debut_split2[0], debut_split2[1]);
+    let demande_fin = new Date(fin_split1[2], fin_split1[1] -1, fin_split1[0], fin_split2[0], fin_split2[1]);
+
+    console.log(`${demande_debut} 
+        ${debut_split[0]}
+        ${debut_split[1]}
+        ${debut_split1[0]} ${debut_split1[1]} ${debut_split1[2]}
+        ${debut_split2[0]} ${debut_split2[1]}
+        ${demande_debut}
+        ${demande_fin}
+    `);
 
     if (demande_debut == "" || demande_fin == "") {
         $('#reservationModal .liste-reservation').addClass("d-none");
