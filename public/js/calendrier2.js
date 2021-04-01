@@ -1,10 +1,21 @@
+$(document).ready(function () {
+    $.datetimepicker.setLocale('fr');
+
+    $('#dateTimePicker').datetimepicker({
+        format: 'm/d/Y H:i',
+        locale: 'fr'
+    });
+
+    $('#dateTimePicker1').datetimepicker({
+        format: 'm/d/Y H:i',
+        lang: 'fr'
+    });
+});
+
 $('#reserver1').click(function () {
     // Demande de reservation de l'utilisateur
     let demande_debut = $('#dateTimePicker').val();
     let demande_fin = $('#dateTimePicker1').val();
-
-    console.log(demande_debut);
-    console.log(demande_fin);
 
     if (demande_debut == "" || demande_fin == "") {
         $('#reservationModal .liste-reservation').addClass("d-none");
@@ -22,9 +33,10 @@ $('#reserver1').click(function () {
             $('#reservationModal .alert-indisponible').removeClass("d-none");
         }
         else {
-            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const options = { year: 'numeric', month: 'long', day: 'numeric', hour:'2-digit', minute:'2-digit' };
             let listes = '';
             for (const demande of demandes) {
+
                 if (demande.debut == demande.fin) {
                     let fin = (new Date(demande.fin)).toLocaleDateString('fr-FR', options);
 
