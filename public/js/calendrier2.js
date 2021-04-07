@@ -1,7 +1,8 @@
-//const { indexOf } = require("core-js/fn/array");
-
+/**
+ * DATETIMEPICKER
+ */
 $(document).ready(function () {
-    console.log(locations);
+    //console.log(locations);
     const referenceDays = [];
     const hoursTaken = [];
 
@@ -14,8 +15,8 @@ $(document).ready(function () {
         //console.log(`${beginningDay} ${beginningHour} ${endHour}`)
     }
 
-    console.log(referenceDays);
-    console.log(hoursTaken);
+    //console.log(referenceDays);
+    //console.log(hoursTaken);
  
     $.datetimepicker.setLocale('fr');
 
@@ -25,19 +26,24 @@ $(document).ready(function () {
         onGenerate:function(ct,$i){
             let selectedDate = getFormattedDate(ct);
 
-            let ind = referenceDays.indexOf(selectedDate);
+            let indexes = getAllIndexes(referenceDays, selectedDate);
+            console.log(indexes);
 
             $('.xdsoft_time_variant .xdsoft_time').show();
-            if(ind !== -1) {
-                $('.xdsoft_time_variant .xdsoft_time').each(function(index){
-                    if(hoursTaken[ind].indexOf($(this).text()) !== -1) {
-                        $(this).addClass('disabled');
-                        $(this).fadeTo("fast",.3);
-                        $(this).prop('disabled',true);      
-                    }
-                });
+
+            for (const index of indexes) {
+                if(index !== -1) {
+                    $('.xdsoft_time_variant .xdsoft_time').each(function(indication){
+                        if(hoursTaken[index].indexOf($(this).text()) !== -1) {
+                            $(this).addClass('disabled');
+                            $(this).fadeTo("fast",.3);
+                            $(this).prop('disabled',true);      
+                        }
+                    });
+                }  
             }
-          }
+
+        }
     });
 
     $('#dateTimePicker1').datetimepicker({
@@ -46,22 +52,33 @@ $(document).ready(function () {
         onGenerate:function(ct,$i){
             let selectedDate = getFormattedDate(ct);
 
-            let ind = referenceDays.indexOf(selectedDate);
+            let indexes = getAllIndexes(referenceDays, selectedDate);
+            console.log(indexes);
 
             $('.xdsoft_time_variant .xdsoft_time').show();
-            if(ind !== -1) {
-                $('.xdsoft_time_variant .xdsoft_time').each(function(index){
-                    if(hoursTaken[ind].indexOf($(this).text()) !== -1) {
-                        $(this).addClass('disabled');
-                        $(this).fadeTo("fast",.3);
-                        $(this).prop('disabled',true);      
-                    }
-                });
+
+            for (const index of indexes) {
+                if(index !== -1) {
+                    $('.xdsoft_time_variant .xdsoft_time').each(function(indication){
+                        if(hoursTaken[index].indexOf($(this).text()) !== -1) {
+                            $(this).addClass('disabled');
+                            $(this).fadeTo("fast",.3);
+                            $(this).prop('disabled',true);      
+                        }
+                    });
+                }  
             }
+
         }
     });
 });
+/**
+ * FIN DATETIMEPICKER
+ */
 
+ /**
+  * Vérification de la disponibilité
+  */
 $('#reserver1').click(function () {
     // Demande de reservation de l'utilisateur
     let date_debut = $('#dateTimePicker').val();
@@ -139,14 +156,15 @@ $('#reserver1').click(function () {
         }
     }
 });
+/**
+  * Vérification de la disponibilité
+  */
 
 //Les différentes fonctions utilisées
 const getFreeDates = (demande_debut, demande_fin, locations) => {
     let demandes = [];
     let debut = demande_debut;
     let fin = demande_fin;
-    
-    console.log(`${debut} ${fin}`);
 
     let totalement_reserve = false;
 
@@ -208,9 +226,17 @@ const getFreeDates = (demande_debut, demande_fin, locations) => {
 };
 
 function getFormattedDate(date) {
-    var day = ('0' + date.getDate()).slice(-2);
-    var month = ('0' + (date.getMonth()+1)).slice(-2);
-    var year = date.getFullYear().toString();
+    let day = ('0' + date.getDate()).slice(-2);
+    let month = ('0' + (date.getMonth()+1)).slice(-2);
+    let year = date.getFullYear().toString();
 
     return `${day}/${month}/${year}`;
+}
+
+function getAllIndexes(arr, val) {
+    let indexes = [], i = -1;
+    while ((i = arr.indexOf(val, i+1)) != -1){
+        indexes.push(i);
+    }
+    return indexes;
 }
