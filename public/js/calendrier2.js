@@ -1,14 +1,64 @@
+//const { indexOf } = require("core-js/fn/array");
+
 $(document).ready(function () {
+    console.log(locations);
+    const referenceDays = [];
+    const hoursTaken = [];
+
+    for (const location of locations) {
+        let beginningDay = location.debut.split(' ')[0];
+        let beginningHour = location.debut.split(' ')[1];
+        let endHour = location.fin.split(' ')[1];
+        referenceDays.push(beginningDay);
+        hoursTaken.push([beginningHour, endHour]);
+        //console.log(`${beginningDay} ${beginningHour} ${endHour}`)
+    }
+
+    console.log(referenceDays);
+    console.log(hoursTaken);
+ 
     $.datetimepicker.setLocale('fr');
 
     $('#dateTimePicker').datetimepicker({
         format: 'd/m/Y H:i',
-        locale: 'fr'
+        locale: 'fr',
+        onGenerate:function(ct,$i){
+            let selectedDate = getFormattedDate(ct);
+
+            let ind = referenceDays.indexOf(selectedDate);
+
+            $('.xdsoft_time_variant .xdsoft_time').show();
+            if(ind !== -1) {
+                $('.xdsoft_time_variant .xdsoft_time').each(function(index){
+                    if(hoursTaken[ind].indexOf($(this).text()) !== -1) {
+                        $(this).addClass('disabled');
+                        $(this).fadeTo("fast",.3);
+                        $(this).prop('disabled',true);      
+                    }
+                });
+            }
+          }
     });
 
     $('#dateTimePicker1').datetimepicker({
         format: 'd/m/Y H:i',
-        lang: 'fr'
+        locale: 'fr',
+        onGenerate:function(ct,$i){
+            let selectedDate = getFormattedDate(ct);
+
+            let ind = referenceDays.indexOf(selectedDate);
+
+            $('.xdsoft_time_variant .xdsoft_time').show();
+            if(ind !== -1) {
+                $('.xdsoft_time_variant .xdsoft_time').each(function(index){
+                    if(hoursTaken[ind].indexOf($(this).text()) !== -1) {
+                        $(this).addClass('disabled');
+                        $(this).fadeTo("fast",.3);
+                        $(this).prop('disabled',true);      
+                    }
+                });
+            }
+        }
     });
 });
 
@@ -47,7 +97,9 @@ $('#reserver1').click(function () {
         $('#reservationModal .modal-footer').addClass("d-none");
     }
     else {
+        console.log(`${demande_debut} - ${demande_fin}`);
         let demandes = getFreeDates(demande_debut, demande_fin, locations);
+        console.log(demandes);
 
         if (demandes.length == 0) {
             $('#reservationModal .liste-reservation').addClass("d-none");
@@ -59,7 +111,7 @@ $('#reserver1').click(function () {
             const options = { year: 'numeric', month: 'long', day: 'numeric', hour:'2-digit', minute:'2-digit' };
             let listes = '';
             for (const demande of demandes) {
-
+                
                 if (demande.debut == demande.fin) {
                     let fin = (new Date(demande.fin)).toLocaleDateString('fr-FR', options);
 
@@ -69,6 +121,9 @@ $('#reserver1').click(function () {
                     let debut = (new Date(demande.debut)).toLocaleDateString('fr-FR', options);
                     let fin = (new Date(demande.fin)).toLocaleDateString('fr-FR', options);
 
+                    console.log(`${demande.debut} ${demande.fin}
+                    ${debut} ${fin}`);
+                    
                     listes += `<li class="list-group-item py-1 border-0">Le <strong>${debut}</strong> jusqu'au <strong>${fin}</strong></li>`
                 }
 
@@ -85,17 +140,20 @@ $('#reserver1').click(function () {
     }
 });
 
+//Les différentes fonctions utilisées
 const getFreeDates = (demande_debut, demande_fin, locations) => {
     let demandes = [];
     let debut = demande_debut;
     let fin = demande_fin;
+    
+    console.log(`${debut} ${fin}`);
 
     let totalement_reserve = false;
 
     for (const location of locations) {
         // Date déja reservé
-        let reserve_debut = location.debut.date.slice(0, 10);;
-        let reserve_fin = location.fin.date.slice(0, 10);
+        let reserve_debut = location.debut.slice(0, 10);
+        let reserve_fin = location.fin.slice(0, 10);
 
         // La partie déja reservée se trouve à gauche
         if (reserve_fin < debut) {
@@ -132,8 +190,8 @@ const getFreeDates = (demande_debut, demande_fin, locations) => {
                 temp.setDate(temp.getDate() - 1);
 
                 let temp_fin = temp.toISOString().slice(0, 10);
-
-                demandes.push({ debut: debut, fin: temp_fin });
+                console.log(temp_fin);
+                demandes.push({ debut: debut, fin: fin });
 
                 temp = new Date(reserve_fin);
                 temp.setDate(temp.getDate() + 1);
@@ -148,3 +206,11 @@ const getFreeDates = (demande_debut, demande_fin, locations) => {
 
     return demandes;
 };
+
+function getFormattedDate(date) {
+    var day = ('0' + date.getDate()).slice(-2);
+    var month = ('0' + (date.getMonth()+1)).slice(-2);
+    var year = date.getFullYear().toString();
+
+    return `${day}/${month}/${year}`;
+}
