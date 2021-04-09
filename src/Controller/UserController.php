@@ -138,13 +138,14 @@ class UserController extends AbstractController
         /*$file = base64_encode (file_get_contents($filePath));*/
 
         $file = $_FILES['kycfile']['tmp_name'];/*$uploader->upload($request->files->get('kycfile'));*/
-
+        
         $mguId = $this->getUser()->getMangoPayId();
-
+    
         $mangoPayService->setUserMangoPayKYC($mguId,$file);
         $this->addFlash('addKYC', 'Merci ! la verification de votre compte peut prendre une semaine, une notification vous sera envoye par email .');
+        
         return $this->redirectToRoute('user_profil');
-
+        
     }
     /**
      * @Route("/{id}", name="user_show", methods={"GET"})
