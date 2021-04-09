@@ -1,7 +1,7 @@
 
 $(document).ready(function () {
 	$('#datepicker').datepicker({
-		format: 'dd/mm/yyyy',
+		format: "dd/mm/yyyy HH:MM",
 		uiLibrary: 'bootstrap4',
 		altField: "#datepicker",
 		closeText: 'Fermer',

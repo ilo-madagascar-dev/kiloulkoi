@@ -1,0 +1,17 @@
+/* sidebar */
+.main-sidebar {
+    padding: 1.25rem!important;
+    background-color: #fff!important;
+    border-radius:2px;
+    box-shadow: var(--box-shadow-lg);
+    width: 190px;
+}
+
+/* content */
+dt {
+    width: 100% !important;
+}
+
+dt .badge-secondary {
+    width: 100% !important;
+}

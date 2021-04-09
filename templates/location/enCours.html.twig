@@ -51,7 +51,7 @@
                                         {% set plusOneDay   = location.dateFin|date_modify("+24 hour") > date() %}
 
                                         {% if location.annonce.type.id == 1 %}
-                                            {% set difference = periodeTotal.hours + 1 %}
+                                            {% set difference = periodeTotal.h %}
                                         {% elseif location.annonce.type.id == 2 %}
                                             {% set difference = periodeTotal.days + 1 %}
                                         {% elseif location.annonce.type.id == 3 %}
@@ -126,7 +126,7 @@
                                             {% set plusOneDay   = location.dateFin|date_modify("+24 hour") > date() %}
 
                                             {% if location.annonce.type.id == 1 %}
-                                                {% set difference = periodeTotal.hours + 1 %}
+                                                {% set difference = periodeTotal.h is defined ? periodeTotal.h : 2 %}
                                             {% elseif location.annonce.type.id == 2 %}
                                                 {% set difference = periodeTotal.days + 1 %}
                                             {% elseif location.annonce.type.id == 3 %}
@@ -140,8 +140,15 @@
                                                     {% set slug = location.annonce.slug == '' ? 'annonces_' : location.annonce.slug %}
                                                     <a href="{{ path('annonces_show', { id: location.annonce.id, slug: slug }) }}">{{ location.annonce.titre }}</a>
                                                 </td>
+                                                
+                                                {% if location.annonce.type.id == 1 %}
+                                                <td>{{ location.dateDebut ? location.dateDebut|date('d/m/Y H:i') : '' }}</td>
+                                                <td>{{ location.dateFin ? location.dateFin|date('d/m/Y H:i') : '' }}</td>
+                                                {% else %}
                                                 <td>{{ location.dateDebut ? location.dateDebut|date('d/m/Y') : '' }}</td>
                                                 <td>{{ location.dateFin ? location.dateFin|date('d/m/Y') : '' }}</td>
+                                                {% endif %}
+
                                                 <td>{{ (difference * location.annonce.prix) |round(2, 'floor') }}€</td>
                                                 <td>{{ location.statutLocation.libelle }}</td>
                                                 <td>

@@ -1,0 +1,276 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Création temporaire d'admin{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="{{asset('css/calendrier.css')}}">
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="mt-2 mb-4 text-center">Création temporaire d'admin</h3>
+                    {{ form_start(registrationForm, {'attr': {'id': 'registration_form'}} ) }}
+
+                        {% if registrationForm.raison_social is defined %}
+                            <h4>Ajouter les détails du représentant légal</h4>
+                        {% endif %}
+
+                        {{ form_row(registrationForm.email) }}
+
+                        {% if registrationForm.raison_social is defined %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="Nomrepresentent" class="required">Nom</label>
+                                    <input type="text" name="firstname" class="form-control" required />
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="prenomrepresentant" class="required">Prénom</label>
+                                    <input type="text" name="lastname" class="form-control" required/>
+                                </div>
+                            </div><br>
+                        {% endif %}
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{ form_row(registrationForm.password.first , { 'id': 'registration_form_password_first'} )  }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(registrationForm.password.second, { 'id': 'registration_form_password_second'} ) }}
+                            </div>
+                        </div>
+
+                        {% if registrationForm.nom is defined %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {{ form_row(registrationForm.nom) }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ form_row(registrationForm.prenom) }}
+                                </div>
+                            </div>
+                        {% endif %}
+
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{ form_row(registrationForm.pseudo) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(registrationForm.genre, { 'id': 'registration_gender'}) }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="datenaissance" class="required">Date de naissance</label>
+                                <input type="text" name="datenaissance" placeholder="jj/mm/aaaa" id="datenaissance" class="form-control" required />
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(registrationForm.telephone, { 'id': 'registration_phone'} ) }}
+                            </div>
+                        </div>
+
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="region" class="required">Région</label>
+                                <input type="text" name="region" id="region" class="form-control" required/>
+                            </div>
+                        </div><br>
+                        
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{ form_row(registrationForm.ville, { 'id': 'city', 'attr': {'autocomplete': 'off'} }) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(registrationForm.cp, { 'id': 'code_postal', 'attr': {'readonly': 'on'}} ) }}
+                            </div>
+                        </div>
+
+
+                        {{ form_row(registrationForm.adresse, { 'id': 'registration_adresse'}) }}
+
+                        {% if registrationForm.raison_social is defined %}
+                            <h4>Ajouter les détails de l'entreprise</h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {{ form_row(registrationForm.raison_social) }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ form_row(registrationForm.siret, { 'id': 'registration_siret'}) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="typeidentitelegale" class="required">Type d'entité légale</label>
+                                    <select class="form-control" name="legalType" id="legalType">
+                                      <option value="BUSINESS">Entreprise</option>
+                                      <option value="ORGANIZATION">Association</option>
+                                      <option value="SOLETRADER">Auto-Entrepreneur/Entreprise individuelle</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6">
+                                    <label for="emailentreprise" class="required">Email</label>
+                                    <input type="text" name="mailEntreprise" class="form-control" required />
+                                </div>
+                            </div><br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="villeEntreprise" class="required" >Ville</label>
+                                    <input type="text" name="villeEntreprise" id="villeEntreprise" class="form-control" required="" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="codepoEntreprise" class="required">Code postal</label>
+                                    <input type="text" name="codepoEntreprise" id="codepoEntreprise" class="form-control" required />
+                                </div>
+                            </div><br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="addressEntreprise" class="required">Addresse</label>
+                                    <input type="text" name="addressEntreprise" class="form-control" required />
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="regionEntreprise" class="required">Région</label>
+                                    <input type="text" name="regionEntreprise" id="regionEntreprise" class="form-control" required />
+                                </div>
+                            </div>
+                           
+                        {% endif %}
+
+                        <div class="row m-3 text-center">
+                            <div class="col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+                                <img src="{{ asset('uploads/avatar/default-men.png') }}" alt="" class="img-fluid rounded output-image">
+                                <div>
+                                    {% do registrationForm.avatar.setRendered() %}
+
+                                    <label href="#" type="button" class="btn btn-info btn-block">
+                                        <input type="file" accept="image/*" name="{{ registrationForm.avatar.vars.full_name }}" class="d-none input-image"> Changer d'avatar
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row m-3 text-center">
+                            <div class="col-md-8 offset-md-2 col-lg-4 offset-lg-4">
+                                {% if form_errors(registrationForm.avatar) %}
+                                    <div id="image-validation" class="error-image alert alert-warning">{{ registrationForm.avatar.vars.errors | replace({"ERROR: ": ""}) }}</div>
+                                {% else %}
+                                    <div id="image-validation" class="error-image d-none alert alert-warning"></div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        {# {{ form_row(registrationForm.agreeTerms) }} #}
+
+                        <p class="text-center">( <span class="text-danger font-weight-bold">*</span> ) champs requis.</p>
+
+                        <button type="submit" class="btn btn-primary btn-block" id="btn-submit">
+                            <i class="fa fa-btn fa-user"></i> Enregistrer
+                        </button>
+                    {{ form_end(registrationForm) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+        $(document).ready(function () { /*$("#datepicker").datepicker( "option", "dateFormat", 'mmy' );*/
+        $("#datepicker").datepicker({
+           altField: "#datepicker",
+            closeText: 'Fermer',
+            prevText: 'Précédent',
+            nextText: 'Suivant',
+            currentText: 'Aujourd\'hui',
+            monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+            monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
+            dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+            dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
+            dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+            weekHeader: 'Sem.',
+            dateFormat: 'dd/mm/yy'
+        });
+
+        $('.btn-payin').click(function () {
+            var data = JSON.parse($(this).parent().parent().attr('data'));
+
+            $('#modalPayIn .carte').val(data.carte);
+            $('#modalPayIn .numero').val(data.numero);
+            $('#modalPayIn .devise').val(data.devise);
+            $('#modalPayIn .montant').val(0);
+        });
+        $('.inputcardExpirationDate').val('0120');
+
+    });
+    </script>
+    <script>
+  $( function() {
+    var availableTags = [
+      "Auvergne-Rhône-Alpes",
+      "Bourgogne-Franche-Comté",
+      "Bretagne",
+      "Centre-Val de Loire",
+      "Corse",
+      "Grand Est",
+      "Hauts-de-France",
+      "Île-de-France",
+      "Normandie",
+      "Nouvelle-Aquitaine",
+      "Occitanie",
+      "Pays de la Loire",
+      "Provence-Alpes-Côte d'Azur",
+      "Guadeloupe",
+      "Martinique",
+      "Guyane",
+      "La Réunion",
+      "Mayotte"
+    ];
+    $( "#region" ).autocomplete({
+      source: availableTags
+    });
+  } );
+  </script>
+  <script>
+  $( function() {
+    var availableTags = [
+      "Auvergne-Rhône-Alpes",
+      "Bourgogne-Franche-Comté",
+      "Bretagne",
+      "Centre-Val de Loire",
+      "Corse",
+      "Grand Est",
+      "Hauts-de-France",
+      "Île-de-France",
+      "Normandie",
+      "Nouvelle-Aquitaine",
+      "Occitanie",
+      "Pays de la Loire",
+      "Provence-Alpes-Côte d'Azur",
+      "Guadeloupe",
+      "Martinique",
+      "Guyane",
+      "La Réunion",
+      "Mayotte"
+    ];
+    $( "#regionEntreprise" ).autocomplete({
+      source: availableTags
+    });
+  } );
+  </script>
+    <script src="{{ asset('/js/inscription.js') }}"></script>
+    
+{% endblock %}

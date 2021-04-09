@@ -260,6 +260,7 @@ $(document).ready(function () {
                 const options = { year: 'numeric', month: 'long', day: 'numeric' };
                 let listes = '';
                 for (const demande of demandes) {
+                    console.log(`${demande.debut} ${demande.fin}`)
                     if (demande.debut == demande.fin) {
                         let fin = (new Date(demande.fin)).toLocaleDateString('fr-FR', options);
 
@@ -276,6 +277,7 @@ $(document).ready(function () {
                 $('#reservationModal .liste-reservation').removeClass("d-none");
                 $('#reservationModal .modal-footer').removeClass("d-none");
                 $('#reservationModal .alert').addClass("d-none");
+                console.log(JSON.stringify(demandes));
 
                 $('#input-reservation').val(JSON.stringify(demandes));
             }

@@ -141,6 +141,16 @@ class Annonces
      */
     private $urgent;
 
+    /**
+     * @ORM\Column(type="time", nullable=true)
+     */
+    private $heureDebut;
+
+    /**
+     * @ORM\Column(type="time", nullable=true)
+     */
+    private $heureFin;
+
     public function __construct()
     {
         $this->photo = new ArrayCollection();
@@ -442,6 +452,35 @@ class Annonces
         $this->urgent = $urgent;
 
         return $this;
+    }
+
+    public function getHeureDebut(): ?\DateTimeInterface
+    {
+        return $this->heureDebut;
+    }
+
+    public function setHeureDebut(?\DateTimeInterface $heureDebut): self
+    {
+        $this->heureDebut = $heureDebut;
+
+        return $this;
+    }
+
+    public function getHeureFin(): ?\DateTimeInterface
+    {
+        return $this->heureFin;
+    }
+
+    public function setHeureFin(?\DateTimeInterface $heureFin): self
+    {
+        $this->heureFin = $heureFin;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->titre;  
     }
 
 }
