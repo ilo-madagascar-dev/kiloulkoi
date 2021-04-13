@@ -65,8 +65,13 @@
                                                 {% set slug = location.annonce.slug == '' ? 'annonces_' : location.annonce.slug %}
                                                 <a href="{{ path('annonces_show', { id: location.annonce.id, slug: slug }) }}">{{ location.annonce.titre }}</a>
                                             </td>
-                                            <td>{{ location.dateDebut ? location.dateDebut|date('d/m/Y') : '' }}</td>
-                                            <td>{{ location.dateFin ? location.dateFin|date('d/m/Y') : '' }}</td>
+                                            {% if location.annonce.type.id == 1 %}
+                                                <td>{{ location.dateDebut ? location.dateDebut|date('d/m/Y H:i') : '' }}</td>
+                                                <td>{{ location.dateFin ? location.dateFin|date('d/m/Y H:i') : '' }}</td>
+                                            {% else %}
+                                                <td>{{ location.dateDebut ? location.dateDebut|date('d/m/Y') : '' }}</td>
+                                                <td>{{ location.dateFin ? location.dateFin|date('d/m/Y') : '' }}</td>
+                                            {% endif %}
                                             <td>{{ (difference * location.annonce.prix) |round(2, 'floor') }}€</td>
                                             <td>{{ location.statutLocation.libelle }}</td>
                                             <td>

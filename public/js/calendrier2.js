@@ -165,63 +165,45 @@ const getFreeDates = (demande_debut, demande_fin, locations) => {
     let demandes = [];
     let debut = demande_debut;
     let fin = demande_fin;
-
     let totalement_reserve = false;
+
+    console.log(`${demande_debut} ${demande_fin}`);
 
     for (const location of locations) {
         // Date déja reservé
-        let reserve_debut = location.debut.slice(0, 10);
-        let reserve_fin = location.fin.slice(0, 10);
+        let reserve_debut = location.debut.slice();
+        let reserve_fin = location.fin.slice();
 
-        // La partie déja reservée se trouve à gauche
-        if (reserve_fin < debut) {
-            continue;
-        }
+        console.log(`${reserve_debut} ${reserve_fin}`);
+        //split début des dates réservées
+        let reserve_debut_split = reserve_debut.split(" ");
+        let reserve_debut_split1 = reserve_debut_split[0].split("/");
+        let reserve_debut_split2 = reserve_debut_split[1].split(":");
 
-        // La partie déja reservée se trouve à droite
-        else if (fin < reserve_debut) {
-            // demandes.push({debut: debut, fin: fin});
-            break;
-        }
+        //split fin des dates réservées
+        let reserve_fin_split = reserve_fin.split(" ");
+        let reserve_fin_split1 = reserve_fin_split[0].split("/");
+        let reserve_fin_split2 = reserve_fin_split[1].split(":");
 
-        // La demande est totalement inclus dans la partie déja reservée
-        else if (reserve_debut <= debut && fin <= reserve_fin) {
-            console.log('Totalement impossible');
+        //Création des objets Date()
+        reserve_debut = new Date(reserve_debut_split1[2], reserve_debut_split1[1] -1, reserve_debut_split1[0], reserve_debut_split2[0], reserve_debut_split2[1]);
+        reserve_fin = new Date(reserve_fin_split1[2], reserve_fin_split1[1] -1, reserve_fin_split1[0], reserve_fin_split2[0], reserve_fin_split2[1]);
+        console.log(reserve_debut);
+        console.log(reserve_fin);
+
+        
+        if (reserve_debut <= debut &&  fin <= reserve_fin) {
             totalement_reserve = true;
             break;
         }
-        else {
-            if (reserve_debut <= debut && reserve_fin < fin) {
-                let temp = new Date(reserve_fin);
-                temp.setDate(temp.getDate() + 1);
-
-                debut = temp.toISOString().slice(0, 10);
-            }
-            else if (reserve_debut < fin && fin <= reserve_fin) {
-                let temp = new Date(reserve_debut);
-                temp.setDate(temp.getDate() - 1);
-
-                fin = temp.toISOString().slice(0, 10);
-            }
-            else {
-                let temp = new Date(reserve_debut);
-                temp.setDate(temp.getDate() - 1);
-
-                let temp_fin = temp.toISOString().slice(0, 10);
-                console.log(temp_fin);
-                demandes.push({ debut: debut, fin: fin });
-
-                temp = new Date(reserve_fin);
-                temp.setDate(temp.getDate() + 1);
-
-                debut = temp.toISOString().slice(0, 10);
-            }
-        }
     };
 
-    if (debut <= fin && !totalement_reserve)
+    //alert(totalement_reserve);
+    
+    if (totalement_reserve != true){
         demandes.push({ debut: debut, fin: fin });
-
+    }
+    
     return demandes;
 };
 
