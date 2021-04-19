@@ -10,13 +10,24 @@ $(document).ready(function () {
         let beginningDay = location.debut.split(' ')[0];
         let beginningHour = location.debut.split(' ')[1];
         let endHour = location.fin.split(' ')[1];
+        
+        console.log(endHour);
+        //formattage de la date de fin
+        let endHourHour =  parseInt(endHour.split(':')[0]) - 1;
+        let endHourMinutes =  59;
+        
+        endHour = new Date();
+        endHour.setHours(endHourHour, endHourMinutes);  
+        endHour = getFormattedHoursMinutes(endHour);
+        //fin du formattage de la date de fin
+
         referenceDays.push(beginningDay);
         hoursTaken.push([beginningHour, endHour]);
         //console.log(`${beginningDay} ${beginningHour} ${endHour}`)
     }
 
     //console.log(referenceDays);
-    //console.log(hoursTaken);
+    console.log(`hours taken : ${hoursTaken}`);
  
     $.datetimepicker.setLocale('fr');
 
@@ -213,6 +224,14 @@ function getFormattedDate(date) {
     let year = date.getFullYear().toString();
 
     return `${day}/${month}/${year}`;
+}
+
+function getFormattedHoursMinutes(date) {
+    console.log(date);
+    let hour = ('0' + date.getHours()).slice(-2);
+    let minutes = ('0' + (date.getMinutes())).slice(-2);
+
+    return `${hour}:${minutes}`;
 }
 
 function getAllIndexes(arr, val) {
