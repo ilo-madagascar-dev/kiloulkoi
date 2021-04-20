@@ -97,6 +97,21 @@
     margin-bottom: unset;
 }
 
+    .infoMessageContainer {
+        height: 200px;
+        position: relative;
+    }
+  
+    .vertical-center {
+        /* background-color: #00cd9c;*/
+        margin: 0;
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+
 @media screen and (max-width:1024px) {
     .sous-categorie-text {
         display: none;

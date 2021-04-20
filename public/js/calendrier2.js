@@ -229,6 +229,9 @@ const getFreeDates = (demande_debut, demande_fin, locations) => {
         } else if(reserve_debut <= debut &&  debut < reserve_fin){
             totalement_reserve = true;
             break;
+        } else if(reserve_debut < fin &&  fin < reserve_fin){
+            totalement_reserve = true;
+            break;
         } else if(reserve_debut.getTime() == debut.getTime()){
             totalement_reserve = true;
             break;
