@@ -156,7 +156,7 @@ class LocationController extends AbstractController
             if ($etat == "accepter") {
                 $periodeTotal = date_diff($location->getDateDebut(), $location->getDateFin());
                 if ($annonce->getType()->getId() == 1) {
-                    $difference = $periodeTotal->format('%h') + 1;
+                    $difference = $periodeTotal->format('%h');
                 } elseif ($annonce->getType()->getId() == 2) {
                     $difference = $periodeTotal->format('%a') + 1;
                 } elseif ($annonce->getType()->getId() == 3) {

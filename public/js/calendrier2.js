@@ -11,7 +11,6 @@ $(document).ready(function () {
         let beginningHour = location.debut.split(' ')[1];
         let endHour = location.fin.split(' ')[1];
         
-        console.log(endHour);
         //formattage de la date de fin
         let endHourHour =  parseInt(endHour.split(':')[0]) - 1;
         let endHourMinutes =  59;
@@ -54,7 +53,12 @@ $(document).ready(function () {
                 }  
             }
 
-        }
+        },
+        disableTimeRanges: [
+            ['1:00am', '5:00am'],
+            ['11:00am', '12:00pm'],
+            ['4:30pm', '5:30pm']
+          ]
     });
 
     $('#dateTimePicker1').datetimepicker({
@@ -146,6 +150,7 @@ $('#reserver1').click(function () {
                     listes += `<li class="list-group-item py-1 border-0">Le <strong>${fin}</strong></li>`
                 }
                 else {
+                    
                     let debut = (new Date(demande.debut)).toLocaleDateString('fr-FR', options);
                     let fin = (new Date(demande.fin)).toLocaleDateString('fr-FR', options);
 
@@ -178,14 +183,11 @@ const getFreeDates = (demande_debut, demande_fin, locations) => {
     let fin = demande_fin;
     let totalement_reserve = false;
 
-    console.log(`${demande_debut} ${demande_fin}`);
-
     for (const location of locations) {
         // Date déja reservé
         let reserve_debut = location.debut.slice();
         let reserve_fin = location.fin.slice();
 
-        console.log(`${reserve_debut} ${reserve_fin}`);
         //split début des dates réservées
         let reserve_debut_split = reserve_debut.split(" ");
         let reserve_debut_split1 = reserve_debut_split[0].split("/");
@@ -199,14 +201,16 @@ const getFreeDates = (demande_debut, demande_fin, locations) => {
         //Création des objets Date()
         reserve_debut = new Date(reserve_debut_split1[2], reserve_debut_split1[1] -1, reserve_debut_split1[0], reserve_debut_split2[0], reserve_debut_split2[1]);
         reserve_fin = new Date(reserve_fin_split1[2], reserve_fin_split1[1] -1, reserve_fin_split1[0], reserve_fin_split2[0], reserve_fin_split2[1]);
-        console.log(reserve_debut);
-        console.log(reserve_fin);
 
-        
+
         if (reserve_debut <= debut &&  fin <= reserve_fin) {
             totalement_reserve = true;
             break;
+        } else if(reserve_debut.getTime() == debut.getTime()){
+            totalement_reserve = true;
+            break;
         }
+            
     };
 
     //alert(totalement_reserve);
