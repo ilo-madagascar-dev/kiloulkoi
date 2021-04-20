@@ -8,37 +8,45 @@ $(document).ready(function () {
 
     for (const location of locations) {
         let beginningDay = location.debut.split(' ')[0];
-        let beginningHour = location.debut.split(' ')[1];
+        let beginningHour = location.debut.split(' ')[1]; //Ne pas supprimer ou modifier cette variable car elle est réutilisée plus bas
         let endHour = location.fin.split(' ')[1];
         
         console.log(`Heure de début : ${beginningHour}`);
 
-        //formattage de la date de début
-        let beginningHourHour = parseInt(beginningHour.split(':')[0]);
-        //formattage de la date de début
+        //formattage de la date de début et de fin sélectionnnables
+        let beginningHourSelectable = parseInt(beginningHour.split(':')[0]);
+        let beginningHourMinutes =  01;
+        let fullbeginningHourSelectable;
 
-        //formattage de la date de fin
         let endHourHour =  parseInt(endHour.split(':')[0]) - 1;
         let endHourMinutes =  59;
         
+        beginningHour = new Date();
+        beginningHour.setHours(beginningHourSelectable, beginningHourMinutes);  
+        beginningHour = getFormattedHoursMinutes(beginningHour);
+
+        console.log(beginningHour);
+
         endHour = new Date();
         endHour.setHours(endHourHour, endHourMinutes);  
         endHour = getFormattedHoursMinutes(endHour);
         //fin du formattage de la date de fin
 
         //Recherche et insertion des différentes heures comprises entre les heures de début et de fin des réservations
-        //let minutesBetween = '00';    
-        let beginningAnEndHour = [beginningHour, endHour]
+        
+        let beginningHourHour = parseInt(beginningHour.split(':')[0]) + 1;//C'est l'heure d'après qui ne peut pas être sélectionnée. Si la "location" commence à 08:00 quelqu'un devrait toutefois être capable de sélectionner 08:00 comme heure de fin 
+
+        let beginningAndEndHour = [beginningHour, endHour]
 
         for (let index = beginningHourHour; index <= endHourHour; index++) {
             let hourBetween = ('0' + index).slice(-2);
             let fullHourBetween = `${hourBetween}:00`;
-            beginningAnEndHour.push(fullHourBetween);
+            beginningAndEndHour.push(fullHourBetween);
         }
         //Recherche et insertion des différentes heures comprises entre les heures de début et de fin des réservations
 
         referenceDays.push(beginningDay);
-        hoursTaken.push(beginningAnEndHour);
+        hoursTaken.push(beginningAndEndHour);
         //console.log(`${beginningDay} ${beginningHour} ${endHour}`)
     }
 
@@ -222,6 +230,9 @@ const getFreeDates = (demande_debut, demande_fin, locations) => {
             totalement_reserve = true;
             break;
         } else if(reserve_debut.getTime() == debut.getTime()){
+            totalement_reserve = true;
+            break;
+        } else if(debut < reserve_debut &&  reserve_fin <= fin){
             totalement_reserve = true;
             break;
         }
