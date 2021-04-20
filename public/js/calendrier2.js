@@ -11,6 +11,12 @@ $(document).ready(function () {
         let beginningHour = location.debut.split(' ')[1];
         let endHour = location.fin.split(' ')[1];
         
+        console.log(`Heure de début : ${beginningHour}`);
+
+        //formattage de la date de début
+        let beginningHourHour = parseInt(beginningHour.split(':')[0]);
+        //formattage de la date de début
+
         //formattage de la date de fin
         let endHourHour =  parseInt(endHour.split(':')[0]) - 1;
         let endHourMinutes =  59;
@@ -20,8 +26,19 @@ $(document).ready(function () {
         endHour = getFormattedHoursMinutes(endHour);
         //fin du formattage de la date de fin
 
+        //Recherche et insertion des différentes heures comprises entre les heures de début et de fin des réservations
+        //let minutesBetween = '00';    
+        let beginningAnEndHour = [beginningHour, endHour]
+
+        for (let index = beginningHourHour; index <= endHourHour; index++) {
+            let hourBetween = ('0' + index).slice(-2);
+            let fullHourBetween = `${hourBetween}:00`;
+            beginningAnEndHour.push(fullHourBetween);
+        }
+        //Recherche et insertion des différentes heures comprises entre les heures de début et de fin des réservations
+
         referenceDays.push(beginningDay);
-        hoursTaken.push([beginningHour, endHour]);
+        hoursTaken.push(beginningAnEndHour);
         //console.log(`${beginningDay} ${beginningHour} ${endHour}`)
     }
 
@@ -53,12 +70,7 @@ $(document).ready(function () {
                 }  
             }
 
-        },
-        disableTimeRanges: [
-            ['1:00am', '5:00am'],
-            ['11:00am', '12:00pm'],
-            ['4:30pm', '5:30pm']
-          ]
+        }
     });
 
     $('#dateTimePicker1').datetimepicker({
@@ -161,7 +173,7 @@ $('#reserver1').click(function () {
                 }
 
             console.log(JSON.stringify(demandes));
-
+            
             }
             $('#reservationModal .liste-reservation .list-group').html(listes);
             $('#reservationModal .liste-reservation').removeClass("d-none");
@@ -204,6 +216,9 @@ const getFreeDates = (demande_debut, demande_fin, locations) => {
 
 
         if (reserve_debut <= debut &&  fin <= reserve_fin) {
+            totalement_reserve = true;
+            break;
+        } else if(reserve_debut <= debut &&  debut < reserve_fin){
             totalement_reserve = true;
             break;
         } else if(reserve_debut.getTime() == debut.getTime()){
