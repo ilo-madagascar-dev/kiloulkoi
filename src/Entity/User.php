@@ -614,4 +614,9 @@ class User implements UserInterface
         return $this->pseudo;
     }
 
+    public function getClassName()
+    {
+        return (new \ReflectionClass($this))->getShortName();
+    }
+
 }
