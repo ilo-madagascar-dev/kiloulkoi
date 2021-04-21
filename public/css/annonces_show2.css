@@ -1,4 +1,8 @@
 /* Affichage des icones favoris et partage */
+.ads-icons-container{
+    margin-top: 0.7rem;
+}
+
 .fa-heart, .fa-share-alt {
     width:2.57rem;
     font-size: 1.7rem;
@@ -139,9 +143,9 @@
 
 @media screen and (max-width:576px) {
     /* card des infos de l'annonce */
-    .ad-show-card {
+    /* .ad-show-card {
         margin-top: 2.3333rem;
-    }
+    } */
     
     /* partie icônes */
     .kiloukoi-show-icons {

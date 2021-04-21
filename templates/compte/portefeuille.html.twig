@@ -58,22 +58,22 @@
 							<table class="table">
 								<thead>
 									<tr>
-										<th>Numeros</th>
-										<th>Fournisseurs</th>
-										<th>Code</th>
-										<th>Pays</th>
-										<th>Approvisionner mon portefeuille</th>
-										<th>Action</th>
+										<th class="text-center">Numeros</th>
+										<th class="text-center">Fournisseurs</th>
+										<th class="text-center">Code</th>
+										<th class="text-center">Pays</th>
+										<th class="text-center">Approvisionner mon portefeuille</th>
+										<th class="text-center">Action</th>
 									</tr>
 								</thead>
 								<tbody>
 									{% for carte in cards %}
 										{% if carte.Active == true %}
 											<tr data="{{ {carte: carte.Id, numero: carte.Alias, devise: carte.Currency }|json_encode() }}">
-												<td>{{carte.Alias}}</td>
-												<td>{{carte.CardProvider}}</td>
-												<td>{{carte.BankCode}}</td>
-												<td>{{carte.Country}}</td>
+												<td class="text-center">{{carte.Alias}}</td>
+												<td class="text-center">{{carte.CardProvider}}</td>
+												<td class="text-center">{{carte.BankCode}}</td>
+												<td class="text-center">{{carte.Country}}</td>
 												<td class="text-center">
 													<button class="btn btn-sm btn-primary btn-payin" data-toggle="modal" data-target="#modalPayIn">
 														<i class="fa fa-download"></i>
@@ -125,8 +125,9 @@
 									<tr>
 										{# <th>Proprietaire</th>
 										<th>Description</th> #}
-										<th>Montant</th>
-										<th>Transférer vers mon compte bancaire</th>
+										<th class="text-center w-50">Montant</th>
+										<th class="text-center w-50">Transférer vers mon compte bancaire</th>
+										{# <th class="text-white" style="width:40%;"></th> #}
 									</tr>
 								</thead>
 								<tbody>
@@ -134,9 +135,9 @@
 										<tr>
 											{# <td>{{ proprietaire }}</td>
 											<td>{{ portfelle.Description }}</td> #}
-											<td>{{ portfelle.Balance.Amount/100 }}
+											<td class="text-center">{{ portfelle.Balance.Amount/100 }}
 												{{portfelle.Currency}}</td>
-											<td>
+											<td class="text-center">
 												{% if app.session.get('type') == "PAYOUT" %}
 													<button class="btn btn-sm btn-success" title="Accepter" disabled>
 														<i class="fa fa-bank"></i>Réussit
@@ -178,25 +179,25 @@
 							<table class="table">
 								<thead>
 									<tr>
-										<th>Type</th>
-										<th>Code d' identité bancaire</th>
-										<th>Numéros (IBAN)</th>
-										<th>Statut</th>
-										<th>Date de création</th>
+										<th class="text-center">Type</th>
+										<th class="text-center">Code d' identité bancaire</th>
+										<th class="text-center">Numéros (IBAN)</th>
+										<th class="text-center">Statut</th>
+										<th class="text-center">Date de création</th>
 									</tr>
 								</thead>
 								<tbody>
 									{% for res in listBankAccount %}
 									<tr>
-										<td>{{ res.Type }}</td>
-										<td>{{ res.Details.BIC }}</td>
-										<td>{{ res.Details.IBAN }}</td>
+										<td class="text-center">{{ res.Type }}</td>
+										<td class="text-center">{{ res.Details.BIC }}</td>
+										<td class="text-center">{{ res.Details.IBAN }}</td>
 										{% if res.Active == true %}
-										<td>Activé</td>
+										<td class="text-center">Activé</td>
 										{% else %}
-										<td>Desactivé</td>
+										<td class="text-center">Desactivé</td>
 										{% endif %}
-										<td>{{ res.CreationDate |date("d/m/Y") }}</td>
+										<td class="text-center">{{ res.CreationDate |date("d/m/Y") }}</td>
 									</tr>
 									{% endfor %}
 								</tbody>

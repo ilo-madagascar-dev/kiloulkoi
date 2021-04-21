@@ -139,6 +139,6 @@ $(document).ready( function()
 			</a>			
 		`;
 
-		$('.notifications-container .list-group').append(html);
+		$('.notifications-container .list-group').prepend(html);
 	}
 });

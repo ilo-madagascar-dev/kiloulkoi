@@ -93,7 +93,7 @@
 																</div>
 															{% endif %}
 															<div class="col-lg-4 col-md-4 col-sm-4 col-6 mt-2 proprietary-name">
-																<a class="" href="{{ path('proprietaire_annonce', {proprietaire: annonce.user.id, pseudo: annonce.user.pseudo}) }}"><small>{{ annonce.user.pseudo }}</small></a>
+																<a class="" href="{{ path('proprietaire_annonce', {proprietaire: annonce.user.id, pseudo: annonce.user.pseudo}) }}"><small>{{ annonce.user.pseudo }} </small></a>
 															</div>
 															<div class="col-lg-2 col-md-3 col-sm-4 col-4 px-2 py-2 date-ad text-right">
 																<small class="text-muted">{{ annonce.dateModification | date("d/m/Y") }}</small>
