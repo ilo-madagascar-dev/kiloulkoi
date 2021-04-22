@@ -43,3 +43,9 @@ label.star:before {
     content: '\f006';
     font-family: FontAwesome
 }
+
+/* bouton ajouter un commentaire */
+.btn-message {
+    background-color: #009cb5 !important;
+    border: 1px solid #009cb5;
+}
