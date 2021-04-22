@@ -1,5 +1,5 @@
 div.stars {
-    width: 270px;
+   /*width: 270px;*/
     display: inline-block
 }
 
@@ -12,11 +12,12 @@ input.star {
 }
 
 label.star {
-    float: right;
+    float: left;
     padding: 10px;
     font-size: 36px;
     color: var(--warning);
-    transition: all .2s
+    transition: all .2s;
+    text-align: center !important;
 }
 
 input.star:checked~label.star:before {
