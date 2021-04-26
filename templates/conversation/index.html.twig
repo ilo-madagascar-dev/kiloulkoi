@@ -40,8 +40,10 @@
 											<div class="media-body ml-3">
 												<div class="d-flex align-items-center justify-content-between mb-0">
 													{% if conversation.user1.id == app.user.id %}
+														<!-- h6 class="mb-0" style="font-weight: bold;">{# conversation.user2.nomComplet }#}</h6 -->
 														<h6 class="mb-0" style="font-weight: bold;">{{ conversation.user2.nomComplet }}</h6>
 													{% else %}
+														<!-- h6 class="mb-0" style="font-weight: bold;">{#{ conversation.user1.nomComplet }#}</h6 -->
 														<h6 class="mb-0" style="font-weight: bold;">{{ conversation.user1.nomComplet }}</h6>
 													{% endif %}
 													<small style="font-size: 60%;" class="conversation-date">{{ conversation.messages[0].date | date("d/m/Y | H:m") }}</small>
@@ -73,7 +75,7 @@
 					class="col-12 col-md-7 col-lg-8">
 					{# Reciever name #}
 					<div class="conversation-conatainer">
-						<div class="row border-bottom border-secondary">
+						<div class="{#row#} border-bottom border-secondary bg-primary" id="messages-header">
 							<div class="media py-2 col-6">
 								<img src="{{ asset('uploads/avatar/') ~ destinataire.avatar }}" alt="user" width="40" height="40" class="rounded-circle bg-white ml-3">
 

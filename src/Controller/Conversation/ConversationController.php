@@ -7,6 +7,7 @@ use App\Entity\Conversation;
 use App\Entity\Message;
 use App\Entity\User;
 use App\Repository\ConversationRepository;
+use App\Repository\LocationRepository;
 use App\Repository\MessageRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,11 +25,13 @@ class ConversationController extends AbstractController
 {
     private $conversationRepo;
     private $messageRepo;
+    private $locationsRepository;
 
-    public function __construct(ConversationRepository $conversationRepository, MessageRepository $messageRepository)
+    public function __construct(ConversationRepository $conversationRepository, MessageRepository $messageRepository, LocationRepository $locationsRepository)
     {
         $this->conversationRepo = $conversationRepository;
         $this->messageRepo      = $messageRepository;
+        $this->locationsRepository = $locationsRepository;
     }
 
     /**
@@ -189,6 +192,7 @@ class ConversationController extends AbstractController
             'conversationEncours' => $conversationEncours,
             'messages'            => $messages,                               // Messages de la conversation en cours
             'location'            => $conversationEncours->getLocations()[0], // Location raccorder à la conversation en cours
+            'locations'            => $conversationEncours->getLocations(), // Location raccorder à la conversation en cours
             'destinataire'        => $destinataire,                            // Déstinataire des messages de la conversation en cours
             'mercureHubUrlDeux' => $mercureHubUrlDeux,
             'mercureGeneralSubscriberUrl' => $mercureGeneralSubscriberUrl
