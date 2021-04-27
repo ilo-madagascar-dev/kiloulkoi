@@ -10,7 +10,8 @@ center {
 .conversation-conatainer {
    background: #fff;
    border-radius: 12px;
-   background: linear-gradient(#009CB5, #00CD9C 60% );
+   /* background: linear-gradient(#009CB5, #00CD9C 60% );*/
+   background:white;
    /* overflow: hidden; */
    font-size: 80%;
 }

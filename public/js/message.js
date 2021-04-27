@@ -33,7 +33,7 @@ $(document).ready(function () {
             var template = `
                 <div class="media w-50 ml-auto">
                     <div class="media-body mb-2">
-                        <div class="bg-primary rounded py-2 px-3 shadow">
+                        <div class="bg-primary rounded py-2 px-3">
                             <p class="text-small mb-0 text-white">${nl2br(message.content)}</p>
                         </div>
                         <small class="small">${message.date}</small>
@@ -78,8 +78,8 @@ $(document).ready(function () {
                 <div class="media w-50">
                     <img src="${message.user.avatar}" alt="user" width="40" height="40" class="rounded-circle bg-white">
                     <div class="media-body mb-2 ml-3">
-                        <div class="bg-light rounded py-2 px-3 shadow">
-                            <p class="text-small mb-0 text-muted">${nl2br(message.content)}</p>
+                        <div class="rounded py-2 px-3" style="background:#e4e6eb;">
+                            <p class="text-small mb-0 text-muted" style="color:#050505 !important;">${nl2br(message.content)}</p>
                         </div>
                         <small class="small">${message.date}</small>
                     </div>
