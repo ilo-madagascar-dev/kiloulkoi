@@ -14,6 +14,12 @@
         <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
             <div class="card">
                 <div class="card-body">
+                    {% for message in app.flashes('danger') %}
+                        <div class="alert alert-danger text-center">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+
                     {{ form_start(registrationForm, {'attr': {'id': 'registration_form'}} ) }}
 
                         {% if registrationForm.raison_social is defined %}
@@ -169,8 +175,12 @@
                         {# {{ form_row(registrationForm.agreeTerms) }} #}
 
                         <p class="text-center">( <span class="text-danger font-weight-bold">*</span> ) champs requis.</p>
-
-                        <button type="submit" class="btn btn-primary btn-block" id="btn-submit">
+                        
+                        <div class="text-center">
+                            <div class="g-recaptcha m-auto mb-2" data-sitekey="6LeTOb0aAAAAAJzX2wBxQEwMNOPX8GNcTmtFjZGD" style="width:305px;"></div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-block mt-3" id="btn-submit">
                             <i class="fa fa-btn fa-user"></i> Enregistrer
                         </button>
                     {{ form_end(registrationForm) }}
@@ -270,6 +280,6 @@
     });
   } );
   </script>
-    <script src="{{ asset('/js/inscription.js') }}"></script>
-    
+  <script src="{{ asset('/js/inscription.js') }}"></script>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 {% endblock %}

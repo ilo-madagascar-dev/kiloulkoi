@@ -18,6 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Service\FileUploader;
 use App\Service\MangoPayService;
 use App\Service\PaginationService;
+use Symfony\Component\Serializer\Encoder\JsonDecode;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
@@ -244,8 +245,40 @@ class AnnoncesController extends AbstractController
         $annonce  = new $class();
         $form     = $this->createForm($formType, $annonce);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
+            //Vérification du recaptcha
+            if (empty($request->request->get('recaptcha-response'))) {
+                $this->addFlash('danger', 'Recaptcha non réussi. ');
+                return $this->redirectToRoute('annonces_new');
+            } 
+
+            $url = "https://www.google.com/recaptcha/api/siteverify?secret=6Ldp1rsaAAAAADqb1lU9TtNarXTVYCRM_nB92fCY&response={$request->request->get('recaptcha-response')}";
+            if (function_exists('curl_version')) {
+                $curl = curl_init($url);
+                curl_setopt($curl, CURLOPT_HEADER, false);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($curl, CURLOPT_TIMEOUT, 1);
+                curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+                $response = curl_exec($curl);
+            } else {
+                $response = file_get_contents($url);
+            }
+
+            if (empty($response) || is_null($response)) {
+                $this->addFlash('danger', 'Recaptcha non réussi. ');
+                return $this->redirectToRoute('annonces_new');
+            }
+
+            $data = json_decode($response);
+
+            if ($data->success === false) {
+                $this->addFlash('danger', 'Recaptcha non réussi. ');
+                return $this->redirectToRoute('annonces_new');
+            }
+            
             $photos = $form->get('photo')->getData();
+
             foreach ($photos as $photo) {
                 if ($photo->getFile()) {
                     $fileName = $fileUploader->upload($photo->getFile());

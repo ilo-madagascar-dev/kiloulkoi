@@ -76,6 +76,18 @@ class AuthController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid() )
         {
+            //Vérification du captcha
+            $response = false;
+
+            if (!empty($request->request->get('g-recaptcha-response'))) { 
+                $response = true;
+            }
+
+            if($response !== true){
+                $this->addFlash('danger', 'Recaptcha invalide');
+                return $this->redirectToRoute('app_register', ['type' => $type]);
+            }
+
             // encode the plain password
             $user->setPassword(
                 $passwordEncoder->encodePassword(

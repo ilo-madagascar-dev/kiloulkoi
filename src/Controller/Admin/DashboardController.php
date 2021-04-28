@@ -6,6 +6,7 @@ use App\Entity\Annonces;
 use App\Entity\Categories;
 use App\Entity\Conversation;
 use App\Entity\Location;
+use App\Entity\Note;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,6 +45,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Conversations', 'fas fa-comment', Conversation::class);
         yield MenuItem::section('Utilisateurs');
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-user', User::class);
+        yield MenuItem::linkToCrud('Notes', 'fas fa-sticky-note', Note::class);
     }
 
     public function configureAssets(): Assets
