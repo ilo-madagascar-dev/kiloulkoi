@@ -102,10 +102,20 @@
 			<div class="col-lg-10 offset-lg-1 col-md-12 mb-1 mt-3">
 				<div class="card p-3 shadow">
 					<div class="card-body py-0 px-0 px-md-3">
+						{% for message in app.flashes('danger') %}
+							<div class="alert alert-danger">
+								{{ message }}
+							</div>
+						{% endfor %}
+						{% for message in app.flashes('success') %}
+							<div class="alert alert-success">
+								{{ message }}
+							</div>
+						{% endfor %}
 						<form
 							action="{{ path('annonces_filter') }}" method="post">
 							<!-- h1 class="text-primary py-3 text-center" >Recherche d'annonces</h1 -->
-
+						
 							<div class="row row_for_fields mt-4">
 								<div class="form-group col-12 col-md-6">
 									<input

@@ -2,27 +2,30 @@
 
 namespace App\Controller\Auth;
 
+use App\Entity\User;
 use App\Entity\Particulier;
 use App\Entity\Professionnel;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Form\ParticulierType;
+use App\Service\FileUploader;
+use App\Form\ProfessionnelType;
+use App\Service\MangoPayService;
+use App\Form\RegistrationFormType;
+use App\Repository\UserRepository;
+
+use App\Security\UserAuthenticator;
+use Symfony\Component\Mime\Address;
+use App\Repository\ProfessionnelRepository;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
-
-use App\Entity\User;
-use App\Form\ParticulierType;
-use App\Form\ProfessionnelType;
-use App\Form\RegistrationFormType;
-use App\Repository\ProfessionnelRepository;
-use App\Repository\UserRepository;
-use App\Security\UserAuthenticator;
-use App\Service\FileUploader;
-use App\Service\MangoPayService;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AuthController extends AbstractController
 {
@@ -54,7 +57,7 @@ class AuthController extends AbstractController
     /**
      * @Route("/inscription/{type}", name="app_register")
      */
-    public function register(Request $request, string $type, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, UserAuthenticator $authenticator, FileUploader $uploader, MangoPayService $mangoPayService): Response
+    public function register(Request $request, string $type, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, UserAuthenticator $authenticator, FileUploader $uploader, MangoPayService $mangoPayService, MailerInterface $mailer): Response
     {
         if ($this->getUser())
         {
@@ -166,11 +169,27 @@ class AuthController extends AbstractController
 
             $user->setMangoPayId( $mangoPayUserId );
 
+            //Génération du token d'activation
+            $token = md5(uniqid());
+            $user->setActivationToken($token);
+            //Fin de la génération du token d'activation
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
 
+            //Envoi du mail avec le token
+            $email = (new TemplatedEmail())
+            ->from(new Address('njanahary46@gmail.com', 'Kiloukoi'))
+            ->to($user->getEmail())
+            ->subject('Activation de compte')
+            ->htmlTemplate('security/account_activation/email.html.twig')
+            ->context([
+                'token' => $token
+            ]);
 
+            $mailer->send($email);
+            
             return $guardHandler->authenticateUserAndHandleSuccess(
                 $user,
                 $request,
@@ -304,5 +323,27 @@ class AuthController extends AbstractController
         return $this->render('security/adminExample.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/activation/{token}", name="activation")
+     */
+    public function accountActivation($token, UserRepository $userRepo){
+        //Activation de compte
+        $user = $userRepo->findOneBy(['activation_token' => $token]);
+
+        if (!$user) {
+            throw $this->createNotFoundException('Aucun compte avec ce token n\'existe');
+        }
+
+        $user->setActivationToken(null);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Vous avez bien activé votre compte');
+
+        return $this->redirectToRoute('accueil');
     }
 }

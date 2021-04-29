@@ -162,6 +162,11 @@ class User implements UserInterface
      * @ORM\Column(type="float", nullable=true)
      */
     private $moyenneNotes;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $activation_token;
     
     public function __construct()
     {
@@ -668,6 +673,18 @@ class User implements UserInterface
     public function setMoyenneNotes(?float $moyenneNotes): self
     {
         $this->moyenneNotes = $moyenneNotes;
+
+        return $this;
+    }
+
+    public function getActivationToken(): ?string
+    {
+        return $this->activation_token;
+    }
+
+    public function setActivationToken(?string $activation_token): self
+    {
+        $this->activation_token = $activation_token;
 
         return $this;
     }

@@ -23,6 +23,11 @@ class AccueilController extends AbstractController
      */
     public function index(Request $request, AnnoncesRepository $repAnnonce, CategoriesRepository $repCategorie, TypeLocationRepository $ReptypeLocation, PaginationService $paginator, SessionInterface $session, MangoPayService $mangoPayService)
     {
+        if($this->getUser() && $this->getUser()->getActivationToken() != null){
+            $this->addFlash('danger', 'Vous devez d\'abord cliquer sur le lien d\'activation de compte dans votre email.');
+            return $this->redirectToRoute('security_logout');
+        }
+
         $categories = $repCategorie->findAllWithSousCategorie();
         $types      = $ReptypeLocation->findAllOrd();
         $query      = $repAnnonce->findAllAnnonces();
