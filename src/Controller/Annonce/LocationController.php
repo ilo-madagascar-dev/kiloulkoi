@@ -9,6 +9,7 @@ use App\Entity\StatutLocation;
 use App\Form\LocationType;
 use App\Repository\AnnoncesRepository;
 use App\Repository\LocationRepository;
+use App\Repository\NoteRepository;
 use App\Repository\StatutLocationRepository;
 use App\Service\MangoPayService;
 use App\Service\NotificationService;
@@ -51,8 +52,12 @@ class LocationController extends AbstractController
     /**
      * @Route("/en-cours", name="location_en_cours", methods={"GET"})
      */
-    public function enCours(LocationRepository $locationRepository): Response
+    public function enCours(LocationRepository $locationRepository, NoteRepository $noteRepository): Response
     {
+        /* $noteUser = $noteRepository->findBy(['destinataire' => $this->getUser()]);
+
+        dd($noteUser); */
+
         return $this->render('location/enCours.html.twig', [
             'mesBiens'    => $locationRepository->findMesBiens($this->getUser()->getId()),
             'mesEmprunts' => $locationRepository->findMesEmprunts($this->getUser()->getId()),
@@ -211,7 +216,7 @@ class LocationController extends AbstractController
     /**
      * @Route("/note/{location}", name="location_comment", methods={"POST"})
      */
-    public function comment(Request $request, Location $location): Response
+    public function comment(Request $request, Location $location, NoteRepository $noteRepository): Response
     {
         $user = $this->getUser();
 
@@ -219,13 +224,31 @@ class LocationController extends AbstractController
             $valeur  = intval($request->request->get('note'));
             $comment = $request->request->get('commentaire');
             $em      = $this->getDoctrine()->getManager();
+            $annonceProprietaire = $location->getAnnonce()->getUser();
 
             $note = new Note();
+
             $note->setValeur($valeur);
             $note->setCommentaire($comment);
             $note->setLocation($location);
+            $note->setDestinataire($annonceProprietaire);
 
             $em->persist($note);
+            $em->flush();
+
+            $notesPrestataireAll = $noteRepository->findBy(['destinataire' => $annonceProprietaire]);       
+            $nombreTotalDeNotes = count($notesPrestataireAll);
+            $totalNotes = 0;
+
+            foreach ($notesPrestataireAll as $note) {
+                $totalNotes += $note->getValeur();
+            }
+
+            $averageRating = $totalNotes/$nombreTotalDeNotes;
+
+            $annonceProprietaire->setMoyenneNotes($averageRating);
+
+            $em->persist($annonceProprietaire);
             $em->flush();
         }
 

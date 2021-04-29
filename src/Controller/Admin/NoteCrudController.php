@@ -23,7 +23,8 @@ class NoteCrudController extends AbstractCrudController
             IdField::new('id'),
             AssociationField::new('location'),
             NumberField::new('valeur'),
-            TextField::new('commentaire')
+            TextField::new('commentaire'),
+            AssociationField::new('destinataire')
         ];
     }
 }

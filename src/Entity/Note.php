@@ -33,6 +33,12 @@ class Note
      */
     private $commentaire;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="notes")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $destinataire;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -70,6 +76,18 @@ class Note
     public function setCommentaire(?string $commentaire): self
     {
         $this->commentaire = $commentaire;
+
+        return $this;
+    }
+
+    public function getDestinataire(): ?User
+    {
+        return $this->destinataire;
+    }
+
+    public function setDestinataire(?User $destinataire): self
+    {
+        $this->destinataire = $destinataire;
 
         return $this;
     }

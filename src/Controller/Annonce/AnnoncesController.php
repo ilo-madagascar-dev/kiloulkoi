@@ -349,6 +349,8 @@ class AnnoncesController extends AbstractController
         ]]);
 
         $note = $noteRepository->getNote($proprietaire);
+        
+        $nombreDeNotes = count($noteRepository->findBy(['destinataire' => $proprietaire]));
 
         $adDescriptionArrayOfWords = explode(' ', $annonce->getDescription());
         $adDescriptionNumberOfWords = count($adDescriptionArrayOfWords);
@@ -360,7 +362,7 @@ class AnnoncesController extends AbstractController
             'photoMax'           => $photoMax,
             'annonce_serialized' => $annonce_serialized,
             'note'               => $note['count'] == 0 ? 0 : round($note['sum'] / $note['count'], 1),
-
+            'nombreDeNotes'      => $nombreDeNotes,
             'user_annonces'      => $annonce->getUser()->getAnnonces()->count(),
             'kilouwersCount'     => $this->repUser->countKilouwers($proprietaire),
             'annoncesCount'      => $this->repUser->countAnnonces($proprietaire),

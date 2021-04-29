@@ -359,7 +359,9 @@
 														<i class="far fa-star"></i>
 													{% endfor %}
 												{% endif %}
-												<strong class="text-warning ml-2">({{ note|round(1, 'floor') }})</strong>
+												<span style="font-size: 0.90rem;"><strong class="text-warning ml-1" style="font-weight:bolder;">{{ note|round(1, 'floor') }}</strong></span>
+												<span class="badge badge-pill badge-dark ml-1">{{ nombreDeNotes }} avis</span>
+												<br>
 											</p>
 										</div>
 									</div>
