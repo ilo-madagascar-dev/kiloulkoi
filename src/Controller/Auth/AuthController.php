@@ -190,12 +190,16 @@ class AuthController extends AbstractController
 
             $mailer->send($email);
             
-            return $guardHandler->authenticateUserAndHandleSuccess(
+            $this->addFlash('success', 'Votre compte a été créé avec succès, veuillez vérifier votre boîte mail pour l\'activer');
+            
+            return $this->redirectToRoute('securitylogin');
+
+            /* return $guardHandler->authenticateUserAndHandleSuccess(
                 $user,
                 $request,
                 $authenticator,
                 'main' // firewall name in security.yaml
-            );
+            ); */
         }
 
         return $this->render('security/register.html.twig', [
@@ -310,7 +314,6 @@ class AuthController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
-
 
             return $guardHandler->authenticateUserAndHandleSuccess(
                 $user,

@@ -2,19 +2,20 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
+use App\Service\MangoPayService;
+use App\Service\PaginationService;
 use App\Repository\AnnoncesRepository;
 use App\Repository\CategoriesRepository;
 use App\Repository\TypeLocationRepository;
-use App\Service\PaginationService;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use App\Service\MangoPayService;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 
 class AccueilController extends AbstractController
 {
@@ -23,10 +24,10 @@ class AccueilController extends AbstractController
      */
     public function index(Request $request, AnnoncesRepository $repAnnonce, CategoriesRepository $repCategorie, TypeLocationRepository $ReptypeLocation, PaginationService $paginator, SessionInterface $session, MangoPayService $mangoPayService)
     {
-        if($this->getUser() && $this->getUser()->getActivationToken() != null){
+        /* if($this->getUser() && $this->getUser()->getActivationToken() != null){
             $this->addFlash('danger', 'Vous devez d\'abord cliquer sur le lien d\'activation de compte dans votre email.');
             return $this->redirectToRoute('security_logout');
-        }
+        } */
 
         $categories = $repCategorie->findAllWithSousCategorie();
         $types      = $ReptypeLocation->findAllOrd();
