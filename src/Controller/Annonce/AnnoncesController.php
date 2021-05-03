@@ -2,25 +2,26 @@
 
 namespace App\Controller\Annonce;
 
-use App\Entity\Abonnement;
-use App\Entity\Annonces;
 use App\Entity\User;
-use App\Repository\AbonnementRepository;
-use App\Repository\AnnoncesRepository;
-use App\Repository\CategoriesRepository;
+use App\Entity\Annonces;
+use App\Entity\Abonnement;
+use App\Entity\Notification;
+use App\Service\FileUploader;
+use App\Service\MangoPayService;
 use App\Repository\NoteRepository;
-use App\Repository\TypeAbonnementRepository;
 use App\Repository\UserRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Service\PaginationService;
+use App\Repository\AnnoncesRepository;
+use App\Repository\AbonnementRepository;
+use App\Repository\CategoriesRepository;
+use App\Repository\TypeAbonnementRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Service\FileUploader;
-use App\Service\MangoPayService;
-use App\Service\PaginationService;
 use Symfony\Component\Serializer\Encoder\JsonDecode;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/annonces")
@@ -300,6 +301,27 @@ class AnnoncesController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($annonce);
             $em->flush();
+
+            //Envoi de notifications aux kilouwers
+            $kilouwers = $this->getUser()->getKilouwers()->filter(function($element) {
+                return $element;
+            });
+
+            $destinataires = $kilouwers;
+
+            foreach ($destinataires as $destinataire) {
+                $notification = new Notification();
+                $photo        =  $annonce->getPhoto()[0] ? '/uploads/' . $annonce->getPhoto()[0]->getUrl() : '/image/logo-fond-blanc.png';
+                $notification->setDeclencheur($user);
+                $notification->setDestinataire($destinataire);
+                $notification->setMessage('L\'utilisateur " <strong>' . $notification->getDeclencheur()->getPseudo() . '</strong>" a publié une nouvelle annonce !');
+                $notification->setRoute($this->generateUrl('annonces_show', ['id' => $annonce->getId(), 'slug' => $annonce->getSlug()]));
+                $notification->setPhoto($photo);
+
+                $this->getDoctrine()->getManager()->persist($notification);
+                $this->getDoctrine()->getManager()->flush();
+            }
+            //Fin envoi de notifications aux kilouwers
 
             return $this->redirectToRoute('annonces_show', ['id' => $annonce->getId(), 'slug' => $annonce->getSlug()]);
         }

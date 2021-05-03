@@ -29,6 +29,10 @@ class AccueilController extends AbstractController
             return $this->redirectToRoute('security_logout');
         } */
 
+        /*dd($this->getUser()->getKilouwers()->filter(function($element) {
+            return $element;
+        }));*/ 
+
         $categories = $repCategorie->findAllWithSousCategorie();
         $types      = $ReptypeLocation->findAllOrd();
         $query      = $repAnnonce->findAllAnnonces();
