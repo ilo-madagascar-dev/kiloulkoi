@@ -314,10 +314,10 @@ class AnnoncesController extends AbstractController
                 $photo        =  $annonce->getPhoto()[0] ? '/uploads/' . $annonce->getPhoto()[0]->getUrl() : '/image/logo-fond-blanc.png';
                 $notification->setDeclencheur($user);
                 $notification->setDestinataire($destinataire);
-                $notification->setMessage('L\'utilisateur " <strong>' . $notification->getDeclencheur()->getPseudo() . '</strong>" a publié une nouvelle annonce !');
+                $notification->setMessage('L\'utilisateur <strong>' . $notification->getDeclencheur()->getPseudo() . '</strong> a publié une nouvelle annonce. ');
                 $notification->setRoute($this->generateUrl('annonces_show', ['id' => $annonce->getId(), 'slug' => $annonce->getSlug()]));
                 $notification->setPhoto($photo);
-
+                
                 $this->getDoctrine()->getManager()->persist($notification);
                 $this->getDoctrine()->getManager()->flush();
             }
