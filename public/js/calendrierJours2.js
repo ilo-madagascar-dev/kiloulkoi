@@ -2,19 +2,22 @@
  * DATETIMEPICKER
  */
 $(document).ready(function () {
-    //console.log(locations);
-    const referenceDays = [];
-    const hoursTaken = [];
+    console.log(locations);
+    const referenceMonth = [];
+    const daysPairsTaken = [];
+    //const check_in = [["2021-05-15", "2021-05-21"], ["2021-06-15", "2021-06-16"]]; //Array pour un simple essai
+
 
     for (const location of locations) {
-        let beginningDay = location.debut.split(' ')[0];
-        let beginningHour = location.debut.split(' ')[1]; //Ne pas supprimer ou modifier cette variable car elle est réutilisée plus bas
-        let endHour = location.fin.split(' ')[1];
+        let beginningDay = location.debut.date.split(' ')[0];
+        let endingDay = location.fin.date.split(' ')[0];
+        //let beginningHour = location.debut.split(' ')[1]; //Ne pas supprimer ou modifier cette variable car elle est réutilisée plus bas
+        //let endHour = location.fin.split(' ')[1];
         
-        console.log(`Heure de début : ${beginningHour}`);
+        //console.log(`Heure de début : ${beginningHour}`);
 
         //formattage de la date de début et de fin sélectionnnables
-        let beginningHourSelectable = parseInt(beginningHour.split(':')[0]);
+        /*let beginningHourSelectable = parseInt(beginningHour.split(':')[0]);
         let beginningHourMinutes =  01;
 
         let endHourHour =  parseInt(endHour.split(':')[0]) - 1;
@@ -28,83 +31,110 @@ $(document).ready(function () {
 
         endHour = new Date();
         endHour.setHours(endHourHour, endHourMinutes);  
-        endHour = getFormattedHoursMinutes(endHour);
+        endHour = getFormattedHoursMinutes(endHour); */
         //fin du formattage de la date de fin
 
         //Recherche et insertion des différentes heures comprises entre les heures de début et de fin des réservations
         
-        let beginningHourHour = parseInt(beginningHour.split(':')[0]) + 1;//C'est l'heure d'après qui ne peut pas être sélectionnée. Si la "location" commence à 08:00 quelqu'un devrait toutefois être capable de sélectionner 08:00 comme heure de fin 
+        //let beginningHourHour = parseInt(beginningHour.split(':')[0]) + 1;//C'est l'heure d'après qui ne peut pas être sélectionnée. Si la "location" commence à 08:00 quelqu'un devrait toutefois être capable de sélectionner 08:00 comme heure de fin 
 
-        let beginningAndEndHour = [beginningHour, endHour]
+        //let beginningAndEndHour = [beginningHour, endHour]
 
-        for (let index = beginningHourHour; index <= endHourHour; index++) {
+        /*for (let index = beginningHourHour; index <= endHourHour; index++) {
             let hourBetween = ('0' + index).slice(-2);
             let fullHourBetween = `${hourBetween}:00`;
             beginningAndEndHour.push(fullHourBetween);
-        }
+        }*/
+
+        let beginningAndEndDays = [beginningDay, endingDay];
         //Recherche et insertion des différentes heures comprises entre les heures de début et de fin des réservations
 
-        referenceDays.push(beginningDay);
-        hoursTaken.push(beginningAndEndHour);
+        /*referenceDays.push(beginningDay);*/
+        daysPairsTaken.push(beginningAndEndDays);
+
         //console.log(`${beginningDay} ${beginningHour} ${endHour}`)
     }
 
+    console.log(daysPairsTaken);
+
+    /*for (var i = 0; i < daysPairsTaken.length; i++) {
+
+        let string = jQuery.datepicker.formatDate('yy-mm-dd','2020-12-01');
+        
+        if (Array.isArray(daysPairsTaken[i])) {
+          var from = new Date(daysPairsTaken[i][0]);
+          var to = new Date(daysPairsTaken[i][1]);
+          var current = new Date(string);
+          if (current >= from && current <= to) console.log('false');
+        }
+    }*/
+
     //console.log(referenceDays);
-    console.log(`hours taken : ${hoursTaken}`);
+    //console.log(`hours taken : ${hoursTaken}`);
  
-    $.datetimepicker.setLocale('fr');
+    //$.datetimepicker.setLocale('fr');
 
-    $('#dateTimePicker').datetimepicker({
-        format: 'd/m/Y H:i',
-        locale: 'fr',
-        onGenerate:function(ct,$i){
-            let selectedDate = getFormattedDate(ct);
+    $('#dateTimePicker').datepicker({
+		dateFormat: "dd/mm/yy",
+		uiLibrary: 'bootstrap4',
+		altField: "#datepicker",
+		closeText: 'Fermer',
+		prevText: 'Précédent',
+		nextText: 'Suivant',
+		currentText: 'Aujourd\'hui',
+		monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+		monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
+		dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+		dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
+		dayNamesMin: ['Di', 'Lu', 'Ma', 'Mer', 'Je', 'Ve', 'Sa'],
+		weekHeader: 'Sem.',
+		firstDay: 1,
+        beforeShowDay: function(date) {
+            let string = jQuery.datepicker.formatDate('yy-mm-dd', date);
 
-            let indexes = getAllIndexes(referenceDays, selectedDate);
-            console.log(indexes);
-
-            $('.xdsoft_time_variant .xdsoft_time').show();
-
-            for (const index of indexes) {
-                if(index !== -1) {
-                    $('.xdsoft_time_variant .xdsoft_time').each(function(indication){
-                        if(hoursTaken[index].indexOf($(this).text()) !== -1) {
-                            $(this).addClass('disabled');
-                            $(this).fadeTo("fast",.3);
-                            $(this).prop('disabled',true);      
+                        for (var i = 0; i < daysPairsTaken.length; i++) {
+                            if (Array.isArray(daysPairsTaken[i])) {
+                                let from = new Date(daysPairsTaken[i][0]);
+                                let to = new Date(daysPairsTaken[i][1]);
+                                let current = new Date(string);
+                                if (current >= from && current <= to) return false;
+                            }
                         }
-                    });
-                }  
-            }
 
+                        return [daysPairsTaken.indexOf(string) == -1];
         }
-    });
+	});
 
-    $('#dateTimePicker1').datetimepicker({
-        format: 'd/m/Y H:i',
-        locale: 'fr',
-        onGenerate:function(ct,$i){
-            let selectedDate = getFormattedDate(ct);
+    $('#dateTimePicker1').datepicker({
+		dateFormat: "dd/mm/yy",
+		uiLibrary: 'bootstrap4',
+		altField: "#datepicker",
+		closeText: 'Fermer',
+		prevText: 'Précédent',
+		nextText: 'Suivant',
+		currentText: 'Aujourd\'hui',
+		monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+		monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
+		dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+		dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
+		dayNamesMin: ['Di', 'Lu', 'Ma', 'Mer', 'Je', 'Ve', 'Sa'],
+		weekHeader: 'Sem.',
+		firstDay: 1,
+        beforeShowDay: function(date) {
+            let string = jQuery.datepicker.formatDate('yy-mm-dd', date);
 
-            let indexes = getAllIndexes(referenceDays, selectedDate);
-            console.log(indexes);
-
-            $('.xdsoft_time_variant .xdsoft_time').show();
-
-            for (const index of indexes) {
-                if(index !== -1) {
-                    $('.xdsoft_time_variant .xdsoft_time').each(function(indication){
-                        if(hoursTaken[index].indexOf($(this).text()) !== -1) {
-                            $(this).addClass('disabled');
-                            $(this).fadeTo("fast",.3);
-                            $(this).prop('disabled',true);      
+                        for (var i = 0; i < daysPairsTaken.length; i++) {
+                            if (Array.isArray(daysPairsTaken[i])) {
+                                let from = new Date(daysPairsTaken[i][0]);
+                                let to = new Date(daysPairsTaken[i][1]);
+                                let current = new Date(string);
+                                if (current >= from && current <= to) return false;
+                            }
                         }
-                    });
-                }  
-            }
 
+                        return [daysPairsTaken.indexOf(string) == -1];
         }
-    });
+	});
 });
 /**
  * FIN DATETIMEPICKER
@@ -121,22 +151,19 @@ $('#reserver1').click(function () {
     //split début
     let debut_split = date_debut.split(" ");
     let debut_split1 = debut_split[0].split("/");
-    let debut_split2 = debut_split[1].split(":");
+    //let debut_split2 = debut_split[1].split(":");
 
     //split fin
     let fin_split = date_fin.split(" ");
     let fin_split1 = fin_split[0].split("/");
-    let fin_split2 = fin_split[1].split(":");
+    //let fin_split2 = fin_split[1].split(":");
 
     //Création des objets Date()
-    let demande_debut = new Date(debut_split1[2], debut_split1[1] -1, debut_split1[0], debut_split2[0], debut_split2[1]);
-    let demande_fin = new Date(fin_split1[2], fin_split1[1] -1, fin_split1[0], fin_split2[0], fin_split2[1]);
+    let demande_debut = new Date(debut_split1[2], debut_split1[1] -1, debut_split1[0]);
+    let demande_fin = new Date(fin_split1[2], fin_split1[1] -1, fin_split1[0]);
 
-    console.log(`${demande_debut} 
-        ${debut_split[0]}
-        ${debut_split[1]}
+    console.log(`${demande_debut}
         ${debut_split1[0]} ${debut_split1[1]} ${debut_split1[2]}
-        ${debut_split2[0]} ${debut_split2[1]}
         ${demande_debut}
         ${demande_fin}
     `);
@@ -206,23 +233,24 @@ const getFreeDates = (demande_debut, demande_fin, locations) => {
 
     for (const location of locations) {
         // Date déja reservé
-        let reserve_debut = location.debut.slice();
-        let reserve_fin = location.fin.slice();
+        let reserve_debut = location.debut.date.split(' ')[0];
+        let reserve_fin = location.fin.date.split(' ')[0]
 
         //split début des dates réservées
         let reserve_debut_split = reserve_debut.split(" ");
         let reserve_debut_split1 = reserve_debut_split[0].split("/");
-        let reserve_debut_split2 = reserve_debut_split[1].split(":");
+        //let reserve_debut_split2 = reserve_debut_split[1].split(":");
 
         //split fin des dates réservées
         let reserve_fin_split = reserve_fin.split(" ");
         let reserve_fin_split1 = reserve_fin_split[0].split("/");
-        let reserve_fin_split2 = reserve_fin_split[1].split(":");
+        //let reserve_fin_split2 = reserve_fin_split[1].split(":");
 
         //Création des objets Date()
-        reserve_debut = new Date(reserve_debut_split1[2], reserve_debut_split1[1] -1, reserve_debut_split1[0], reserve_debut_split2[0], reserve_debut_split2[1]);
-        reserve_fin = new Date(reserve_fin_split1[2], reserve_fin_split1[1] -1, reserve_fin_split1[0], reserve_fin_split2[0], reserve_fin_split2[1]);
+        reserve_debut = new Date(reserve_debut_split1[2], reserve_debut_split1[1] -1, reserve_debut_split1[0]);
+        reserve_fin = new Date(reserve_fin_split1[2], reserve_fin_split1[1] -1, reserve_fin_split1[0]);
 
+        console.log(`Réservation : début et fin ${reserve_debut} ${reserve_fin}`);
 
         if (reserve_debut <= debut &&  fin <= reserve_fin) {
             totalement_reserve = true;
