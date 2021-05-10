@@ -186,7 +186,7 @@ $('#reserver1').click(function () {
             $('#reservationModal .alert-indisponible').removeClass("d-none");
         }
         else {
-            const options = { year: 'numeric', month: 'long', day: 'numeric', hour:'2-digit', minute:'2-digit' };
+            const options = { year: 'numeric', month: 'long', day: 'numeric'};
             let listes = '';
             for (const demande of demandes) {
                 
