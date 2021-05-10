@@ -11,68 +11,13 @@ $(document).ready(function () {
     for (const location of locations) {
         let beginningDay = location.debut.date.split(' ')[0];
         let endingDay = location.fin.date.split(' ')[0];
-        //let beginningHour = location.debut.split(' ')[1]; //Ne pas supprimer ou modifier cette variable car elle est réutilisée plus bas
-        //let endHour = location.fin.split(' ')[1];
-        
-        //console.log(`Heure de début : ${beginningHour}`);
-
-        //formattage de la date de début et de fin sélectionnnables
-        /*let beginningHourSelectable = parseInt(beginningHour.split(':')[0]);
-        let beginningHourMinutes =  01;
-
-        let endHourHour =  parseInt(endHour.split(':')[0]) - 1;
-        let endHourMinutes =  59;
-        
-        beginningHour = new Date();
-        beginningHour.setHours(beginningHourSelectable, beginningHourMinutes);  
-        beginningHour = getFormattedHoursMinutes(beginningHour);
-
-        console.log(beginningHour);
-
-        endHour = new Date();
-        endHour.setHours(endHourHour, endHourMinutes);  
-        endHour = getFormattedHoursMinutes(endHour); */
-        //fin du formattage de la date de fin
-
-        //Recherche et insertion des différentes heures comprises entre les heures de début et de fin des réservations
-        
-        //let beginningHourHour = parseInt(beginningHour.split(':')[0]) + 1;//C'est l'heure d'après qui ne peut pas être sélectionnée. Si la "location" commence à 08:00 quelqu'un devrait toutefois être capable de sélectionner 08:00 comme heure de fin 
-
-        //let beginningAndEndHour = [beginningHour, endHour]
-
-        /*for (let index = beginningHourHour; index <= endHourHour; index++) {
-            let hourBetween = ('0' + index).slice(-2);
-            let fullHourBetween = `${hourBetween}:00`;
-            beginningAndEndHour.push(fullHourBetween);
-        }*/
 
         let beginningAndEndDays = [beginningDay, endingDay];
-        //Recherche et insertion des différentes heures comprises entre les heures de début et de fin des réservations
-
-        /*referenceDays.push(beginningDay);*/
+        //Insertion des différentes dates de début et de fin
         daysPairsTaken.push(beginningAndEndDays);
-
-        //console.log(`${beginningDay} ${beginningHour} ${endHour}`)
     }
 
     console.log(daysPairsTaken);
-
-    /*for (var i = 0; i < daysPairsTaken.length; i++) {
-
-        let string = jQuery.datepicker.formatDate('yy-mm-dd','2020-12-01');
-        
-        if (Array.isArray(daysPairsTaken[i])) {
-          var from = new Date(daysPairsTaken[i][0]);
-          var to = new Date(daysPairsTaken[i][1]);
-          var current = new Date(string);
-          if (current >= from && current <= to) console.log('false');
-        }
-    }*/
-
-    //console.log(referenceDays);
-    //console.log(`hours taken : ${hoursTaken}`);
- 
-    //$.datetimepicker.setLocale('fr');
 
     $('#dateTimePicker').datepicker({
 		dateFormat: "dd/mm/yy",
@@ -92,16 +37,16 @@ $(document).ready(function () {
         beforeShowDay: function(date) {
             let string = jQuery.datepicker.formatDate('yy-mm-dd', date);
 
-                        for (var i = 0; i < daysPairsTaken.length; i++) {
-                            if (Array.isArray(daysPairsTaken[i])) {
-                                let from = new Date(daysPairsTaken[i][0]);
-                                let to = new Date(daysPairsTaken[i][1]);
-                                let current = new Date(string);
-                                if (current >= from && current <= to) return false;
-                            }
-                        }
+            for (var i = 0; i < daysPairsTaken.length; i++) {
+                if (Array.isArray(daysPairsTaken[i])) {
+                    let from = new Date(daysPairsTaken[i][0]);
+                    let to = new Date(daysPairsTaken[i][1]);
+                    let current = new Date(string);
+                    if (current >= from && current <= to) return false;
+                }
+            }
 
-                        return [daysPairsTaken.indexOf(string) == -1];
+            return [daysPairsTaken.indexOf(string) == -1];
         }
 	});
 
@@ -123,16 +68,16 @@ $(document).ready(function () {
         beforeShowDay: function(date) {
             let string = jQuery.datepicker.formatDate('yy-mm-dd', date);
 
-                        for (var i = 0; i < daysPairsTaken.length; i++) {
-                            if (Array.isArray(daysPairsTaken[i])) {
-                                let from = new Date(daysPairsTaken[i][0]);
-                                let to = new Date(daysPairsTaken[i][1]);
-                                let current = new Date(string);
-                                if (current >= from && current <= to) return false;
-                            }
-                        }
+            for (var i = 0; i < daysPairsTaken.length; i++) {
+                if (Array.isArray(daysPairsTaken[i])) {
+                    let from = new Date(daysPairsTaken[i][0]);
+                    let to = new Date(daysPairsTaken[i][1]);
+                    let current = new Date(string);
+                    if (current >= from && current <= to) return false;
+                }
+            }
 
-                        return [daysPairsTaken.indexOf(string) == -1];
+            return [daysPairsTaken.indexOf(string) == -1];
         }
 	});
 });

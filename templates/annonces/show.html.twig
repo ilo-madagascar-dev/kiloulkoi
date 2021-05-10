@@ -162,13 +162,9 @@
 										{% if annonce_serialized|length > 1 %}
 											{#{ dump(annonce_serialized) }#}
 											{% for key, value in annonce_serialized %}
-												{% if value is not null %}
+												{% if value != null %}
 													<li class="mt-3">
 														<div class="d-inline-block tag-head-conteneur"><img src="{{ asset('icone/crea_f.png') }}" alt=""></div><div class="d-inline-block bg-primary caracteristiques-text-container px-2 shadow" style="border-radius:0px 3px 3px 0px;">
-															{% if key|capitalize == "Urgent" %}
-																<strong>Urgent</strong>																																																																																																																																																																																	                                                                
-															{% endif %}
-
 															<!--span class="pr-2"> </span -->
 															{% if value is iterable %}
 																{{ value.valeur is defined ? value.valeur : value.libelle }}
@@ -182,6 +178,8 @@
                                                                 {% else %}
                                                                     <strong>{{ key|capitalize }}</strong> {{ value }}
                                                                 {% endif %}
+															{% elseif key|capitalize == "Urgent" %}
+																<strong>Urgent</strong>
 															{% else %}
 																{{ value }}
 															{% endif %}
