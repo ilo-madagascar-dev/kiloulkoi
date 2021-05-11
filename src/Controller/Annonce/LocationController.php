@@ -165,9 +165,9 @@ class LocationController extends AbstractController
                 } elseif ($annonce->getType()->getId() == 2) {
                     $difference = $periodeTotal->format('%a') + 1;
                 } elseif ($annonce->getType()->getId() == 3) {
-                    $difference = $periodeTotal->format('%a') / 7 + 1;
+                    $difference = ($periodeTotal->format('%a')+ 1) / 7;
                 } else {
-                    $difference = $periodeTotal->format('%m') + 1;
+                    $difference = $periodeTotal->format('%a')/30;
                 }
 
                 $prix = $difference * $annonce->getPrix();
