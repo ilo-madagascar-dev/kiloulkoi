@@ -82,6 +82,29 @@ $(document).ready(function () {
  * FIN DATETIMEPICKER
  */
 
+/**
+ * AJOUT DE QUELQUES JOURS APRÈS LA SELECTION 
+ */
+    $('#dateTimePicker').on('change', function () {
+        /* let val = $('#dateTimePicker').val();
+
+        console.log(val); */
+        
+        let splitDate = $('#dateTimePicker').val().split('/');
+        let dateSelected = new Date(splitDate[2], splitDate[1]-1, splitDate[0]);
+        let dateSelectedAdded = dateSelected;
+        
+        dateSelectedAdded.setDate(dateSelectedAdded.getDate()+1);
+
+        let dateSelectedFormatted = getFormattedDate(dateSelectedAdded);
+        
+        $('#dateTimePicker1').val(dateSelectedFormatted);
+
+    });
+/**
+ * FIN AJOUT DE QUELQUES JOURS APRÈS LA SELECTION 
+ */
+
  /**
   * Vérification de la disponibilité
   */
@@ -179,17 +202,19 @@ const getFreeDates = (demande_debut, demande_fin, locations) => {
 
         //split début des dates réservées
         let reserve_debut_split = reserve_debut.split(" ");
-        let reserve_debut_split1 = reserve_debut_split[0].split("/");
+        let reserve_debut_split1 = reserve_debut_split[0].split("-");
         //let reserve_debut_split2 = reserve_debut_split[1].split(":");
 
         //split fin des dates réservées
         let reserve_fin_split = reserve_fin.split(" ");
-        let reserve_fin_split1 = reserve_fin_split[0].split("/");
+        let reserve_fin_split1 = reserve_fin_split[0].split("-");
         //let reserve_fin_split2 = reserve_fin_split[1].split(":");
 
+        console.log(`Réservation : début et fin ${reserve_debut_split} ${reserve_fin_split}`);
+
         //Création des objets Date()
-        reserve_debut = new Date(reserve_debut_split1[2], reserve_debut_split1[1] -1, reserve_debut_split1[0]);
-        reserve_fin = new Date(reserve_fin_split1[2], reserve_fin_split1[1] -1, reserve_fin_split1[0]);
+        reserve_debut = new Date(reserve_debut_split1[0], reserve_debut_split1[1] -1, reserve_debut_split1[2]);
+        reserve_fin = new Date(reserve_fin_split1[0], reserve_fin_split1[1] -1, reserve_fin_split1[2]);
 
         console.log(`Réservation : début et fin ${reserve_debut} ${reserve_fin}`);
 
