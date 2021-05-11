@@ -55,9 +55,9 @@
                                         {% elseif location.annonce.type.id == 2 %}
                                             {% set difference = periodeTotal.days + 1 %}
                                         {% elseif location.annonce.type.id == 3 %}
-                                            {% set difference = periodeTotal.days/7 + 1 %}
+                                            {% set difference = (periodeTotal.days + 1)/7%}
                                         {% else %}
-                                            {% set difference = (periodeTotal.days/30)|round() + 1 %}
+                                            {% set difference = (periodeTotal.days/30)|round() %}
                                         {% endif %}
 
                                         <tr>
@@ -90,7 +90,7 @@
                                                     {% set pTemp = date("now").diff(date(location.dateFin))  %}
                                                     {% if pTemp.days < 1 %}
                                                         <a class="btn btn-sm btn-warning text-white" href="#" title="Ouvrire un litige">
-                                                            <i class="fa fa-angry"></i>
+                                                            <i class="fa fa-tired"></i>
                                                         </a>
                                                     {% endif %}
                                                 {% endif %}
@@ -135,9 +135,9 @@
                                             {% elseif location.annonce.type.id == 2 %}
                                                 {% set difference = periodeTotal.days + 1 %}
                                             {% elseif location.annonce.type.id == 3 %}
-                                                {% set difference = periodeTotal.days/7 + 1 %}
+                                                {% set difference = (periodeTotal.days+1)/7 %}
                                             {% else %}
-                                                {% set difference = (periodeTotal.days/30)|round() + 1 %}
+                                                {% set difference = (periodeTotal.days/30)|round() %}
                                             {% endif %}
 
                                             <tr>
@@ -164,8 +164,8 @@
                                                             </a>
                                                         {% endif %}
                                                     {% elseif plusOneDay %}
-                                                        <a class="btn btn-sm btn-danger text-white" href="#" title="Ouvrire un litige">
-                                                            <i class="fa fa-angry"></i>
+                                                        <a class="btn btn-sm btn-danger text-white" href="#" title="Ouvrir un litige">
+                                                            <i class="fa fa-tired"></i>
                                                         </a>
                                                     {% endif %}
 

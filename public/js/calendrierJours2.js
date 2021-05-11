@@ -89,12 +89,23 @@ $(document).ready(function () {
         /* let val = $('#dateTimePicker').val();
 
         console.log(val); */
+
+        let annonceType = $('.js-annonce-type').data('type');
+        let annonceMarge;
+
+        if (annonceType == 'jour') {
+            annonceMarge = 1;
+        } else if(annonceType == 'semaine') {
+            annonceMarge = 6;
+        } else if(annonceType == 'mois') {
+            annonceMarge = 30;
+        }
         
         let splitDate = $('#dateTimePicker').val().split('/');
         let dateSelected = new Date(splitDate[2], splitDate[1]-1, splitDate[0]);
         let dateSelectedAdded = dateSelected;
         
-        dateSelectedAdded.setDate(dateSelectedAdded.getDate()+1);
+        dateSelectedAdded.setDate(dateSelectedAdded.getDate()+annonceMarge);
 
         let dateSelectedFormatted = getFormattedDate(dateSelectedAdded);
         
