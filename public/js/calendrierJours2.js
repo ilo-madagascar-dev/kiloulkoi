@@ -2,11 +2,8 @@
  * DATETIMEPICKER
  */
 $(document).ready(function () {
-    console.log(locations);
     const referenceMonth = [];
     const daysPairsTaken = [];
-    //const check_in = [["2021-05-15", "2021-05-21"], ["2021-06-15", "2021-06-16"]]; //Array pour un simple essai
-
 
     for (const location of locations) {
         let beginningDay = location.debut.date.split(' ')[0];
@@ -134,8 +131,7 @@ $('#reserver1').click(function () {
             const options = { year: 'numeric', month: 'long', day: 'numeric'};
             let listes = '';
             for (const demande of demandes) {
-                
-                if (demande.debut == demande.fin) {
+                if (demande.debut.getTime() == demande.fin.getTime()) {
                     let fin = (new Date(demande.fin)).toLocaleDateString('fr-FR', options);
 
                     listes += `<li class="list-group-item py-1 border-0">Le <strong>${fin}</strong></li>`
