@@ -2,6 +2,32 @@
  * DATETIMEPICKER
  */
 $(document).ready(function () {
+
+    /**
+     * Vérification des champs 
+     */
+    $(function(params) {
+        $('#message_date_debut').hide();
+        $('#message_date_fin').hide();
+
+        let errorMessageDateDebut = false;
+        let errorMessageDateFin = false;
+
+        /*$('#dateTimePicker').on("change", function (e) {
+            checkDateTimePicker();
+        })*/
+
+        $('#dateTimePicker1').on("change", function (e) {
+            checkDateTimePickerOne();
+        })
+    })
+    /**
+     * Fin Vérification des champs
+     */
+
+    /**
+     * Debut datetimepicker
+     */
     const referenceMonth = [];
     const daysPairsTaken = [];
 
@@ -44,6 +70,14 @@ $(document).ready(function () {
             }
 
             return [daysPairsTaken.indexOf(string) == -1];
+        },
+        onClose: function(selectedDate) {
+            if (selectedDate == "") {
+                $('#message_date_debut').html('Il faut spécifier une valeur ');
+                $('#message_date_debut').show();
+            } else {
+                $('#message_date_debut').hide();
+            }
         }
 	});
 
@@ -94,7 +128,7 @@ $(document).ready(function () {
         let annonceMarge;
 
         if (annonceType == 'jour') {
-            annonceMarge = 1;
+            annonceMarge = 0;
         } else if(annonceType == 'semaine') {
             annonceMarge = 6;
         } else if(annonceType == 'mois') {
@@ -102,12 +136,21 @@ $(document).ready(function () {
         }
         
         let splitDate = $('#dateTimePicker').val().split('/');
+
+        console.log(splitDate);
+        
         let dateSelected = new Date(splitDate[2], splitDate[1]-1, splitDate[0]);
         let dateSelectedAdded = dateSelected;
         
         dateSelectedAdded.setDate(dateSelectedAdded.getDate()+annonceMarge);
 
-        let dateSelectedFormatted = getFormattedDate(dateSelectedAdded);
+        let dateSelectedFormatted;
+
+        if ($('#dateTimePicker').val() != "") {
+            dateSelectedFormatted = getFormattedDate(dateSelectedAdded);
+        } else {
+            dateSelectedFormatted = "";
+        }
         
         $('#dateTimePicker1').val(dateSelectedFormatted);
 
@@ -120,6 +163,16 @@ $(document).ready(function () {
   * Vérification de la disponibilité
   */
 $('#reserver1').click(function () {
+    let dureeValable = checkDateTimePickerOne();
+    console.log(dureeValable);
+
+    if(dureeValable == false ) {
+        return false;
+    }
+
+    /**
+     * Traitement des données.
+     */
     // Demande de reservation de l'utilisateur
     let date_debut = $('#dateTimePicker').val();
     let date_fin = $('#dateTimePicker1').val();
@@ -280,3 +333,64 @@ function getAllIndexes(arr, val) {
     }
     return indexes;
 }
+
+/**
+ *  
+ * FUNCTIONS TO CHECK DATETIMEPICKERS
+ *  
+ * */
+
+/** Fonction qui permet de checker le 1er datetimepicker */
+function checkDateTimePicker(){
+    let firstDateTimePickerLength = $('#dateTimePicker').val().length;
+
+    if (firstDateTimePickerLength == 0) {
+        $('#message_date_debut').html('Il faut spécifier une valeur. ');
+        $('#message_date_debut').show();
+    } else {
+        $('#message_date_debut').hide();
+    }
+};
+
+/** Fonction qui permet de checker le 2ème datetimepicker */
+function checkDateTimePickerOne(){
+    checkDateTimePicker();
+
+    let dateTimePickerFirstValue = $('#dateTimePicker').val().split('/');
+    let dateTimePickerOneSecondValue = $('#dateTimePicker1').val().split('/');
+
+    let dateOne = new Date(dateTimePickerFirstValue[2], dateTimePickerFirstValue[1]-1,dateTimePickerFirstValue[0]);
+    let dateTwo = new Date(dateTimePickerOneSecondValue[2], dateTimePickerOneSecondValue[1]-1,dateTimePickerOneSecondValue[0]);
+
+    let differenceInTime = dateTwo.getTime() - dateOne.getTime();
+    let annonceType = $('.js-annonce-type').data('type');
+    let annonceMarge;
+    let messageDerreurDuree;
+    let dureeValable;
+    
+    if (annonceType == 'jour') {
+        annonceMarge = 1;
+        messageDerreurDuree = 'La durée de la location doit être d\'au moins un jour.';
+    } else if(annonceType == 'semaine') {
+        annonceMarge = 6;
+        messageDerreurDuree = 'La durée de la location doit être un multiple de 7 jours.';
+    } else if(annonceType == 'mois') {
+        annonceMarge = 30;
+        messageDerreurDuree = 'La durée de la location doit être un multiple de 30 jours.';
+    }
+
+    let differenceInDays = differenceInTime % (1000 * 3600 * 24 * annonceMarge);
+
+    console.log(annonceMarge + ' ' + differenceInDays);
+
+    if (differenceInDays !== 0 ) {
+        $('#message_date_fin').html(messageDerreurDuree);
+        $('#message_date_fin').show();
+        dureeValable = false;
+    } else {
+        $('#message_date_fin').hide();
+        dureeValable = true;
+    }
+
+    return dureeValable;
+};
