@@ -365,21 +365,25 @@ function checkDateTimePickerOne(){
     let differenceInTime = dateTwo.getTime() - dateOne.getTime();
     let annonceType = $('.js-annonce-type').data('type');
     let annonceMarge;
+    let annonceMargeDeux;
     let messageDerreurDuree;
     let dureeValable;
     
     if (annonceType == 'jour') {
         annonceMarge = 1;
+        annonceMargeDeux = 0;
         messageDerreurDuree = 'La durée de la location doit être d\'au moins un jour.';
     } else if(annonceType == 'semaine') {
-        annonceMarge = 6;
+        annonceMarge = 7;
+        annonceMargeDeux = 1000 * 3600 * 24;
         messageDerreurDuree = 'La durée de la location doit être un multiple de 7 jours.';
     } else if(annonceType == 'mois') {
         annonceMarge = 30;
+        annonceMargeDeux = 0;
         messageDerreurDuree = 'La durée de la location doit être un multiple de 30 jours.';
     }
 
-    let differenceInDays = differenceInTime % (1000 * 3600 * 24 * annonceMarge);
+    let differenceInDays = (differenceInTime + annonceMargeDeux) % (1000 * 3600 * 24 * annonceMarge);
 
     console.log(annonceMarge + ' ' + differenceInDays);
 
