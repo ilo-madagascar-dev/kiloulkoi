@@ -13,7 +13,7 @@
         <div class="tab-pane fade" id="pills-photos" role="tabpanel" aria-labelledby="pills-photos-tab">
             {% set i = 0 %}
             <div class="photo row m-auto" data-prototype="{{ include('annonces/photo.html.twig', { 'form': form.photo.vars.prototype, 'photo': null }) | e('html_attr') }}">
-                <input type="hidden" value="{{ photoMax }}" id="photoMax">
+                <!-- input type="hidden" value="{#{ photoMax }#}" id="photoMax" -->
                 {% for photo in photos %}
                     <div class="col mb-3" id="photo_{{ photo.id }}">
                         {{ include('annonces/photo.html.twig', { 'photo': photo, 'numero': i }) }}

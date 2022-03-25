@@ -207,7 +207,7 @@ class AnnoncesController extends AbstractController
         }
 
         $abonnement = $this->repAbonnement->findUserAbonnement($user->getId());
-        if ($abonnement == null) {
+        /* if ($abonnement == null) {
             if (strpos(get_class($user), 'Professionnel') !== false) {
                 $this->addFlash('error', 'Pour pouvoir publier des annonces, veuillez vous abonner à l\'abonnement Professionnel ou Premium.');
                 return $this->redirectToRoute('abonnement_index');
@@ -222,7 +222,7 @@ class AnnoncesController extends AbstractController
                 $abonnement->setType($typeAbonnement);
                 $abonnement->setUser($user);
             }
-        }
+        }*/ 
 
         $nomClasse  = ucfirst($request->query->get('categorie'));
         $categorie  = $this->repCategorie->findOneBy(['className' => $nomClasse]);
@@ -231,15 +231,15 @@ class AnnoncesController extends AbstractController
         if ($categorie == null)
             return $this->redirectToRoute('annonces_depos');
 
-        $photoMax    = $abonnement->getType()->getPhotoMax();
-        $annonceMax  = intval($abonnement->getType()->getAnnonceMax());
-        $annonceUser = intval($this->repAnnonce->countUserAnnonce($user->getId(), $abonnement->getDateDebut(), $abonnement->getDateFin()));
+        //$photoMax    = $abonnement->getType()->getPhotoMax();
+        //$annonceMax  = intval($abonnement->getType()->getAnnonceMax());
+        //$annonceUser = intval($this->repAnnonce->countUserAnnonce($user->getId(), $abonnement->getDateDebut(), $abonnement->getDateFin()));
 
         // Nombre d'annonce max atteint
-        if ($annonceMax <= $annonceUser) {
+        /* if ($annonceMax <= $annonceUser) {
             $this->addFlash('error', 'Vous avez atteint le nombre maximum de poste cette mois');
             return $this->redirectToRoute('mes_annonces_index');
-        }
+        } */
 
         $class    = 'App\Entity\Annonce' . $nomClasse;
         $formType = 'App\Form\Category\\' . trim($nomClasse) . 'Type';
@@ -330,7 +330,7 @@ class AnnoncesController extends AbstractController
             'annonce'   => $annonce,
             'form'      => $form->createView(),
             'photos'    => $annonce->getPhoto(),
-            'photoMax'  => $photoMax,
+            //'photoMax'  => $photoMax,
             'categorie' => $categorie
         ]);
     }
